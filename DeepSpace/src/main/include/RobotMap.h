@@ -23,3 +23,5 @@
 // number and the module. For example you with a rangefinder:
 // constexpr int kRangeFinderPort = 1;
 // constexpr int kRangeFinderModule = 1;
+const static int k_leftWCDrive_ID   = 1;
+const static int k_rightWCDrive_ID  = 2;

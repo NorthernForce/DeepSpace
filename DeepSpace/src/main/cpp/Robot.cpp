@@ -10,7 +10,9 @@
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
-#include <iostream>
+#include <iostream> 
+#include <frc/Joystick.h>
+#include <ctre/Phoenix.h>
 
 ExampleSubsystem Robot::m_subsystem;
 OI Robot::m_oi;

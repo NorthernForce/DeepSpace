@@ -8,13 +8,25 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
+#include <frc/Drive/DifferentialDrive.h>
+
+#include <rev/CANSparkMax.h>
+#include "../include/RobotMap.h"
 
 class WCDrive : public frc::Subsystem 
 {
  public:
-  WCDrive();
-  void InitDefaultCommand(); //override;
+   WCDrive();
+   
+   void InitDefaultCommand(); //override;
+
+   void arcDrive(int y, int x);
+   
 
  private:
+   rev::CANSparkMax        *m_leftWCDrive;
+   rev::CANSparkMax        *m_rightWCDrive;
+   frc::DifferentialDrive  *m_robotWCDrive;
+
    
 };
