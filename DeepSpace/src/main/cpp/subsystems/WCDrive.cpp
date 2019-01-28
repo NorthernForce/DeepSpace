@@ -5,18 +5,21 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
+#include "subsystems/WCDrive.h"
 
-#include <frc/commands/Subsystem.h>
+#include "RobotMap.h"
 
-class ExampleSubsystem : public frc::Subsystem 
+WCDrive::WCDrive() : frc::Subsystem("WCDrive") 
 {
- public:
-  ExampleSubsystem();
-  void InitDefaultCommand() override;
 
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-};
 
+}
+
+void WCDrive::InitDefaultCommand() 
+{
+  // Set the default command for a subsystem here.
+  // SetDefaultCommand(new MySpecialCommand());
+}
+
+// Put methods for controlling this subsystem
+// here. Call these from Commands.
