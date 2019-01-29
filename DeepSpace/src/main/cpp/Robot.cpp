@@ -19,7 +19,7 @@ OI Robot::m_oi;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
-
+  m_drive.reset(new WCDrive);
   m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
   m_chooser.AddOption("My Auto", &m_myAuto);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
@@ -92,7 +92,7 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() { 
   frc::Scheduler::GetInstance()->Run();
-  m_drive.go(m_oi.driverController->GetX(),  m_oi.driverController->GetX());
+  m_drive->arcDrive(m_oi.driverController->GetX(),  m_oi.driverController->GetY());
  }
 
 void Robot::TestPeriodic() {}

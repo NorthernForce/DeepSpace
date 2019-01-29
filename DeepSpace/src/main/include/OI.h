@@ -7,6 +7,7 @@
 
 #pragma once
 #include "frc/Joystick.h"
+#include "RobotMap.h"
 
 class OI {
  public:

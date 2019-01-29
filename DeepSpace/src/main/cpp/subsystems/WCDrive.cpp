@@ -5,15 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "../include/subsystems/WCDrive.h"
+#include "subsystems/WCDrive.h"
 //#include "../include/RobotMap.h"
+
+// std::shared_ptr<WPI_TalonSRX> RobotMap::driveTrainTalonSRX1;
+// std::shared_ptr<WPI_TalonSRX> RobotMap::driveTrainTalonSRX3;
 
 WCDrive::WCDrive() : frc::Subsystem("WCDrive") 
 {
   //Instantiate the Left Drive Motor(s)
-  m_leftWCDrive  = new rev::CANSparkMax(k_leftWCDrive_ID, rev::CANSparkMax::MotorType::kBrushless);
+  m_leftWCDrive  = new WPI_TalonSRX(k_leftWCDrive_ID);
+  // m_leftWCDrive  = new rev::CANSparkMax(k_leftWCDrive_ID, rev::CANSparkMax::MotorType::kBrushless);
   //Instantiate the Right Drive Motor(s)
-  m_rightWCDrive = new rev::CANSparkMax(k_rightWCDrive_ID, rev::CANSparkMax::MotorType::kBrushless);
+  // m_rightWCDrive = new rev::CANSparkMax(k_rightWCDrive_ID, rev::CANSparkMax::MotorType::kBrushless);
+  m_rightWCDrive = new WPI_TalonSRX(k_rightWCDrive_ID);
   //Instantiate the Robot Drive
   m_robotWCDrive = new frc::DifferentialDrive(*m_leftWCDrive, *m_rightWCDrive);
 
