@@ -6,8 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #pragma once
+#include "frc/Joystick.h"
 
 class OI {
  public:
-  OI();
+  OI(); 
+  std::shared_ptr<frc::Joystick> driverController;
 };

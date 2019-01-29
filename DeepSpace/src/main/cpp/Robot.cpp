@@ -90,7 +90,10 @@ void Robot::TeleopInit() {
   }
 }
 
-void Robot::TeleopPeriodic() { frc::Scheduler::GetInstance()->Run(); }
+void Robot::TeleopPeriodic() { 
+  frc::Scheduler::GetInstance()->Run();
+  m_drive.go(m_oi.driverController->GetX(),  m_oi.driverController->GetX());
+ }
 
 void Robot::TestPeriodic() {}
 
