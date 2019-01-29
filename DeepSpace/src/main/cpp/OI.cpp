@@ -11,7 +11,7 @@
 
 OI::OI() {
   // Process operator interface input here.
-  driverController.reset(new frc::Joystick(0));
+  driverController.reset(new frc::Joystick(k_xbox_controller_id));
   driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 
   // frc::Joystick *exampleStick;
