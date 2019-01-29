@@ -24,5 +24,5 @@
 // constexpr int kRangeFinderPort = 1;
 // constexpr int kRangeFinderModule = 1;
 const static int k_leftWCDrive_ID   = 1;
-const static int k_rightWCDrive_ID  = 2;
+const static int k_rightWCDrive_ID  = 4;
 const static int k_xbox_controller_id = 0;
