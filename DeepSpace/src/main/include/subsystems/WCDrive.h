@@ -10,8 +10,8 @@
 #include <frc/commands/Subsystem.h>
 #include <frc/Drive/DifferentialDrive.h>
 
-// #include <rev/CANSparkMax.h>
-#include "ctre/Phoenix.h"
+#include <rev/CANSparkMax.h>
+// #include "ctre/Phoenix.h"
 #include "../include/RobotMap.h"
 
 class WCDrive : public frc::Subsystem 
@@ -26,8 +26,10 @@ class WCDrive : public frc::Subsystem
 
  private:
 
-   WPI_TalonSRX        *m_leftWCDrive;
-   WPI_TalonSRX        *m_rightWCDrive;
+   rev::CANSparkMax        *m_leftWCDrive;
+   rev::CANSparkMax        *m_rightWCDrive;
+  //  WPI_TalonSRX        *m_leftWCDrive;
+  //  WPI_TalonSRX        *m_rightWCDrive;
    frc::DifferentialDrive  *m_robotWCDrive;
 
    
