@@ -23,6 +23,17 @@
 // number and the module. For example you with a rangefinder:
 // constexpr int kRangeFinderPort = 1;
 // constexpr int kRangeFinderModule = 1;
-const static int k_leftWCDrive_ID   = 1;
-const static int k_rightWCDrive_ID  = 2;
+
+// WCDrive
+const static int k_leftWCDrive_id   = 1;
+const static int k_rightWCDrive_id  = 2;
+
+// Controller
 const static int k_xbox_controller_id = 0;
+
+// BrushlessDrive
+const static int k_leftPrimaryBrushlessDrive_id = 1;
+const static int k_leftFollowerBrushlessDrive_id = 3;
+
+const static int k_rightPrimaryBrushlessDrive_id = 2;
+const static int k_rightFollowerBrushlessDrive_id = 4;

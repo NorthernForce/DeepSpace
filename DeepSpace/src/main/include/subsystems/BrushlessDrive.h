@@ -9,20 +9,22 @@
 
 #include <frc/commands/Subsystem.h>
 #include <frc/Drive/DifferentialDrive.h>
-#include "ctre/Phoenix.h"
+#include <rev/CANSparkMax.h>
 
-class WCDrive : public frc::Subsystem 
-{
+class BrushlessDrive : public frc::Subsystem {
  public:
-   WCDrive();
+  BrushlessDrive();
 
-   void InitDefaultCommand() override;
+  void InitDefaultCommand() override;
 
-   void arcDrive(int y, int x);
-   
+  void arcDrive(int y, int x);
+
  private:
-   std::shared_ptr<WPI_TalonSRX>        m_leftPrimaryTalon;
-   std::shared_ptr<WPI_TalonSRX>        m_rightPrimaryTalon;
+  std::shared_ptr<rev::CANSparkMax>        m_leftPrimaryBrushless;
+  std::shared_ptr<rev::CANSparkMax>        m_leftFollowerBrushless;
 
-   std::shared_ptr<frc::DifferentialDrive>  m_robotWCDrive;
+  std::shared_ptr<rev::CANSparkMax>        m_rightPrimaryBrushless;
+  std::shared_ptr<rev::CANSparkMax>        m_rightFollowerBrushless;
+
+  std::shared_ptr<frc::DifferentialDrive>  m_robotBrushlessDrive;
 };

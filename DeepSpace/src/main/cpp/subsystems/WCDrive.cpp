@@ -6,24 +6,22 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/WCDrive.h"
-//#include "../include/RobotMap.h"
 
-// std::shared_ptr<WPI_TalonSRX> RobotMap::driveTrainTalonSRX1;
-// std::shared_ptr<WPI_TalonSRX> RobotMap::driveTrainTalonSRX3;
+#include "../include/RobotMap.h"
 
 WCDrive::WCDrive() : frc::Subsystem("WCDrive") 
 {
   //Instantiate the Left Drive Motor(s)
-  // m_leftWCDrive  = new WPI_TalonSRX(k_leftWCDrive_ID);
-  m_leftWCDrive  = new rev::CANSparkMax(k_leftWCDrive_ID, rev::CANSparkMax::MotorType::kBrushless);
-  //Instantiate the Right Drive Motor(s)
-  m_rightWCDrive = new rev::CANSparkMax(k_rightWCDrive_ID, rev::CANSparkMax::MotorType::kBrushless);
-  // m_rightWCDrive = new WPI_TalonSRX(k_rightWCDrive_ID);
-  //Instantiate the Robot Drive
-  m_robotWCDrive = new frc::DifferentialDrive(*m_leftWCDrive, *m_rightWCDrive);
+  m_leftPrimaryTalon.reset(new WPI_TalonSRX(k_leftWCDrive_id));
 
-  m_rightWCDrive->SetInverted(true);
-  m_leftWCDrive->SetInverted(false);
+  //Instantiate the Right Drive Motor(s)
+  m_rightPrimaryTalon.reset(new WPI_TalonSRX(k_rightWCDrive_id));
+
+  //Instantiate the Robot Drive
+  m_robotWCDrive.reset(new frc::DifferentialDrive(*m_leftPrimaryTalon, *m_rightPrimaryTalon));
+
+  m_leftPrimaryTalon->SetInverted(false);
+  m_rightPrimaryTalon->SetInverted(true);
 
 }
 
@@ -31,13 +29,10 @@ void WCDrive::InitDefaultCommand()
 {
   // Set the default command for a subsystem here.
   // SetDefaultCommand(new MySpecialCommand());
-
 }
 
 void WCDrive::arcDrive(int y, int x)
 {
    m_robotWCDrive->ArcadeDrive(y, x);
-
 }
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
+
