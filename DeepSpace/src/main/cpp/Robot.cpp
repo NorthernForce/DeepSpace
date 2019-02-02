@@ -10,16 +10,20 @@
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
-#include <iostream> 
-#include <frc/Joystick.h>
-#include <ctre/Phoenix.h>
+#include <iostream>
 
+std::shared_ptr<OI> Robot::m_oi;
 ExampleSubsystem Robot::m_subsystem;
-OI Robot::m_oi;
+std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
+
+  m_oi.reset(new OI());
+
+  // Initialize Subsystems
   m_driveTrain.reset(new BrushlessDrive());
+
   m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
   m_chooser.AddOption("My Auto", &m_myAuto);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);

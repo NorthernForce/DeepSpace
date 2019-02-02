@@ -7,28 +7,32 @@
 
 #pragma once
 
-#include <frc/Joystick.h>
 #include <frc/XboxController.h>
+#include <frc/Joystick.h>
 
-#include "RobotMap.h"
+const static int k_driverController_id = 0;
+const static int k_manipulatorController_id = 1;
 
-const auto kForward = frc::XboxController::JoystickHand::kLeftHand;
-const auto kTurn = frc::XboxController::JoystickHand::kRightHand;
-
-enum class JoystickFunctions {
-  kForward = frc::XboxController::JoystickHand::kLeftHand,
-  kTurn = frc::XboxController::JoystickHand::kRightHand,
-  kElevatorUp,
-  kElevatorDown
-};
+namespace JoystickFunctions {
+  const static auto k_forward = frc::XboxController::JoystickHand::kLeftHand;
+  const static auto k_turn = frc::XboxController::JoystickHand::kRightHand;
+  // const static int k_elevatorUp;
+  // const static int k_elevatorDown;
+}
 
 class OI {
  public:
   OI();
-  const auto& getSteeringController() const {
+  
+  const auto& getDriverController() {
     return m_driverController;
+  }
+
+  const auto& getManipulatorController() {
+    return m_manipulatorController;
   }
 
  private:
   std::shared_ptr<frc::XboxController> m_driverController;
+  std::shared_ptr<frc::Joystick> m_manipulatorController;
 };

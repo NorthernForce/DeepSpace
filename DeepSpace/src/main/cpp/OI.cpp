@@ -7,13 +7,11 @@
 
 #include "OI.h"
 
-#include <frc/WPILib.h>
-
 OI::OI() {
   // Process operator interface input here.
   m_driverController.reset(new frc::XboxController(k_driverController_id));
-  // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
+  m_manipulatorController.reset(new frc::Joystick(k_manipulatorController_id));
 
-  // frc::Joystick *exampleStick;
-  // exampleStick = new frc::Joystick(0);
+  // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }
+

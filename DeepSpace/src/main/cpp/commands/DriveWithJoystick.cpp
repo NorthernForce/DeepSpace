@@ -10,8 +10,7 @@
 #include "Robot.h"
 
 DriveWithJoystick::DriveWithJoystick() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
+	Requires(Robot::m_driveTrain.get());
 }
 
 // Called just before this Command runs the first time
@@ -19,12 +18,12 @@ void DriveWithJoystick::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
-	const auto& driverController = Robot::m_oi.getSteeringController();
+	const auto& driverController = Robot::m_oi->getDriverController();
 
-	const double yVal = driverController->GetY(kForward);
-	const double xVal = driverController->GetX(kTurn);
-	// auto& driveTrain = Robot::driveTrain;
-	// driveTrain->ArcadeDrive(yVal, xVal, true);
+	const double y = driverController->GetY(JoystickFunctions::k_forward);
+	const double x = driverController->GetX(JoystickFunctions::k_turn);
+	auto& driveTrain = Robot::m_driveTrain;
+	driveTrain->arcDrive(y, x);
 }
 
 // Make this return true when this Command no longer needs to run execute()
