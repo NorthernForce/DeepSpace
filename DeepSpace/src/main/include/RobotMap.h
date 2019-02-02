@@ -29,7 +29,7 @@ const static int k_leftWCDrive_id   = 1;
 const static int k_rightWCDrive_id  = 2;
 
 // Controller
-const static int k_xbox_controller_id = 0;
+const static int k_driverController_id = 0;
 
 // BrushlessDrive
 const static int k_leftPrimaryBrushlessDrive_id = 1;
