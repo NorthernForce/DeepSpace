@@ -24,16 +24,18 @@
 // constexpr int kRangeFinderPort = 1;
 // constexpr int kRangeFinderModule = 1;
 
-// WCDrive
-const static int k_leftWCDrive_id   = 1;
-const static int k_rightWCDrive_id  = 2;
+namespace RobotMap {
+    namespace WCDrive {
+        const static int k_left_id   = 1;
+        const static int k_right_id  = 2;
+    }
+    
+    namespace BrushlessDrive {
+        const static int k_leftPrimary_id = 1;
+        const static int k_leftFollower_id = 3;
 
-// Controller
-const static int k_driverController_id = 0;
+        const static int k_rightPrimary_id = 2;
+        const static int k_rightFollower_id = 4;
+    }
+}
 
-// BrushlessDrive
-const static int k_leftPrimaryBrushlessDrive_id = 1;
-const static int k_leftFollowerBrushlessDrive_id = 3;
-
-const static int k_rightPrimaryBrushlessDrive_id = 2;
-const static int k_rightFollowerBrushlessDrive_id = 4;

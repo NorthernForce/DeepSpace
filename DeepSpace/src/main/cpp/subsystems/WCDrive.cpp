@@ -7,15 +7,15 @@
 
 #include "subsystems/WCDrive.h"
 
-#include "../include/RobotMap.h"
+#include "RobotMap.h"
 
 WCDrive::WCDrive() : frc::Subsystem("WCDrive") 
 {
   //Instantiate the Left Drive Motor(s)
-  m_leftPrimaryTalon.reset(new WPI_TalonSRX(k_leftWCDrive_id));
+  m_leftPrimaryTalon.reset(new WPI_TalonSRX(RobotMap::WCDrive::k_left_id));
 
   //Instantiate the Right Drive Motor(s)
-  m_rightPrimaryTalon.reset(new WPI_TalonSRX(k_rightWCDrive_id));
+  m_rightPrimaryTalon.reset(new WPI_TalonSRX(RobotMap::WCDrive::k_right_id));
 
   //Instantiate the Robot Drive
   m_robotWCDrive.reset(new frc::DifferentialDrive(*m_leftPrimaryTalon, *m_rightPrimaryTalon));

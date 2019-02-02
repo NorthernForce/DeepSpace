@@ -7,19 +7,19 @@
 
 #include "subsystems/BrushlessDrive.h"
 
-#include "../include/RobotMap.h"
+#include "RobotMap.h"
 
 BrushlessDrive::BrushlessDrive() : Subsystem("ExampleSubsystem") {
   // Left Side
-  m_leftPrimaryBrushless.reset(new rev::CANSparkMax(k_leftPrimaryBrushlessDrive_id, rev::CANSparkMax::MotorType::kBrushless));
+  m_leftPrimaryBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_leftPrimary_id, rev::CANSparkMax::MotorType::kBrushless));
 
-  m_leftFollowerBrushless.reset(new rev::CANSparkMax(k_leftFollowerBrushlessDrive_id, rev::CANSparkMax::MotorType::kBrushless));
+  m_leftFollowerBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_leftFollower_id, rev::CANSparkMax::MotorType::kBrushless));
   m_leftFollowerBrushless->Follow(*m_leftPrimaryBrushless);
 
   // Right Side
-  m_rightPrimaryBrushless.reset(new rev::CANSparkMax(k_rightPrimaryBrushlessDrive_id, rev::CANSparkMax::MotorType::kBrushless));
+  m_rightPrimaryBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_rightPrimary_id, rev::CANSparkMax::MotorType::kBrushless));
 
-  m_rightFollowerBrushless.reset(new rev::CANSparkMax(k_rightFollowerBrushlessDrive_id, rev::CANSparkMax::MotorType::kBrushless));
+  m_rightFollowerBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_rightFollower_id, rev::CANSparkMax::MotorType::kBrushless));
   m_rightFollowerBrushless->Follow(*m_rightFollowerBrushless);
 
   // Invert a side
