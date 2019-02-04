@@ -37,5 +37,9 @@ namespace RobotMap {
         const static int k_rightPrimary_id = 2;
         const static int k_rightFollower_id = 4;
     }
+
+    namespace PCM {
+        const static int k_pcm_id = 0;
+    }
 }
 
