@@ -66,6 +66,9 @@ namespace RobotMap {
         const static bool k_elevatorRetractedValue = 0;
 
     }
+    namespace PCM {
+        const static int k_pcm_id = 0;
+    }
 
 
 } //namespace robotmap
