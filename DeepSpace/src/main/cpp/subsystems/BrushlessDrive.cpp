@@ -9,7 +9,7 @@
 
 #include "RobotMap.h"
 
-BrushlessDrive::BrushlessDrive() : Subsystem("ExampleSubsystem") {
+BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   // Left Side
   m_leftPrimaryBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_leftPrimary_id, rev::CANSparkMax::MotorType::kBrushless));
 
