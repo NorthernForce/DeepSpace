@@ -42,5 +42,9 @@ namespace RobotMap {
         const static int k_driverController_id = 0;
         const static int k_manipulatorController_id = 1;
     }
+
+    namespace PCM {
+        const static int k_pcm_id = 0;
+    }
 }
 
