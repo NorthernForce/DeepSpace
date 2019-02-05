@@ -11,8 +11,6 @@
 
 #include "commands/DriveWithJoystick.h"
 
-#include <iostream>
-
 BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   // Left Side
   m_leftPrimaryBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_leftPrimary_id, rev::CANSparkMax::MotorType::kBrushless));
@@ -31,7 +29,7 @@ BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   // m_rightPrimaryBrushless->SetInverted(true);
 
   // Initialize the drive.
-  m_robotBrushlessDrive.reset(new frc::DifferentialDrive(*m_rightPrimaryBrushless, *m_leftPrimaryBrushless));
+  m_robotBrushlessDrive.reset(new frc::DifferentialDrive(*m_leftPrimaryBrushless, *m_rightPrimaryBrushless));
 }
 
 void BrushlessDrive::InitDefaultCommand() {

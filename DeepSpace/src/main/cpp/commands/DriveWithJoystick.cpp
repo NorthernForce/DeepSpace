@@ -20,7 +20,7 @@ void DriveWithJoystick::Initialize() {}
 void DriveWithJoystick::Execute() {
 	const auto& driverController = Robot::m_oi->getDriverController();
 
-	const double y = driverController->GetY(JoystickFunctions::k_forward);
+	const double y = driverController->GetY(JoystickFunctions::k_forward) * -1;
 	const double x = driverController->GetX(JoystickFunctions::k_turn);
 
 	auto& driveTrain = Robot::m_driveTrain;
