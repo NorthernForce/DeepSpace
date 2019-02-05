@@ -9,6 +9,8 @@
 
 #include "RobotMap.h"
 
+#include <iostream>
+
 BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   // Left Side
   m_leftPrimaryBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_leftPrimary_id, rev::CANSparkMax::MotorType::kBrushless));
@@ -25,6 +27,9 @@ BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   // Invert a side
   m_leftPrimaryBrushless->SetInverted(true);
   m_rightPrimaryBrushless->SetInverted(true);
+
+  // Initialize the drive.
+  m_robotBrushlessDrive.reset(new frc::DifferentialDrive(*m_leftPrimaryBrushless, *m_rightPrimaryBrushless));
 }
 
 void BrushlessDrive::InitDefaultCommand() {
@@ -34,5 +39,5 @@ void BrushlessDrive::InitDefaultCommand() {
 
 void BrushlessDrive::arcDrive(int y, int x)
 {
-   m_robotBrushlessDrive->ArcadeDrive(y, x);
+  m_robotBrushlessDrive->ArcadeDrive(y, x);
 }

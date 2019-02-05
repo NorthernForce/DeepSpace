@@ -45,7 +45,7 @@ void Robot::RobotPeriodic() {}
  * robot is disabled.
  */
 void Robot::DisabledInit() {
-  std::cout << "DisabledInit Started" << std::endl;  
+  std::cout << "DisabledInit Started" << std::endl;
 }
 
 void Robot::DisabledPeriodic() { frc::Scheduler::GetInstance()->Run(); }
@@ -96,8 +96,6 @@ void Robot::TeleopInit() {
 
 void Robot::TeleopPeriodic() { 
   frc::Scheduler::GetInstance()->Run();
-
-  m_driveTrain->arcDrive(0.5, 0);
 }
 
 void Robot::TestPeriodic() {}
