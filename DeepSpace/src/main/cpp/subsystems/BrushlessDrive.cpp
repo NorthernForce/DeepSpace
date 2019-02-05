@@ -9,6 +9,8 @@
 
 #include "RobotMap.h"
 
+#include "commands/DriveWithJoystick.h"
+
 #include <iostream>
 
 BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
@@ -22,22 +24,22 @@ BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   m_rightPrimaryBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_rightPrimary_id, rev::CANSparkMax::MotorType::kBrushless));
 
   m_rightFollowerBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_rightFollower_id, rev::CANSparkMax::MotorType::kBrushless));
-  m_rightFollowerBrushless->Follow(*m_rightFollowerBrushless);
+  m_rightFollowerBrushless->Follow(*m_rightPrimaryBrushless);
 
   // Invert a side
-  m_leftPrimaryBrushless->SetInverted(true);
-  m_rightPrimaryBrushless->SetInverted(true);
+  // m_leftPrimaryBrushless->SetInverted(false);
+  // m_rightPrimaryBrushless->SetInverted(true);
 
   // Initialize the drive.
-  m_robotBrushlessDrive.reset(new frc::DifferentialDrive(*m_leftPrimaryBrushless, *m_rightPrimaryBrushless));
+  m_robotBrushlessDrive.reset(new frc::DifferentialDrive(*m_rightPrimaryBrushless, *m_leftPrimaryBrushless));
 }
 
 void BrushlessDrive::InitDefaultCommand() {
   // Set the default command for a subsystem here.
-  // SetDefaultCommand(new MySpecialCommand());
+  SetDefaultCommand(new DriveWithJoystick());
 }
 
-void BrushlessDrive::arcDrive(int y, int x)
+void BrushlessDrive::arcDrive(double y, double x)
 {
   m_robotBrushlessDrive->ArcadeDrive(y, x);
 }

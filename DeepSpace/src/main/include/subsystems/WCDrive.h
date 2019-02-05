@@ -18,7 +18,7 @@ class WCDrive : public frc::Subsystem
 
    void InitDefaultCommand() override;
 
-   void arcDrive(int y, int x);
+   void arcDrive(double y, double x);
    
  private:
    std::shared_ptr<WPI_TalonSRX>        m_leftPrimaryTalon;

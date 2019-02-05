@@ -31,7 +31,7 @@ void WCDrive::InitDefaultCommand()
   // SetDefaultCommand(new MySpecialCommand());
 }
 
-void WCDrive::arcDrive(int y, int x)
+void WCDrive::arcDrive(double y, double x)
 {
    m_robotWCDrive->ArcadeDrive(y, x);
 }
