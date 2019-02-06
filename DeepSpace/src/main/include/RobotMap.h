@@ -46,5 +46,13 @@ namespace RobotMap {
     namespace PCM {
         const static int k_pcm_id = 0;
     }
+
+    namespace Claw {
+        const static int k_clawSolenoid = 1;
+        const static bool k_clawOpenValue = 1;
+        const static bool k_clawClosedValue = 0;
+
+    }
+
 }
 
