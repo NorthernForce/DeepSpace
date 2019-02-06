@@ -12,12 +12,13 @@
 #include <frc/smartdashboard/SendableChooser.h>
 
 #include "OI.h"
+
 #include "subsystems/BrushlessDrive.h"
 #include "subsystems/Elevator.h"
 #include "subsystems/CargoManipulator.h"
 #include "subsystems/Claw.h"
-
 #include "subsystems/Climber.h"
+#include "subsystems/Claw.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -28,6 +29,7 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<CargoManipulator> m_cargoManipulator;
   static std::shared_ptr<Claw> m_claw;
   static std::shared_ptr<Climber> m_climber;
+  static std::shared_ptr<Claw> m_claw;
 
   void RobotInit() override;
   void RobotPeriodic() override;
