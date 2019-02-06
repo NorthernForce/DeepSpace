@@ -37,5 +37,10 @@ namespace RobotMap {
         const static int k_rightPrimary_id = 2;
         const static int k_rightFollower_id = 4;
     }
+
+    namespace OI {
+        const static int k_driverController_id = 0;
+        const static int k_manipulatorController_id = 1;
+    }
 }
 

@@ -7,10 +7,12 @@
 
 #include "OI.h"
 
+#include "RobotMap.h"
+
 OI::OI() {
   // Process operator interface input here.
-  m_driverController.reset(new frc::XboxController(k_driverController_id));
-  m_manipulatorController.reset(new frc::Joystick(k_manipulatorController_id));
+  m_driverController.reset(new frc::XboxController(RobotMap::OI::k_driverController_id));
+  m_manipulatorController.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController_id));
 
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }

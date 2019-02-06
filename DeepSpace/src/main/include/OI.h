@@ -10,9 +10,6 @@
 #include <frc/XboxController.h>
 #include <frc/Joystick.h>
 
-const static int k_driverController_id = 0;
-const static int k_manipulatorController_id = 1;
-
 namespace JoystickFunctions {
   const static auto k_forward = frc::XboxController::JoystickHand::kLeftHand;
   const static auto k_turn = frc::XboxController::JoystickHand::kRightHand;
