@@ -24,10 +24,6 @@ BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   m_rightFollowerBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_rightFollower_id, rev::CANSparkMax::MotorType::kBrushless));
   m_rightFollowerBrushless->Follow(*m_rightPrimaryBrushless);
 
-  // Invert a side
-  // m_leftPrimaryBrushless->SetInverted(false);
-  // m_rightPrimaryBrushless->SetInverted(true);
-
   // Initialize the drive.
   m_robotBrushlessDrive.reset(new frc::DifferentialDrive(*m_leftPrimaryBrushless, *m_rightPrimaryBrushless));
 }
@@ -37,7 +33,7 @@ void BrushlessDrive::InitDefaultCommand() {
   SetDefaultCommand(new DriveWithJoystick());
 }
 
-void BrushlessDrive::arcDrive(double y, double x)
+void BrushlessDrive::arcDrive(double speed, double rotation)
 {
-  m_robotBrushlessDrive->ArcadeDrive(y, x);
+  m_robotBrushlessDrive->ArcadeDrive(speed, rotation);
 }

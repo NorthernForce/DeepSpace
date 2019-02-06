@@ -12,17 +12,13 @@
 WCDrive::WCDrive() : frc::Subsystem("WCDrive") 
 {
   //Instantiate the Left Drive Motor(s)
-  m_leftPrimaryTalon.reset(new WPI_TalonSRX(RobotMap::WCDrive::k_left_id));
+  m_leftPrimaryTalon.reset(new WPI_TalonSRX(RobotMap::WCDrive::k_leftPrimary_id));
 
   //Instantiate the Right Drive Motor(s)
-  m_rightPrimaryTalon.reset(new WPI_TalonSRX(RobotMap::WCDrive::k_right_id));
+  m_rightPrimaryTalon.reset(new WPI_TalonSRX(RobotMap::WCDrive::k_rightPrimary_id));
 
   //Instantiate the Robot Drive
   m_robotWCDrive.reset(new frc::DifferentialDrive(*m_leftPrimaryTalon, *m_rightPrimaryTalon));
-
-  m_leftPrimaryTalon->SetInverted(false);
-  m_rightPrimaryTalon->SetInverted(true);
-
 }
 
 void WCDrive::InitDefaultCommand() 
@@ -31,8 +27,8 @@ void WCDrive::InitDefaultCommand()
   // SetDefaultCommand(new MySpecialCommand());
 }
 
-void WCDrive::arcDrive(double y, double x)
+void WCDrive::arcDrive(double speed, double rotation)
 {
-   m_robotWCDrive->ArcadeDrive(y, x);
+   m_robotWCDrive->ArcadeDrive(speed, rotation);
 }
 

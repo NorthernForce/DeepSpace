@@ -26,8 +26,8 @@
 
 namespace RobotMap {
     namespace WCDrive {
-        const static int k_left_id   = 1;
-        const static int k_right_id  = 2;
+        const static int k_leftPrimary_id   = 1;
+        const static int k_rightPrimary_id  = 2;
     }
     
     namespace BrushlessDrive {

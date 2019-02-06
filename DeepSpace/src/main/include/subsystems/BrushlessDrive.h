@@ -17,7 +17,7 @@ class BrushlessDrive : public frc::Subsystem {
 
   void InitDefaultCommand() override;
 
-  void arcDrive(double y, double x);
+  void arcDrive(double speed, double rotation);
 
  private:
   std::shared_ptr<rev::CANSparkMax>        m_leftPrimaryBrushless;
