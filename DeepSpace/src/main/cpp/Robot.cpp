@@ -15,6 +15,7 @@
 std::shared_ptr<OI> Robot::m_oi;
 ExampleSubsystem Robot::m_subsystem;
 std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
+std::shared_ptr<Claw> Robot::m_claw;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
@@ -23,6 +24,7 @@ void Robot::RobotInit() {
 
   // Initialize Subsystems
   m_driveTrain.reset(new BrushlessDrive());
+  m_claw.reset(new Claw());
 
   m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
   m_chooser.AddOption("My Auto", &m_myAuto);
