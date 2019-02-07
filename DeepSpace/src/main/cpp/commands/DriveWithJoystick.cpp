@@ -18,13 +18,9 @@ void DriveWithJoystick::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
-	const auto& driverController = Robot::m_oi->getDriverController();
+	auto steeringControls = Robot::m_oi->getSteeringControls();
 
-	const double y = driverController->GetY(JoystickFunctions::k_forward) * -1;
-	const double x = driverController->GetX(JoystickFunctions::k_turn);
-
-	auto& driveTrain = Robot::m_driveTrain;
-	driveTrain->arcDrive(y, x);
+	Robot::m_driveTrain->arcDrive(steeringControls.first, steeringControls.second);
 }
 
 // Make this return true when this Command no longer needs to run execute()

@@ -10,24 +10,13 @@
 #include <frc/XboxController.h>
 #include <frc/Joystick.h>
 
-namespace JoystickFunctions {
-  const static auto k_forward = frc::XboxController::JoystickHand::kLeftHand;
-  const static auto k_turn = frc::XboxController::JoystickHand::kRightHand;
-  // const static int k_elevatorUp;
-  // const static int k_elevatorDown;
-}
+#include <map>
 
 class OI {
  public:
   OI();
-  
-  const auto& getDriverController() {
-    return m_driverController;
-  }
 
-  const auto& getManipulatorController() {
-    return m_manipulatorController;
-  }
+  std::pair<double, double> getSteeringControls();
 
  private:
   std::shared_ptr<frc::XboxController> m_driverController;
