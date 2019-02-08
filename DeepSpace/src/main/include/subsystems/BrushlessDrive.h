@@ -8,15 +8,23 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
+#include <frc/Drive/DifferentialDrive.h>
+#include <rev/CANSparkMax.h>
 
-class ExampleSubsystem : public frc::Subsystem 
-{
+class BrushlessDrive : public frc::Subsystem {
  public:
-  ExampleSubsystem();
+  BrushlessDrive();
+
   void InitDefaultCommand() override;
 
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-};
+  void arcDrive(double speed, double rotation);
 
+ private:
+  std::shared_ptr<rev::CANSparkMax>        m_leftPrimaryBrushless;
+  std::shared_ptr<rev::CANSparkMax>        m_leftFollowerBrushless;
+
+  std::shared_ptr<rev::CANSparkMax>        m_rightPrimaryBrushless;
+  std::shared_ptr<rev::CANSparkMax>        m_rightFollowerBrushless;
+
+  std::shared_ptr<frc::DifferentialDrive>  m_robotBrushlessDrive;
+};

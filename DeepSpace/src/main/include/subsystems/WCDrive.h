@@ -8,15 +8,21 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
+#include <frc/Drive/DifferentialDrive.h>
+#include "ctre/Phoenix.h"
 
-class ExampleSubsystem : public frc::Subsystem 
+class WCDrive : public frc::Subsystem 
 {
  public:
-  ExampleSubsystem();
-  void InitDefaultCommand() override;
+   WCDrive();
 
+   void InitDefaultCommand() override;
+
+   void arcDrive(double speed, double rotation);
+   
  private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-};
+   std::shared_ptr<WPI_TalonSRX>        m_leftPrimaryTalon;
+   std::shared_ptr<WPI_TalonSRX>        m_rightPrimaryTalon;
 
+   std::shared_ptr<frc::DifferentialDrive>  m_robotWCDrive;
+};

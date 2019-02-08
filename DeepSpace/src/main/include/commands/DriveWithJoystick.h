@@ -7,16 +7,14 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
+#include <frc/commands/Command.h>
 
-class ExampleSubsystem : public frc::Subsystem 
-{
+class DriveWithJoystick : public frc::Command {
  public:
-  ExampleSubsystem();
-  void InitDefaultCommand() override;
-
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
+  DriveWithJoystick();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };
-

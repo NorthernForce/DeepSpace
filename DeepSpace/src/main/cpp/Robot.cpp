@@ -12,11 +12,17 @@
 
 #include <iostream>
 
+std::shared_ptr<OI> Robot::m_oi;
 ExampleSubsystem Robot::m_subsystem;
-OI Robot::m_oi;
+std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
+
+  m_oi.reset(new OI());
+
+  // Initialize Subsystems
+  m_driveTrain.reset(new BrushlessDrive());
 
   m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
   m_chooser.AddOption("My Auto", &m_myAuto);
@@ -39,7 +45,7 @@ void Robot::RobotPeriodic() {}
  * robot is disabled.
  */
 void Robot::DisabledInit() {
-  std::cout << "DisabledInit Started" << std::endl;  
+  std::cout << "DisabledInit Started" << std::endl;
 }
 
 void Robot::DisabledPeriodic() { frc::Scheduler::GetInstance()->Run(); }
@@ -88,7 +94,9 @@ void Robot::TeleopInit() {
   }
 }
 
-void Robot::TeleopPeriodic() { frc::Scheduler::GetInstance()->Run(); }
+void Robot::TeleopPeriodic() { 
+  frc::Scheduler::GetInstance()->Run();
+}
 
 void Robot::TestPeriodic() {}
 

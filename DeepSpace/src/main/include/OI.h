@@ -7,7 +7,18 @@
 
 #pragma once
 
+#include <frc/XboxController.h>
+#include <frc/Joystick.h>
+
+#include <map>
+
 class OI {
  public:
   OI();
+
+  std::pair<double, double> getSteeringControls();
+
+ private:
+  std::shared_ptr<frc::XboxController> m_driverController;
+  std::shared_ptr<frc::Joystick> m_manipulatorController;
 };

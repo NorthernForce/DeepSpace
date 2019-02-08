@@ -23,3 +23,24 @@
 // number and the module. For example you with a rangefinder:
 // constexpr int kRangeFinderPort = 1;
 // constexpr int kRangeFinderModule = 1;
+
+namespace RobotMap {
+    namespace WCDrive {
+        const static int k_leftPrimary_id   = 1;
+        const static int k_rightPrimary_id  = 2;
+    }
+    
+    namespace BrushlessDrive {
+        const static int k_leftPrimary_id = 1;
+        const static int k_leftFollower_id = 3;
+
+        const static int k_rightPrimary_id = 2;
+        const static int k_rightFollower_id = 4;
+    }
+
+    namespace OI {
+        const static int k_driverController_id = 0;
+        const static int k_manipulatorController_id = 1;
+    }
+}
+
