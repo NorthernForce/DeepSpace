@@ -14,6 +14,7 @@
 
 std::shared_ptr<OI> Robot::m_oi;
 std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
+std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;

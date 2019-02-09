@@ -42,5 +42,10 @@ namespace RobotMap {
         const static int k_driverController_id = 0;
         const static int k_manipulatorController_id = 1;
     }
+
+    namespace CargoManipulator {
+        // TODO: CHANGE THIS
+        const static int k_motor_id = 9;
+    }
 }
 
