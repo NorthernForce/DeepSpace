@@ -13,17 +13,11 @@
 
 #include "OI.h"
 
-#include "commands/ExampleCommand.h"
-#include "commands/MyAutoCommand.h"
-
-#include "subsystems/ExampleSubsystem.h"
-#include "subsystems/WCDrive.h"
 #include "subsystems/BrushlessDrive.h"
 
 class Robot : public frc::TimedRobot {
  public:
   static std::shared_ptr<OI> m_oi;
-  static ExampleSubsystem m_subsystem;
   static std::shared_ptr<BrushlessDrive> m_driveTrain;
 
   void RobotInit() override;
@@ -39,8 +33,8 @@ class Robot : public frc::TimedRobot {
  private:
   // Have it null by default so that if testing teleop it
   // doesn't have undefined behavior and potentially crash.
-  frc::Command* m_autonomousCommand = nullptr;
-  ExampleCommand m_defaultAuto;
-  MyAutoCommand m_myAuto;
-  frc::SendableChooser<frc::Command*> m_chooser;
+  //frc::Command* m_autonomousCommand = nullptr;
+  //ExampleCommand m_defaultAuto;
+  //MyAutoCommand m_myAuto;
+  //frc::SendableChooser<frc::Command*> m_chooser;
 };
