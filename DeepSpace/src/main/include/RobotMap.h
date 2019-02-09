@@ -51,6 +51,8 @@ namespace RobotMap {
         const static int k_clawSolenoid = 1;
         const static bool k_clawOpenValue = 1;
         const static bool k_clawClosedValue = 0;
+        constexpr static double k_timeToClose {0.4};
+        constexpr static double k_timeToOpen {0.4};
 
     }
 
