@@ -11,6 +11,11 @@
 
 CargoManipulator::CargoManipulator() : Subsystem("CargoManipulator") {
   m_motor.reset(new WPI_TalonSRX(RobotMap::CargoManipulator::k_motor_id));
+
+  m_motor->EnableCurrentLimit(true);
+  m_motor->ConfigContinuousCurrentLimit(k_continuousCurrent);
+  m_motor->ConfigPeakCurrentDuration(k_peakCurrent);
+  m_motor->ConfigPeakCurrentDuration(k_peakCurrentDuration);
 }
 
 void CargoManipulator::InitDefaultCommand() {}

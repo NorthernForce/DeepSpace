@@ -16,6 +16,10 @@ class CargoManipulator : public frc::Subsystem {
   constexpr static double k_ejectSpeed = 1.0;
   constexpr static double k_intakeSpeed = 1.0;
 
+  const static int k_continuousCurrent = 10;
+  const static int k_peakCurrent = 25;
+  const static int k_peakCurrentDuration = 1000;
+
   CargoManipulator();
   void InitDefaultCommand() override;
   void setSpeed(double speed);
