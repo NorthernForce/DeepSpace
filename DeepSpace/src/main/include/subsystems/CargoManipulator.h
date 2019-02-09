@@ -20,10 +20,17 @@ class CargoManipulator : public frc::Subsystem {
   const static int k_peakCurrent = 25;
   const static int k_peakCurrentDuration = 1000;
 
+  // Time in periodics
+  const static int k_divideSpeedDuration = 4;
+  constexpr static double k_divideSpeedAmount = 0.5;
+
   CargoManipulator();
   void InitDefaultCommand() override;
+  void Periodic() override;
   void setSpeed(double speed);
 
  private:
   std::shared_ptr<WPI_TalonSRX> m_motor;
+
+  int m_divideSpeedCount = 0;
 };

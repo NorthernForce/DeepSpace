@@ -20,7 +20,21 @@ CargoManipulator::CargoManipulator() : Subsystem("CargoManipulator") {
 
 void CargoManipulator::InitDefaultCommand() {}
 
+void CargoManipulator::Periodic() {
+  if (GetCurrentCommandName().empty()) {
+    m_divideSpeedCount = 0;
+  }
+  else {
+    m_divideSpeedCount++;
+  }
+}
+
 // Speed is a value from -1.0 to 1.0
 void CargoManipulator::setSpeed(double speed) {
-  m_motor->Set(speed);
+  if (m_divideSpeedCount < k_divideSpeedDuration) {
+    m_motor->Set(speed);
+  }
+  else {
+    m_motor->Set(speed * k_divideSpeedAmount);
+  }
 }
