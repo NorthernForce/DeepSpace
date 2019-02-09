@@ -10,7 +10,6 @@
 #include <frc/XboxController.h>
 #include <frc/Joystick.h>
 
-#include <map>
 
 class OI {
  public:
