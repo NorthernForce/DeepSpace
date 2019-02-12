@@ -76,5 +76,13 @@ namespace RobotMap {
         const static bool k_ultrasonicOff   = true;
     }
 
+    namespace DriverVision {
+        const static int k_driverCamera_id = 0;
+        const static int k_manipulatorCamera_id = 1;
+    }
+
+    namespace ComputerVision {
+        const static int k_camera_id = 2;
+    }
 }
 

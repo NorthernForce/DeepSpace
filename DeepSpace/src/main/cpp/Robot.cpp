@@ -16,6 +16,8 @@ std::shared_ptr<OI> Robot::m_oi;
 std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
 std::shared_ptr<Claw> Robot::m_claw;
+std::shared_ptr<DriverVision> Robot::m_driverVision;
+std::shared_ptr<ComputerVision> Robot::m_computerVision;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
@@ -24,6 +26,8 @@ void Robot::RobotInit() {
   m_driveTrain.reset(new BrushlessDrive());
   m_cargoManipulator.reset(new CargoManipulator());
   m_claw.reset(new Claw());
+  m_driverVision.reset(new DriverVision());
+  m_computerVision.reset(new ComputerVision());
 
   // Initialize OI after subsystems
   m_oi.reset(new OI());
