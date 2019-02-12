@@ -11,6 +11,7 @@
 
 CargoManipulator::CargoManipulator() : Subsystem("CargoManipulator") {
   m_motor.reset(new WPI_TalonSRX(RobotMap::CargoManipulator::k_motor_id));
+  m_divideSpeedTimer.reset(new frc::Timer());
 
   m_motor->EnableCurrentLimit(true);
   m_motor->ConfigContinuousCurrentLimit(k_continuousCurrent);
@@ -22,16 +23,20 @@ void CargoManipulator::InitDefaultCommand() {}
 
 void CargoManipulator::Periodic() {
   if (GetCurrentCommandName().empty()) {
-    m_divideSpeedCount = 0;
-  }
-  else {
-    m_divideSpeedCount++;
+    m_divideSpeedTimerReset = true;
   }
 }
 
 // Speed is a value from -1.0 to 1.0
 void CargoManipulator::setSpeed(double speed) {
-  if (m_divideSpeedCount < k_divideSpeedDuration) {
+  if (m_divideSpeedTimerReset) {
+      m_divideSpeedTimer->Reset();
+      m_divideSpeedTimer->Start();
+
+      m_divideSpeedTimerReset = false;
+  }
+
+  if (m_divideSpeedTimer->Get() < k_divideSpeedDuration) {
     m_motor->Set(speed);
   }
   else {

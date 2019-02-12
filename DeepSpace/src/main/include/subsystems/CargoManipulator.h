@@ -20,8 +20,8 @@ class CargoManipulator : public frc::Subsystem {
   const static int k_peakCurrent = 25;
   const static int k_peakCurrentDuration = 1000;
 
-  // Time in periodics
-  const static int k_divideSpeedDuration = 4;
+  // Duration in micro seconds
+  constexpr static int k_divideSpeedDuration = 200 * 1000;
   constexpr static double k_divideSpeedAmount = 0.5;
 
   CargoManipulator();
@@ -32,5 +32,6 @@ class CargoManipulator : public frc::Subsystem {
  private:
   std::shared_ptr<WPI_TalonSRX> m_motor;
 
-  int m_divideSpeedCount = 0;
+  std::shared_ptr<frc::Timer> m_divideSpeedTimer;
+  bool m_divideSpeedTimerReset = true;
 };
