@@ -77,11 +77,14 @@ namespace RobotMap {
     }
 
     namespace DriverVision {
+        // TODO: use constant path ("/dev/v4l/by-path/...")
         const static int k_driverCamera_id = 0;
+        // TODO: use constant path ("/dev/v4l/by-path/...")
         const static int k_manipulatorCamera_id = 1;
     }
 
     namespace ComputerVision {
+        // TODO: use constant path ("/dev/v4l/by-path/...")
         const static int k_camera_id = 2;
     }
 }
