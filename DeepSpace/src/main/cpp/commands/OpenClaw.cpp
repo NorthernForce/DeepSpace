@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+/*
 #include "commands/OpenClaw.h"
 #include "Robot.h"
 #include "RobotMap.h"
@@ -17,3 +17,5 @@ OpenClaw::OpenClaw() : frc::TimedCommand(RobotMap::Claw::k_timeToOpen) {
 void OpenClaw::Initialize() {
     Robot::m_claw->SetOpen();
 }
+
+*/

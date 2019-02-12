@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+/*
 #pragma once
 
 #include <frc/commands/TimedCommand.h>
@@ -14,3 +14,4 @@ class OpenClaw : public frc::TimedCommand {
   OpenClaw();
   void Initialize() override;
 };
+*/

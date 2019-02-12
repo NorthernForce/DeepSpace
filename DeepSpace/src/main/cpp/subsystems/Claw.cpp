@@ -4,11 +4,12 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+/*
 #include "subsystems/Claw.h"
 
 Claw::Claw() : Subsystem("Claw") {
   m_clawSolenoid.reset(new frc::Solenoid(RobotMap::Claw::k_clawSolenoid));
+  m_extendSolenoid.reset(new frc::Solenoid(RobotMap::Claw::k_extendSolenoid));
 
 
 }
@@ -29,5 +30,16 @@ void Claw::SetClosed() {
 
 }
 
+void Claw::ClawExtend() {
+  m_extendSolenoid->Set(RobotMap::Claw::k_clawExtendedValue);
+
+}
+
+void Claw::ClawRetract() {
+  m_extendSolenoid->Set(RobotMap::Claw::k_clawRetractedValue);
+
+}
+
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
+*/

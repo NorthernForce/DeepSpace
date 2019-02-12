@@ -7,25 +7,11 @@
 /*
 #pragma once
 
-#include <frc/commands/Subsystem.h>
-#include "RobotMap.h"
+#include <frc/commands/TimedCommand.h>
 
-#include <frc/Solenoid.h>
-
-class Claw : public frc::Subsystem {
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-  std::shared_ptr<frc::Solenoid> m_clawSolenoid;
-  std::shared_ptr<frc::Solenoid> m_extendSolenoid;
-
-
+class RetractClaw : public frc::TimedCommand {
  public:
-  Claw();
-  void SetOpen();
-  void SetClosed();
-  void ClawExtend();
-  void ClawRetract();
-  void InitDefaultCommand() override;
+  RetractClaw();
+  void Initialize() override;
 };
 */
