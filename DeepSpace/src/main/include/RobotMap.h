@@ -42,5 +42,11 @@ namespace RobotMap {
         const static int k_driverController_id = 0;
         const static int k_manipulatorController_id = 1;
     }
+    namespace Elevator {
+        const static int k_Primary_id = 5;
+        const static int k_Follower1_id = 6;
+        const static int k_Follower2_id = 7;
+        const static int k_Follower3_id = 8;
+    }
 }
 
