@@ -42,5 +42,26 @@ namespace RobotMap {
         const static int k_driverController_id = 0;
         const static int k_manipulatorController_id = 1;
     }
+
+    namespace PCM {
+        const static int k_pcm_id = 15;
+    }
+
+    namespace Claw {
+        const static int k_clawSolenoid = 1;
+        const static int k_extendSolenoid = 2;
+
+        const static bool k_clawOpenValue = 1;
+        const static bool k_clawClosedValue = 0;
+        const static bool k_clawExtendedValue = 1;
+        const static bool k_clawRetractedValue = 0;
+
+        constexpr static double k_timeToClose {0.4};
+        constexpr static double k_timeToOpen {0.4};
+        constexpr static double k_timeToExtend {0.4};
+        constexpr static double k_timeToRetract {0.4};
+
+    }
+
 }
 
