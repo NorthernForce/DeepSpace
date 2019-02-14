@@ -14,6 +14,7 @@
 
 std::shared_ptr<OI> Robot::m_oi;
 std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
+std::shared_ptr<Climber> Robot::m_climber;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
@@ -22,6 +23,8 @@ void Robot::RobotInit() {
 
   // Initialize Subsystems
   m_driveTrain.reset(new BrushlessDrive());
+
+  m_climber.reset(new Climber());
 
   //m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
  // m_chooser.AddOption("My Auto", &m_myAuto);

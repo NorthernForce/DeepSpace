@@ -15,10 +15,13 @@
 
 #include "subsystems/BrushlessDrive.h"
 
+#include "subsystems/Climber.h"
+
 class Robot : public frc::TimedRobot {
  public:
   static std::shared_ptr<OI> m_oi;
   static std::shared_ptr<BrushlessDrive> m_driveTrain;
+  static std::shared_ptr<Climber> m_climber;
 
   void RobotInit() override;
   void RobotPeriodic() override;
