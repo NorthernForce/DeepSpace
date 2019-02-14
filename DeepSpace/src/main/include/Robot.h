@@ -14,12 +14,14 @@
 #include "OI.h"
 #include "subsystems/BrushlessDrive.h"
 #include "subsystems/Elevator.h"
+#include "subsystems/Claw.h"
 
 class Robot : public frc::TimedRobot {
  public:
   static std::shared_ptr<OI> m_oi;
   static std::shared_ptr<BrushlessDrive> m_driveTrain;
   static std::shared_ptr<Elevator> m_elevator;
+  //static std::shared_ptr<Claw> m_claw;
 
   void RobotInit() override;
   void RobotPeriodic() override;
