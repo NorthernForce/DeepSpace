@@ -9,9 +9,9 @@
 
 #include <frc/commands/Command.h>
 
-class MyAutoCommand : public frc::Command {
+class RaiseClimber : public frc::Command {
  public:
-  MyAutoCommand();
+  RaiseClimber();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

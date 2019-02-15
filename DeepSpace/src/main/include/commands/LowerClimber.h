@@ -9,9 +9,9 @@
 
 #include <frc/commands/Command.h>
 
-class ExampleCommand : public frc::Command {
+class LowerClimber : public frc::Command {
  public:
-  ExampleCommand();
+  LowerClimber();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

@@ -7,22 +7,14 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
-#include <frc/Drive/DifferentialDrive.h>
-#include "ctre/Phoenix.h"
+#include <frc/commands/Command.h>
 
-class WCDrive : public frc::Subsystem 
-{
+class ClimberDriveStop : public frc::Command {
  public:
-   WCDrive();
-
-   void InitDefaultCommand() override;
-
-   void arcDrive(double speed, double rotation);
-   
- private:
-   std::shared_ptr<WPI_TalonSRX>        m_leftPrimaryTalon;
-   std::shared_ptr<WPI_TalonSRX>        m_rightPrimaryTalon;
-
-   std::shared_ptr<frc::DifferentialDrive>  m_robotWCDrive;
+  ClimberDriveStop();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };

@@ -5,27 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/MyAutoCommand.h"
-
+#include "commands/ClimberDriveForward.h"
 #include "Robot.h"
 
-MyAutoCommand::MyAutoCommand() {
+ClimberDriveForward::ClimberDriveForward() {
   // Use Requires() here to declare subsystem dependencies
-  Requires(&Robot::m_subsystem);
+  // eg. Requires(Robot::chassis.get());
 }
 
 // Called just before this Command runs the first time
-void MyAutoCommand::Initialize() {}
+void ClimberDriveForward::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void MyAutoCommand::Execute() {}
+void ClimberDriveForward::Execute() {
+  Robot::m_climber->DriveForward();
+}
 
 // Make this return true when this Command no longer needs to run execute()
-bool MyAutoCommand::IsFinished() { return false; }
+bool ClimberDriveForward::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void MyAutoCommand::End() {}
+void ClimberDriveForward::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void MyAutoCommand::Interrupted() {}
+void ClimberDriveForward::Interrupted() {}
