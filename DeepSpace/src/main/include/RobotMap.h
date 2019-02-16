@@ -43,10 +43,13 @@ namespace RobotMap {
         const static int k_manipulatorController_id = 1;
     }
     namespace Elevator {
-        const static int k_Primary_id = 5;
-        const static int k_Follower1_id = 6;
-        const static int k_Follower2_id = 7;
-        const static int k_Follower3_id = 8;
+        const static int k_primary_id = 7;
+        const static int k_follower1_id = 8;
+        const static int k_follower2_id = 9;
+        const static int k_follower3_id = 10;
+        const static double k_elevatorRaiseSpeed = 0.5;
+        const static double k_elevatorLowerSpeed = -0.5;
+
     }
 
     namespace PCM {

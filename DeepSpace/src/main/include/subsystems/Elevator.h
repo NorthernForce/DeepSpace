@@ -11,12 +11,14 @@
 
 #include <ctre/Phoenix.h>
 
-std::shared_ptr<WPI_TalonSRX> m_primaryTelevator;
 class Elevator : public frc::Subsystem {
  private:
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
-
+  std::shared_ptr<WPI_TalonSRX> m_primaryTalonElevator;
+  std::shared_ptr<WPI_TalonSRX> m_followerTalonElevator1;
+  std::shared_ptr<WPI_TalonSRX> m_followerTalonElevator2;
+  std::shared_ptr<WPI_TalonSRX> m_followerTalonElevator3;
  public:
   Elevator();
   void Raise();

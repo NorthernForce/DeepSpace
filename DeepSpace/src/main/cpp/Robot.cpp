@@ -14,6 +14,7 @@
 
 std::shared_ptr<OI> Robot::m_oi;
 std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
+std::shared_ptr<Elevator> Robot::m_elevator;
 //std::shared_ptr<Claw> Robot::m_claw;
 
 void Robot::RobotInit() {
