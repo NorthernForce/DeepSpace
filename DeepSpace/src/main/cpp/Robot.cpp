@@ -7,10 +7,13 @@
 
 #include "Robot.h"
 
+#include "commands/ElevatorSetPosition.h"
+
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
 #include <iostream>
+
 
 std::shared_ptr<OI> Robot::m_oi;
 std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
@@ -24,9 +27,21 @@ void Robot::RobotInit() {
 
   // Initialize Subsystems
   m_driveTrain.reset(new BrushlessDrive());
+  m_elevator.reset(new Elevator());
   //m_claw.reset(new Claw());
 
-  
+  frc::SmartDashboard::PutData("Elevator Home", new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
+  frc::SmartDashboard::PutData("Cargo Intake", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoIntake));
+  frc::SmartDashboard::PutData("Cargo Deposit Level 1", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel1));
+  frc::SmartDashboard::PutData("Cargo Deposit Level 2", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel2));
+  frc::SmartDashboard::PutData("Cargo Deposit Level 3", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel3));
+  frc::SmartDashboard::PutData("Hatch Panel Intake", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchPanelIntake));
+  frc::SmartDashboard::PutData("Hatch Deposit Level 1", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel1));
+  frc::SmartDashboard::PutData("Hatch Deposit Level 2", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel2));
+  frc::SmartDashboard::PutData("Hatch Deposit Level 3", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchPanelIntake));
+  frc::SmartDashboard::PutData("Climb Position", new ElevatorSetPosition(ElevatorSetPosition::Position::ClimbPosition));
+
+
 }
 
 /**

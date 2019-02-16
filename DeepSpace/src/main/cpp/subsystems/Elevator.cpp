@@ -22,6 +22,24 @@ Elevator::Elevator() : Subsystem("Elevator") {
     m_followerTalonElevator2->Follow(*m_primaryTalonElevator);
     m_followerTalonElevator3->Follow(*m_primaryTalonElevator);
 
+
+     //ConfigureCurrentLimits(defaultPeakAmps, defaultContinuousCurrent, timeoutMs);
+	m_primaryTalonElevator->ConfigNominalOutputForward(+0.0, timeoutMs);
+	m_primaryTalonElevator->ConfigNominalOutputReverse(-0.0, timeoutMs);
+	m_primaryTalonElevator->SelectProfileSlot(slotIdx, pidIdx);
+	//TODO: change these for more power 
+	m_primaryTalonElevator->Config_kF(slotIdx, feedForwardGain, timeoutMs);
+	m_primaryTalonElevator->Config_kP(slotIdx, pGain, timeoutMs);
+	m_primaryTalonElevator->Config_kI(slotIdx, iGain, timeoutMs);
+	m_primaryTalonElevator->ConfigMaxIntegralAccumulator(slotIdx, iLimit, timeoutMs);
+	m_primaryTalonElevator->Config_kD(slotIdx, dGain, timeoutMs);
+	m_primaryTalonElevator->ConfigMotionCruiseVelocity(maxSensorUnitsPer100ms, timeoutMs);
+	m_primaryTalonElevator->ConfigMotionAcceleration(maxSensorUnitsPer100ms / timeToMaxSpeed, timeoutMs);
+	m_primaryTalonElevator->ConfigSelectedFeedbackSensor(QuadEncoder, pidIdx, timeoutMs);
+
+
+    SetHomePosition();
+
 }
 
 void Elevator::InitDefaultCommand() {
@@ -40,3 +58,22 @@ void Elevator::Lower(){
 }
 // Put methods for controlling this subsystem
 // here. Call these from Commands
+
+void Elevator::SetPosition(int setpoint)
+{
+	m_setpoint = setpoint;
+	m_primaryTalonElevator->Set(ControlMode::MotionMagic, m_setpoint);
+}
+
+bool Elevator::AtSetpoint()
+{
+	return m_primaryTalonElevator->GetClosedLoopError(pidIdx) < 250;
+}
+
+void Elevator::SetHomePosition()
+{
+	//DriverStation::ReportWarning("Elevator home position reset");
+	m_setpoint = 0;
+  m_primaryTalonElevator->SetSelectedSensorPosition(m_setpoint, pidIdx, timeoutMs);
+  m_primaryTalonElevator->Set(ControlMode::MotionMagic, m_setpoint);
+}
