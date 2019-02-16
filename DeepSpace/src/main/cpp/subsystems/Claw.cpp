@@ -8,8 +8,8 @@
 #include "subsystems/Claw.h"
 
 Claw::Claw() : Subsystem("Claw") {
-  m_clawSolenoid.reset(new frc::Solenoid(RobotMap::Claw::k_clawSolenoid));
-  m_raiseSolenoid.reset(new frc::Solenoid(RobotMap::Claw::k_raiseSolenoid));
+  m_clawSolenoid.reset(new frc::Solenoid(RobotMap::PCM::k_pcm_id,RobotMap::Claw::k_clawSolenoid));
+  m_raiseSolenoid.reset(new frc::Solenoid(RobotMap::PCM::k_pcm_id,RobotMap::Claw::k_raiseSolenoid));
 
 
 }
