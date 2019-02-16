@@ -10,36 +10,38 @@
 #include "RobotMap.h"
 
 CargoManipulator::CargoManipulator() : Subsystem("CargoManipulator") {
-  m_motor.reset(new WPI_TalonSRX(RobotMap::CargoManipulator::k_motor_id));
+  m_motor.reset(new rev::CANSparkMax(RobotMap::CargoManipulator::k_motor_id, rev::CANSparkMax::MotorType::kBrushed));
+  // m_motor->
+
   m_divideSpeedTimer.reset(new frc::Timer());
 
-  m_motor->EnableCurrentLimit(true);
-  m_motor->ConfigContinuousCurrentLimit(k_continuousCurrent);
-  m_motor->ConfigPeakCurrentDuration(k_peakCurrent);
-  m_motor->ConfigPeakCurrentDuration(k_peakCurrentDuration);
+  // m_motor->EnableCurrentLimit(true);
+  // m_motor->ConfigContinuousCurrentLimit(k_continuousCurrent);
+  // m_motor->ConfigPeakCurrentDuration(k_peakCurrent);
+  // m_motor->ConfigPeakCurrentDuration(k_peakCurrentDuration);
 }
 
 void CargoManipulator::InitDefaultCommand() {}
 
 void CargoManipulator::Periodic() {
-  if (GetCurrentCommandName().empty()) {
-    m_divideSpeedTimerReset = true;
-  }
+  // if (GetCurrentCommandName().empty()) {
+  //   m_divideSpeedTimerReset = true;
+  // }
 }
 
 // Speed is a value from -1.0 to 1.0
 void CargoManipulator::setSpeed(double speed) {
-  if (m_divideSpeedTimerReset) {
-      m_divideSpeedTimer->Reset();
-      m_divideSpeedTimer->Start();
+  // if (m_divideSpeedTimerReset) {
+  //     m_divideSpeedTimer->Reset();
+  //     m_divideSpeedTimer->Start();
 
-      m_divideSpeedTimerReset = false;
-  }
+  //     m_divideSpeedTimerReset = false;
+  // }
 
-  if (m_divideSpeedTimer->Get() < k_divideSpeedDuration) {
+  // if (m_divideSpeedTimer->Get() < k_divideSpeedDuration) {
     m_motor->Set(speed);
-  }
-  else {
-    m_motor->Set(speed * k_divideSpeedAmount);
-  }
+  // }
+  // else {
+  //   m_motor->Set(speed * k_divideSpeedAmount);
+  // }
 }

@@ -19,10 +19,12 @@ std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
 
-  m_oi.reset(new OI());
-
   // Initialize Subsystems
   m_driveTrain.reset(new BrushlessDrive());
+  m_cargoManipulator.reset(new CargoManipulator());
+
+  // Initialize OI after subsystems
+  m_oi.reset(new OI());
 }
 
 /**

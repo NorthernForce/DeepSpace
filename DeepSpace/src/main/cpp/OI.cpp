@@ -9,10 +9,39 @@
 
 #include "RobotMap.h"
 
+#include <frc/shuffleboard/Shuffleboard.h>
+#include <frc/buttons/JoystickButton.h>
+
+// Command inclusions
+#include "commands/IntakeCargo.h"
+#include "commands/EjectCargo.h"
+
+// Functions to simplify button mapping.
+static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
+  auto joystickButton = new frc::JoystickButton(joystick.get(), button);
+  joystickButton->WhenPressed(command);
+}
+
+static void WhenReleased(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
+  auto joystickButton = new frc::JoystickButton(joystick.get(), button);
+  joystickButton->WhenReleased(command);
+}
+
+static void WhileHeld(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
+  auto joystickButton = new frc::JoystickButton(joystick.get(), button);
+  joystickButton->WhileHeld(command);
+}
+
 OI::OI() {
   // Initialize the controllers
   m_driverController.reset(new frc::XboxController(RobotMap::OI::k_driverController_id));
-  m_manipulatorController.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController_id));
+  m_manipulatorController1.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController1_id));
+  m_manipulatorController2.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController2_id));
+
+  frc::Shuffleboard::GetTab("Controls").Add("IntakeCargo", new IntakeCargo());
+
+  WhileHeld(m_manipulatorController1, 3, new IntakeCargo());
+  // WhileHeld(m_manipulatorController1, , new EjectCargo());
 
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }

@@ -9,7 +9,8 @@
 
 #include <frc/commands/Subsystem.h>
 
-#include <ctre/Phoenix.h>
+#include <frc/Timer.h>
+#include <rev/CANSparkMax.h>
 
 class CargoManipulator : public frc::Subsystem {
  public:
@@ -30,7 +31,7 @@ class CargoManipulator : public frc::Subsystem {
   void setSpeed(double speed);
 
  private:
-  std::shared_ptr<WPI_TalonSRX> m_motor;
+  std::shared_ptr<rev::CANSparkMax> m_motor;
 
   std::shared_ptr<frc::Timer> m_divideSpeedTimer;
   bool m_divideSpeedTimerReset = true;
