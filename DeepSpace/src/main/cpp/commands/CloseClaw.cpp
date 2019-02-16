@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 #include "commands/CloseClaw.h"
 #include "Robot.h"
 #include "RobotMap.h"
@@ -17,4 +17,3 @@ CloseClaw::CloseClaw() : frc::TimedCommand(RobotMap::Claw::k_timeToClose) {
 void CloseClaw::Initialize() {
     Robot::m_claw->SetClosed();
 }
-*/

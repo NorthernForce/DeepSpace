@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 #include "commands/RetractClaw.h"
 #include "Robot.h"
 #include "RobotMap.h"
@@ -18,4 +18,3 @@ void RetractClaw::Initialize() {
   Robot::m_claw->ClawRetract();
 }
 
-*/

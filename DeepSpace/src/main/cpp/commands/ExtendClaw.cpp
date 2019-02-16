@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 #include "commands/ExtendClaw.h"
 #include "Robot.h"
 #include "RobotMap.h"
@@ -17,4 +17,3 @@ ExtendClaw::ExtendClaw(): frc::TimedCommand(RobotMap::Claw::k_timeToExtend) {
 void ExtendClaw::Initialize() {
     Robot::m_claw->ClawExtend();
 }
-*/

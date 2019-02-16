@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 #include "subsystems/Claw.h"
 
 Claw::Claw() : Subsystem("Claw") {
@@ -42,4 +42,3 @@ void Claw::ClawRetract() {
 
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
-*/
