@@ -45,7 +45,6 @@ void BrushlessDrive::arcDrive(double speed, double rotation)
 
 void BrushlessDrive::ConfigureController(rev::CANSparkMax& controller)
 {
-  controller.SetMotorType(rev::CANSparkMax::MotorType::kBrushless);
   controller.SetSecondaryCurrentLimit(k_secondaryCurrentLimit);
   controller.SetSmartCurrentLimit(k_currentLimit);
   if(!controller.IsFollower())
