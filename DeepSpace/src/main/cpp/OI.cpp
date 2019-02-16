@@ -38,7 +38,7 @@ OI::OI() {
   m_manipulatorController1.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController1_id));
   m_manipulatorController2.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController2_id));
 
-  frc::Shuffleboard::GetTab("Controls").Add("IntakeCargo", new IntakeCargo());
+  auto cargoCommandsLayout = frc::Shuffleboard::GetTab("Basic Commands").Add("IntakeCargo", new IntakeCargo());
 
   WhileHeld(m_manipulatorController1, 3, new IntakeCargo());
   // WhileHeld(m_manipulatorController1, , new EjectCargo());
