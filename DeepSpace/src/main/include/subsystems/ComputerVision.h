@@ -11,9 +11,15 @@
 
 #include <cameraserver/CameraServer.h>
 
+#include <thread>
+
 class ComputerVision : public frc::Subsystem {
  private:
   std::shared_ptr<cs::UsbCamera> m_camera;
+  std::shared_ptr<std::thread> m_visionThread;
+
+  std::shared_ptr<std::atomic<bool>> m_objectSwitched;
+  std::shared_ptr<std::atomic<std::pair<double, double>>> m_distanceFromCenter;
 
  public:
   ComputerVision();
