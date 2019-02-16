@@ -22,6 +22,9 @@ Elevator::Elevator() : Subsystem("Elevator") {
     m_followerTalonElevator2->Follow(*m_primaryTalonElevator);
     m_followerTalonElevator3->Follow(*m_primaryTalonElevator);
 
+    m_primaryTalonElevator->SetSensorPhase(true);
+    m_primaryTalonElevator->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 0, 0);
+
 
      //ConfigureCurrentLimits(defaultPeakAmps, defaultContinuousCurrent, timeoutMs);
 	m_primaryTalonElevator->ConfigNominalOutputForward(+0.0, timeoutMs);
