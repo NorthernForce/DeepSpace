@@ -17,14 +17,14 @@ class Claw : public frc::Subsystem {
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
   std::shared_ptr<frc::Solenoid> m_clawSolenoid;
-  std::shared_ptr<frc::Solenoid> m_extendSolenoid;
+  std::shared_ptr<frc::Solenoid> m_raiseSolenoid;
 
 
  public:
   Claw();
   void SetOpen();
   void SetClosed();
-  void ClawExtend();
-  void ClawRetract();
+  void ClawRaise();
+  void ClawLower();
   void InitDefaultCommand() override;
 };

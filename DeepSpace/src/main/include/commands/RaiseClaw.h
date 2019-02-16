@@ -5,15 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ExtendClaw.h"
-#include "Robot.h"
-#include "RobotMap.h"
+#pragma once
 
-ExtendClaw::ExtendClaw(): frc::TimedCommand(RobotMap::Claw::k_timeToExtend) {
-    Requires(Robot::m_claw.get());
-}
+#include <frc/commands/TimedCommand.h>
 
-// Called just before this Command runs the first time
-void ExtendClaw::Initialize() {
-    Robot::m_claw->ClawExtend();
-}
+class RaiseClaw : public frc::TimedCommand {
+ public:
+  RaiseClaw();
+  void Initialize() override;
+};

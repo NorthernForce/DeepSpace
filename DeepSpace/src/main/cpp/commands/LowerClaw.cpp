@@ -5,16 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/RetractClaw.h"
+#include "commands/LowerClaw.h"
 #include "Robot.h"
 #include "RobotMap.h"
 
-RetractClaw::RetractClaw() : TimedCommand(RobotMap::Claw::k_timeToRetract) {
+LowerClaw::LowerClaw() : TimedCommand(RobotMap::Claw::k_timeToLower) {
     Requires(Robot::m_claw.get());
 }
 
 // Called just before this Command runs the first time
-void RetractClaw::Initialize() {
-  Robot::m_claw->ClawRetract();
+void LowerClaw::Initialize() {
+  Robot::m_claw->ClawLower();
 }
 

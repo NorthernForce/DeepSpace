@@ -9,8 +9,8 @@
 
 #include <frc/commands/TimedCommand.h>
 
-class ExtendClaw : public frc::TimedCommand {
+class LowerClaw : public frc::TimedCommand {
  public:
-  ExtendClaw();
+  LowerClaw();
   void Initialize() override;
 };
