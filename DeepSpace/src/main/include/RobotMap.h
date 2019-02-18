@@ -69,5 +69,10 @@ namespace RobotMap {
         const static int k_RightLineSensor_id = 1;
     }
 
+    namespace UltrasonicSensor {
+        const static int k_ultrasonicPing_id = 0;
+        const static int k_ultrasonicEcho_id = 0;
+    }
+
 }
 

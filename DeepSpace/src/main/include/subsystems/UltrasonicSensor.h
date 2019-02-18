@@ -7,21 +7,19 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
-#include "subsystems/LineTracker.h"
+#include <frc/commands/Subsystem.h>
+#include <RobotMap.h>
 
+#include <frc/Ultrasonic.h>
 
-class FollowLine : public frc::Command {
+class UltrasonicSensor : public frc::Subsystem {
  private:
-  bool m_faultyCase;
-  bool m_stopRobot;
-  double speed = 0;
-  double rotation = 0;
+  // It's desirable that everything possible under private except
+  // for methods that implement subsystem capabilities
+  std::shared_ptr<frc::Ultrasonic> m_ultrasonicSensor;
+
  public:
-  FollowLine();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+  UltrasonicSensor();
+  int GetDistanceToWall();
+  void InitDefaultCommand() override;
 };

@@ -16,6 +16,7 @@ std::shared_ptr<OI> Robot::m_oi;
 std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 std::shared_ptr<Claw> Robot::m_claw;
 std::shared_ptr<LineTracker> Robot::m_lineTracker;
+std::shared_ptr<UltrasonicSensor> Robot::m_ultrasonic;
 
 
 void Robot::RobotInit() {
@@ -27,7 +28,7 @@ void Robot::RobotInit() {
   m_driveTrain.reset(new BrushlessDrive());
   m_claw.reset(new Claw());
   m_lineTracker.reset(new LineTracker());
-
+  m_ultrasonic.reset(new UltrasonicSensor());
   
 }
 
