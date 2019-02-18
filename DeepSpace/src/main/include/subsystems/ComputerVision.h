@@ -14,6 +14,7 @@
 
 #include <thread>
 #include <map>
+#include <atomic>
 
 class ComputerVision : public frc::Subsystem {
  public:
@@ -34,8 +35,13 @@ class ComputerVision : public frc::Subsystem {
 
   std::shared_ptr<std::thread> m_visionThread;
 
-  std::shared_ptr<std::atomic<bool>> m_newObjectToTarget;
-  std::shared_ptr<std::atomic<Target>> m_objectToTarget;
-  std::shared_ptr<std::atomic<double>> m_horizontalOffset;
-  std::shared_ptr<std::atomic<double>> m_verticalOffset;
+  std::atomic<Target> m_objectToTarget;
+  std::atomic<double> m_horizontalOffset;
+  std::atomic<double> m_verticalOffset;
+
+  void m_visionTargetTapeSetup();
+  std::pair<double, double> m_visionTargetTapeRun(cv::Mat frame);
+
+  std::map<Target, void (*)()> m_visionTargetSetup;
+  std::map<Target, std::pair<double, double> (*)(cv::Mat frame)> m_visionTargetRun;
 };

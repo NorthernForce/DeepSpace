@@ -13,19 +13,39 @@ ComputerVision::ComputerVision() : Subsystem("ComputerVision") {
   m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture("Driver Camera", RobotMap::ComputerVision::k_camera_id));
   // m_servo.reset(new frc::Servo(RobotMap::ComputerVision::k_servo_id));
 
-  m_visionThread.reset(new std::thread([]{
+  m_visionTargetSetup = {
+    {Target::Tape, m_visionTargetTapeSetup}
+  };
+
+  m_visionThread.reset(new std::thread([&]{
+    // Set default target
+    Target currentTarget = Target::Tape;
+
     for (;;) {
-      // Plan:
-      //   Check for object change
-      //      if so call camera setup function map
+      if (currentTarget != m_objectToTarget) {
+        currentTarget = m_objectToTarget.load();
+
+        // call camera setup
+      }
+
       //   Call enum to function map
       //      example function: std::pair<double, double> getTape(cs::Mat)
-      //   Check for object change
-      //      if not set atomics
+
+      if (currentTarget == m_objectToTarget) {
+        // set atomics
+      }
+      else {
+        m_horizontalOffset = 0;
+        m_verticalOffset = 0;
+      }
     }
   }));
 }
 
 void ComputerVision::setTarget(Target target) {
+  m_objectToTarget = target;
+}
 
+std::pair<double, double> ComputerVision::getOffset() {
+  return std::make_pair(m_horizontalOffset.load(), m_verticalOffset.load());
 }
