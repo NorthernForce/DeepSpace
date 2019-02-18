@@ -23,7 +23,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
     m_followerTalonElevator2->Follow(*m_primaryTalonElevator);
     m_followerTalonElevator3->Follow(*m_primaryTalonElevator);
 
-    m_primaryTalonElevator->SetSensorPhase(true);
+    //m_primaryTalonElevator->SetSensorPhase(true);
     m_primaryTalonElevator->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 0, 0);
 
 
@@ -68,16 +68,16 @@ void Elevator::SetPosition(int setpoint)
   
   std::cout << "Elevator set position to " << setpoint << std::endl;
 	m_setpoint = setpoint;
-  std::cout << "Elevator set position to " << setpoint << " with motion magic" << std::endl;
+  std::cout << "Elevator set position to " << setpoint << " with magic" << std::endl;
 	m_primaryTalonElevator->Set(ControlMode::MotionMagic, m_setpoint);
 }
 
 bool Elevator::AtSetpoint()
 {
-  int pos = m_primaryTalonElevator->GetSelectedSensorPosition();
+  int pos = m_primaryTalonElevator->GetSelectedSensorPosition(pidIdx);
   int err = m_primaryTalonElevator->GetClosedLoopError(pidIdx);
     double motorOutput = m_primaryTalonElevator->GetMotorOutputPercent();
-  int velocity = m_primaryTalonElevator->GetSelectedSensorVelocity(0);
+  int velocity = m_primaryTalonElevator->GetSelectedSensorVelocity(pidIdx);
   std::cout << "Elevator current position: " << pos 
     << ", motor output: " << motorOutput
     << ", motor velocity: " << velocity

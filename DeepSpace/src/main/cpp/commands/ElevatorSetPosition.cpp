@@ -14,10 +14,10 @@ const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoi
     { ElevatorSetPosition::Position::HatchPanelIntake, 3260 },
     { ElevatorSetPosition::Position::CargoDepositLevel1, 4718 },
     { ElevatorSetPosition::Position::CargoDepositLevel2, 9521 },
-    { ElevatorSetPosition::Position::CargoDepositLevel3, 14325 },
+    { ElevatorSetPosition::Position::CargoDepositLevel3, 10325 },
     { ElevatorSetPosition::Position::HatchDepositLevel1, 3260 },
     { ElevatorSetPosition::Position::HatchDepositLevel2, 8063 },
-    { ElevatorSetPosition::Position::HatchDepostiLevel3, 12866 }
+    { ElevatorSetPosition::Position::HatchDepostiLevel3, 10866 }
 };
 
 ElevatorSetPosition::ElevatorSetPosition(Position pos) :
