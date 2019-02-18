@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ElevatorSetPosition.h"
+#include <iostream>
 
 const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoints = {
 		{ ElevatorSetPosition::Position::HomePosition, 0 },
@@ -22,6 +23,8 @@ const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoi
 ElevatorSetPosition::ElevatorSetPosition(Position pos) :
   m_elevator(Robot::m_elevator.get())
 {
+  
+  std::cout << "Created elevator set position with position " << std::endl;
   m_position = pos;
 	Requires(m_elevator.get());
   // Use Requires() here to declare subsystem dependencies
@@ -30,8 +33,13 @@ ElevatorSetPosition::ElevatorSetPosition(Position pos) :
 
 // Called just before this Command runs the first time
 void ElevatorSetPosition::Initialize() {
+  
+  std::cout << "Initalizing set position" << std::endl;
    const auto setpoint = m_setpoints.find(m_position);
+  
+  std::cout << "found setpoint " << std::endl;
 	if (setpoint != m_setpoints.end()) {
+  std::cout << "setting position to " << setpoint->second  << std::endl;
 		m_elevator->SetPosition(setpoint->second);
 	}
 }
@@ -41,7 +49,11 @@ void ElevatorSetPosition::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
 bool ElevatorSetPosition::IsFinished() { 
+  
+  std::cout << "Set Position checking to see if finished" << std::endl;
   const bool elevatorDone = m_elevator->AtSetpoint();
+  
+  std::cout << "Set Poistion finished? " << elevatorDone << std::endl;
 	return elevatorDone;
 }
 

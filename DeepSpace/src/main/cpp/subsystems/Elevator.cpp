@@ -10,6 +10,7 @@
 #include <ctre/Phoenix.h>
 
 #include "RobotMap.h"
+#include <iostream>
 
 Elevator::Elevator() : Subsystem("Elevator") { 
   
@@ -64,12 +65,18 @@ void Elevator::Lower(){
 
 void Elevator::SetPosition(int setpoint)
 {
+  
+  std::cout << "Elevator set position to " << setpoint << std::endl;
 	m_setpoint = setpoint;
+  std::cout << "Elevator set position to " << setpoint << " with motion magic" << std::endl;
 	m_primaryTalonElevator->Set(ControlMode::MotionMagic, m_setpoint);
 }
 
 bool Elevator::AtSetpoint()
 {
+  int pos = m_primaryTalonElevator->GetSelectedSensorPosition();
+  int err = m_primaryTalonElevator->GetClosedLoopError(pidIdx);
+  std::cout << "Elevator current position " << pos << " and error " << err << std::endl;
 	return m_primaryTalonElevator->GetClosedLoopError(pidIdx) < 250;
 }
 
