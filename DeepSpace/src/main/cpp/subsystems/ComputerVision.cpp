@@ -13,9 +13,7 @@ ComputerVision::ComputerVision() : Subsystem("ComputerVision") {
   m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture("Driver Camera", RobotMap::ComputerVision::k_camera_id));
   // m_servo.reset(new frc::Servo(RobotMap::ComputerVision::k_servo_id));
 
-  m_visionTargetSetup = {
-    {Target::Tape, m_visionTargetTapeSetup}
-  };
+  m_visionTargetSetup[Target::Tape] = m_visionTargetTapeSetup;
 
   m_visionThread.reset(new std::thread([&]{
     // Set default target
