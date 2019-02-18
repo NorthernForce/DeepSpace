@@ -40,7 +40,7 @@ OI::OI() {
 
   frc::ShuffleboardTab& basicCommandsTab = frc::Shuffleboard::GetTab("Basic Commands");
 
-  frc::ShuffleboardLayout& cargoLayout = basicCommandsTab.GetLayout("Cargo"/*, STUFF TODO. */);
+  frc::ShuffleboardLayout& cargoLayout = basicCommandsTab.GetLayout("Cargo", "List Layout");
   cargoLayout.Add("IntakeCargo", new IntakeCargo());
   cargoLayout.Add("EjectCargo", new EjectCargo());
 
