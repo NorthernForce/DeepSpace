@@ -17,6 +17,7 @@ std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 std::shared_ptr<Claw> Robot::m_claw;
 std::shared_ptr<LineTracker> Robot::m_lineTracker;
 std::shared_ptr<UltrasonicSensor> Robot::m_ultrasonic;
+std::shared_ptr<AHRS> Robot::m_ahrs;
 
 
 void Robot::RobotInit() {
@@ -29,6 +30,7 @@ void Robot::RobotInit() {
   m_claw.reset(new Claw());
   m_lineTracker.reset(new LineTracker());
   m_ultrasonic.reset(new UltrasonicSensor());
+  m_ahrs = std::make_unique<AHRS>(frc::SPI::Port::kMXP);
   
 }
 

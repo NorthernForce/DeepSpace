@@ -10,6 +10,7 @@
 #include <frc/TimedRobot.h>
 #include <frc/commands/Command.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include "AHRS.h"
 
 #include "OI.h"
 
@@ -25,6 +26,7 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<Claw> m_claw;
   static std::shared_ptr<LineTracker> m_lineTracker;
   static std::shared_ptr<UltrasonicSensor> m_ultrasonic;
+  static std::shared_ptr<AHRS> m_ahrs;
 
   void RobotInit() override;
   void RobotPeriodic() override;
