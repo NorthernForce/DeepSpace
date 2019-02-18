@@ -26,11 +26,11 @@ class Elevator : public frc::Subsystem {
 	constexpr static double freeSpeedRPM = 18730;
 	constexpr static double maxSpeedRPM = freeSpeedRPM * 0.80;
 	constexpr static double sensorUnitsPerRev = 256 * 4; // The TalonSRX counts 4 edges per encoder count, the quadrature encoder has 12 counts per revolution
-	constexpr static double maxSensorUnitsPer100ms = sensorUnitsPerRev * maxSpeedRPM / 60 / 10;
-	constexpr static double feedForwardGain = 1023 / maxSensorUnitsPer100ms;
+	constexpr static double maxSensorUnitsPer100ms = 1500; // sensorUnitsPerRev * maxSpeedRPM / 60 / 10;
+	constexpr static double feedForwardGain = 0.3; // 1023 / maxSensorUnitsPer100ms;
 	constexpr static double pGainPower = 0.1;
 	constexpr static double pGainError = 200;
-	constexpr static double pGain = (1023 * pGainPower) / pGainError;
+	constexpr static double pGain = 0.1; // (1023 * pGainPower) / pGainError;
 	constexpr static double iGain = 0.0;
 	constexpr static double iLimit = 500;
 	constexpr static double dGain = 0; //pGain / 10;

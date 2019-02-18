@@ -38,7 +38,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
 	m_primaryTalonElevator->ConfigMaxIntegralAccumulator(slotIdx, iLimit, timeoutMs);
 	m_primaryTalonElevator->Config_kD(slotIdx, dGain, timeoutMs);
 	m_primaryTalonElevator->ConfigMotionCruiseVelocity(maxSensorUnitsPer100ms, timeoutMs);
-	m_primaryTalonElevator->ConfigMotionAcceleration(maxSensorUnitsPer100ms / timeToMaxSpeed, timeoutMs);
+	m_primaryTalonElevator->ConfigMotionAcceleration(1500, timeoutMs); //(maxSensorUnitsPer100ms / timeToMaxSpeed, timeoutMs);
 	m_primaryTalonElevator->ConfigSelectedFeedbackSensor(QuadEncoder, pidIdx, timeoutMs);
 
 
@@ -76,12 +76,18 @@ bool Elevator::AtSetpoint()
 {
   int pos = m_primaryTalonElevator->GetSelectedSensorPosition();
   int err = m_primaryTalonElevator->GetClosedLoopError(pidIdx);
-  std::cout << "Elevator current position " << pos << " and error " << err << std::endl;
+    double motorOutput = m_primaryTalonElevator->GetMotorOutputPercent();
+  int velocity = m_primaryTalonElevator->GetSelectedSensorVelocity(0);
+  std::cout << "Elevator current position: " << pos 
+    << ", motor output: " << motorOutput
+    << ", motor velocity: " << velocity
+    << ", error " << err << std::endl;
 	return m_primaryTalonElevator->GetClosedLoopError(pidIdx) < 250;
 }
 
 void Elevator::SetHomePosition()
 {
+  std::cout << "Elevator setting home position " << std::endl;
 	//DriverStation::ReportWarning("Elevator home position reset");
 	m_setpoint = 0;
   m_primaryTalonElevator->SetSelectedSensorPosition(m_setpoint, pidIdx, timeoutMs);
