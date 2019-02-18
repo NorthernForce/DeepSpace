@@ -15,6 +15,8 @@
 std::shared_ptr<OI> Robot::m_oi;
 std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 std::shared_ptr<Claw> Robot::m_claw;
+std::shared_ptr<LineTracker> Robot::m_lineTracker;
+
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
@@ -24,6 +26,7 @@ void Robot::RobotInit() {
   // Initialize Subsystems
   m_driveTrain.reset(new BrushlessDrive());
   m_claw.reset(new Claw());
+  m_lineTracker.reset(new LineTracker());
 
   
 }

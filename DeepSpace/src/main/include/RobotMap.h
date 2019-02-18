@@ -63,5 +63,11 @@ namespace RobotMap {
 
     }
 
+    namespace LineTracker {
+        const static int k_leftLineSensor_id = 2;
+        const static int k_CenterLineSensor_id = 0;
+        const static int k_RightLineSensor_id = 1;
+    }
+
 }
 
