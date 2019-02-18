@@ -45,7 +45,12 @@ void ElevatorSetPosition::Initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ElevatorSetPosition::Execute() {}
+void ElevatorSetPosition::Execute() {
+  
+  std::cout << "ElevatorSetPosition executing " << std::endl;
+  const bool elevatorDone = m_elevator->AtSetpoint();
+  std::cout << "ElevatorSetPosition done executing " << std::endl;
+}
 
 // Make this return true when this Command no longer needs to run execute()
 bool ElevatorSetPosition::IsFinished() { 
