@@ -17,7 +17,7 @@ void UltrasonicSensor::InitDefaultCommand() {
   // SetDefaultCommand(new MySpecialCommand());
 }
 
-int UltrasonicSensor::GetDistanceToWall() {
+double UltrasonicSensor::GetDistanceToWall() {
   return m_ultrasonicSensor->GetRangeInches();
 
 }

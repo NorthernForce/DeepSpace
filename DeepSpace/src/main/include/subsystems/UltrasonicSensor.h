@@ -20,6 +20,6 @@ class UltrasonicSensor : public frc::Subsystem {
 
  public:
   UltrasonicSensor();
-  int GetDistanceToWall();
+  double GetDistanceToWall();
   void InitDefaultCommand() override;
 };
