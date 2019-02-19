@@ -58,7 +58,7 @@ bool ElevatorSetPosition::IsFinished() {
   std::cout << "Set Position checking to see if finished" << std::endl;
   const bool elevatorDone = m_elevator->AtSetpoint();
   
-  std::cout << "Set Poistion finished? " << elevatorDone << std::endl;
+  std::cout << "Set Position finished? " << elevatorDone << std::endl;
 	return elevatorDone;
 }
 

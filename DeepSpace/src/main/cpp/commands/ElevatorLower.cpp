@@ -7,7 +7,9 @@
 
 #include "commands/ElevatorLower.h"
 #include "Robot.h"
+
 ElevatorLower::ElevatorLower() {
+	Requires(Robot::m_elevator.get());
   // Use Requires() here to declare subsystem dependencies
   // eg. Requires(Robot::chassis.get());
 }

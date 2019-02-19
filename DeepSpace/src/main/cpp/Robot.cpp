@@ -52,7 +52,17 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+  
+  int pos = m_elevator->GetMainTalon()->GetSelectedSensorPosition(0);
+  int err = m_elevator->GetMainTalon()->GetClosedLoopError(0);
+  double motorOutput = m_elevator->GetMainTalon()->GetMotorOutputPercent();
+  int velocity = m_elevator->GetMainTalon()->GetSelectedSensorVelocity(0);
+  std::cout << "Elevator current position: " << pos 
+    << ", motor output: " << motorOutput
+    << ", sensor velocity: " << velocity
+    << ", error " << err << std::endl;
+}
 
 /**
  * This function is called once each time the robot enters Disabled mode. You

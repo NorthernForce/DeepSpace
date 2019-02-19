@@ -24,9 +24,33 @@ Elevator::Elevator() : Subsystem("Elevator") {
     m_followerTalonElevator3->Follow(*m_primaryTalonElevator);
 
     //m_primaryTalonElevator->SetSensorPhase(true);
-    m_primaryTalonElevator->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 0, 0);
+    m_primaryTalonElevator->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 0, 10);
 
 
+    /* Set relevant frame periods to be at least as fast as periodic rate */
+    m_primaryTalonElevator->SetStatusFramePeriod(StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
+    m_primaryTalonElevator->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic, 10, 10);
+
+    /* Set the peak and nominal outputs */
+    m_primaryTalonElevator->ConfigNominalOutputForward(0, 10);
+    m_primaryTalonElevator->ConfigNominalOutputReverse(0, 10);
+    m_primaryTalonElevator->ConfigPeakOutputForward(1, 10);
+    m_primaryTalonElevator->ConfigPeakOutputReverse(-1, 10);
+
+    /* Set Motion Magic gains in slot0 - see documentation */
+    m_primaryTalonElevator->SelectProfileSlot(0, 0);
+    m_primaryTalonElevator->Config_kF(0, 0.3, 10);
+    m_primaryTalonElevator->Config_kP(0, 0.1, 10);
+    m_primaryTalonElevator->Config_kI(0, 0.0, 10);
+    m_primaryTalonElevator->Config_kD(0, 0.0, 10);
+
+    /* Set acceleration and vcruise velocity - see documentation */
+    m_primaryTalonElevator->ConfigMotionCruiseVelocity(1500, 10);
+    m_primaryTalonElevator->ConfigMotionAcceleration(1500, 10);
+
+    /* Zero the sensor */
+    m_primaryTalonElevator->SetSelectedSensorPosition(0, 0, 10);
+/*
      //ConfigureCurrentLimits(defaultPeakAmps, defaultContinuousCurrent, timeoutMs);
 	m_primaryTalonElevator->ConfigNominalOutputForward(+0.0, timeoutMs);
 	m_primaryTalonElevator->ConfigNominalOutputReverse(-0.0, timeoutMs);
@@ -41,8 +65,9 @@ Elevator::Elevator() : Subsystem("Elevator") {
 	m_primaryTalonElevator->ConfigMotionAcceleration(1500, timeoutMs); //(maxSensorUnitsPer100ms / timeToMaxSpeed, timeoutMs);
 	m_primaryTalonElevator->ConfigSelectedFeedbackSensor(QuadEncoder, pidIdx, timeoutMs);
 
+  SetHomePosition();
+  */
 
-    SetHomePosition();
 
 }
 
@@ -80,7 +105,7 @@ bool Elevator::AtSetpoint()
   int velocity = m_primaryTalonElevator->GetSelectedSensorVelocity(pidIdx);
   std::cout << "Elevator current position: " << pos 
     << ", motor output: " << motorOutput
-    << ", motor velocity: " << velocity
+    << ", sensor velocity: " << velocity
     << ", error " << err << std::endl;
 	return m_primaryTalonElevator->GetClosedLoopError(pidIdx) < 250;
 }
@@ -92,4 +117,9 @@ void Elevator::SetHomePosition()
 	m_setpoint = 0;
   m_primaryTalonElevator->SetSelectedSensorPosition(m_setpoint, pidIdx, timeoutMs);
   m_primaryTalonElevator->Set(ControlMode::MotionMagic, m_setpoint);
+}
+
+
+std::shared_ptr<WPI_TalonSRX> Elevator::GetMainTalon() {
+  return m_primaryTalonElevator;
 }
