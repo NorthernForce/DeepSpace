@@ -48,4 +48,5 @@ class Elevator : public frc::Subsystem {
   void SetPosition(int);
 	bool AtSetpoint();
   void SetHomePosition();
+  std::shared_ptr<WPI_TalonSRX> GetMainTalon();
 };
