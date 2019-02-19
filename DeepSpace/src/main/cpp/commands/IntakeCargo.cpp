@@ -7,8 +7,6 @@
 
 #include "commands/IntakeCargo.h"
 
-#include <iostream>
-
 #include "Robot.h"
 
 IntakeCargo::IntakeCargo() {
@@ -16,9 +14,7 @@ IntakeCargo::IntakeCargo() {
 }
 
 // Called just before this Command runs the first time
-void IntakeCargo::Initialize() {
-  std::cout << "IntakeCargo Started" << std::endl;
-}
+void IntakeCargo::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void IntakeCargo::Execute() {
@@ -29,8 +25,12 @@ void IntakeCargo::Execute() {
 bool IntakeCargo::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void IntakeCargo::End() {}
+void IntakeCargo::End() {
+  Robot::m_cargoManipulator->setSpeed(0);
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void IntakeCargo::Interrupted() {}
+void IntakeCargo::Interrupted() {
+  Robot::m_cargoManipulator->setSpeed(0);
+}
