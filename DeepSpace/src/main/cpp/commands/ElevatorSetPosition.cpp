@@ -24,7 +24,7 @@ ElevatorSetPosition::ElevatorSetPosition(Position pos) :
   m_elevator(Robot::m_elevator.get())
 {
   
-  std::cout << "Created elevator set position with position " << std::endl;
+  // std::cout << "Created elevator set position with position " << (int)pos << "\n";
   m_position = pos;
 	Requires(m_elevator.get());
   // Use Requires() here to declare subsystem dependencies
@@ -34,12 +34,12 @@ ElevatorSetPosition::ElevatorSetPosition(Position pos) :
 // Called just before this Command runs the first time
 void ElevatorSetPosition::Initialize() {
   
-  std::cout << "Initalizing set position" << std::endl;
+  // std::cout << "Initalizing set position" << "\n";
    const auto setpoint = m_setpoints.find(m_position);
   
-  std::cout << "found setpoint " << std::endl;
+  // std::cout << "found setpoint " << "\n";
 	if (setpoint != m_setpoints.end()) {
-  std::cout << "setting position to " << setpoint->second  << std::endl;
+  // std::cout << "setting position to " << setpoint->second  << "\n";
 		m_elevator->SetPosition(setpoint->second);
 	}
 }
@@ -47,18 +47,20 @@ void ElevatorSetPosition::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void ElevatorSetPosition::Execute() {
   
-  std::cout << "ElevatorSetPosition executing " << std::endl;
+   const auto setpoint = m_setpoints.find(m_position);
+  // std::cout << "ElevatorSetPosition executing " << "\n";
+  m_elevator->SetPosition(setpoint->second);
   const bool elevatorDone = m_elevator->AtSetpoint();
-  std::cout << "ElevatorSetPosition done executing " << std::endl;
+  // std::cout << "ElevatorSetPosition done executing " << "\n";
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ElevatorSetPosition::IsFinished() { 
   
-  std::cout << "Set Position checking to see if finished" << std::endl;
+  // std::cout << "Set Position checking to see if finished" << "\n";
   const bool elevatorDone = m_elevator->AtSetpoint();
   
-  std::cout << "Set Position finished? " << elevatorDone << std::endl;
+  // std::cout << "Set Position finished? " << elevatorDone << "\n";
 	return elevatorDone;
 }
 

@@ -58,10 +58,15 @@ void Robot::RobotPeriodic() {
   int err = m_elevator->GetMainTalon()->GetClosedLoopError(0);
   double motorOutput = m_elevator->GetMainTalon()->GetMotorOutputPercent();
   int velocity = m_elevator->GetMainTalon()->GetSelectedSensorVelocity(0);
-  std::cout << "Elevator current position: " << pos 
-    << ", motor output: " << motorOutput
-    << ", sensor velocity: " << velocity
-    << ", error " << err << std::endl;
+  // std::cout << "Elevator current position: " << pos<< ", error " << err << "\n";
+
+  static int counter = 0;
+  counter++;
+  if ( counter > 100 )
+  {
+    counter = 0;
+    printf("Pos: %d err: %d\n", pos, err);
+  }
 }
 
 /**
