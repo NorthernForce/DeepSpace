@@ -50,6 +50,7 @@ void BrushlessDrive::ConfigureController(rev::CANSparkMax& controller)
   if(!controller.IsFollower())
   {
     controller.SetClosedLoopRampRate(k_rampRate);
+    controller.SetOpenLoopRampRate(k_rampRate);
   }
   controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 }
