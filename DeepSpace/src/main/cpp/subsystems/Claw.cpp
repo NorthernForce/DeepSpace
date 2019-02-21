@@ -32,13 +32,17 @@ void Claw::SetClosed() {
 
 void Claw::ClawRaise() {
   m_raiseSolenoid->Set(RobotMap::Claw::k_clawRaisedValue);
-
+  m_raisedState = State::Raised;
 }
 
 void Claw::ClawLower() {
   m_raiseSolenoid->Set(RobotMap::Claw::k_clawLoweredValue);
-
+  m_raisedState = State::Lowered;
 }
 
+bool Claw::IfRaised() {
+  return m_raisedState == State::Raised;
+
+}
 // Put methods for controlling this subsystem
 // here. Call these from Commands.

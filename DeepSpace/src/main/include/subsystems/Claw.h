@@ -18,7 +18,11 @@ class Claw : public frc::Subsystem {
   // for methods that implement subsystem capabilities
   std::shared_ptr<frc::Solenoid> m_clawSolenoid;
   std::shared_ptr<frc::Solenoid> m_raiseSolenoid;
-
+  enum class State {
+		Raised,
+		Lowered
+	};
+  State m_raisedState;
 
  public:
   Claw();
@@ -26,5 +30,6 @@ class Claw : public frc::Subsystem {
   void SetClosed();
   void ClawRaise();
   void ClawLower();
+  bool IfRaised();
   void InitDefaultCommand() override;
 };
