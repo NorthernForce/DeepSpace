@@ -18,6 +18,5 @@
     "memory": "cpp",
     "*.inc": "cpp"
   },
-  "C_Cpp.errorSquiggles": "Enabled",
-  "C_Cpp.default.configurationProvider": "vscode-wpilib"
+  "C_Cpp.errorSquiggles": "Enabled"
 }
