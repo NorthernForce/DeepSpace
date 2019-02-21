@@ -8,10 +8,9 @@
 #pragma once
 
 #include <frc/commands/TimedCommand.h>
-/*
+
 class CloseClaw : public frc::TimedCommand {
  public:
   CloseClaw();
   void Initialize() override;
 };
-*/

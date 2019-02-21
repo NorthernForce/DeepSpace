@@ -4,18 +4,13 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
-#include "commands/RetractClaw.h"
-#include "Robot.h"
-#include "RobotMap.h"
 
-RetractClaw::RetractClaw() : TimedCommand(RobotMap::Claw::k_timeToRetract) {
-    Requires(Robot::m_claw.get());
-}
+#pragma once
 
-// Called just before this Command runs the first time
-void RetractClaw::Initialize() {
-  Robot::m_claw->ClawRetract();
-}
+#include <frc/commands/TimedCommand.h>
 
-*/
+class RaiseClaw : public frc::TimedCommand {
+ public:
+  RaiseClaw();
+  void Initialize() override;
+};

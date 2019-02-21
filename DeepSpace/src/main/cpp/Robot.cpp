@@ -17,16 +17,20 @@
 
 std::shared_ptr<OI> Robot::m_oi;
 std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
+<<<<<<< HEAD
 std::shared_ptr<Elevator> Robot::m_elevator;
 //std::shared_ptr<Claw> Robot::m_claw;
+=======
+std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
+std::shared_ptr<Claw> Robot::m_claw;
+>>>>>>> c9ca3308cf3ea480ad77de3e08902ead5d55240c
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
 
-  m_oi.reset(new OI());
-
   // Initialize Subsystems
   m_driveTrain.reset(new BrushlessDrive());
+<<<<<<< HEAD
   m_elevator.reset(new Elevator());
   m_elevator->SetHomePosition();
   m_elevator->SetPosition(0);
@@ -44,6 +48,13 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Climb Position", new ElevatorSetPosition(ElevatorSetPosition::Position::ClimbPosition));
 
 
+=======
+  m_cargoManipulator.reset(new CargoManipulator());
+  m_claw.reset(new Claw());
+
+  // Initialize OI after subsystems
+  m_oi.reset(new OI());
+>>>>>>> c9ca3308cf3ea480ad77de3e08902ead5d55240c
 }
 
 /**

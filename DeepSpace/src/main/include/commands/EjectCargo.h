@@ -4,17 +4,17 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
-#include "commands/ExtendClaw.h"
-#include "Robot.h"
-#include "RobotMap.h"
 
-ExtendClaw::ExtendClaw(): frc::TimedCommand(RobotMap::Claw::k_timeToExtend) {
-    Requires(Robot::m_claw.get());
-}
+#pragma once
 
-// Called just before this Command runs the first time
-void ExtendClaw::Initialize() {
-    Robot::m_claw->ClawExtend();
-}
-*/
+#include <frc/commands/Command.h>
+
+class EjectCargo : public frc::Command {
+ public:
+  EjectCargo();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+};

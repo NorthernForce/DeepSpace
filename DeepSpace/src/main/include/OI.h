@@ -10,7 +10,6 @@
 #include <frc/XboxController.h>
 #include <frc/Joystick.h>
 
-
 class OI {
  public:
   OI();
@@ -19,5 +18,6 @@ class OI {
 
  private:
   std::shared_ptr<frc::XboxController> m_driverController;
-  std::shared_ptr<frc::Joystick> m_manipulatorController;
+  std::shared_ptr<frc::Joystick> m_manipulatorController1;
+  std::shared_ptr<frc::Joystick> m_manipulatorController2;
 };

@@ -4,14 +4,17 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 #pragma once
 
-#include <frc/commands/TimedCommand.h>
+#include <frc/commands/Command.h>
 
-class RetractClaw : public frc::TimedCommand {
+class IntakeCargo : public frc::Command {
  public:
-  RetractClaw();
+  IntakeCargo();
   void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };
-*/

@@ -5,26 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#pragma once
-
-#include <frc/commands/Subsystem.h>
+#include "commands/LowerClaw.h"
+#include "Robot.h"
 #include "RobotMap.h"
 
-#include <frc/Solenoid.h>
+LowerClaw::LowerClaw() : TimedCommand(RobotMap::Claw::k_timeToLower) {
+    Requires(Robot::m_claw.get());
+}
 
-class Claw : public frc::Subsystem {
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-  std::shared_ptr<frc::Solenoid> m_clawSolenoid;
-  std::shared_ptr<frc::Solenoid> m_raiseSolenoid;
+// Called just before this Command runs the first time
+void LowerClaw::Initialize() {
+  Robot::m_claw->ClawLower();
+}
 
-
- public:
-  Claw();
-  void SetOpen();
-  void SetClosed();
-  void ClawRaise();
-  void ClawLower();
-  void InitDefaultCommand() override;
-};

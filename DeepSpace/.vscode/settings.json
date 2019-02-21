@@ -59,5 +59,10 @@
     "typeinfo": "cpp",
     "utility": "cpp"
   },
+<<<<<<< HEAD
   "C_Cpp.errorSquiggles": "Disabled"
+=======
+  "C_Cpp.errorSquiggles": "Enabled",
+  "C_Cpp.default.configurationProvider": "vscode-wpilib"
+>>>>>>> c9ca3308cf3ea480ad77de3e08902ead5d55240c
 }

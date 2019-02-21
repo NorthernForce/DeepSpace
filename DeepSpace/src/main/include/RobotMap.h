@@ -40,7 +40,12 @@ namespace RobotMap {
 
     namespace OI {
         const static int k_driverController_id = 0;
-        const static int k_manipulatorController_id = 1;
+        const static int k_manipulatorController1_id = 1;
+        const static int k_manipulatorController2_id = 2;
+    }
+
+    namespace CargoManipulator {
+        const static int k_motor_id = 6;
     }
     namespace Elevator {
         const static int k_primary_id = 7;
@@ -58,17 +63,17 @@ namespace RobotMap {
 
     namespace Claw {
         const static int k_clawSolenoid = 1;
-        const static int k_extendSolenoid = 2;
+        const static int k_raiseSolenoid = 2;
 
         const static bool k_clawOpenValue = 1;
         const static bool k_clawClosedValue = 0;
-        const static bool k_clawExtendedValue = 1;
-        const static bool k_clawRetractedValue = 0;
+        const static bool k_clawRaisedValue = 1;
+        const static bool k_clawLoweredValue = 0;
 
         constexpr static double k_timeToClose {0.4};
         constexpr static double k_timeToOpen {0.4};
-        constexpr static double k_timeToExtend {0.4};
-        constexpr static double k_timeToRetract {0.4};
+        constexpr static double k_timeToRaise {0.4};
+        constexpr static double k_timeToLower {0.4};
 
     }
 
