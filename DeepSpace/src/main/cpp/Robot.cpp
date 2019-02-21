@@ -28,6 +28,8 @@ void Robot::RobotInit() {
   // Initialize Subsystems
   m_driveTrain.reset(new BrushlessDrive());
   m_elevator.reset(new Elevator());
+  m_elevator->SetHomePosition();
+  m_elevator->SetPosition(0);
   //m_claw.reset(new Claw());
 
   frc::SmartDashboard::PutData("Elevator Home", new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));

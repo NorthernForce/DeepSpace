@@ -34,15 +34,18 @@ Elevator::Elevator() : Subsystem("Elevator") {
     /* Set the peak and nominal outputs */
     m_primaryTalonElevator->ConfigNominalOutputForward(0, 10);
     m_primaryTalonElevator->ConfigNominalOutputReverse(0, 10);
-    m_primaryTalonElevator->ConfigPeakOutputForward(1, 10);
-    m_primaryTalonElevator->ConfigPeakOutputReverse(-1, 10);
+    m_primaryTalonElevator->ConfigPeakOutputForward(.8, 10);
+    m_primaryTalonElevator->ConfigPeakOutputReverse(-.5, 10);
 
     /* Set Motion Magic gains in slot0 - see documentation */
     m_primaryTalonElevator->SelectProfileSlot(0, pidIdx);
     m_primaryTalonElevator->Config_kF(pidIdx, 0.0, 10);
-    m_primaryTalonElevator->Config_kP(pidIdx, 0.1, 10);
-    m_primaryTalonElevator->Config_kI(pidIdx, 0.0, 10);
+    m_primaryTalonElevator->Config_kP(pidIdx, pGain, 10);
+    m_primaryTalonElevator->Config_kI(pidIdx, iGain, 10);
     m_primaryTalonElevator->Config_kD(pidIdx, 0.0, 10);
+    m_primaryTalonElevator->ConfigMaxIntegralAccumulator(pidIdx, iLimit, timeoutMs);
+    m_primaryTalonElevator->ConfigOpenloopRamp(rampTime);
+    m_primaryTalonElevator->ConfigClosedloopRamp(rampTime);
 
     /* Set acceleration and vcruise velocity - see documentation */
     m_primaryTalonElevator->ConfigMotionCruiseVelocity(1500, 10);
@@ -100,14 +103,14 @@ void Elevator::SetPosition(int setpoint)
 bool Elevator::AtSetpoint()
 {
   int pos = m_primaryTalonElevator->GetSelectedSensorPosition(pidIdx);
-  int err = m_primaryTalonElevator->GetClosedLoopError(1);
+  int err = m_primaryTalonElevator->GetClosedLoopError(0);
     double motorOutput = m_primaryTalonElevator->GetMotorOutputPercent();
   int velocity = m_primaryTalonElevator->GetSelectedSensorVelocity(pidIdx);
   // std::cout << "Elevator current position: " << pos
     // << ", motor output: " << motorOutput
     // << ", sensor velocity: " << velocity
     // << ", error " << err << "\n";
-	return false;//m_primaryTalonElevator->GetClosedLoopError(1) < 2;
+	return m_primaryTalonElevator->GetClosedLoopError(0) < 100;
 }
 
 void Elevator::SetHomePosition()
@@ -116,7 +119,7 @@ void Elevator::SetHomePosition()
 	//DriverStation::ReportWarning("Elevator home position reset");
 	m_setpoint = 0;
   m_primaryTalonElevator->SetSelectedSensorPosition(m_setpoint, pidIdx, timeoutMs);
-  m_primaryTalonElevator->Set(ControlMode::MotionMagic, m_setpoint);
+  m_primaryTalonElevator->Set(ControlMode::Position, m_setpoint);
 }
 
 
