@@ -52,8 +52,8 @@ namespace RobotMap {
         const static int k_follower1_id = 8;
         const static int k_follower2_id = 9;
         const static int k_follower3_id = 10;
-        const static double k_elevatorRaiseSpeed = 0.5;
-        const static double k_elevatorLowerSpeed = -0.5;
+        const static double k_elevatorRaiseSpeed = 0.2 ;
+        const static double k_elevatorLowerSpeed = -0.2;
 
     }
 

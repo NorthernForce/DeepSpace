@@ -15,6 +15,9 @@
 // Command inclusions
 #include "commands/IntakeCargo.h"
 #include "commands/EjectCargo.h"
+#include "commands/ElevatorLower.h"
+#include "commands/ElevatorRaise.h"
+#include "commands/ElevatorStop.h"
 
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
@@ -43,10 +46,16 @@ OI::OI() {
   frc::ShuffleboardLayout& cargoLayout = basicCommandsTab.GetLayout("Cargo", "List Layout");
   cargoLayout.Add("IntakeCargo", new IntakeCargo());
   cargoLayout.Add("EjectCargo", new EjectCargo());
+  cargoLayout.Add("ElevatorRaise", new ElevatorRaise());
+  cargoLayout.Add("ElevatorLower", new ElevatorLower());
 
   WhileHeld(m_manipulatorController1, 3, new IntakeCargo());
+  WhileHeld(m_manipulatorController1, 6, new ElevatorRaise());
+  WhileHeld(m_manipulatorController1, 7, new ElevatorLower());
   // WhileHeld(m_manipulatorController1, , new EjectCargo());
 
+  WhenReleased(m_manipulatorController1, 6, new ElevatorStop());
+  WhenReleased(m_manipulatorController1, 7, new ElevatorStop());
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }
 

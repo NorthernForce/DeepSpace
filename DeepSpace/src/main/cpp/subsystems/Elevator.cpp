@@ -23,6 +23,9 @@ Elevator::Elevator() : Subsystem("Elevator") {
     m_followerTalonElevator2->Follow(*m_primaryTalonElevator);
     m_followerTalonElevator3->Follow(*m_primaryTalonElevator);
 
+    m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+    m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+
     //m_primaryTalonElevator->SetSensorPhase(true);
     m_primaryTalonElevator->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, pidIdx, 10);
 
@@ -87,6 +90,10 @@ void Elevator::Lower(){
    m_primaryTalonElevator->Set(RobotMap::Elevator::k_elevatorLowerSpeed);
 
   //Elevator has 3 floors 
+}
+
+void Elevator::Stop() {
+  m_primaryTalonElevator->Set(0);
 }
 // Put methods for controlling this subsystem
 // here. Call these from Commands

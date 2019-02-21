@@ -30,7 +30,7 @@ class Elevator : public frc::Subsystem {
 	constexpr static double feedForwardGain = 0.3; // 1023 / maxSensorUnitsPer100ms;
 	constexpr static double pGainPower = 0.1;
 	constexpr static double pGainError = 200;
-	constexpr static double pGain = 0.15; // (1023 * pGainPower) / pGainError;
+	constexpr static double pGain = 0.12; // (1023 * pGainPower) / pGainError;
 	constexpr static double iGain = 0.07;
 	constexpr static double iLimit = 1500;
 	constexpr static double dGain = 0; //pGain / 10;
@@ -39,12 +39,13 @@ class Elevator : public frc::Subsystem {
 	constexpr static int pidIdx = 0;
 	constexpr static int defaultPeakAmps = 15;
 	constexpr static int defaultContinuousCurrent = 12;
-	constexpr static double rampTime = 3;
+	constexpr static double rampTime = 0.5;
 
  public:
   Elevator();
   void Raise();
   void Lower();
+  void Stop();
   void InitDefaultCommand() override;
   void SetPosition(int);
 	bool AtSetpoint();
