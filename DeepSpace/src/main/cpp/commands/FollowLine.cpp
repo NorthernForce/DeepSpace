@@ -60,7 +60,7 @@ void FollowLine::Execute() {
 
   Robot::m_driveTrain->arcDrive(speed, rotation); //12 inch an 13 inch for ball and hatch respectively
 
-  if (m_faultyCase = true || Robot::m_ultrasonic->GetDistanceToWall() < 14) {
+  if (m_faultyCase = true /*|| Robot::m_ultrasonic->GetDistanceToWall() < 14*/) {
     m_stopRobot = true;
   }
 }

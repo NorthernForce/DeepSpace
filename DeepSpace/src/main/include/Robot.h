@@ -25,7 +25,6 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<BrushlessDrive> m_driveTrain;
   static std::shared_ptr<Claw> m_claw;
   static std::shared_ptr<LineTracker> m_lineTracker;
-  static std::shared_ptr<UltrasonicSensor> m_ultrasonic;
   static std::shared_ptr<AHRS> m_ahrs;
 
   void RobotInit() override;
