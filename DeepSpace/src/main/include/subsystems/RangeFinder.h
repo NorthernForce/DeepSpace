@@ -10,10 +10,10 @@
 #include <frc/commands/Subsystem.h>
 #include <frc/DigitalOutput.h>
 #include <frc/AnalogInput.h>
-#include <frc/Ultrasonic.h>
+#include <frc/PIDSource.h>
 
 
-class RangeFinder : public frc::Subsystem 
+class RangeFinder : public frc::Subsystem, public frc::PIDSource
 {
  private:
   // It's desirable that everything possible under private except
@@ -23,6 +23,7 @@ class RangeFinder : public frc::Subsystem
    std::shared_ptr<frc::AnalogInput> m_voltageReader;
    double m_voltage;
    double m_rangeInches;
+   frc::PIDSourceType m_pidSource;
 
 
  public:
@@ -31,5 +32,8 @@ class RangeFinder : public frc::Subsystem
    double getDistance();
    int enable();
    int disable();
+   void SetPIDSourceType(frc::PIDSourceType pidSource) override;
+   frc::PIDSourceType GetPIDSourceType() const override;
+   double PIDGet() override;
 
 };
