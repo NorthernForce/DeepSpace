@@ -9,6 +9,7 @@
 
 #include <frc/commands/Subsystem.h>
 #include <frc/DigitalOutput.h>
+#include <frc/AnalogInput.h>
 #include <frc/Ultrasonic.h>
 
 
@@ -19,13 +20,15 @@ class RangeFinder : public frc::Subsystem
   // for methods that implement subsystem capabilities
    int m_lastRange; 
    std::shared_ptr<frc::DigitalOutput> m_ctrl;
-
+   std::shared_ptr<frc::AnalogInput> m_voltageReader;
+   double m_voltage;
+   double m_rangeInches;
 
 
  public:
    RangeFinder();
    void InitDefaultCommand() override;
-   int getDistance();
+   double getDistance();
    int enable();
    int disable();
 

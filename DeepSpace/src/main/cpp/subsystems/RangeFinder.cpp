@@ -11,6 +11,7 @@
 RangeFinder::RangeFinder() : Subsystem("RangeFinder") 
 {
    m_ctrl.reset(new frc::DigitalOutput(RobotMap::Ultrasonic::k_digitalCtlPort));
+   m_voltageReader.reset(new frc::AnalogInput(RobotMap::Ultrasonic::k_analogPort));
    m_ctrl->Set( RobotMap::Ultrasonic::k_ultrasonicOn );
 }
 
@@ -22,9 +23,11 @@ void RangeFinder::InitDefaultCommand()
 }
 
 
-int RangeFinder::getDistance()
+double RangeFinder::getDistance()
 {
-  return 0;
+  m_voltage = m_voltageReader->GetVoltage();
+  m_rangeInches = (m_voltage / 0.0098);
+  return m_rangeInches;
 }
 
 
