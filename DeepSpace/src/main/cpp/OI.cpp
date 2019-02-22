@@ -15,6 +15,7 @@
 // Command inclusions
 #include "commands/IntakeCargo.h"
 #include "commands/EjectCargo.h"
+#include "commands/ToggleClawRaise.h"
 
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
@@ -46,6 +47,7 @@ OI::OI() {
 
   WhileHeld(m_manipulatorController1, 3, new IntakeCargo());
   // WhileHeld(m_manipulatorController1, , new EjectCargo());
+  WhenPressed(m_manipulatorController1, 8, new ToggleClawRaise());
 
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }
