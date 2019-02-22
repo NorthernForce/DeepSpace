@@ -12,9 +12,10 @@
 CargoManipulator::CargoManipulator() : Subsystem("CargoManipulator") {
   m_motor.reset(new rev::CANSparkMax(RobotMap::CargoManipulator::k_motor_id, rev::CANSparkMax::MotorType::kBrushed));
 
-  // m_motor->SetSmartCurrentLimit(k_currentLimit);
-
   // m_divideSpeedTimer.reset(new frc::Timer());
+  m_motor->SetSecondaryCurrentLimit(k_secondaryCurrentLimit);
+  m_motor->SetSmartCurrentLimit(k_currentLimit);
+  m_motor->SetOpenLoopRampRate(k_rampRate);
 }
 
 void CargoManipulator::InitDefaultCommand() {}
@@ -41,3 +42,6 @@ void CargoManipulator::setSpeed(double speed) {
   //   m_motor->Set(speed * k_divideSpeedAmount);
   // }
 }
+
+
+
