@@ -8,23 +8,15 @@
 #include "commands/ToggleClawRaise.h"
 #include "Robot.h"
 
-ToggleClawRaise::ToggleClawRaise() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
+ToggleClawRaise::ToggleClawRaise(): TimedCommand(RobotMap::Claw::k_timeToRaise) {
+  Requires(Robot::m_claw.get());
 }
 
 // Called just before this Command runs the first time
-void ToggleClawRaise::Initialize() {}
-
-// Called repeatedly when this Command is scheduled to run
-void ToggleClawRaise::Execute() {}
-
-// Make this return true when this Command no longer needs to run execute()
-bool ToggleClawRaise::IsFinished() { return false; }
-
-// Called once after isFinished returns true
-void ToggleClawRaise::End() {}
-
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void ToggleClawRaise::Interrupted() {}
+void ToggleClawRaise::Initialize() {
+  if(Robot::m_claw->IfRaised()){
+    Robot::m_claw->ClawLower();
+  } else {
+    Robot::m_claw->ClawRaise();
+  }
+}

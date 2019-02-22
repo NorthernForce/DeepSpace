@@ -7,14 +7,10 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/TimedCommand.h>
 
-class ToggleClawRaise : public frc::Command {
+class ToggleClawRaise : public frc::TimedCommand {
  public:
   ToggleClawRaise();
   void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
 };
