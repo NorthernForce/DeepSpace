@@ -19,25 +19,28 @@ ComputerVision::ComputerVision() : Subsystem("ComputerVision"),
   } {
   m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture("ComputerVision Camera", RobotMap::ComputerVision::k_camera_id));
   m_sink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo("ComputerVision Camera"));
-  m_source = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo("ComputerVision Result", 640, 480));
+
+  // Set default target
+  m_target = 0;
 
   m_visionThread.reset(new std::thread([&]{
-    // Set default target
-    int currentTarget = 0;
-
-    cv::Mat frame;
+    int currentTarget;
 
     for (;;) {
       if (currentTarget != m_target) {
+        m_horizontalOffset = 0;
+        m_verticalOffset = 0;
+
         currentTarget = m_target.load();
 
-        // Reset all settings (v4l)
+        // Reset all settings (v4l-utils)
         // TODODODODODOD
 
         // Call camera setup
         m_targets[currentTarget]->setup(m_camera);
       }
 
+      cv::Mat frame;
       m_sink->GrabFrame(frame);
       auto offsets = m_targets[currentTarget]->run(frame);
 

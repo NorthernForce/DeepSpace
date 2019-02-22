@@ -13,7 +13,8 @@
 #include <frc/Servo.h>
 
 // Needed? What's the right inclusion?
-#include <opencv/cv.h>
+// #include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 
 #include <thread>
 #include <vector>
@@ -38,7 +39,6 @@ class ComputerVision : public frc::Subsystem {
  private:
   std::shared_ptr<cs::UsbCamera> m_camera;
   std::shared_ptr<cs::CvSink> m_sink;
-  std::shared_ptr<cs::CvSource> m_source;
 
   std::shared_ptr<std::thread> m_visionThread;
 
