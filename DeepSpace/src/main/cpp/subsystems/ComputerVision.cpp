@@ -9,28 +9,41 @@
 
 #include "RobotMap.h"
 
-ComputerVision::ComputerVision() : Subsystem("ComputerVision") {
-  m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture("Driver Camera", RobotMap::ComputerVision::k_camera_id));
-  // m_servo.reset(new frc::Servo(RobotMap::ComputerVision::k_servo_id));
+#include "subsystems/ComputerVisionTargets/TapeTarget.h"
+#include "subsystems/ComputerVisionTargets/BallTarget.h"
 
-  m_visionTargetSetup[Target::Tape] = m_visionTargetTapeSetup;
+ComputerVision::ComputerVision() : Subsystem("ComputerVision"),
+  m_targets{
+    std::make_shared<TapeTarget>(),
+    std::make_shared<BallTarget>()
+  } {
+  m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture("ComputerVision Camera", RobotMap::ComputerVision::k_camera_id));
+  m_sink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo("ComputerVision Camera"));
+  m_source = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo("ComputerVision Result", 640, 480));
 
   m_visionThread.reset(new std::thread([&]{
     // Set default target
-    Target currentTarget = Target::Tape;
+    int currentTarget = 0;
+
+    cv::Mat frame;
 
     for (;;) {
-      if (currentTarget != m_objectToTarget) {
-        currentTarget = m_objectToTarget.load();
+      if (currentTarget != m_target) {
+        currentTarget = m_target.load();
 
-        // call camera setup
+        // Reset all settings (v4l)
+        // TODODODODODOD
+
+        // Call camera setup
+        m_targets[currentTarget]->setup(m_camera);
       }
 
-      //   Call enum to function map
-      //      example function: std::pair<double, double> getTape(cs::Mat)
+      m_sink->GrabFrame(frame);
+      auto offsets = m_targets[currentTarget]->run(frame);
 
-      if (currentTarget == m_objectToTarget) {
-        // set atomics
+      if (currentTarget == m_target) {
+        m_horizontalOffset = offsets.first;
+        m_verticalOffset = offsets.second;
       }
       else {
         m_horizontalOffset = 0;
@@ -40,8 +53,20 @@ ComputerVision::ComputerVision() : Subsystem("ComputerVision") {
   }));
 }
 
-void ComputerVision::setTarget(Target target) {
-  m_objectToTarget = target;
+void ComputerVision::setTarget(std::string targetName) {
+  auto pos = std::find_if(m_targets.begin(), m_targets.end(),
+    [&targetName](const std::shared_ptr<Target>& testTarget) {
+      return targetName.compare(testTarget->name);
+    }
+  );
+
+  if (pos != m_targets.end()) {
+    m_target = std::distance(m_targets.begin(), pos);
+
+    // Just in case set the offsets to zero.
+    m_horizontalOffset = 0;
+    m_verticalOffset = 0;
+  }
 }
 
 std::pair<double, double> ComputerVision::getOffset() {

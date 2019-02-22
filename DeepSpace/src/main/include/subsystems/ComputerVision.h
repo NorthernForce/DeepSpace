@@ -12,36 +12,39 @@
 #include <cameraserver/CameraServer.h>
 #include <frc/Servo.h>
 
+// Needed? What's the right inclusion?
+#include <opencv/cv.h>
+
 #include <thread>
-#include <map>
+#include <vector>
 #include <atomic>
+#include <string>
 
 class ComputerVision : public frc::Subsystem {
  public:
   ComputerVision();
 
-  enum class Target {
-    Tape,
-    Ball
+  class Target {
+    public:
+      virtual void setup(std::shared_ptr<cs::UsbCamera> camera) = 0;
+      virtual std::pair<double, double> run(cv::Mat frame) = 0;
+      const std::string name = "";
   };
 
-  void setTarget(Target objectToTarget);
+  void setTarget(std::string objectToTarget);
 
   std::pair<double, double> getOffset();
 
  private:
   std::shared_ptr<cs::UsbCamera> m_camera;
-  // std::shared_ptr<frc::Servo> m_servo;
+  std::shared_ptr<cs::CvSink> m_sink;
+  std::shared_ptr<cs::CvSource> m_source;
 
   std::shared_ptr<std::thread> m_visionThread;
 
-  std::atomic<Target> m_objectToTarget;
+  std::atomic<int> m_target;
   std::atomic<double> m_horizontalOffset;
   std::atomic<double> m_verticalOffset;
 
-  void m_visionTargetTapeSetup();
-  std::pair<double, double> m_visionTargetTapeRun(cv::Mat frame);
-
-  std::map<Target, void (*)()> m_visionTargetSetup;
-  std::map<Target, std::pair<double, double> (*)(cv::Mat frame)> m_visionTargetRun;
+  const std::vector<std::shared_ptr<Target>> m_targets;
 };
