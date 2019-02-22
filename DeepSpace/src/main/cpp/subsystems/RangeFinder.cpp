@@ -63,4 +63,3 @@ int RangeFinder::disable()
   m_ctrl->Set( RobotMap::Ultrasonic::k_ultrasonicOff );
   return 0;
 }
-;
