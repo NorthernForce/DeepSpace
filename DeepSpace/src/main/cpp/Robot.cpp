@@ -56,20 +56,8 @@ void Robot::RobotInit() {
  * LiveWindow and SmartDashboard integrated updating.
  */
 void Robot::RobotPeriodic() {
-  
-  int pos = m_elevator->GetMainTalon()->GetSelectedSensorPosition(0);
-  int err = m_elevator->GetMainTalon()->GetClosedLoopError(0);
-  double motorOutput = m_elevator->GetMainTalon()->GetMotorOutputPercent();
-  int velocity = m_elevator->GetMainTalon()->GetSelectedSensorVelocity(0);
-  // std::cout << "Elevator current position: " << pos<< ", error " << err << "\n";
-
-  static int counter = 0;
-  counter++;
-  if ( counter > 100 )
-  {
-    counter = 0;
-    printf("Pos: %d err: %d\n", pos, err);
-  }
+  frc::SmartDashboard::PutNumber("Elevator Sensor Position", m_elevator->GetSelectedSensorPosition());
+  frc::SmartDashboard::PutNumber("Elevator Closed Loop Error", m_elevator->GetClosedLoopError());
 }
 
 /**

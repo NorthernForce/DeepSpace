@@ -18,6 +18,7 @@
 #include "commands/ElevatorLower.h"
 #include "commands/ElevatorRaise.h"
 #include "commands/ElevatorStop.h"
+#include "commands/SetupRobot.h"
 
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
@@ -42,6 +43,7 @@ OI::OI() {
   m_manipulatorController2.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController2_id));
 
   frc::ShuffleboardTab& basicCommandsTab = frc::Shuffleboard::GetTab("Basic Commands");
+  basicCommandsTab.Add("SetupRobot", new SetupRobot());
 
   frc::ShuffleboardLayout& cargoLayout = basicCommandsTab.GetLayout("Cargo", "List Layout");
   cargoLayout.Add("IntakeCargo", new IntakeCargo());

@@ -126,10 +126,24 @@ void Elevator::SetHomePosition()
 	//DriverStation::ReportWarning("Elevator home position reset");
 	m_setpoint = 0;
   m_primaryTalonElevator->SetSelectedSensorPosition(m_setpoint, pidIdx, timeoutMs);
-  m_primaryTalonElevator->Set(ControlMode::Position, m_setpoint);
 }
 
+bool Elevator::AtLowerLimit() {
+  return m_primaryTalonElevator->GetSensorCollection().IsRevLimitSwitchClosed();
+}
 
-std::shared_ptr<WPI_TalonSRX> Elevator::GetMainTalon() {
-  return m_primaryTalonElevator;
+void Elevator::Extend(){
+  //add code to extend elevator
+}
+
+void Elevator::Retract(){
+  //add code to retract elevator
+}
+
+int Elevator::GetSelectedSensorPosition() {
+  return m_primaryTalonElevator->GetSelectedSensorPosition(0);
+}
+
+int Elevator::GetClosedLoopError() {
+  return m_primaryTalonElevator->GetClosedLoopError(0);
 }
