@@ -46,8 +46,10 @@ ComputerVision::ComputerVision() : Subsystem("ComputerVision"),
 
       cv::Mat frame;
       auto status = m_sink->GrabFrame(frame);
-      std::cout << "status: " << status << "\n";
-      if (status != 0) {
+      if (status == 0) {
+        std::cout << "ComputerVision Error: " << m_sink->GetError() << "\n";
+      }
+      else {
         auto offsets = m_targets[currentTarget]->run(frame, m_debug);
 
         if (currentTarget == m_target) {
