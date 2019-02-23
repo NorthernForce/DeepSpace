@@ -5,28 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ElevatorExtend.h"
+#include "commands/ElevatorRetract.h"
 #include "Robot.h"
 #include "RobotMap.h"
 
-ElevatorExtend::ElevatorExtend() {
+ElevatorRetract::ElevatorRetract() {
   Requires(Robot::m_elevator.get());
 }
 
 // Called just before this Command runs the first time
-void ElevatorExtend::Initialize() {
-  Robot::m_elevator->Extend();
+void ElevatorRetract::Initialize() {
+  Robot::m_elevator->Retract();
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ElevatorExtend::Execute() {}
+void ElevatorRetract::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool ElevatorExtend::IsFinished() { return false; }
+bool ElevatorRetract::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void ElevatorExtend::End() {}
+void ElevatorRetract::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ElevatorExtend::Interrupted() {}
+void ElevatorRetract::Interrupted() {}

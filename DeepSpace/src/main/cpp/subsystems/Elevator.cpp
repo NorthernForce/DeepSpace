@@ -18,6 +18,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
     m_followerTalonElevator1.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower1_id));
     m_followerTalonElevator2.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower2_id));
     m_followerTalonElevator3.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower3_id));
+    m_elevatorExtenderSolenoid.reset(new frc::Solenoid (RobotMap::PCM::k_pcm_id, RobotMap::Elevator::k_solenoid_id));
 
     m_followerTalonElevator1->Follow(*m_primaryTalonElevator);
     m_followerTalonElevator2->Follow(*m_primaryTalonElevator);
@@ -133,11 +134,11 @@ bool Elevator::AtLowerLimit() {
 }
 
 void Elevator::Extend(){
-  //add code to extend elevator
+  m_elevatorExtenderSolenoid->Set(RobotMap::Elevator::k_elevatorExtendedValue);
 }
 
 void Elevator::Retract(){
-  //add code to retract elevator
+  m_elevatorExtenderSolenoid->Set(RobotMap::Elevator::k_elevatorRetractedValue);
 }
 
 int Elevator::GetSelectedSensorPosition() {
