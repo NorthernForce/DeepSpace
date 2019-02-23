@@ -12,8 +12,6 @@
 #include <cameraserver/CameraServer.h>
 #include <frc/Servo.h>
 
-// Needed? What's the right inclusion?
-// #include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
 
 #include <thread>
@@ -27,14 +25,19 @@ class ComputerVision : public frc::Subsystem {
 
   class Target {
     public:
-      virtual void setup(std::shared_ptr<cs::UsbCamera> camera) = 0;
+      virtual void setup() = 0;
       virtual std::pair<double, double> run(cv::Mat frame, std::shared_ptr<cs::CvSource> debug) = 0;
       const std::string name = "";
+    
+    private:
   };
 
   void setTarget(std::string objectToTarget);
 
   std::pair<double, double> getOffset();
+
+  static const std::string cameraSettingsBaseCommand;
+  static const std::string cameraSettingsDefaultCommand;
 
  private:
   std::shared_ptr<cs::UsbCamera> m_camera;

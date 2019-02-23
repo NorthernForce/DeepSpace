@@ -1,6 +1,6 @@
 #include "subsystems/ComputerVisionTargets/BallTarget.h"
 
-void BallTarget::setup(std::shared_ptr<cs::UsbCamera> camera) {
+void BallTarget::setup() {
 
 }
 

@@ -1,15 +1,14 @@
 #include "subsystems/ComputerVisionTargets/TapeTarget.h"
 
-void TapeTarget::setup(std::shared_ptr<cs::UsbCamera> camera) {
-  /*
-   * Must run "opkg install v4l-utils" on the roborio whilst connected to
-   * the internet (e.g. by ethernet)
-   * 
-   * Also, use -l to list the controls
-   *     - Valid exposures are "5, 10, 20, 39, 78, 156, 312, 625, 1250, 2500, 5000, 10000, 20000"
-   */
+const std::string TapeTarget::cameraSettingsCommand = ComputerVision::cameraSettingsBaseCommand +
+  "exposure_auto=1,"
+  "exposure_absolute=5" // Valid exposures are "5, 10, 20, 39, 78, 156, 312, 625, 1250, 2500, 5000, 10000, 20000"
+  "white_balance_temperature_auto=0";
 
-  // system("v4l2-ctl -d 2 -c exposure_auto=1,exposure_absolute=10");
+void TapeTarget::setup() {
+  // TODO: Turn on light ring
+
+  system(TapeTarget::cameraSettingsCommand.c_str());
 }
 
 std::pair<double, double> TapeTarget::run(cv::Mat frame, std::shared_ptr<cs::CvSource> debug) {
@@ -18,11 +17,17 @@ std::pair<double, double> TapeTarget::run(cv::Mat frame, std::shared_ptr<cs::CvS
   // Attempt to remove some noise.
   cv::blur(filtered, filtered, cv::Size(3, 3));
 
-  // Use gray scale.
-  cv::cvtColor(filtered, filtered, cv::COLOR_BGR2GRAY);
+  // // Use gray scale.
+  // cv::cvtColor(filtered, filtered, cv::COLOR_BGR2GRAY);
 
-  // Threshold it.
-  cv::threshold(filtered, filtered, 100, 255, cv::THRESH_BINARY);
+  // // Threshold it.
+  // cv::threshold(filtered, filtered, 50, 255, cv::THRESH_BINARY);
+
+  // Use HSV.
+  cv::cvtColor(filtered, filtered, cv::COLOR_BGR2HSV);
+
+  // Try to threshold the tape.
+  cv::inRange(filtered, k_minHSV, k_maxHSV, filtered);
 
   // // Get rid of spots.
   // cv::erode(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
@@ -37,33 +42,45 @@ std::pair<double, double> TapeTarget::run(cv::Mat frame, std::shared_ptr<cs::CvS
   for (int i = 0; i < contours.size(); i++) {
     cv::Moments test = cv::moments(contours[i], false);
 
-    if (first.m00 < test.m00) {
-      second = first;
-      first = test;
+    // Minimum area.
+    if (test.m00 >= k_minArea) {
+      if (first.m00 < test.m00) {
+        second = first;
+        first = test;
+      }
+      else if (second.m00 < test.m00) {
+        second = test;
+      }
     }
-    else if (second.m00 < test.m00) {
-      second = test;
-    }
+  }
+
+  // Make sure two targets were found.
+  if (second.m00 == 0) {
+    return std::make_pair(0, 0);
   }
 
   double centerX = (first.m10/first.m00 + second.m10/second.m00) / 2;
   double centerY = (first.m01/first.m00 + second.m01/second.m00) / 2;
 
   // Debug
-  cv::Mat result = frame;
-  for (int i = 0; i < contours.size(); i++) {
-    cv::drawContours(result, contours, i, cv::Scalar(0, 255, 0));
+  if (debug != nullptr) {
+    cv::Mat result = frame;
+    cv::cvtColor(result, result, cv::COLOR_HSV2BGR);
+    for (int i = 0; i < contours.size(); i++) {
+      cv::drawContours(result, contours, i, cv::Scalar(0, 255, 0));
+    }
+    cv::circle(result, cv::Point(first.m10/first.m00, first.m01/first.m00), 1, cv::Scalar(255, 0, 0), 2);
+    cv::circle(result, cv::Point(second.m10/second.m00, second.m01/second.m00), 1, cv::Scalar(255, 0, 0), 2);
+    cv::circle(result, cv::Point(centerX, centerY), 1, cv::Scalar(0, 0, 255), 2);
+    debug->PutFrame(result);
+
+    // std::cout << "area1: " << first.m00 << " area2: " << second.m00 << "\n";
+    // std::cout << "x: " << centerX << " y: " << centerY << "\n";
   }
-  cv::circle(result, cv::Point(first.m10/first.m00, first.m01/first.m00), 1, cv::Scalar(255, 0, 0), 2);
-  cv::circle(result, cv::Point(second.m10/second.m00, second.m01/second.m00), 1, cv::Scalar(255, 0, 0), 2);
-  cv::circle(result, cv::Point(centerX, centerY), 1, cv::Scalar(0, 0, 255), 2);
-  debug->PutFrame(result);
 
   // Convert to decimals
   centerX = (frame.cols / 2 - centerX) / (frame.cols / 2);
   centerY = (frame.rows / 2 - centerY) / (frame.rows / 2);
-
-  std::cout << "x: " << centerX << " y: " << centerY << "\n";
 
   return std::make_pair(centerX, centerY);
 }

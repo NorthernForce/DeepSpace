@@ -7,24 +7,42 @@
 
 #include "subsystems/ComputerVision.h"
 
-#include "RobotMap.h"
-
 #include "subsystems/ComputerVisionTargets/TapeTarget.h"
 #include "subsystems/ComputerVisionTargets/BallTarget.h"
+
+#include "RobotMap.h"
+
+const std::string ComputerVision::cameraSettingsBaseCommand = 
+  "v4l2-ctl --device "
+  + std::string(RobotMap::ComputerVision::k_camera_path)
+  + " --set-ctrl ";
+
+const std::string ComputerVision::cameraSettingsDefaultCommand = ComputerVision::cameraSettingsBaseCommand +
+  "brightness=133,"
+  "contrast=5,"
+  "saturation=83,"
+  "white_balance_temperature_auto=1,"
+  "power_line_frequency=2,"
+  "white_balance_temperature=4500,"
+  "sharpness=25,"
+  "backlight_compensation=0,"
+  "exposure_auto=1,"
+  "exposure_absolute=156,"
+  "pan_absolute=0,"
+  "tilt_absolute=0,"
+  "zoom_absolute=0";
 
 ComputerVision::ComputerVision() : Subsystem("ComputerVision"),
   m_targets{
     std::make_shared<TapeTarget>(),
     std::make_shared<BallTarget>()
   } {
-  // m_camera->SetResolution(640, 480);
-  // m_sink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo("ComputerVision Camera"));
 
   // Set default target
   m_target = 0;
 
   m_visionThread.reset(new std::thread([&]{
-    m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture("ComputerVision Camera", RobotMap::ComputerVision::k_camera_id));
+    m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture("ComputerVision Camera", RobotMap::ComputerVision::k_camera_path));
     m_sink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo("ComputerVision Camera"));
     m_debug = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo("ComputerVision Debug", 160, 120));
     
@@ -38,10 +56,10 @@ ComputerVision::ComputerVision() : Subsystem("ComputerVision"),
         currentTarget = m_target.load();
 
         // Reset all settings (v4l-utils)
-        // TODODODODODOD
+        system(ComputerVision::cameraSettingsDefaultCommand.c_str());
 
         // Call camera setup
-        m_targets[currentTarget]->setup(m_camera);
+        m_targets[currentTarget]->setup();
       }
 
       cv::Mat frame;

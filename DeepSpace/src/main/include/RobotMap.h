@@ -85,7 +85,8 @@ namespace RobotMap {
 
     namespace ComputerVision {
         // TODO: use constant path ("/dev/v4l/by-path/...")
-        const static int k_camera_id = 0;
+        // const static int k_camera_id = 0;
+        const static char *k_camera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0";
     }
 }
 
