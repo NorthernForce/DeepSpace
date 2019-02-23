@@ -15,6 +15,9 @@
 // Command inclusions
 #include "commands/IntakeCargo.h"
 #include "commands/EjectCargo.h"
+#include "commands/ToggleClawRaise.h"
+#include "commands/CloseClaw.h"
+#include "commands/OpenClaw.h"
 
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
@@ -44,8 +47,13 @@ OI::OI() {
   cargoLayout.Add("IntakeCargo", new IntakeCargo());
   cargoLayout.Add("EjectCargo", new EjectCargo());
 
-  WhileHeld(m_manipulatorController1, 3, new IntakeCargo());
-  // WhileHeld(m_manipulatorController1, , new EjectCargo());
+  WhileHeld(m_manipulatorController1, 1, new IntakeCargo());
+  WhenPressed(m_manipulatorController1, 1, new CloseClaw());
+  WhenReleased(m_manipulatorController1, 1, new OpenClaw());
+
+  WhileHeld(m_manipulatorController1, 3, new EjectCargo());
+  
+  WhenPressed(m_manipulatorController1, 8, new ToggleClawRaise());
 
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }
