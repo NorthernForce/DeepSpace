@@ -21,51 +21,49 @@ std::pair<double, double> TapeTarget::run(cv::Mat frame, std::shared_ptr<cs::CvS
   // Use gray scale.
   cv::cvtColor(filtered, filtered, cv::COLOR_BGR2GRAY);
 
-  // // Threshold it.
-  // cv::threshold(filtered, filtered, 100, 255, cv::THRESH_BINARY);
+  // Threshold it.
+  cv::threshold(filtered, filtered, 100, 255, cv::THRESH_BINARY);
 
-  // // // Get rid of spots.
-  // // cv::erode(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
-  // // cv::dilate(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
+  // // Get rid of spots.
+  // cv::erode(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
+  // cv::dilate(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
 
-  // // Find contours.
-  // std::vector<std::vector<cv::Point>> contours;
-  // cv::findContours(filtered, contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
+  // Find contours.
+  std::vector<std::vector<cv::Point>> contours;
+  cv::findContours(filtered, contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
 
-  // // Also find largest two contours
-  // cv::Moments first, second;
-  // for (int i = 0; i < contours.size(); i++) {
-  //   cv::Moments test = cv::moments(contours[i], false);
+  // Also find largest two contours
+  cv::Moments first, second;
+  for (int i = 0; i < contours.size(); i++) {
+    cv::Moments test = cv::moments(contours[i], false);
 
-  //   if (first.m00 < test.m00) {
-  //     second = first;
-  //     first = test;
-  //   }
-  //   else if (second.m00 < test.m00) {
-  //     second = test;
-  //   }
-  // }
+    if (first.m00 < test.m00) {
+      second = first;
+      first = test;
+    }
+    else if (second.m00 < test.m00) {
+      second = test;
+    }
+  }
 
-  // double centerX = (first.m10/first.m00 + second.m10/second.m00) / 2;
-  // double centerY = (first.m01/first.m00 + second.m01/second.m00) / 2;
+  double centerX = (first.m10/first.m00 + second.m10/second.m00) / 2;
+  double centerY = (first.m01/first.m00 + second.m01/second.m00) / 2;
 
   // Debug
-  // cs::CvSource resultSource = frc::CameraServer::GetInstance()->PutVideo("TapeTarget Result", frame.cols, frame.rows);
-  cv::Mat result = filtered;
-  // for (int i = 0; i < contours.size(); i++) {
-  //   cv::drawContours(result, contours, i, cv::Scalar(0, 255, 0));
-  // }
-  // cv::circle(result, cv::Point(first.m10/first.m00, first.m01/first.m00), 1, cv::Scalar(255, 0, 0), 2);
-  // cv::circle(result, cv::Point(second.m10/second.m00, second.m01/second.m00), 1, cv::Scalar(255, 0, 0), 2);
-  // cv::circle(result, cv::Point(centerX, centerY), 1, cv::Scalar(0, 0, 255), 2);
+  cv::Mat result = frame;
+  for (int i = 0; i < contours.size(); i++) {
+    cv::drawContours(result, contours, i, cv::Scalar(0, 255, 0));
+  }
+  cv::circle(result, cv::Point(first.m10/first.m00, first.m01/first.m00), 1, cv::Scalar(255, 0, 0), 2);
+  cv::circle(result, cv::Point(second.m10/second.m00, second.m01/second.m00), 1, cv::Scalar(255, 0, 0), 2);
+  cv::circle(result, cv::Point(centerX, centerY), 1, cv::Scalar(0, 0, 255), 2);
   debug->PutFrame(result);
 
-  // // Convert to decimals
-  // centerX = (frame.cols / 2 - centerX) / (frame.cols / 2);
-  // centerY = (frame.rows / 2 - centerY) / (frame.rows / 2);
+  // Convert to decimals
+  centerX = (frame.cols / 2 - centerX) / (frame.cols / 2);
+  centerY = (frame.rows / 2 - centerY) / (frame.rows / 2);
 
-  // std::cout << "x: " << centerX << " y: " << centerY << "\n";
+  std::cout << "x: " << centerX << " y: " << centerY << "\n";
 
-  // return std::make_pair(centerX, centerY);
-  return std::make_pair(0, 0);
+  return std::make_pair(centerX, centerY);
 }

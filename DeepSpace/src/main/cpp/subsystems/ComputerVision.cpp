@@ -46,6 +46,7 @@ ComputerVision::ComputerVision() : Subsystem("ComputerVision"),
 
       cv::Mat frame;
       auto status = m_sink->GrabFrame(frame);
+
       if (status == 0) {
         std::cout << "ComputerVision Error: " << m_sink->GetError() << "\n";
       }
