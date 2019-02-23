@@ -28,7 +28,7 @@ class ComputerVision : public frc::Subsystem {
   class Target {
     public:
       virtual void setup(std::shared_ptr<cs::UsbCamera> camera) = 0;
-      virtual std::pair<double, double> run(cv::Mat frame) = 0;
+      virtual std::pair<double, double> run(cv::Mat frame, std::shared_ptr<cs::CvSource> debug) = 0;
       const std::string name = "";
   };
 
@@ -39,6 +39,7 @@ class ComputerVision : public frc::Subsystem {
  private:
   std::shared_ptr<cs::UsbCamera> m_camera;
   std::shared_ptr<cs::CvSink> m_sink;
+  std::shared_ptr<cs::CvSource> m_debug;
 
   std::shared_ptr<std::thread> m_visionThread;
 

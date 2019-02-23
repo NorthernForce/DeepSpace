@@ -4,6 +4,6 @@ void BallTarget::setup(std::shared_ptr<cs::UsbCamera> camera) {
 
 }
 
-std::pair<double, double> BallTarget::run(cv::Mat frame) {
+std::pair<double, double> BallTarget::run(cv::Mat frame, std::shared_ptr<cs::CvSource> debug) {
 
 }

@@ -17,13 +17,17 @@ ComputerVision::ComputerVision() : Subsystem("ComputerVision"),
     std::make_shared<TapeTarget>(),
     std::make_shared<BallTarget>()
   } {
-  m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture("ComputerVision Camera", RobotMap::ComputerVision::k_camera_id));
-  m_sink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo("ComputerVision Camera"));
+  // m_camera->SetResolution(640, 480);
+  // m_sink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo("ComputerVision Camera"));
 
   // Set default target
   m_target = 0;
 
   m_visionThread.reset(new std::thread([&]{
+    m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture("ComputerVision Camera", RobotMap::ComputerVision::k_camera_id));
+    m_sink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo("ComputerVision Camera"));
+    m_debug = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo("ComputerVision Debug", 160, 120));
+    
     int currentTarget;
 
     for (;;) {
@@ -41,16 +45,19 @@ ComputerVision::ComputerVision() : Subsystem("ComputerVision"),
       }
 
       cv::Mat frame;
-      m_sink->GrabFrame(frame);
-      auto offsets = m_targets[currentTarget]->run(frame);
+      auto status = m_sink->GrabFrame(frame);
+      std::cout << "status: " << status << "\n";
+      if (status != 0) {
+        auto offsets = m_targets[currentTarget]->run(frame, m_debug);
 
-      if (currentTarget == m_target) {
-        m_horizontalOffset = offsets.first;
-        m_verticalOffset = offsets.second;
-      }
-      else {
-        m_horizontalOffset = 0;
-        m_verticalOffset = 0;
+        if (currentTarget == m_target) {
+          m_horizontalOffset = offsets.first;
+          m_verticalOffset = offsets.second;
+        }
+        else {
+          m_horizontalOffset = 0;
+          m_verticalOffset = 0;
+        }
       }
     }
   }));
