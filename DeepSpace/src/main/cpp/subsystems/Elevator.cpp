@@ -112,7 +112,7 @@ bool Elevator::AtSetpoint()
 {
   int pos = m_primaryTalonElevator->GetSelectedSensorPosition(pidIdx);
   int err = m_primaryTalonElevator->GetClosedLoopError(0);
-    double motorOutput = m_primaryTalonElevator->GetMotorOutputPercent();
+  double motorOutput = m_primaryTalonElevator->GetMotorOutputPercent();
   int velocity = m_primaryTalonElevator->GetSelectedSensorVelocity(pidIdx);
   // std::cout << "Elevator current position: " << pos
     // << ", motor output: " << motorOutput

@@ -50,18 +50,13 @@ void ElevatorSetPosition::Execute() {
    const auto setpoint = m_setpoints.find(m_position);
   // std::cout << "ElevatorSetPosition executing " << "\n";
   m_elevator->SetPosition(setpoint->second);
-  const bool elevatorDone = m_elevator->AtSetpoint();
-  // std::cout << "ElevatorSetPosition done executing " << "\n";
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ElevatorSetPosition::IsFinished() { 
   
-  // std::cout << "Set Position checking to see if finished" << "\n";
-  const bool elevatorDone = m_elevator->AtSetpoint();
+  return m_elevator->AtSetpoint();
   
-  // std::cout << "Set Position finished? " << elevatorDone << "\n";
-	return elevatorDone;
 }
 
 // Called once after isFinished returns true
@@ -69,4 +64,6 @@ void ElevatorSetPosition::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ElevatorSetPosition::Interrupted() {}
+void ElevatorSetPosition::Interrupted() {
+  m_elevator->Stop();
+}

@@ -8,6 +8,8 @@
 #include "Robot.h"
 
 #include "commands/ElevatorSetPosition.h"
+#include "commands/ElevatorCalibrate.h"
+#include "commands/SetupRobot.h"
 
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -42,7 +44,8 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Hatch Deposit Level 2", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel2));
   frc::SmartDashboard::PutData("Hatch Deposit Level 3", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchPanelIntake));
   frc::SmartDashboard::PutData("Climb Position", new ElevatorSetPosition(ElevatorSetPosition::Position::ClimbPosition));
-
+  frc::SmartDashboard::PutData("Elevator Calibrate", new ElevatorCalibrate());
+  frc::SmartDashboard::PutData("SetupRobot", new SetupRobot());
   // Initialize OI after subsystems
   m_oi.reset(new OI());
 }
