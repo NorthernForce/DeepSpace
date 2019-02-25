@@ -81,5 +81,13 @@ namespace RobotMap {
 
     }
 
+    namespace Ultrasonic
+    {
+        const static int k_digitalCtlPort   = 4;
+        const static int k_analogPort       = 0;
+        const static bool k_ultrasonicOn    = false;
+        const static bool k_ultrasonicOff   = true;
+    }
+
 }
 

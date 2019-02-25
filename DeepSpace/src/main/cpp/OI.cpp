@@ -19,6 +19,9 @@
 #include "commands/ElevatorRaise.h"
 #include "commands/ElevatorStop.h"
 #include "commands/SetupRobot.h"
+#include "commands/ToggleClawRaise.h"
+#include "commands/CloseClaw.h"
+#include "commands/OpenClaw.h"
 
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
@@ -51,10 +54,13 @@ OI::OI() {
   cargoLayout.Add("ElevatorRaise", new ElevatorRaise());
   cargoLayout.Add("ElevatorLower", new ElevatorLower());
 
-  WhileHeld(m_manipulatorController1, 3, new IntakeCargo());
-  WhileHeld(m_manipulatorController1, 6, new ElevatorRaise());
-  WhileHeld(m_manipulatorController1, 7, new ElevatorLower());
-  // WhileHeld(m_manipulatorController1, , new EjectCargo());
+  WhileHeld(m_manipulatorController1, 1, new IntakeCargo());
+  WhenPressed(m_manipulatorController1, 1, new CloseClaw());
+  WhenReleased(m_manipulatorController1, 1, new OpenClaw());
+
+  WhileHeld(m_manipulatorController1, 3, new EjectCargo());
+  
+  WhenPressed(m_manipulatorController1, 8, new ToggleClawRaise());
 
   WhenReleased(m_manipulatorController1, 6, new ElevatorStop());
   WhenReleased(m_manipulatorController1, 7, new ElevatorStop());

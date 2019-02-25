@@ -33,7 +33,8 @@ BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   ConfigureController(*m_rightFollowerBrushless);
 }
 
-void BrushlessDrive::InitDefaultCommand() {
+void BrushlessDrive::InitDefaultCommand() 
+{
   // Set the default command for a subsystem here.
   SetDefaultCommand(new DriveWithJoystick());
 }
