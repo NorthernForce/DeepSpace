@@ -118,7 +118,7 @@ bool Elevator::AtSetpoint()
     // << ", motor output: " << motorOutput
     // << ", sensor velocity: " << velocity
     // << ", error " << err << "\n";
-	return m_primaryTalonElevator->GetClosedLoopError(0) < 100;
+	return m_primaryTalonElevator->GetClosedLoopError(0) < 250;
 }
 
 void Elevator::SetHomePosition()
@@ -147,4 +147,8 @@ int Elevator::GetSelectedSensorPosition() {
 
 int Elevator::GetClosedLoopError() {
   return m_primaryTalonElevator->GetClosedLoopError(0);
+}
+
+double Elevator::GetPGainValue() {
+  return pGain;
 }

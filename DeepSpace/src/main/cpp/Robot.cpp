@@ -10,6 +10,7 @@
 #include "commands/ElevatorSetPosition.h"
 #include "commands/ElevatorCalibrate.h"
 #include "commands/SetupRobot.h"
+#include "subsystems/Elevator.h"
 
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -61,6 +62,8 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
   frc::SmartDashboard::PutNumber("Elevator Sensor Position", m_elevator->GetSelectedSensorPosition());
   frc::SmartDashboard::PutNumber("Elevator Closed Loop Error", m_elevator->GetClosedLoopError());
+  frc::SmartDashboard::PutNumber("pGain value", m_elevator->GetPGainValue());
+  frc::SmartDashboard::GetNumber("pGain value", m_elevator->GetPGainValue());
 }
 
 /**
