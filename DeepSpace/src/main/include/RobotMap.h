@@ -89,5 +89,10 @@ namespace RobotMap {
         const static bool k_ultrasonicOff   = true;
     }
 
+    namespace Camera
+    {
+        const static int k_lightRingRelay   =  0;
+    }
+
 }
 
