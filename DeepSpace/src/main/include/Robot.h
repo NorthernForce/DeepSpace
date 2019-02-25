@@ -16,8 +16,7 @@
 #include "subsystems/BrushlessDrive.h"
 #include "subsystems/CargoManipulator.h"
 #include "subsystems/Claw.h"
-#include "subsystems/DriverVision.h"
-#include "subsystems/ComputerVision.h"
+#include "subsystems/Vision.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -26,8 +25,7 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<BrushlessDrive> m_driveTrain;
   static std::shared_ptr<CargoManipulator> m_cargoManipulator;
   static std::shared_ptr<Claw> m_claw;
-  static std::shared_ptr<DriverVision> m_driverVision;
-  static std::shared_ptr<ComputerVision> m_computerVision;
+  static std::shared_ptr<Vision> m_vision;
 
   void RobotInit() override;
   void RobotPeriodic() override;

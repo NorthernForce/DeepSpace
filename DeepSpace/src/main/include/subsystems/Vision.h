@@ -1,0 +1,81 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+#pragma once
+
+#include <frc/commands/Subsystem.h>
+
+#include <cameraserver/CameraServer.h>
+#include <frc/Servo.h>
+
+#include <opencv2/opencv.hpp>
+
+#include <thread>
+#include <map>
+#include <atomic>
+#include <string>
+
+class Vision : public frc::Subsystem {
+ public:
+  Vision();
+  void setTarget(std::string cameraName, std::string targetName);
+  std::pair<double, double> getOffset(std::string targetName);
+
+  class Camera;
+  class Target;
+
+  class Camera {
+   public:
+    Camera(std::string name, std::string devPath);
+    void process();
+    void updateSettings(std::string newSettings);
+    void setLightring(bool turnOn);
+    void setTarget(std::shared_ptr<Target> target);
+
+    static const std::string defaultSettings;
+
+   private:
+    std::string m_name;
+    std::string m_path;
+
+    std::string m_baseCommand;
+    std::string m_resetCommand;
+
+    std::shared_ptr<cs::UsbCamera> m_camera;
+    std::shared_ptr<cs::CvSink> m_sink;
+    std::shared_ptr<cs::CvSource> m_source;
+
+    std::shared_ptr<Target> m_objectToTarget;
+    std::shared_ptr<Target> m_currentTarget;
+  };
+
+  class Target {
+   public:
+    virtual void setup(Vision::Camera *camera) = 0;
+    virtual void run(cv::Mat &frame) = 0;
+    const std::string name = "";
+
+    void resetOffset() {
+      m_horizontalOffset = 0;
+      m_verticalOffset = 0;
+    }
+
+    std::pair<double, double> getOffset() {
+      return std::make_pair(m_horizontalOffset.load(), m_verticalOffset.load());
+    }
+
+   protected:
+    std::atomic<double> m_horizontalOffset;
+    std::atomic<double> m_verticalOffset;
+  };
+
+ private:
+  std::shared_ptr<std::thread> m_visionThread;
+
+  std::map<std::string, std::shared_ptr<Target>> m_targets;
+  std::map<std::string, std::shared_ptr<Camera>> m_cameras;
+};

@@ -1,17 +1,11 @@
-#include "subsystems/ComputerVisionTargets/TapeTarget.h"
+#include "subsystems/VisionTargets/TapeTarget.h"
 
-const std::string TapeTarget::cameraSettingsCommand = ComputerVision::cameraSettingsBaseCommand +
-  "exposure_auto=1,"
-  "exposure_absolute=5" // Valid exposures are "5, 10, 20, 39, 78, 156, 312, 625, 1250, 2500, 5000, 10000, 20000"
-  "white_balance_temperature_auto=0";
-
-void TapeTarget::setup() {
-  // TODO: Turn on light ring
-
-  system(TapeTarget::cameraSettingsCommand.c_str());
+void TapeTarget::setup(Vision::Camera *camera) {
+  camera->updateSettings(k_cameraSettings);
+  camera->setLightring(true);
 }
 
-std::pair<double, double> TapeTarget::run(cv::Mat frame, std::shared_ptr<cs::CvSource> debug) {
+void TapeTarget::run(cv::Mat &frame) {
   cv::Mat filtered = frame;
 
   // Attempt to remove some noise.
@@ -56,31 +50,30 @@ std::pair<double, double> TapeTarget::run(cv::Mat frame, std::shared_ptr<cs::CvS
 
   // Make sure two targets were found.
   if (second.m00 == 0) {
-    return std::make_pair(0, 0);
+    m_horizontalOffset = 0;
+    m_verticalOffset = 0;
+    return;
   }
 
   double centerX = (first.m10/first.m00 + second.m10/second.m00) / 2;
   double centerY = (first.m01/first.m00 + second.m01/second.m00) / 2;
 
   // Debug
-  if (debug != nullptr) {
-    cv::Mat result = frame;
-    cv::cvtColor(result, result, cv::COLOR_HSV2BGR);
-    for (int i = 0; i < contours.size(); i++) {
-      cv::drawContours(result, contours, i, cv::Scalar(0, 255, 0));
-    }
-    cv::circle(result, cv::Point(first.m10/first.m00, first.m01/first.m00), 1, cv::Scalar(255, 0, 0), 2);
-    cv::circle(result, cv::Point(second.m10/second.m00, second.m01/second.m00), 1, cv::Scalar(255, 0, 0), 2);
-    cv::circle(result, cv::Point(centerX, centerY), 1, cv::Scalar(0, 0, 255), 2);
-    debug->PutFrame(result);
-
-    // std::cout << "area1: " << first.m00 << " area2: " << second.m00 << "\n";
-    // std::cout << "x: " << centerX << " y: " << centerY << "\n";
+  cv::cvtColor(frame, frame, cv::COLOR_HSV2BGR);
+  for (int i = 0; i < contours.size(); i++) {
+    cv::drawContours(frame, contours, i, cv::Scalar(0, 255, 0));
   }
+  cv::circle(frame, cv::Point(first.m10/first.m00, first.m01/first.m00), 1, cv::Scalar(255, 0, 0), 2);
+  cv::circle(frame, cv::Point(second.m10/second.m00, second.m01/second.m00), 1, cv::Scalar(255, 0, 0), 2);
+  cv::circle(frame, cv::Point(centerX, centerY), 1, cv::Scalar(0, 0, 255), 2);
+
+  // std::cout << "area1: " << first.m00 << " area2: " << second.m00 << "\n";
+  // std::cout << "x: " << centerX << " y: " << centerY << "\n";
 
   // Convert to decimals
   centerX = (frame.cols / 2 - centerX) / (frame.cols / 2);
   centerY = (frame.rows / 2 - centerY) / (frame.rows / 2);
 
-  return std::make_pair(centerX, centerY);
+  m_horizontalOffset = centerX;
+  m_verticalOffset = centerY;
 }

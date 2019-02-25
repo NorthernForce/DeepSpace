@@ -76,17 +76,11 @@ namespace RobotMap {
         const static bool k_ultrasonicOff   = true;
     }
 
-    namespace DriverVision {
-        // TODO: use constant path ("/dev/v4l/by-path/...")
-        const static int k_driverCamera_id = 1;
-        // TODO: use constant path ("/dev/v4l/by-path/...")
-        const static int k_manipulatorCamera_id = 2;
-    }
-
-    namespace ComputerVision {
-        // TODO: use constant path ("/dev/v4l/by-path/...")
-        // const static int k_camera_id = 0;
-        const static char *k_camera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0";
+    namespace Vision {
+        const static char *k_elevatorCamera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0";
+        // TODO: Check this path
+        const static char *k_manipulatorCamera_path = "/dev/video2";
+        // const static char *k_manipulatorCamera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:2.1:1.0-video-index0";
     }
 }
 
