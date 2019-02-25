@@ -29,7 +29,7 @@ const std::string Vision::Camera::defaultSettings =
 
 Vision::Vision() : Subsystem("Vision"),
   m_cameras{
-    {"Elevator", std::make_shared<Camera>("Elevator Camera", RobotMap::Vision::k_elevatorCamera_path)},
+    {"Elevator", std::make_shared<Camera>("Elevator Camera", RobotMap::Vision::k_elevatorCamera_path, RobotMap::Vision::k_elevatorCameraLightRing_id)},
     {"Manipulator", std::make_shared<Camera>("Manipulator Camera", RobotMap::Vision::k_manipulatorCamera_path)},
   },
   m_targets{
@@ -43,7 +43,6 @@ Vision::Vision() : Subsystem("Vision"),
   m_visionThread.reset(new std::thread([&]{
     for (;;) {
       for (const auto& camera : m_cameras) {
-      // for (const auto& [name, camera] : m_cameras) {
         camera.second->process();
       }
     }
@@ -58,7 +57,7 @@ std::pair<double, double> Vision::getOffset(std::string targetName) {
   return m_targets[targetName]->getOffset();
 }
 
-Vision::Camera::Camera(std::string name, std::string devPath) {
+Vision::Camera::Camera(std::string name, std::string devPath, int lightRingID) {
   m_name = name;
   m_path = devPath;
 
@@ -69,6 +68,10 @@ Vision::Camera::Camera(std::string name, std::string devPath) {
   m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture(m_name, m_path));
   m_sink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo(m_name));
   m_source = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo(m_name +" Result", 160, 120));
+
+  if (lightRingID != -1) {
+    m_lightRing.reset(new frc::Relay(RobotMap::Vision::k_elevatorCameraLightRing_id, frc::Relay::kForwardOnly));
+  }
 }
 
 void Vision::Camera::process() {
@@ -81,7 +84,7 @@ void Vision::Camera::process() {
 
     // Reset all camera settings
     updateSettings(defaultSettings);
-    setLightring(false);
+    setLightRing(false);
 
     // Call target setup
     m_currentTarget->setup(this);
@@ -106,8 +109,15 @@ void Vision::Camera::updateSettings(std::string newSettings) {
   system((m_baseCommand +newSettings).c_str());
 }
 
-void Vision::Camera::setLightring(bool turnOn) {
-  // Check if defined
+void Vision::Camera::setLightRing(bool turnOn) {
+  if (m_lightRing != nullptr) {
+    if (turnOn) {
+      m_lightRing->Set(frc::Relay::kOn);
+    }
+    else {
+      m_lightRing->Set(frc::Relay::kOff);
+    }
+  }
 }
 
 void Vision::Camera::setTarget(std::shared_ptr<Target> target) {

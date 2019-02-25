@@ -11,6 +11,7 @@
 
 #include <cameraserver/CameraServer.h>
 #include <frc/Servo.h>
+#include <frc/Relay.h>
 
 #include <opencv2/opencv.hpp>
 
@@ -30,10 +31,10 @@ class Vision : public frc::Subsystem {
 
   class Camera {
    public:
-    Camera(std::string name, std::string devPath);
+    Camera(std::string name, std::string devPath, int lightRingID = -1);
     void process();
     void updateSettings(std::string newSettings);
-    void setLightring(bool turnOn);
+    void setLightRing(bool turnOn);
     void setTarget(std::shared_ptr<Target> target);
 
     static const std::string defaultSettings;
@@ -48,6 +49,8 @@ class Vision : public frc::Subsystem {
     std::shared_ptr<cs::UsbCamera> m_camera;
     std::shared_ptr<cs::CvSink> m_sink;
     std::shared_ptr<cs::CvSource> m_source;
+
+    std::shared_ptr<frc::Relay> m_lightRing;
 
     std::shared_ptr<Target> m_objectToTarget;
     std::shared_ptr<Target> m_currentTarget;

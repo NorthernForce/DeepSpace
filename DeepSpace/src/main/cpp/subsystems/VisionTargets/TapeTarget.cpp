@@ -2,7 +2,7 @@
 
 void TapeTarget::setup(Vision::Camera *camera) {
   camera->updateSettings(k_cameraSettings);
-  camera->setLightring(true);
+  camera->setLightRing(true);
 }
 
 void TapeTarget::run(cv::Mat &frame) {
