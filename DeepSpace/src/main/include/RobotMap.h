@@ -47,6 +47,7 @@ namespace RobotMap {
     namespace CargoManipulator {
         const static int k_motor_id = 6;
     }
+
     namespace Elevator {
         const static int k_primary_id = 7;
         const static int k_follower1_id = 8;
