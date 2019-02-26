@@ -75,7 +75,7 @@ Vision::Camera::Camera(std::string name, std::string devPath, int lightRingID) {
 }
 
 void Vision::Camera::process() {
-  if (m_currentTarget->name != m_objectToTarget->name) {
+  if (m_currentTarget != m_objectToTarget) {
     if (m_currentTarget != nullptr) {
       m_currentTarget->resetOffset();
     }
@@ -87,7 +87,9 @@ void Vision::Camera::process() {
     setLightRing(false);
 
     // Call target setup
-    m_currentTarget->setup(this);
+    if (m_currentTarget != nullptr) {
+      m_currentTarget->setup(this);
+    }
   }
 
   cv::Mat frame;
