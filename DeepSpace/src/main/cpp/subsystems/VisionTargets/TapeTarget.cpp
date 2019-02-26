@@ -6,7 +6,7 @@ void TapeTarget::setup(Vision::Camera *camera) {
 }
 
 void TapeTarget::run(cv::Mat &frame) {
-  cv::Mat filtered = frame;
+  cv::Mat filtered = frame.clone();
 
   // Attempt to remove some noise.
   cv::blur(filtered, filtered, cv::Size(3, 3));
