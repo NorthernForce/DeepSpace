@@ -8,28 +8,17 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
-#include "RobotMap.h"
+#include <frc/Relay.h>
 
-#include <frc/Solenoid.h>
-
-class Claw : public frc::Subsystem {
+class LightRing : public frc::Subsystem 
+{
  private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-  std::shared_ptr<frc::Solenoid> m_clawSolenoid;
-  std::shared_ptr<frc::Solenoid> m_raiseSolenoid;
-  enum class State {
-		Raised,
-		Lowered
-	};
-  State m_raisedState;
+  std::shared_ptr<frc::Relay> m_Relay;
 
  public:
-  Claw();
-  void SetOpen();
-  void SetClosed();
-  void ClawRaise();
-  void ClawLower();
-  bool IfRaised();
+  LightRing();
   void InitDefaultCommand() override;
+  void LightRingOn();
+  void LightRingOff();
+  
 };

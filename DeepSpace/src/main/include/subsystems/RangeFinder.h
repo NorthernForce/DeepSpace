@@ -8,28 +8,32 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
-#include "RobotMap.h"
+#include <frc/DigitalOutput.h>
+#include <frc/AnalogInput.h>
+#include <frc/PIDSource.h>
 
-#include <frc/Solenoid.h>
 
-class Claw : public frc::Subsystem {
+class RangeFinder : public frc::Subsystem, public frc::PIDSource
+{
  private:
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
-  std::shared_ptr<frc::Solenoid> m_clawSolenoid;
-  std::shared_ptr<frc::Solenoid> m_raiseSolenoid;
-  enum class State {
-		Raised,
-		Lowered
-	};
-  State m_raisedState;
+   int m_lastRange; 
+   std::shared_ptr<frc::DigitalOutput> m_ctrl;
+   std::shared_ptr<frc::AnalogInput> m_voltageReader;
+   double m_voltage;
+   double m_rangeInches;
+   frc::PIDSourceType m_pidSource;
+
 
  public:
-  Claw();
-  void SetOpen();
-  void SetClosed();
-  void ClawRaise();
-  void ClawLower();
-  bool IfRaised();
-  void InitDefaultCommand() override;
+   RangeFinder();
+   void InitDefaultCommand() override;
+   double getDistance();
+   int enable();
+   int disable();
+   void SetPIDSourceType(frc::PIDSourceType pidSource) override;
+   frc::PIDSourceType GetPIDSourceType() const override;
+   double PIDGet() override;
+
 };

@@ -11,6 +11,7 @@
 #include "commands/ElevatorCalibrate.h"
 #include "commands/SetupRobot.h"
 #include "subsystems/Elevator.h"
+#include "commands/ElevatorSetHomePosition.h"
 
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -43,10 +44,11 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Hatch Panel Intake", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchPanelIntake));
   frc::SmartDashboard::PutData("Hatch Deposit Level 1", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel1));
   frc::SmartDashboard::PutData("Hatch Deposit Level 2", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel2));
-  frc::SmartDashboard::PutData("Hatch Deposit Level 3", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchPanelIntake));
+  frc::SmartDashboard::PutData("Hatch Deposit Level 3", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel3));
   frc::SmartDashboard::PutData("Climb Position", new ElevatorSetPosition(ElevatorSetPosition::Position::ClimbPosition));
   frc::SmartDashboard::PutData("Elevator Calibrate", new ElevatorCalibrate());
   frc::SmartDashboard::PutData("SetupRobot", new SetupRobot());
+  frc::SmartDashboard::PutData("Set Home Position", new ElevatorSetHomePosition());
   // Initialize OI after subsystems
   m_oi.reset(new OI());
 }

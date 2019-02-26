@@ -47,14 +47,15 @@ namespace RobotMap {
     namespace CargoManipulator {
         const static int k_motor_id = 6;
     }
+
     namespace Elevator {
         const static int k_primary_id = 7;
         const static int k_follower1_id = 8;
         const static int k_follower2_id = 9;
         const static int k_follower3_id = 10;
         const static int k_solenoid_id = 2;
-        const static double k_elevatorRaiseSpeed = 0.5;
-        const static double k_elevatorLowerSpeed = -0.5;
+        const static double k_elevatorRaiseSpeed = 0.2;
+        const static double k_elevatorLowerSpeed = -0.2;
         
         const static bool k_elevatorExtendedValue = 1;
         const static bool k_elevatorRetractedValue = 0;
@@ -79,6 +80,19 @@ namespace RobotMap {
         constexpr static double k_timeToRaise {0.4};
         constexpr static double k_timeToLower {0.4};
 
+    }
+
+    namespace Ultrasonic
+    {
+        const static int k_digitalCtlPort   = 4;
+        const static int k_analogPort       = 0;
+        const static bool k_ultrasonicOn    = false;
+        const static bool k_ultrasonicOff   = true;
+    }
+
+    namespace Camera
+    {
+        const static int k_lightRingRelay   =  0;
     }
 
 }

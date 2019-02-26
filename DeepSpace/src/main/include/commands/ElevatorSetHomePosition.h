@@ -8,34 +8,13 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include <map>
-#include "../Robot.h"
 
-class ElevatorSetPosition : public frc::Command {
+class ElevatorSetHomePosition : public frc::Command {
  public:
-
-enum class Position {
-    HomePosition,
-    CargoIntake,	
-    HatchPanelIntake,		
-    CargoDepositLevel1,	
-    CargoDepositLevel2,	
-    CargoDepositLevel3,
-    HatchDepositLevel1,
-    HatchDepositLevel2,
-    HatchDepositLevel3,
-    ClimbPosition,
-    };
-
-  ElevatorSetPosition(Position position);
+  ElevatorSetHomePosition();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-
-  private:
-  static const std::map<Position, int> m_setpoints;
-  Position m_position;
-  const std::shared_ptr<Elevator> m_elevator;
 };
