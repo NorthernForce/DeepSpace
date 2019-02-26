@@ -7,7 +7,7 @@
 
 #include "subsystems/Vision.h"
 
-#include "subsystems/VisionTargets/TapeTarget.h"
+#include "subsystems/VisionTargets/ReflectiveTape.h"
 #include "subsystems/VisionTargets/BallTarget.h"
 
 #include "RobotMap.h"
@@ -18,7 +18,7 @@ Vision::Vision() : Subsystem("Vision"),
     {"Manipulator", std::make_shared<Camera>("Manipulator Camera", RobotMap::Vision::k_manipulatorCamera_path)},
   },
   m_targets{
-    {"Tape", std::make_shared<TapeTarget>()},
+    {"ReflectiveTape", std::make_shared<ReflectiveTape>()},
     {"Ball", std::make_shared<BallTarget>()}
   } {
 
@@ -35,7 +35,12 @@ Vision::Vision() : Subsystem("Vision"),
 }
 
 void Vision::setTarget(std::string cameraName, std::string targetName) {
-  m_cameras[cameraName]->setTarget(m_targets[targetName]);
+  if (targetName != "") {
+    m_cameras[cameraName]->setTarget(m_targets[targetName]);
+  }
+  else {
+    m_cameras[cameraName]->setTarget(nullptr);
+  }
 }
 
 std::pair<double, double> Vision::getOffset(std::string targetName) {

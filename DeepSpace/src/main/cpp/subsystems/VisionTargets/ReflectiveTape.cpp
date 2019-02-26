@@ -1,11 +1,11 @@
-#include "subsystems/VisionTargets/TapeTarget.h"
+#include "subsystems/VisionTargets/ReflectiveTape.h"
 
-void TapeTarget::setup(Vision::Camera *camera) {
+void ReflectiveTape::setup(Vision::Camera *camera) {
   camera->updateSettings(k_cameraSettings);
   camera->setLightRing(true);
 }
 
-void TapeTarget::run(cv::Mat &frame) {
+void ReflectiveTape::run(cv::Mat &frame) {
   cv::Mat filtered = frame.clone();
 
   // Attempt to remove some noise.

@@ -23,7 +23,7 @@
 class Vision : public frc::Subsystem {
  public:
   Vision();
-  void setTarget(std::string cameraName, std::string targetName);
+  void setTarget(std::string cameraName, std::string targetName = "");
   std::pair<double, double> getOffset(std::string targetName);
 
   class Camera;

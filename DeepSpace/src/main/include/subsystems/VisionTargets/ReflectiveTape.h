@@ -2,11 +2,11 @@
 
 #include "subsystems/Vision.h"
 
-class TapeTarget : public Vision::Target {
+class ReflectiveTape : public Vision::Target {
  public:
   virtual void setup(Vision::Camera *camera) override;
   virtual void run(cv::Mat &frame) override;
-  const std::string name = "Tape";
+  const std::string name = "ReflectiveTape";
 
  private:
   const std::string k_cameraSettings =
