@@ -12,15 +12,21 @@
 #include <frc/smartdashboard/SendableChooser.h>
 
 #include "OI.h"
-
 #include "subsystems/BrushlessDrive.h"
+#include "subsystems/Elevator.h"
+#include "subsystems/CargoManipulator.h"
+#include "subsystems/Claw.h"
 
 #include "subsystems/Climber.h"
 
 class Robot : public frc::TimedRobot {
  public:
   static std::shared_ptr<OI> m_oi;
+
   static std::shared_ptr<BrushlessDrive> m_driveTrain;
+  static std::shared_ptr<Elevator> m_elevator;
+  static std::shared_ptr<CargoManipulator> m_cargoManipulator;
+  static std::shared_ptr<Claw> m_claw;
   static std::shared_ptr<Climber> m_climber;
 
   void RobotInit() override;
@@ -34,10 +40,4 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
 
  private:
-  // Have it null by default so that if testing teleop it
-  // doesn't have undefined behavior and potentially crash.
-  //frc::Command* m_autonomousCommand = nullptr;
-  //ExampleCommand m_defaultAuto;
-  //MyAutoCommand m_myAuto;
-  //frc::SendableChooser<frc::Command*> m_chooser;
 };

@@ -52,6 +52,20 @@ namespace RobotMap {
         const static double k_driveForwardMotorSpeed = 0.5;
         const static double k_drivebackwardMotorSpeed = -0.5;
     }
+    
+    namespace Elevator {
+        const static int k_primary_id = 7;
+        const static int k_follower1_id = 8;
+        const static int k_follower2_id = 9;
+        const static int k_follower3_id = 10;
+        const static int k_solenoid_id = 2;
+        const static double k_elevatorRaiseSpeed = 0.2;
+        const static double k_elevatorLowerSpeed = -0.2;
+        
+        const static bool k_elevatorExtendedValue = 1;
+        const static bool k_elevatorRetractedValue = 0;
 
-}
+    }
 
+
+} //namespace robotmap

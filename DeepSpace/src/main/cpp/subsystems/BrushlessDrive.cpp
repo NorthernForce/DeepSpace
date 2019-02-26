@@ -26,9 +26,15 @@ BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
 
   // Initialize the drive.
   m_robotBrushlessDrive.reset(new frc::DifferentialDrive(*m_leftPrimaryBrushless, *m_rightPrimaryBrushless));
+
+  ConfigureController(*m_leftPrimaryBrushless);
+  ConfigureController(*m_leftFollowerBrushless);
+  ConfigureController(*m_rightPrimaryBrushless);
+  ConfigureController(*m_rightFollowerBrushless);
 }
 
-void BrushlessDrive::InitDefaultCommand() {
+void BrushlessDrive::InitDefaultCommand() 
+{
   // Set the default command for a subsystem here.
   SetDefaultCommand(new DriveWithJoystick());
 }
@@ -36,4 +42,16 @@ void BrushlessDrive::InitDefaultCommand() {
 void BrushlessDrive::arcDrive(double speed, double rotation)
 {
   m_robotBrushlessDrive->ArcadeDrive(speed, rotation);
+}
+
+void BrushlessDrive::ConfigureController(rev::CANSparkMax& controller)
+{
+  controller.SetSecondaryCurrentLimit(k_secondaryCurrentLimit);
+  controller.SetSmartCurrentLimit(k_currentLimit);
+  if(!controller.IsFollower())
+  {
+    controller.SetClosedLoopRampRate(k_rampRate);
+    controller.SetOpenLoopRampRate(k_rampRate);
+  }
+  controller.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
 }
