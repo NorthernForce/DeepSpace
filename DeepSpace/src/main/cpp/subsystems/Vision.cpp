@@ -12,21 +12,6 @@
 
 #include "RobotMap.h"
 
-const std::string Vision::Camera::defaultSettings =
-  "brightness=133,"
-  "contrast=5,"
-  "saturation=83,"
-  "white_balance_temperature_auto=1,"
-  "power_line_frequency=2,"
-  "white_balance_temperature=4500,"
-  "sharpness=25,"
-  "backlight_compensation=0,"
-  "exposure_auto=1,"
-  "exposure_absolute=156,"
-  "pan_absolute=0,"
-  "tilt_absolute=0,"
-  "zoom_absolute=0";
-
 Vision::Vision() : Subsystem("Vision"),
   m_cameras{
     {"Elevator", std::make_shared<Camera>("Elevator Camera", RobotMap::Vision::k_elevatorCamera_path, RobotMap::Vision::k_elevatorCameraLightRing_id)},
@@ -38,7 +23,7 @@ Vision::Vision() : Subsystem("Vision"),
   } {
 
   // Default target
-  setTarget("Elevator", "Tape");
+  // setTarget("Elevator", "Tape");
 
   m_visionThread.reset(new std::thread([&]{
     for (;;) {
@@ -83,7 +68,7 @@ void Vision::Camera::process() {
     m_currentTarget = m_objectToTarget;
 
     // Reset all camera settings
-    updateSettings(defaultSettings);
+    updateSettings(k_defaultSettings);
     setLightRing(false);
 
     // Call target setup
