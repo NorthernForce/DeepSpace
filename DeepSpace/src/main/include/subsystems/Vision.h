@@ -58,7 +58,7 @@ class Vision : public frc::Subsystem {
       "saturation=83,"
       "white_balance_temperature_auto=1,"
       "power_line_frequency=2,"
-      "white_balance_temperature=4500,"
+      // "white_balance_temperature=4500," // Can't set this if it is auto! Check if can set it first.
       "sharpness=25,"
       "backlight_compensation=0,"
       "exposure_auto=1,"
