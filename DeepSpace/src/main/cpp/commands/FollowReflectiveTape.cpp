@@ -17,13 +17,14 @@ FollowReflectiveTape::FollowReflectiveTape() {
 
   std::shared_ptr<TargetPIDSource> m_pidSource;
   m_pidSource.reset(new TargetPIDSource());
+
   std::shared_ptr<DriveTrainPIDOutput> m_pidOutput;
   m_pidOutput.reset(new DriveTrainPIDOutput());
+  // m_pidOutput = new DriveTrainPIDOutput();
 
-  // m_pidController = new frc::PIDController(k_p, k_i, k_d, k_f, m_pidSource, m_pidOutput);
-  m_pidController.reset(new frc::PIDController(0, 0, 0, 0, m_pidSource.get(), m_pidOutput.get()));
+  m_pidController.reset(new frc::PIDController(k_p, k_i, k_d, k_f, m_pidSource.get(), m_pidOutput.get()));
 
-  // frc::SmartDashboard->PutData("Reflective Tape Follower", m_pidController);
+  frc::SmartDashboard::PutData("Reflective Tape Follower", m_pidController.get());
 }
 
 // Called just before this Command runs the first time
