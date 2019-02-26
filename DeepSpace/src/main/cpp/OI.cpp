@@ -66,7 +66,6 @@ OI::OI() {
   
   WhenPressed(m_manipulatorController1, 8, new ToggleClawRaise());
 
-//add cargo pick-up button and home position button
   WhenPressed(m_manipulatorController1, 7, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel1));
   WhenPressed(m_manipulatorController1, 11, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel2));
   WhenPressed(m_manipulatorController1, 10, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel3));
