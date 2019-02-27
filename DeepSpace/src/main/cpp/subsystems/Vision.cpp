@@ -7,8 +7,8 @@
 
 #include "subsystems/Vision.h"
 
-#include "subsystems/VisionTargets/ReflectiveTape.h"
-#include "subsystems/VisionTargets/BallTarget.h"
+#include "subsystems/VisionTargets/TargetReflectiveTape.h"
+#include "subsystems/VisionTargets/TargetCargo.h"
 
 #include "RobotMap.h"
 
@@ -18,12 +18,12 @@ Vision::Vision() : Subsystem("Vision"),
     {"Manipulator", std::make_shared<Camera>("Manipulator Camera", RobotMap::Vision::k_manipulatorCamera_path)},
   },
   m_targets{
-    {"ReflectiveTape", std::make_shared<ReflectiveTape>()},
-    {"Ball", std::make_shared<BallTarget>()}
+    {"ReflectiveTape", std::make_shared<TargetReflectiveTape>()},
+    {"Cargo", std::make_shared<TargetCargo>()}
   } {
 
   // Default target
-  // setTarget("Elevator", "Tape");
+  setTarget("Elevator", "ReflectiveTape");
 
   m_visionThread.reset(new std::thread([&]{
     for (;;) {

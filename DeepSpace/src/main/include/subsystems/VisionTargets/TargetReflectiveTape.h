@@ -2,7 +2,7 @@
 
 #include "subsystems/Vision.h"
 
-class ReflectiveTape : public Vision::Target {
+class TargetReflectiveTape : public Vision::Target {
  public:
   virtual void setup(Vision::Camera *camera) override;
   virtual void run(cv::Mat &frame) override;
