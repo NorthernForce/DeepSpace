@@ -26,7 +26,11 @@ std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 std::shared_ptr<Elevator> Robot::m_elevator;
 std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
 std::shared_ptr<Claw> Robot::m_claw;
+<<<<<<< HEAD
 std::shared_ptr<Climber> Robot::m_climber;
+=======
+std::shared_ptr<Vision> Robot::m_vision;
+>>>>>>> origin/feature/add_camera_targetting
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
@@ -38,6 +42,7 @@ void Robot::RobotInit() {
   m_elevator->SetPosition(0);
   m_cargoManipulator.reset(new CargoManipulator());
   m_claw.reset(new Claw());
+  m_vision.reset(new Vision());
 
   frc::SmartDashboard::PutData("Elevator Home", new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
   frc::SmartDashboard::PutData("Cargo Intake", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoIntake));
