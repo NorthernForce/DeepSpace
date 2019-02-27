@@ -40,7 +40,8 @@ namespace RobotMap {
 
     namespace OI {
         const static int k_driverController_id = 0;
-        const static int k_manipulatorController_id = 1;
+        const static int k_manipulatorController1_id = 1;
+        const static int k_manipulatorController2_id = 2;
     }
 
     namespace Climber {
@@ -52,7 +53,10 @@ namespace RobotMap {
         const static double k_driveForwardMotorSpeed = 0.5;
         const static double k_drivebackwardMotorSpeed = -0.5;
     }
-    
+    namespace CargoManipulator {
+        const static int k_motor_id = 6;
+    }
+
     namespace Elevator {
         const static int k_primary_id = 7;
         const static int k_follower1_id = 8;
@@ -66,15 +70,38 @@ namespace RobotMap {
         const static bool k_elevatorRetractedValue = 0;
 
     }
+
     namespace PCM {
-        const static int k_pcm_id = 0;
+        const static int k_pcm_id = 15;
     }
+
     namespace Claw {
         const static int k_clawSolenoid = 1;
+        const static int k_raiseSolenoid = 2;
+
         const static bool k_clawOpenValue = 1;
         const static bool k_clawClosedValue = 0;
+        const static bool k_clawRaisedValue = 1;
+        const static bool k_clawLoweredValue = 0;
+
+        constexpr static double k_timeToClose {0.4};
+        constexpr static double k_timeToOpen {0.4};
+        constexpr static double k_timeToRaise {0.4};
+        constexpr static double k_timeToLower {0.4};
 
     }
 
+    namespace Ultrasonic
+    {
+        const static int k_digitalCtlPort   = 4;
+        const static int k_analogPort       = 0;
+        const static bool k_ultrasonicOn    = false;
+        const static bool k_ultrasonicOff   = true;
+    }
 
-} //namespace robotmap
+    namespace Camera
+    {
+        const static int k_lightRingRelay   =  0;
+    }
+
+}

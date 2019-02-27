@@ -29,7 +29,6 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<CargoManipulator> m_cargoManipulator;
   static std::shared_ptr<Claw> m_claw;
   static std::shared_ptr<Climber> m_climber;
-  static std::shared_ptr<Claw> m_claw;
 
   void RobotInit() override;
   void RobotPeriodic() override;

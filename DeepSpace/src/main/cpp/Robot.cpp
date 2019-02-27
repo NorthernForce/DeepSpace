@@ -12,6 +12,8 @@
 #include "commands/SetupRobot.h"
 #include "subsystems/Elevator.h"
 #include "commands/ElevatorSetHomePosition.h"
+#include "commands/ElevatorExtend.h"
+#include "commands/ElevatorRetract.h"
 
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -25,7 +27,6 @@ std::shared_ptr<Elevator> Robot::m_elevator;
 std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
 std::shared_ptr<Claw> Robot::m_claw;
 std::shared_ptr<Climber> Robot::m_climber;
-std::shared_ptr<Claw> Robot::m_claw;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
@@ -51,6 +52,8 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Elevator Calibrate", new ElevatorCalibrate());
   frc::SmartDashboard::PutData("SetupRobot", new SetupRobot());
   frc::SmartDashboard::PutData("Set Home Position", new ElevatorSetHomePosition());
+  frc::SmartDashboard::PutData("Move elevator forward", new ElevatorExtend());
+  frc::SmartDashboard::PutData("Move elevator backward", new ElevatorRetract());
   // Initialize OI after subsystems
   m_oi.reset(new OI());
 
