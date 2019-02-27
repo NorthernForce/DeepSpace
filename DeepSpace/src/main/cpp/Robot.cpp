@@ -26,11 +26,8 @@ std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 std::shared_ptr<Elevator> Robot::m_elevator;
 std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
 std::shared_ptr<Claw> Robot::m_claw;
-<<<<<<< HEAD
 std::shared_ptr<Climber> Robot::m_climber;
-=======
 std::shared_ptr<Vision> Robot::m_vision;
->>>>>>> origin/feature/add_camera_targetting
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;

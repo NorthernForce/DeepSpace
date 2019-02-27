@@ -17,12 +17,9 @@
 #include "subsystems/Elevator.h"
 #include "subsystems/CargoManipulator.h"
 #include "subsystems/Claw.h"
-<<<<<<< HEAD
 #include "subsystems/Climber.h"
 #include "subsystems/Claw.h"
-=======
 #include "subsystems/Vision.h"
->>>>>>> origin/feature/add_camera_targetting
 
 class Robot : public frc::TimedRobot {
  public:
@@ -32,11 +29,8 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<Elevator> m_elevator;
   static std::shared_ptr<CargoManipulator> m_cargoManipulator;
   static std::shared_ptr<Claw> m_claw;
-<<<<<<< HEAD
   static std::shared_ptr<Climber> m_climber;
-=======
   static std::shared_ptr<Vision> m_vision;
->>>>>>> origin/feature/add_camera_targetting
 
   void RobotInit() override;
   void RobotPeriodic() override;
