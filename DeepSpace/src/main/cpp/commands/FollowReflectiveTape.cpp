@@ -14,6 +14,10 @@
 FollowReflectiveTape::FollowReflectiveTape() {
   Requires(Robot::m_vision.get());
   Requires(Robot::m_driveTrain.get());
+
+  frc::SmartDashboard::PutNumber("CameraTracking: P", k_p);
+  frc::SmartDashboard::PutNumber("CameraTracking: I", k_i);
+  frc::SmartDashboard::PutNumber("CameraTracking: D", k_d);
 }
 
 // Called just before this Command runs the first time
@@ -27,7 +31,11 @@ void FollowReflectiveTape::Execute() {
   m_error = Robot::m_vision->getOffset(k_targetName).first * -1;
   m_integral += m_error * k_iterationTime;
   m_derivative = (m_error - m_error_prior) / k_iterationTime;
-  double output = k_p*m_error + k_i*m_integral + k_d*m_derivative;
+  // double output = k_p*m_error + k_i*m_integral + k_d*m_derivative;
+  // For tuning
+  double output = frc::SmartDashboard::GetNumber("CameraTracking: P", k_p)*m_error 
+                + frc::SmartDashboard::GetNumber("CameraTracking: I", k_i)*m_integral
+                + frc::SmartDashboard::GetNumber("CameraTracking: D", k_d)*m_derivative;
   m_error_prior = m_error;
 
   Robot::m_driveTrain->arcDrive(0, output);

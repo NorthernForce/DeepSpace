@@ -25,7 +25,6 @@ class FollowReflectiveTape : public frc::Command {
   const double k_p = 0;
   const double k_i = 0;
   const double k_d = 0;
-  const double k_f = 0;
 
   const std::string k_cameraName = "Elevator";
   const std::string k_targetName = "ReflectiveTape";
