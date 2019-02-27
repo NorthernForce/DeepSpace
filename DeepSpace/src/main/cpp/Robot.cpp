@@ -24,6 +24,7 @@ std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 std::shared_ptr<Elevator> Robot::m_elevator;
 std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
 std::shared_ptr<Claw> Robot::m_claw;
+std::shared_ptr<Climber> Robot::m_climber;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
@@ -51,6 +52,12 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Set Home Position", new ElevatorSetHomePosition());
   // Initialize OI after subsystems
   m_oi.reset(new OI());
+
+  m_climber.reset(new Climber());
+
+  //m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
+ // m_chooser.AddOption("My Auto", &m_myAuto);
+  //frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 }
 
 /**
