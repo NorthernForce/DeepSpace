@@ -24,6 +24,7 @@
 #include "commands/CloseClaw.h"
 #include "commands/OpenClaw.h"
 #include "commands/ElevatorSetPosition.h"
+#include "commands/SetupRobot.h"
 
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
@@ -65,19 +66,22 @@ OI::OI() {
   
   WhenPressed(m_manipulatorController1, 8, new ToggleClawRaise());
 
-//add cargo pick-up button and home position button
   WhenPressed(m_manipulatorController1, 7, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel1));
   WhenPressed(m_manipulatorController1, 11, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel2));
   WhenPressed(m_manipulatorController1, 10, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel3));
-  WhenPressed(m_manipulatorController1, 4, new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel1));
+  WhenPressed(m_manipulatorController1, 4, new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel1)); // same height as hatch intake
   WhenPressed(m_manipulatorController1, 2, new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel2));
   WhenPressed(m_manipulatorController1, 5, new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel3));
+  WhenPressed(m_manipulatorController1, 9, new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
+  WhenPressed(m_manipulatorController1, 6, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoIntake));
 
-  WhileHeld(m_manipulatorController1, 11, new ElevatorRaise());
-  WhileHeld(m_manipulatorController1, 10, new ElevatorLower());
+  WhenPressed(m_manipulatorController2, 8, new SetupRobot());
 
-  WhenReleased(m_manipulatorController1, 11, new ElevatorStop());
-  WhenReleased(m_manipulatorController1, 10, new ElevatorStop());
+  WhileHeld(m_manipulatorController2, 8, new ElevatorRaise());
+  WhileHeld(m_manipulatorController2, 3, new ElevatorLower());
+
+  WhenReleased(m_manipulatorController2, 8, new ElevatorStop());
+  WhenReleased(m_manipulatorController2, 3, new ElevatorStop());
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }
 
