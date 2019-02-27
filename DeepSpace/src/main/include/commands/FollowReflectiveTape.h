@@ -21,28 +21,19 @@ class FollowReflectiveTape : public frc::Command {
   void End() override;
   void Interrupted() override;
 
-  class TargetPIDSource : public frc::PIDSource {
-   public:
-    TargetPIDSource() {};
-    virtual double PIDGet() override;
-    virtual void SetPIDSourceType(frc::PIDSourceType pidSource) {
-      m_pidSource = pidSource;
-    };
-    virtual frc::PIDSourceType GetPIDSourceType() const {
-      return m_pidSource;
-    };
-  };
-  class DriveTrainPIDOutput : public frc::PIDOutput {
-   public:
-    DriveTrainPIDOutput() {};
-    virtual void PIDWrite(double output) override;
-  };
-
  private:
   const double k_p = 0;
   const double k_i = 0;
   const double k_d = 0;
   const double k_f = 0;
-  
-  std::shared_ptr<frc::PIDController> m_pidController;
+
+  const std::string k_cameraName = "Elevator";
+  const std::string k_targetName = "ReflectiveTape";
+
+  double m_error = 0;
+  double m_error_prior = 0;
+  double m_integral = 0;
+  double m_derivative = 0;
+
+  const double k_iterationTime = 0.02;
 };
