@@ -77,11 +77,11 @@ OI::OI() {
 
   WhenPressed(m_manipulatorController2, 8, new SetupRobot());
 
-  WhileHeld(m_manipulatorController1, 8, new ElevatorRaise());
-  WhileHeld(m_manipulatorController1, 3, new ElevatorLower());
+  WhileHeld(m_manipulatorController2, 8, new ElevatorRaise());
+  WhileHeld(m_manipulatorController2, 3, new ElevatorLower());
 
-  WhenReleased(m_manipulatorController1, 8, new ElevatorStop());
-  WhenReleased(m_manipulatorController1, 3, new ElevatorStop());
+  WhenReleased(m_manipulatorController2, 8, new ElevatorStop());
+  WhenReleased(m_manipulatorController2, 3, new ElevatorStop());
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }
 
