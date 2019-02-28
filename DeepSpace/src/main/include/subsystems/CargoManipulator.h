@@ -14,8 +14,8 @@
 
 class CargoManipulator : public frc::Subsystem {
  public:
-  constexpr static double k_ejectSpeed = 1.0;
-  constexpr static double k_intakeSpeed = 1.0;
+  constexpr static double k_ejectSpeed = -1.0;
+  constexpr static double k_intakeSpeed = 0.7;
 
   // Duration in micro seconds
   constexpr static int k_divideSpeedDuration = 200 * 1000;
@@ -33,6 +33,6 @@ class CargoManipulator : public frc::Subsystem {
   bool m_divideSpeedTimerReset = true;
 
   constexpr static double k_rampRate = 0.2;
-  constexpr static double k_secondaryCurrentLimit = 10.0;
-  constexpr static int k_currentLimit = 5;
+  constexpr static double k_secondaryCurrentLimit = 16.0;
+  constexpr static int k_currentLimit = 8;
 };

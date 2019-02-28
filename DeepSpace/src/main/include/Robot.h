@@ -20,6 +20,7 @@
 #include "subsystems/Climber.h"
 #include "subsystems/Claw.h"
 #include "subsystems/Vision.h"
+#include "subsystems/RangeFinder.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -31,6 +32,7 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<Claw> m_claw;
   static std::shared_ptr<Climber> m_climber;
   static std::shared_ptr<Vision> m_vision;
+  static std::shared_ptr<RangeFinder> m_rangeFinder;
 
   void RobotInit() override;
   void RobotPeriodic() override;

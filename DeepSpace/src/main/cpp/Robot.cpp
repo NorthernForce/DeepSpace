@@ -28,6 +28,7 @@ std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
 std::shared_ptr<Claw> Robot::m_claw;
 std::shared_ptr<Climber> Robot::m_climber;
 std::shared_ptr<Vision> Robot::m_vision;
+std::shared_ptr<RangeFinder> Robot::m_rangeFinder;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
@@ -40,6 +41,8 @@ void Robot::RobotInit() {
   m_cargoManipulator.reset(new CargoManipulator());
   m_claw.reset(new Claw());
   m_vision.reset(new Vision());
+  m_climber.reset(new Climber());
+  m_rangeFinder.reset(new RangeFinder());
 
   frc::SmartDashboard::PutData("Elevator Home", new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
   frc::SmartDashboard::PutData("Cargo Intake", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoIntake));
@@ -59,9 +62,6 @@ void Robot::RobotInit() {
   // Initialize OI after subsystems
   m_oi.reset(new OI());
 
-  m_climber.reset(new Climber());
-  m_claw.reset(new Claw());
-
   //m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
  // m_chooser.AddOption("My Auto", &m_myAuto);
   //frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
@@ -80,6 +80,7 @@ void Robot::RobotPeriodic() {
   frc::SmartDashboard::PutNumber("Elevator Closed Loop Error", m_elevator->GetClosedLoopError());
   frc::SmartDashboard::PutNumber("pGain value", m_elevator->GetPGainValue());
   frc::SmartDashboard::GetNumber("pGain value", m_elevator->GetPGainValue());
+  frc::SmartDashboard::PutNumber("Range Finder", m_rangeFinder->getDistance());
 }
 
 /**

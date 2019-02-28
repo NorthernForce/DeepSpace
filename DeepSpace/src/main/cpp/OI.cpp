@@ -23,6 +23,7 @@
 #include "commands/ToggleClawRaise.h"
 #include "commands/CloseClaw.h"
 #include "commands/OpenClaw.h"
+#include "commands/RaiseClaw.h"
 #include "commands/ElevatorSetPosition.h"
 #include "commands/SetupRobot.h"
 
