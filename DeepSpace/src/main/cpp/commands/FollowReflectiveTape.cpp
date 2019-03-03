@@ -22,23 +22,30 @@ FollowReflectiveTape::FollowReflectiveTape() {
 
 // Called just before this Command runs the first time
 void FollowReflectiveTape::Initialize() {
+  std::cout << "1" << std::endl;
+
   Robot::m_vision->setTarget(k_cameraName, k_targetName);
+  std::cout << "2" << std::endl;
 }
 
 // Called repeatedly when this Command is scheduled to run
 void FollowReflectiveTape::Execute() {
+  std::cout << "3" << std::endl;
   // Not really sure how this works...
   m_error = Robot::m_vision->getOffset(k_targetName).first * -1;
   m_integral += m_error * k_iterationTime;
   m_derivative = (m_error - m_error_prior) / k_iterationTime;
   // double output = k_p*m_error + k_i*m_integral + k_d*m_derivative;
   // For tuning
-  double output = frc::SmartDashboard::GetNumber("CameraTracking: P", k_p)*m_error 
-                + frc::SmartDashboard::GetNumber("CameraTracking: I", k_i)*m_integral
-                + frc::SmartDashboard::GetNumber("CameraTracking: D", k_d)*m_derivative;
+  std::cout << "4" << std::endl;
+  double output = frc::SmartDashboard::GetNumber("CameraTracking: P", k_p) * m_error 
+                + frc::SmartDashboard::GetNumber("CameraTracking: I", k_i) * m_integral
+                + frc::SmartDashboard::GetNumber("CameraTracking: D", k_d) * m_derivative;
   m_error_prior = m_error;
+  std::cout << "4" << std::endl;
 
   Robot::m_driveTrain->arcDrive(0, output);
+  std::cout << "5" << std::endl;
 }
 
 // Make this return true when this Command no longer needs to run execute()

@@ -15,7 +15,7 @@
 Vision::Vision() : Subsystem("Vision"),
   m_cameras{
     {"Elevator", std::make_shared<Camera>("Elevator Camera", RobotMap::Vision::k_elevatorCamera_path, RobotMap::Vision::k_elevatorCameraLightRing_id)},
-    // {"Manipulator", std::make_shared<Camera>("Manipulator Camera", RobotMap::Vision::k_manipulatorCamera_path)},
+    {"Manipulator", std::make_shared<Camera>("Manipulator Camera", RobotMap::Vision::k_manipulatorCamera_path)},
   },
   m_targets{
     {"ReflectiveTape", std::make_shared<TargetReflectiveTape>()},
@@ -25,13 +25,13 @@ Vision::Vision() : Subsystem("Vision"),
   // Default target
   // setTarget("Elevator", "ReflectiveTape");
 
-  // m_visionThread.reset(new std::thread([&]{
-  //   for (;;) {
-  //     for (const auto& camera : m_cameras) {
-  //       camera.second->process();
-  //     }
-  //   }
-  // }));
+  m_visionThread.reset(new std::thread([&]{
+    for (;;) {
+      for (const auto& camera : m_cameras) {
+        camera.second->process();
+      }
+    }
+  }));
 }
 
 void Vision::setTarget(std::string cameraName, std::string targetName) {
@@ -57,11 +57,12 @@ Vision::Camera::Camera(std::string name, std::string devPath, int lightRingID) {
   // frc::GetCameraServerShared()->ReportUsbCamera(m_camera->GetHandle());
   m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture(m_name, m_path));
   m_camera->SetResolution(240, 180);
-  // m_sink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo(m_name));
-  // m_source = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo(m_name +" Result", 160, 120));
+  m_camera->SetFPS(30);
+  m_cameraSink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo(m_name));
+  m_debugStream = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo(m_name +" Debug", 240, 180));
 
   if (lightRingID != -1) {
-    m_lightRing.reset(new frc::Relay(RobotMap::Vision::k_elevatorCameraLightRing_id, frc::Relay::kForwardOnly));
+    m_lightRing.reset(new frc::Relay(lightRingID, frc::Relay::kForwardOnly));
   }
 }
 
@@ -83,19 +84,19 @@ void Vision::Camera::process() {
     }
   }
 
-  // cv::Mat frame;
-  // auto status = m_sink->GrabFrame(frame);
+  if (m_currentTarget != nullptr) {
+    cv::Mat frame;
+    auto status = m_cameraSink->GrabFrame(frame);
 
-  // if (status == 0) {
-  //   std::cout << "Vision Error: " << m_name << ": " << m_sink->GetError() << "\n";
-  // }
-  // else {
-  //   if (m_currentTarget != nullptr) {
-  //     // m_currentTarget->run(frame);
-  //   }
+    if (status == 0) {
+      std::cout << "Vision Error: " << m_name << ": " << m_cameraSink->GetError() << "\n";
+    }
+    else {
+      m_currentTarget->run(frame);
 
-  //   // m_source->PutFrame(frame);
-  // }
+      m_debugStream->PutFrame(frame);
+    }
+  }
 }
 
 void Vision::Camera::updateSettings(std::string newSettings) {

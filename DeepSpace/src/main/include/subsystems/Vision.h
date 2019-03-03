@@ -44,8 +44,8 @@ class Vision : public frc::Subsystem {
     std::string m_baseCommand;
 
     std::shared_ptr<cs::UsbCamera> m_camera;
-    std::shared_ptr<cs::CvSink> m_sink;
-    std::shared_ptr<cs::CvSource> m_source;
+    std::shared_ptr<cs::CvSink> m_cameraSink;
+    std::shared_ptr<cs::CvSource> m_debugStream;
 
     std::shared_ptr<frc::Relay> m_lightRing;
 
@@ -56,9 +56,9 @@ class Vision : public frc::Subsystem {
       "brightness=133,"
       "contrast=5,"
       "saturation=83,"
-      "white_balance_temperature_auto=0," // Must be manual to change settings.
-      "white_balance_temperature=4500,"
-      "white_balance_temperature_auto=1,"
+      // "white_balance_temperature_auto=0," // Must be manual to change settings.
+      // "white_balance_temperature=4500,"
+      // "white_balance_temperature_auto=1,"
       "power_line_frequency=2,"
       "sharpness=25,"
       "backlight_compensation=0,"
