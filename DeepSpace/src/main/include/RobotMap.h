@@ -45,9 +45,9 @@ namespace RobotMap {
     }
 
     namespace Climber {
-        const static int k_leftClimbingMotor_id = 7;
-        const static int k_rightClimbingMotor_id = 8;
-        const static int k_driveMotor_id = 5;
+        const static int k_leftClimbingMotor_id = 5;
+        const static int k_rightClimbingMotor_id = 11;
+        const static int k_driveMotor_id = 12;
         const static double k_forwardMotorSpeed = 0.5;
         const static double k_reverseMotorSpeed = -0.5;
         const static double k_driveForwardMotorSpeed = 0.5;

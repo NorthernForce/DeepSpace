@@ -44,7 +44,7 @@ void Robot::RobotInit() {
   m_climber.reset(new Climber());
   m_rangeFinder.reset(new RangeFinder());
 
-  frc::SmartDashboard::PutData("Elevator Home", new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
+ /* frc::SmartDashboard::PutData("Elevator Home", new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
   frc::SmartDashboard::PutData("Cargo Intake", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoIntake));
   frc::SmartDashboard::PutData("Cargo Deposit Level 1", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel1));
   frc::SmartDashboard::PutData("Cargo Deposit Level 2", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel2));
@@ -54,10 +54,11 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Hatch Deposit Level 2", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel2));
   frc::SmartDashboard::PutData("Hatch Deposit Level 3", new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel3));
   frc::SmartDashboard::PutData("Climb Position", new ElevatorSetPosition(ElevatorSetPosition::Position::ClimbPosition));
-  frc::SmartDashboard::PutData("Elevator Calibrate", new ElevatorCalibrate());
-  frc::SmartDashboard::PutData("SetupRobot", new SetupRobot());
+  */
+  frc::SmartDashboard::PutData("**Elevator Calibrate**", new ElevatorCalibrate());
+  frc::SmartDashboard::PutData("**Move elevator forward**", new ElevatorExtend());
+  //frc::SmartDashboard::PutData("SetupRobot", new SetupRobot());
   frc::SmartDashboard::PutData("Set Home Position", new ElevatorSetHomePosition());
-  frc::SmartDashboard::PutData("Move elevator forward", new ElevatorExtend());
   frc::SmartDashboard::PutData("Move elevator backward", new ElevatorRetract());
   // Initialize OI after subsystems
   m_oi.reset(new OI());
@@ -78,8 +79,8 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
   frc::SmartDashboard::PutNumber("Elevator Sensor Position", m_elevator->GetSelectedSensorPosition());
   frc::SmartDashboard::PutNumber("Elevator Closed Loop Error", m_elevator->GetClosedLoopError());
-  frc::SmartDashboard::PutNumber("pGain value", m_elevator->GetPGainValue());
-  frc::SmartDashboard::GetNumber("pGain value", m_elevator->GetPGainValue());
+  //frc::SmartDashboard::PutNumber("pGain value", m_elevator->GetPGainValue());
+  //frc::SmartDashboard::GetNumber("pGain value", m_elevator->GetPGainValue());
   frc::SmartDashboard::PutNumber("Range Finder", m_rangeFinder->getDistance());
 }
 

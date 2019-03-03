@@ -27,6 +27,9 @@
 #include "commands/LowerClaw.h"
 #include "commands/ElevatorSetPosition.h"
 #include "commands/SetupRobot.h"
+#include "commands/RetractClimber.h"
+#include "commands/PlatformDrive.h"
+#include "commands/ClimbStage1.h"
 
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
@@ -88,11 +91,19 @@ OI::OI() {
 
   WhenPressed(m_manipulatorController2, 8, new SetupRobot());
 
-  WhileHeld(m_manipulatorController2, 8, new ElevatorRaise());
-  WhileHeld(m_manipulatorController2, 3, new ElevatorLower());
+  WhileHeld(m_manipulatorController2, 10, new ElevatorRaise());
+  WhileHeld(m_manipulatorController2, 11, new ElevatorLower());
 
-  WhenReleased(m_manipulatorController2, 8, new ElevatorStop());
-  WhenReleased(m_manipulatorController2, 3, new ElevatorStop());
+  WhenReleased(m_manipulatorController2, 10, new ElevatorStop());
+  WhenReleased(m_manipulatorController2, 11, new ElevatorStop());
+
+  WhenPressed(m_manipulatorController2, 5, new RetractClimber());
+
+  WhileHeld(m_manipulatorController2, 3, new PlatformDrive());
+
+
+  WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
+
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }
 

@@ -19,6 +19,8 @@ class BrushlessDrive : public frc::Subsystem {
 
   void arcDrive(double speed, double rotation);
 
+  
+
  private:
   void ConfigureController(rev::CANSparkMax& controller);
 

@@ -13,6 +13,8 @@ public:
     void DriveForward();
     void DriveBackward();
     void DriveStop();
+    bool AtLowerLimit();
+    bool AtUpperLimit();
     
 private:
     std::shared_ptr<WPI_TalonSRX> m_masterTalonLifter;

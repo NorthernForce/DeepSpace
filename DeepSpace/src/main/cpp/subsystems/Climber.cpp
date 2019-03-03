@@ -1,6 +1,7 @@
 
 #include "subsystems/Climber.h"
 #include "RobotMap.h"
+#include <iostream>
 
 Climber::Climber() : Subsystem("Climber") {
 
@@ -36,4 +37,10 @@ void Climber::DriveBackward() {
 }
 void Climber::DriveStop() {
     m_masterTalonLifter->Set(0.0);
+}
+bool Climber::AtUpperLimit() {
+    return m_masterTalonLifter->GetSensorCollection().IsRevLimitSwitchClosed(); // might have to switch rev and fwd
+}
+bool Climber::AtLowerLimit() {
+    return m_masterTalonLifter->GetSensorCollection().IsFwdLimitSwitchClosed();
 }
