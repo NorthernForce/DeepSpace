@@ -58,4 +58,8 @@ class Elevator : public frc::Subsystem {
   int GetSelectedSensorPosition();
   int GetClosedLoopError();
   double GetPGainValue();
+  void EnableForwardLimitSwitch();
+  void DisableForwardLimitSwitch();
+  void EnableReverseLimitSwitch();
+  void DisableReverseLimitSwitch();
 };

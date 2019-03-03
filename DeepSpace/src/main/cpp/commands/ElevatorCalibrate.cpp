@@ -16,7 +16,10 @@ ElevatorCalibrate::ElevatorCalibrate() {
 }
 
 // Called just before this Command runs the first time
-void ElevatorCalibrate::Initialize() {}
+void ElevatorCalibrate::Initialize() {
+  Robot::m_elevator->EnableReverseLimitSwitch();
+  Robot::m_elevator->EnableForwardLimitSwitch();
+}
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorCalibrate::Execute() {
@@ -30,11 +33,18 @@ bool ElevatorCalibrate::IsFinished() {
 
 // Called once after isFinished returns true
 void ElevatorCalibrate::End() {
+  Robot::m_elevator->Stop();
+  
   if (Robot::m_elevator->AtLowerLimit()) {
     Robot::m_elevator->SetHomePosition();
   }
+  Robot::m_elevator->DisableReverseLimitSwitch();
+  Robot::m_elevator->DisableForwardLimitSwitch();
+
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ElevatorCalibrate::Interrupted() {}
+void ElevatorCalibrate::Interrupted() {
+  End();
+}
