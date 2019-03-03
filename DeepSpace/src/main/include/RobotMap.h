@@ -79,8 +79,8 @@ namespace RobotMap {
         const static int k_clawSolenoid = 1;
         const static int k_raiseSolenoid = 2;
 
-        const static bool k_clawOpenValue = 1;
-        const static bool k_clawClosedValue = 0;
+        const static bool k_clawOpenValue = 0;
+        const static bool k_clawClosedValue = 1;
         const static bool k_clawRaisedValue = 1;
         const static bool k_clawLoweredValue = 0;
 
@@ -93,10 +93,10 @@ namespace RobotMap {
 
     namespace Ultrasonic
     {
-        const static int k_digitalCtlPort   = 4;
+        const static int k_digitalCtlPort   = 3;
         const static int k_analogPort       = 0;
-        const static bool k_ultrasonicOn    = false;
-        const static bool k_ultrasonicOff   = true;
+        const static bool k_ultrasonicOn    = true;
+        const static bool k_ultrasonicOff   = false;
     }
 
     namespace Camera
@@ -105,8 +105,8 @@ namespace RobotMap {
     }
 
     namespace Vision {
-        const static char *k_elevatorCamera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0";
+        const static char *k_elevatorCamera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0";
         const static int k_elevatorCameraLightRing_id = 0;
-        const static char *k_manipulatorCamera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0";
+        const static char *k_manipulatorCamera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0";
     }
 }

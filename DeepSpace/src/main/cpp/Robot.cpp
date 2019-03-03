@@ -15,6 +15,10 @@
 #include "commands/ElevatorExtend.h"
 #include "commands/ElevatorRetract.h"
 
+#include "commands/ComputerVisionTargetNothing.h"
+#include "commands/ComputerVisionTargetTape.h"
+#include "commands/FollowReflectiveTape.h"
+
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -60,6 +64,11 @@ void Robot::RobotInit() {
   //frc::SmartDashboard::PutData("SetupRobot", new SetupRobot());
   frc::SmartDashboard::PutData("Set Home Position", new ElevatorSetHomePosition());
   frc::SmartDashboard::PutData("Move elevator backward", new ElevatorRetract());
+
+  frc::SmartDashboard::PutData("Camera: Target tape", new ComputerVisionTargetTape());
+  frc::SmartDashboard::PutData("Camera: No target", new ComputerVisionTargetNothing());
+  frc::SmartDashboard::PutData("Camera: Truly target tape", new ComputerVisionTargetNothing());
+
   // Initialize OI after subsystems
   m_oi.reset(new OI());
 

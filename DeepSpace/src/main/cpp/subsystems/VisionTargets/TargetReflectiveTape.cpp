@@ -67,12 +67,12 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   cv::circle(frame, cv::Point(second.m10/second.m00, second.m01/second.m00), 1, cv::Scalar(255, 0, 0), 2);
   cv::circle(frame, cv::Point(centerX, centerY), 1, cv::Scalar(0, 0, 255), 2);
 
-  // std::cout << "area1: " << first.m00 << " area2: " << second.m00 << "\n";
-  // std::cout << "x: " << centerX << " y: " << centerY << "\n";
-
   // Convert to decimals
   centerX = (frame.cols / 2 - centerX) / (frame.cols / 2);
   centerY = (frame.rows / 2 - centerY) / (frame.rows / 2);
+
+  // std::cout << "area1: " << first.m00 << " area2: " << second.m00 << "\n";
+  std::cout << "x: " << centerX << " y: " << centerY << "\n";
 
   m_horizontalOffset = centerX;
   m_verticalOffset = centerY;
