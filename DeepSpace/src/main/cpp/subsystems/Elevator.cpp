@@ -24,8 +24,8 @@ Elevator::Elevator() : Subsystem("Elevator") {
     m_followerTalonElevator2->Follow(*m_primaryTalonElevator);
     m_followerTalonElevator3->Follow(*m_primaryTalonElevator);
 
-    m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
-    m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+    EnableForwardLimitSwitch();
+    EnableReverseLimitSwitch();
 
     //m_primaryTalonElevator->SetSensorPhase(true);
     m_primaryTalonElevator->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, pidIdx, 10);
@@ -152,3 +152,17 @@ int Elevator::GetClosedLoopError() {
 double Elevator::GetPGainValue() {
   return pGain;
 }
+
+  void Elevator::EnableForwardLimitSwitch() {
+      m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+  }
+  void Elevator::DisableForwardLimitSwitch() {
+      m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, 0);
+  }
+  void Elevator::EnableReverseLimitSwitch() {
+      m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+  }
+
+  void Elevator::DisableReverseLimitSwitch() {
+      m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, 0);
+  }

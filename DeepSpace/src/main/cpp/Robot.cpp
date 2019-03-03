@@ -48,6 +48,8 @@ void Robot::RobotInit() {
   m_climber.reset(new Climber());
   m_rangeFinder.reset(new RangeFinder());
 
+  Robot::m_elevator->Retract();
+
  /* frc::SmartDashboard::PutData("Elevator Home", new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
   frc::SmartDashboard::PutData("Cargo Intake", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoIntake));
   frc::SmartDashboard::PutData("Cargo Deposit Level 1", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel1));
