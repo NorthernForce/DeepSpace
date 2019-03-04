@@ -7,13 +7,20 @@
 
 #include "Robot.h"
 
+#include "subsystems/Elevator.h"
+#include "subsystems/Claw.h"
+#include "subsystems/Climber.h"
+
 #include "commands/ElevatorSetPosition.h"
 #include "commands/ElevatorCalibrate.h"
 #include "commands/SetupRobot.h"
-#include "subsystems/Elevator.h"
 #include "commands/ElevatorSetHomePosition.h"
 #include "commands/ElevatorExtend.h"
 #include "commands/ElevatorRetract.h"
+#include "commands/LowerClimber.h"
+#include "commands/RaiseClimber.h"
+#include "commands/ClimberDriveForward.h"
+#include "commands/ClimberDriveBackward.h"
 
 #include "commands/ComputerVisionTargetNothing.h"
 #include "commands/ComputerVisionTargetTape.h"
@@ -66,6 +73,11 @@ void Robot::RobotInit() {
   //frc::SmartDashboard::PutData("SetupRobot", new SetupRobot());
   frc::SmartDashboard::PutData("Set Home Position", new ElevatorSetHomePosition());
   frc::SmartDashboard::PutData("Move elevator backward", new ElevatorRetract());
+
+  frc::SmartDashboard::PutData("Climber extend", new LowerClimber());
+  frc::SmartDashboard::PutData("Climber Retract", new RaiseClimber());
+  frc::SmartDashboard::PutData("Climber Drive Forward", new ClimberDriveForward());
+  frc::SmartDashboard::PutData("Climber Drive Backward", new ClimberDriveBackward());
 
   frc::SmartDashboard::PutData("Camera: Target tape", new ComputerVisionTargetTape());
   frc::SmartDashboard::PutData("Camera: No target", new ComputerVisionTargetNothing());
@@ -125,6 +137,7 @@ void Robot::AutonomousPeriodic() { frc::Scheduler::GetInstance()->Run(); }
 
 void Robot::TeleopInit() {
   std::cout << "TeleopInit Started" << std::endl;
+  Robot::m_elevator->Extend();
 }
 
 void Robot::TeleopPeriodic() { 

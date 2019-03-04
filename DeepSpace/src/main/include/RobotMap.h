@@ -51,8 +51,9 @@ namespace RobotMap {
         const static double k_forwardMotorSpeed = 0.5;
         const static double k_reverseMotorSpeed = -0.5;
         const static double k_driveForwardMotorSpeed = 0.5;
-        const static double k_drivebackwardMotorSpeed = -0.5;
+        const static double k_driveBackwardMotorSpeed = -0.5;
     }
+    
     namespace CargoManipulator {
         const static int k_motor_id = 6;
     }
