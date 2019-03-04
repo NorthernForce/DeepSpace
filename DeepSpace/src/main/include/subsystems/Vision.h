@@ -67,6 +67,10 @@ class Vision : public frc::Subsystem {
       "pan_absolute=0,"
       "tilt_absolute=0,"
       "zoom_absolute=0";
+
+    const int k_defaultFPS = 30;
+    const int k_defaultWidth = 240;
+    const int k_defaultHeight = 180;
   };
 
   class Target {

@@ -56,8 +56,8 @@ Vision::Camera::Camera(std::string name, std::string devPath, int lightRingID) {
   // m_camera = std::make_shared<cs::UsbCamera>(m_name, m_path);
   // frc::GetCameraServerShared()->ReportUsbCamera(m_camera->GetHandle());
   m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture(m_name, m_path));
-  m_camera->SetResolution(240, 180);
-  m_camera->SetFPS(30);
+  m_camera->SetResolution(k_defaultWidth, k_defaultHeight);
+  m_camera->SetFPS(k_defaultFPS);
   m_cameraSink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo(m_name));
   m_debugStream = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo(m_name +" Debug", 240, 180));
 

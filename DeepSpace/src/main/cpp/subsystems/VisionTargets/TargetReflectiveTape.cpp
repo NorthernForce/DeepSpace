@@ -23,9 +23,9 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   // Try to threshold the tape.
   cv::inRange(filtered, k_minHSV, k_maxHSV, filtered);
 
-  // // Get rid of spots.
-  // cv::erode(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
-  // cv::dilate(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
+  // // // Get rid of spots.
+  // // cv::erode(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
+  // // cv::dilate(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
 
   // Find contours.
   std::vector<std::vector<cv::Point>> contours;
@@ -59,7 +59,7 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   double centerY = (first.m01/first.m00 + second.m01/second.m00) / 2;
 
   // Debug
-  cv::cvtColor(frame, frame, cv::COLOR_HSV2BGR);
+  // cv::cvtColor(frame, frame, cv::COLOR_HSV2BGR);
   for (int i = 0; i < contours.size(); i++) {
     cv::drawContours(frame, contours, i, cv::Scalar(0, 255, 0));
   }
@@ -76,4 +76,6 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
 
   m_horizontalOffset = centerX;
   m_verticalOffset = centerY;
+
+  // frame = filtered.clone();
 }
