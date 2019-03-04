@@ -15,17 +15,29 @@
 #include "OI.h"
 
 #include "subsystems/BrushlessDrive.h"
+#include "subsystems/Elevator.h"
+#include "subsystems/CargoManipulator.h"
 #include "subsystems/Claw.h"
 #include "subsystems/LineTracker.h"
 #include "subsystems/UltrasonicSensor.h"
+#include "subsystems/Climber.h"
+#include "subsystems/Claw.h"
+#include "subsystems/Vision.h"
+#include "subsystems/RangeFinder.h"
 
 class Robot : public frc::TimedRobot {
  public:
   static std::shared_ptr<OI> m_oi;
+
   static std::shared_ptr<BrushlessDrive> m_driveTrain;
+  static std::shared_ptr<Elevator> m_elevator;
+  static std::shared_ptr<CargoManipulator> m_cargoManipulator;
   static std::shared_ptr<Claw> m_claw;
   static std::shared_ptr<LineTracker> m_lineTracker;
   static std::shared_ptr<AHRS> m_ahrs;
+  static std::shared_ptr<Climber> m_climber;
+  static std::shared_ptr<Vision> m_vision;
+  static std::shared_ptr<RangeFinder> m_rangeFinder;
 
   void RobotInit() override;
   void RobotPeriodic() override;

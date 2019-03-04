@@ -1,0 +1,9 @@
+@import "/edu/wpi/first/shuffleboard/api/material.css" /* Material design CSS for JavaFX components */
+
+.root {
+    -swatch-100: #fc05ae;
+    -swatch-200: #ed09a5;
+    -swatch-300: #f716b0;
+    -swatch-400: #ef1fad;
+    -swatch-500: #e21fa5;
+}
