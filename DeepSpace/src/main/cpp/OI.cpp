@@ -30,6 +30,13 @@
 #include "commands/RetractClimber.h"
 #include "commands/PlatformDrive.h"
 #include "commands/ClimbStage1.h"
+#include "commands/PositionSetups/SetupForCargoDepositLevel1.h"
+#include "commands/PositionSetups/SetupForCargoDepositLevel2.h"
+#include "commands/PositionSetups/SetupForCargoDepositLevel3.h"
+#include "commands/PositionSetups/SetupForCargoIntake.h"
+#include "commands/PositionSetups/SetupForHatchDepositLevel1.h"
+#include "commands/PositionSetups/SetupForHatchDepositLevel2.h"
+#include "commands/PositionSetups/SetupForHatchDepositLevel3.h"
 
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
@@ -71,30 +78,16 @@ OI::OI() {
   
   WhenPressed(m_manipulatorController1, 8, new ToggleClawRaise());
 
-  WhenPressed(m_manipulatorController1, 7, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel1));
-  WhenPressed(m_manipulatorController1, 7, new RaiseClaw());
-  WhenPressed(m_manipulatorController1, 7, new CloseClaw());
-  WhenPressed(m_manipulatorController1, 11, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel2));
-  WhenPressed(m_manipulatorController1, 11, new RaiseClaw());
-  WhenPressed(m_manipulatorController1, 11, new CloseClaw());
-  WhenPressed(m_manipulatorController1, 10, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel3));
-  WhenPressed(m_manipulatorController1, 10, new RaiseClaw());
-  WhenPressed(m_manipulatorController1, 10, new CloseClaw());
+  WhenPressed(m_manipulatorController1, 7, new SetupForCargoDepositLevel1());
+  WhenPressed(m_manipulatorController1, 11, new SetupForCargoDepositLevel2());
+  WhenPressed(m_manipulatorController1, 10, new SetupForCargoDepositLevel3());
   
-  WhenPressed(m_manipulatorController1, 4, new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel1)); // same height as hatch intake
-  WhenPressed(m_manipulatorController1, 4, new LowerClaw());
-  WhenPressed(m_manipulatorController1, 4, new OpenClaw());
-  WhenPressed(m_manipulatorController1, 2, new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel2));
-  WhenPressed(m_manipulatorController1, 2, new LowerClaw());
-  WhenPressed(m_manipulatorController1, 2, new OpenClaw());
-  WhenPressed(m_manipulatorController1, 5, new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel3));
-  WhenPressed(m_manipulatorController1, 5, new LowerClaw());
-  WhenPressed(m_manipulatorController1, 5, new OpenClaw());
+  WhenPressed(m_manipulatorController1, 4, new SetupForHatchDepositLevel1());
+  WhenPressed(m_manipulatorController1, 2, new SetupForHatchDepositLevel2());
+  WhenPressed(m_manipulatorController1, 5, new SetupForHatchDepositLevel3());
 
   WhenPressed(m_manipulatorController1, 9, new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
-  WhenPressed(m_manipulatorController1, 6, new ElevatorSetPosition(ElevatorSetPosition::Position::CargoIntake));
-  WhenPressed(m_manipulatorController1, 6, new RaiseClaw());
-  WhenPressed(m_manipulatorController1, 6, new CloseClaw());
+  WhenPressed(m_manipulatorController1, 6, new SetupForCargoIntake());
 
   WhenPressed(m_manipulatorController2, 8, new SetupRobot());
 
