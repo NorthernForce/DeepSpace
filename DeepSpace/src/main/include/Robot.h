@@ -10,6 +10,7 @@
 #include <frc/TimedRobot.h>
 #include <frc/commands/Command.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include "AHRS.h"
 
 #include "OI.h"
 
@@ -17,6 +18,8 @@
 #include "subsystems/Elevator.h"
 #include "subsystems/CargoManipulator.h"
 #include "subsystems/Claw.h"
+#include "subsystems/LineTracker.h"
+#include "subsystems/UltrasonicSensor.h"
 #include "subsystems/Climber.h"
 #include "subsystems/Claw.h"
 #include "subsystems/Vision.h"
@@ -30,6 +33,8 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<Elevator> m_elevator;
   static std::shared_ptr<CargoManipulator> m_cargoManipulator;
   static std::shared_ptr<Claw> m_claw;
+  static std::shared_ptr<LineTracker> m_lineTracker;
+  static std::shared_ptr<AHRS> m_ahrs;
   static std::shared_ptr<Climber> m_climber;
   static std::shared_ptr<Vision> m_vision;
   static std::shared_ptr<RangeFinder> m_rangeFinder;

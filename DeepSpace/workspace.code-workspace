@@ -6,7 +6,8 @@
 	],
 	"settings": {
 		"files.associations": {
-			"*.inc": "cpp"
+			"*.inc": "cpp",
+			"ostream": "cpp"
 		}
 	}
 }
