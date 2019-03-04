@@ -69,7 +69,7 @@ void Robot::RobotInit() {
 
   frc::SmartDashboard::PutData("Camera: Target tape", new ComputerVisionTargetTape());
   frc::SmartDashboard::PutData("Camera: No target", new ComputerVisionTargetNothing());
-  frc::SmartDashboard::PutData("Camera: Truly target tape", new FollowReflectiveTape());
+  frc::SmartDashboard::PutData("Camera: Truly target tape", new ComputerVisionTargetNothing());
 
   // Initialize OI after subsystems
   m_oi.reset(new OI());
