@@ -25,7 +25,9 @@ void ClimberDriveBackward::Execute() {
 bool ClimberDriveBackward::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void ClimberDriveBackward::End() {}
+void ClimberDriveBackward::End() {
+  Robot::m_climber->DriveStop();
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
