@@ -13,6 +13,6 @@
 
 SetupForCargoDepositLevel3::SetupForCargoDepositLevel3() {
   AddParallel(new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel3));
-  AddParallel(new RaiseClaw());
-  AddParallel(new CloseClaw());
+  AddSequential(new RaiseClaw());
+  AddSequential(new CloseClaw());
 }

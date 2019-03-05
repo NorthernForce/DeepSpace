@@ -5,14 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/PositionSetups/SetupForCargoDepositLevel2.h"
+#pragma once
 
-#include "commands/ElevatorSetPosition.h"
-#include "commands/CloseClaw.h"
-#include "commands/RaiseClaw.h"
+#include <frc/commands/Command.h>
+#include "subsystems/LineTracker.h"
 
-SetupForCargoDepositLevel2::SetupForCargoDepositLevel2() {
-  AddParallel(new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel2));
-  AddSequential(new RaiseClaw());
-  AddSequential(new CloseClaw());
-}
+
+class FollowLine : public frc::Command {
+ private:
+  bool m_faultyCase;
+  bool m_stopRobot;
+  double speed = 0;
+  double rotation = 0;
+ public:
+  FollowLine();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+};

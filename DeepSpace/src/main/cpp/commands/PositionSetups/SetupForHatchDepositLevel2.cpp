@@ -13,6 +13,6 @@
 
 SetupForHatchDepositLevel2::SetupForHatchDepositLevel2() {
   AddParallel(new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel2));
-  AddParallel(new LowerClaw());
+  AddSequential(new LowerClaw());
   AddParallel(new OpenClaw());
 }

@@ -13,6 +13,6 @@
 
 SetupForCargoIntake::SetupForCargoIntake() {
   AddParallel(new ElevatorSetPosition(ElevatorSetPosition::Position::CargoIntake));
-  AddParallel(new RaiseClaw());
-  AddParallel(new CloseClaw());
+  AddSequential(new RaiseClaw());
+  AddSequential(new CloseClaw());
 }

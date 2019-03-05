@@ -31,12 +31,13 @@
 
 #include <iostream>
 
-
 std::shared_ptr<OI> Robot::m_oi;
 std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 std::shared_ptr<Elevator> Robot::m_elevator;
 std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
 std::shared_ptr<Claw> Robot::m_claw;
+std::shared_ptr<LineTracker> Robot::m_lineTracker;
+std::shared_ptr<AHRS> Robot::m_ahrs;
 std::shared_ptr<Climber> Robot::m_climber;
 std::shared_ptr<Vision> Robot::m_vision;
 std::shared_ptr<RangeFinder> Robot::m_rangeFinder;
@@ -51,6 +52,8 @@ void Robot::RobotInit() {
   m_elevator->SetPosition(0);
   m_cargoManipulator.reset(new CargoManipulator());
   m_claw.reset(new Claw());
+  m_lineTracker.reset(new LineTracker());
+  m_ahrs = std::make_unique<AHRS>(frc::SPI::Port::kMXP);
   m_vision.reset(new Vision());
   m_climber.reset(new Climber());
   m_rangeFinder.reset(new RangeFinder());

@@ -12,7 +12,7 @@ RangeFinder::RangeFinder() : Subsystem("RangeFinder"), PIDSource()
 {
    m_ctrl.reset(new frc::DigitalOutput(RobotMap::Ultrasonic::k_digitalCtlPort));
    m_voltageReader.reset(new frc::AnalogInput(RobotMap::Ultrasonic::k_analogPort));
-   m_ctrl->Set( RobotMap::Ultrasonic::k_ultrasonicOn );
+   m_ctrl->Set(RobotMap::Ultrasonic::k_ultrasonicOn);
    this->SetPIDSourceType(frc::PIDSourceType::kDisplacement);
 
 }
