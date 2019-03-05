@@ -59,7 +59,7 @@ Vision::Camera::Camera(std::string name, std::string devPath, int lightRingID) {
   m_camera->SetResolution(k_defaultWidth, k_defaultHeight);
   m_camera->SetFPS(k_defaultFPS);
   m_cameraSink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo(m_name));
-  m_debugStream = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo(m_name +" Debug", 240, 180));
+  m_debugStream = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo(m_name +" Debug", k_defaultWidth, k_defaultHeight));
 
   if (lightRingID != -1) {
     m_lightRing.reset(new frc::Relay(lightRingID, frc::Relay::kForwardOnly));

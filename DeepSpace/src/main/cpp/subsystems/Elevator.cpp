@@ -24,8 +24,8 @@ Elevator::Elevator() : Subsystem("Elevator") {
     m_followerTalonElevator2->Follow(*m_primaryTalonElevator);
     m_followerTalonElevator3->Follow(*m_primaryTalonElevator);
 
-    EnableForwardLimitSwitch();
-    EnableReverseLimitSwitch();
+    DisableForwardLimitSwitch();
+    DisableReverseLimitSwitch();
 
     //m_primaryTalonElevator->SetSensorPhase(true);
     m_primaryTalonElevator->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, pidIdx, 10);
