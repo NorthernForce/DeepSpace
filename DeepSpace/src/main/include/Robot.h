@@ -19,7 +19,7 @@
 #include "subsystems/CargoManipulator.h"
 #include "subsystems/Claw.h"
 #include "subsystems/LineTracker.h"
-#include "subsystems/UltrasonicSensor.h"
+// #include "subsystems/UltrasonicSensor.h"
 #include "subsystems/Climber.h"
 #include "subsystems/Claw.h"
 #include "subsystems/Vision.h"

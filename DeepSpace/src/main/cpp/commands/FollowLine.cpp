@@ -14,7 +14,7 @@ FollowLine::FollowLine() {
   // eg. Requires(Robot::chassis.get());
   Requires(Robot::m_lineTracker.get());
   Requires(Robot::m_driveTrain.get());
-  Requires(Robot::m_ultrasonic.get());
+  Requires(Robot::m_rangeFinder.get());
 }
 
 // Called just before this Command runs the first time
