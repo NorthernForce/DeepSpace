@@ -60,15 +60,15 @@ OI::OI() {
   m_manipulatorController1.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController1_id));
   m_manipulatorController2.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController2_id));
 
-  frc::ShuffleboardTab& basicCommandsTab = frc::Shuffleboard::GetTab("Basic Commands");
-  basicCommandsTab.Add("SetupRobot", new SetupRobot());
-  basicCommandsTab.Add("Calibrate Robot", new ElevatorCalibrate());
+  // frc::ShuffleboardTab& basicCommandsTab = frc::Shuffleboard::GetTab("Basic Commands");
+  // basicCommandsTab.Add("SetupRobot", new SetupRobot());
+  // basicCommandsTab.Add("Calibrate Robot", new ElevatorCalibrate());
 
-  frc::ShuffleboardLayout& cargoLayout = basicCommandsTab.GetLayout("Cargo", "List Layout");
-  cargoLayout.Add("IntakeCargo", new IntakeCargo());
-  cargoLayout.Add("EjectCargo", new EjectCargo());
-  cargoLayout.Add("ElevatorRaise", new ElevatorRaise());
-  cargoLayout.Add("ElevatorLower", new ElevatorLower());
+  // frc::ShuffleboardLayout& cargoLayout = basicCommandsTab.GetLayout("Cargo", "List Layout");
+  // cargoLayout.Add("IntakeCargo", new IntakeCargo());
+  // cargoLayout.Add("EjectCargo", new EjectCargo());
+  // cargoLayout.Add("ElevatorRaise", new ElevatorRaise());
+  // cargoLayout.Add("ElevatorLower", new ElevatorLower());
 
   WhileHeld(m_manipulatorController1, 1, new IntakeCargo());
   WhenPressed(m_manipulatorController1, 1, new CloseClaw());
