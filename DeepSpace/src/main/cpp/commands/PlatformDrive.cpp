@@ -22,7 +22,7 @@ PlatformDrive::PlatformDrive() {
   // Command1 and Command2 will run in parallel.
 
   AddParallel(new ClimberDriveForward());
-  AddParallel(new DriveForward());
+  //AddParallel(new DriveForward());
 
   // A command group will require all of the subsystems that each member
   // would require.

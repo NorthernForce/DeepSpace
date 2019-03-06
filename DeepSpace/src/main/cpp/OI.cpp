@@ -30,6 +30,7 @@
 #include "commands/RetractClimber.h"
 #include "commands/PlatformDrive.h"
 #include "commands/ClimbStage1.h"
+#include "commands/ClimberDriveStop.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel1.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel2.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel3.h"
@@ -100,6 +101,7 @@ OI::OI() {
   WhenPressed(m_manipulatorController2, 5, new RetractClimber());
 
   WhileHeld(m_manipulatorController2, 3, new PlatformDrive());
+  WhenReleased(m_manipulatorController2, 3, new ClimberDriveStop());
 
 
   WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
