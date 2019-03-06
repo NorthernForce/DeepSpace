@@ -14,7 +14,7 @@
 
 Vision::Vision() : Subsystem("Vision"),
   m_cameras{
-    {"Elevator", std::make_shared<Camera>("Elevator Camera", RobotMap::Vision::k_elevatorCamera_path, RobotMap::Vision::k_elevatorCameraLightRing_id)},
+    {"Elevator", std::make_shared<Camera>("Elevator Camera", RobotMap::Vision::k_elevatorCamera_path, 240, 180, 30, RobotMap::Vision::k_elevatorCameraLightRing_id)},
     {"Manipulator", std::make_shared<Camera>("Manipulator Camera", RobotMap::Vision::k_manipulatorCamera_path)},
   },
   m_targets{
@@ -47,7 +47,7 @@ std::pair<double, double> Vision::getOffset(std::string targetName) {
   return m_targets[targetName]->getOffset();
 }
 
-Vision::Camera::Camera(std::string name, std::string devPath, int lightRingID) {
+Vision::Camera::Camera(std::string name, std::string devPath, int width, int height, int fps, int lightRingID) {
   m_name = name;
   m_path = devPath;
 
@@ -56,10 +56,10 @@ Vision::Camera::Camera(std::string name, std::string devPath, int lightRingID) {
   // m_camera = std::make_shared<cs::UsbCamera>(m_name, m_path);
   // frc::GetCameraServerShared()->ReportUsbCamera(m_camera->GetHandle());
   m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture(m_name, m_path));
-  m_camera->SetResolution(k_defaultWidth, k_defaultHeight);
-  m_camera->SetFPS(k_defaultFPS);
+  m_camera->SetResolution(width, height);
+  m_camera->SetFPS(fps);
   m_cameraSink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo(m_name));
-  m_debugStream = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo(m_name +" Debug", k_defaultWidth, k_defaultHeight));
+  m_debugStream = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo(m_name +" Debug", width, height));
 
   if (lightRingID != -1) {
     m_lightRing.reset(new frc::Relay(lightRingID, frc::Relay::kForwardOnly));

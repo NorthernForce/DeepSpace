@@ -31,7 +31,7 @@ class Vision : public frc::Subsystem {
 
   class Camera {
    public:
-    Camera(std::string name, std::string devPath, int lightRingID = -1);
+    Camera(std::string name, std::string devPath, int width = 160, int height = 120, int fps = 15, int lightRingID = -1);
     void process();
     void updateSettings(std::string newSettings);
     void setLightRing(bool turnOn);
@@ -67,10 +67,6 @@ class Vision : public frc::Subsystem {
       "pan_absolute=0,"
       "tilt_absolute=0,"
       "zoom_absolute=0";
-
-    const int k_defaultFPS = 20;
-    const int k_defaultWidth = 160;
-    const int k_defaultHeight = 120;
   };
 
   class Target {
