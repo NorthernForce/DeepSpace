@@ -53,6 +53,8 @@ Vision::Camera::Camera(std::string name, std::string devPath, int width, int hei
 
   m_baseCommand = "v4l2-ctl --device " +m_path +" --set-ctrl ";
 
+  // This link has a way to get frames but not start automatic capture:
+  // https://www.chiefdelphi.com/t/vision-processing-limits/339493/21
   // m_camera = std::make_shared<cs::UsbCamera>(m_name, m_path);
   // frc::GetCameraServerShared()->ReportUsbCamera(m_camera->GetHandle());
   m_camera = std::make_shared<cs::UsbCamera>(frc::CameraServer::GetInstance()->StartAutomaticCapture(m_name, m_path));
