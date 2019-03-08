@@ -134,9 +134,12 @@ void Robot::DisabledPeriodic() { frc::Scheduler::GetInstance()->Run(); }
  */
 void Robot::AutonomousInit() {
   std::cout << "AutonomousInit Started" << std::endl;
+  Robot::m_elevator->Extend();
 }
 
-void Robot::AutonomousPeriodic() { frc::Scheduler::GetInstance()->Run(); }
+void Robot::AutonomousPeriodic() { 
+  frc::Scheduler::GetInstance()->Run();
+}
 
 void Robot::TeleopInit() {
   std::cout << "TeleopInit Started" << std::endl;
