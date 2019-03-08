@@ -21,6 +21,7 @@ class Elevator : public frc::Subsystem {
   std::shared_ptr<WPI_TalonSRX> m_followerTalonElevator2;
   std::shared_ptr<WPI_TalonSRX> m_followerTalonElevator3;
   std::shared_ptr<frc::Solenoid> m_elevatorExtenderSolenoid;
+  std::shared_ptr<frc::Solenoid> m_elevatorRetracterSolenoid;
 
   int m_setpoint;
   constexpr static int timeoutMs = 10;
@@ -55,6 +56,7 @@ class Elevator : public frc::Subsystem {
   bool AtLowerLimit();
   void Extend();
   void Retract();
+  void HoldCurrentDeployment();
   int GetSelectedSensorPosition();
   int GetClosedLoopError();
   double GetPGainValue();

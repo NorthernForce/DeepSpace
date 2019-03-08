@@ -18,7 +18,8 @@ Elevator::Elevator() : Subsystem("Elevator") {
     m_followerTalonElevator1.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower1_id));
     m_followerTalonElevator2.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower2_id));
     m_followerTalonElevator3.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower3_id));
-    m_elevatorExtenderSolenoid.reset(new frc::Solenoid (RobotMap::PCM::k_pcm_id, RobotMap::Elevator::k_solenoid_id));
+    m_elevatorExtenderSolenoid.reset(new frc::Solenoid (RobotMap::PCM::k_pcm_id, RobotMap::Elevator::k_extenderSolenoid_id));
+    m_elevatorRetracterSolenoid.reset(new frc::Solenoid (RobotMap::PCM::k_pcm_id, RobotMap::Elevator::k_retracterSolenoid_id));
 
     m_followerTalonElevator1->Follow(*m_primaryTalonElevator);
     m_followerTalonElevator2->Follow(*m_primaryTalonElevator);
@@ -133,12 +134,19 @@ bool Elevator::AtLowerLimit() {
   return m_primaryTalonElevator->GetSensorCollection().IsRevLimitSwitchClosed();
 }
 
-void Elevator::Extend(){
-  m_elevatorExtenderSolenoid->Set(RobotMap::Elevator::k_elevatorExtendedValue);
+void Elevator::Extend() {
+  m_elevatorExtenderSolenoid->Set(true);
+  m_elevatorRetracterSolenoid->Set(false);
 }
 
-void Elevator::Retract(){
-  m_elevatorExtenderSolenoid->Set(RobotMap::Elevator::k_elevatorRetractedValue);
+void Elevator::Retract() {
+  m_elevatorExtenderSolenoid->Set(false);
+  m_elevatorRetracterSolenoid->Set(true);
+}
+
+void Elevator::HoldCurrentDeployment() {
+  m_elevatorExtenderSolenoid->Set(false);
+  m_elevatorRetracterSolenoid->Set(false);
 }
 
 int Elevator::GetSelectedSensorPosition() {

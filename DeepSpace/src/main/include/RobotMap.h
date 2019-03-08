@@ -63,14 +63,10 @@ namespace RobotMap {
         const static int k_follower1_id = 8;
         const static int k_follower2_id = 9;
         const static int k_follower3_id = 10;
-        const static int k_solenoid_id = 0;
+        const static int k_extenderSolenoid_id = 0;
+        const static int k_retracterSolenoid_id = 0;
         const static double k_elevatorRaiseSpeed = 0.5;
         const static double k_elevatorLowerSpeed = -0.2;
-        
-        // These thingies may have to be reversed!
-        const static bool k_elevatorExtendedValue = 0;
-        const static bool k_elevatorRetractedValue = 1;
-
     }
 
     namespace PCM {
