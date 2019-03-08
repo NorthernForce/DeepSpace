@@ -67,6 +67,7 @@ namespace RobotMap {
         const static double k_elevatorRaiseSpeed = 0.5;
         const static double k_elevatorLowerSpeed = -0.2;
         
+        // These thingies may have to be reversed!
         const static bool k_elevatorExtendedValue = 0;
         const static bool k_elevatorRetractedValue = 1;
 
