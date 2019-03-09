@@ -29,5 +29,10 @@ private:
   constexpr static auto k_peakCurrent = 22;
   constexpr static auto k_continuousCurrent = 11;
   constexpr static auto k_peakCurrentDuration = 2000;
+  
+  constexpr static double k_forwardMotorSpeed = 0.5;
+  constexpr static double k_reverseMotorSpeed = -0.5;
+  constexpr static double k_driveForwardMotorSpeed = 0.5;
+  constexpr static double k_driveBackwardMotorSpeed = -0.5;
 
 };

@@ -84,17 +84,17 @@ void Elevator::InitDefaultCommand() {
   // SetDefaultCommand(new MySpecialCommand());
 }
 void Elevator::Raise(){
-   m_primaryTalonElevator->Set(RobotMap::Elevator::k_elevatorRaiseSpeed);
+   m_primaryTalonElevator->Set(k_elevatorRaiseSpeed);
 
 //Elevator has 3 floors
 }
 void Elevator::LowerExplicit( double target ){
-   m_primaryTalonElevator->Set(std::min(target, RobotMap::Elevator::k_elevatorLowerSpeed));
+   m_primaryTalonElevator->Set(std::min(target, k_elevatorLowerSpeed));
 
   //Elevator has 3 floors 
 }
 void Elevator::Lower(){
-   m_primaryTalonElevator->Set(RobotMap::Elevator::k_elevatorLowerSpeed);
+   m_primaryTalonElevator->Set(k_elevatorLowerSpeed);
 
   //Elevator has 3 floors 
 }

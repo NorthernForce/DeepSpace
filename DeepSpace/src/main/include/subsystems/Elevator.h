@@ -46,6 +46,9 @@ class Elevator : public frc::Subsystem {
 
   bool m_isRetracted = true;
 
+  constexpr static double k_elevatorRaiseSpeed = 0.5;
+  constexpr static double k_elevatorLowerSpeed = -0.4;
+
  public:
   Elevator();
   void Raise();

@@ -48,10 +48,6 @@ namespace RobotMap {
         const static int k_leftClimbingMotor_id = 5;
         const static int k_rightClimbingMotor_id = 11;
         const static int k_driveMotor_id = 12;
-        const static double k_forwardMotorSpeed = 0.5;
-        const static double k_reverseMotorSpeed = -0.5;
-        const static double k_driveForwardMotorSpeed = 0.5;
-        const static double k_driveBackwardMotorSpeed = -0.5;
     }
     
     namespace CargoManipulator {
@@ -64,10 +60,7 @@ namespace RobotMap {
         const static int k_follower2_id = 9;
         const static int k_follower3_id = 10;
         const static int k_extenderSolenoid_id = 4;
-        // This may need to be updated
         const static int k_retracterSolenoid_id = 5;
-        const static double k_elevatorRaiseSpeed = 0.5;
-        const static double k_elevatorLowerSpeed = -0.4;
     }
 
     namespace PCM {
@@ -75,32 +68,14 @@ namespace RobotMap {
     }
 
     namespace Claw {
-        const static int k_clawSolenoid = 1;
-        const static int k_raiseSolenoid = 2;
-
-        const static bool k_clawOpenValue = 1;
-        const static bool k_clawClosedValue = 0;
-        const static bool k_clawRaisedValue = 0;
-        const static bool k_clawLoweredValue = 1;
-
-        constexpr static double k_timeToClose {0.4};
-        constexpr static double k_timeToOpen {0.4};
-        constexpr static double k_timeToRaise {0.4};
-        constexpr static double k_timeToLower {0.4};
-
+        const static int k_clawSolenoid_id = 1;
+        const static int k_raiseSolenoid_id = 2;
     }
 
     namespace Ultrasonic
     {
-        const static int k_digitalCtlPort   = 3;
-        const static int k_analogPort       = 0;
-        const static bool k_ultrasonicOn    = true;
-        const static bool k_ultrasonicOff   = false;
-    }
-
-    namespace Camera
-    {
-        const static int k_lightRingRelay   =  0;
+        const static int k_digitalCtlPort = 3;
+        const static int k_analogPort = 0;
     }
 
     namespace Vision {

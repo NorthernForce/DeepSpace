@@ -25,6 +25,8 @@ class RangeFinder : public frc::Subsystem, public frc::PIDSource
    double m_rangeInches;
    frc::PIDSourceType m_pidSource;
 
+  const static bool k_ultrasonicOn = true;
+  const static bool k_ultrasonicOff = false;
 
  public:
    RangeFinder();

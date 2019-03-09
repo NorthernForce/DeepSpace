@@ -6,13 +6,14 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/RangeFinder.h"
+
 #include "RobotMap.h"
 
 RangeFinder::RangeFinder() : Subsystem("RangeFinder"), PIDSource()
 {
    m_ctrl.reset(new frc::DigitalOutput(RobotMap::Ultrasonic::k_digitalCtlPort));
    m_voltageReader.reset(new frc::AnalogInput(RobotMap::Ultrasonic::k_analogPort));
-   m_ctrl->Set(RobotMap::Ultrasonic::k_ultrasonicOn);
+   m_ctrl->Set(k_ultrasonicOn);
    this->SetPIDSourceType(frc::PIDSourceType::kDisplacement);
 
 }
@@ -53,13 +54,13 @@ double RangeFinder::getDistance()
 
 int RangeFinder::enable()
 {
-  m_ctrl->Set( RobotMap::Ultrasonic::k_ultrasonicOn );
+  m_ctrl->Set(k_ultrasonicOn);
   return 0;
 }
 
 
 int RangeFinder::disable()
 {
-  m_ctrl->Set( RobotMap::Ultrasonic::k_ultrasonicOff );
+  m_ctrl->Set(k_ultrasonicOff);
   return 0;
 }

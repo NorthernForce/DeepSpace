@@ -7,8 +7,8 @@
 #include "commands/SlowClimberDriveWhenLowered.h"
 
 Climber::Climber() : Subsystem("Climber") {
-    m_masterTalonLifter.reset(new WPI_TalonSRX (RobotMap::Climber::k_leftClimbingMotor_id));
-    m_slaveTalonLifter.reset(new WPI_TalonSRX (RobotMap::Climber::k_rightClimbingMotor_id));
+    m_masterTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_leftClimbingMotor_id));
+    m_slaveTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_rightClimbingMotor_id));
 
     m_slaveTalonLifter->SetInverted(true);
     m_slaveTalonLifter->Follow(*m_masterTalonLifter);
@@ -25,15 +25,15 @@ void Climber::InitDefaultCommand() {
 }
 
 void Climber::LowerExplicit(double target) {
-    m_masterTalonLifter->Set(std::min(target, RobotMap::Climber::k_reverseMotorSpeed));
+    m_masterTalonLifter->Set(std::min(target, k_reverseMotorSpeed));
 }
 
 void Climber::Lower() {
-    m_masterTalonLifter->Set(RobotMap::Climber::k_reverseMotorSpeed);
+    m_masterTalonLifter->Set(k_reverseMotorSpeed);
 }
 
 void Climber::Raise() {
-    m_masterTalonLifter->Set(RobotMap::Climber::k_forwardMotorSpeed);
+    m_masterTalonLifter->Set(k_forwardMotorSpeed);
 }
 
 void Climber::Stop() {
@@ -45,11 +45,11 @@ void Climber::DriveWheels(double speed) {
 }
 
 void Climber::DriveForward() {
-    DriveWheels(RobotMap::Climber::k_driveForwardMotorSpeed);
+    DriveWheels(k_driveForwardMotorSpeed);
 }
 
 void Climber::DriveBackward() {
-    DriveWheels(RobotMap::Climber::k_driveBackwardMotorSpeed);
+    DriveWheels(k_driveBackwardMotorSpeed);
 }
 
 void Climber::DriveStop() {
