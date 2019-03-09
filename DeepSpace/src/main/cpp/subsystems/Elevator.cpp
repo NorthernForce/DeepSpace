@@ -137,16 +137,22 @@ bool Elevator::AtLowerLimit() {
 void Elevator::Extend() {
   m_elevatorExtenderSolenoid->Set(true);
   m_elevatorRetracterSolenoid->Set(false);
+  m_isRetracted = false;
 }
 
 void Elevator::Retract() {
   m_elevatorExtenderSolenoid->Set(false);
   m_elevatorRetracterSolenoid->Set(true);
+  m_isRetracted = true;
 }
 
 void Elevator::HoldCurrentDeployment() {
   m_elevatorExtenderSolenoid->Set(false);
   m_elevatorRetracterSolenoid->Set(false);
+}
+
+bool Elevator::IsRetracted() {
+  return m_isRetracted;
 }
 
 int Elevator::GetSelectedSensorPosition() {

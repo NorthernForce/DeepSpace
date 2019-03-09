@@ -21,6 +21,7 @@
 #include "commands/SetupRobot.h"
 #include "commands/ElevatorCalibrate.h"
 #include "commands/ElevatorExtend.h"
+#include "commands/ToggleElevatorDeployment.h"
 #include "commands/ToggleClawRaise.h"
 #include "commands/CloseClaw.h"
 #include "commands/OpenClaw.h"
@@ -28,12 +29,11 @@
 #include "commands/LowerClaw.h"
 #include "commands/ElevatorSetPosition.h"
 #include "commands/SetupRobot.h"
-#include "commands/RetractClimber.h"
 #include "commands/PlatformDrive.h"
 #include "commands/ClimbStage1.h"
 #include "commands/ClimberDriveStop.h"
 #include "commands/LowerClimber.h"
-#include "commands/ExtendClimber.h"
+#include "commands/RaiseClimber.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel1.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel2.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel3.h"
@@ -101,11 +101,11 @@ OI::OI() {
   WhenReleased(m_manipulatorController2, 10, new ElevatorStop());
   WhenReleased(m_manipulatorController2, 11, new ElevatorStop());
 
-  WhenPressed(m_manipulatorController2, 4, new ElevatorExtend());
+  WhenPressed(m_manipulatorController2, 4, new ToggleElevatorDeployment());
   WhenPressed(m_manipulatorController2, 5, new ElevatorCalibrate());
 
-  WhileHeld(m_manipulatorController2, 6, new ExtendClimber());
-  WhileHeld(m_manipulatorController2, 7, new RetractClimber());
+  WhileHeld(m_manipulatorController2, 6, new LowerClimber());
+  WhileHeld(m_manipulatorController2, 7, new RaiseClimber());
 
   WhileHeld(m_manipulatorController2, 3, new PlatformDrive());
   WhenReleased(m_manipulatorController2, 3, new ClimberDriveStop());

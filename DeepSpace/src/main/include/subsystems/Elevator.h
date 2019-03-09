@@ -44,6 +44,8 @@ class Elevator : public frc::Subsystem {
 	constexpr static int defaultContinuousCurrent = 12;
 	constexpr static double rampTime = 0.5;
 
+  bool m_isRetracted = true;
+
  public:
   Elevator();
   void Raise();
@@ -57,6 +59,7 @@ class Elevator : public frc::Subsystem {
   void Extend();
   void Retract();
   void HoldCurrentDeployment();
+  bool IsRetracted();
   int GetSelectedSensorPosition();
   int GetClosedLoopError();
   double GetPGainValue();

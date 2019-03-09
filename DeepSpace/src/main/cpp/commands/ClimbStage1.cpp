@@ -7,7 +7,7 @@
 
 #include "commands/ClimbStage1.h"
 #include "commands/ElevatorSetPosition.h"
-#include "commands/ExtendClimber.h"
+#include "commands/LowerClimber.h"
 
 
 ClimbStage1::ClimbStage1() {
@@ -22,7 +22,7 @@ ClimbStage1::ClimbStage1() {
   //      AddSequential(new Command2());
   // Command1 and Command2 will run in parallel.
 
-  AddParallel(new ExtendClimber());
+  AddParallel(new LowerClimber());
   AddParallel(new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
 
   // A command group will require all of the subsystems that each member
