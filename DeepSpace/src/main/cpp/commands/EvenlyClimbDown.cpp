@@ -5,52 +5,52 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/EvenlyClimbUp.h"
+#include "commands/EvenlyClimbDown.h"
 
 #include "Robot.h"
 
-EvenlyClimbUp::EvenlyClimbUp() {
+EvenlyClimbDown::EvenlyClimbDown() {
   Requires(Robot::m_elevator.get());
   Requires(Robot::m_climber.get());
   Requires(Robot::m_imu.get());
 }
 
 // Called just before this Command runs the first time
-void EvenlyClimbUp::Initialize() {
+void EvenlyClimbDown::Initialize() {
   // Not sure if we wanna zero the imu.
 }
 
 // Called repeatedly when this Command is scheduled to run
-void EvenlyClimbUp::Execute() {
+void EvenlyClimbDown::Execute() {
   auto angle = Robot::m_imu->getAngle();
 
   // So, stopping it should work, but it may be jerky.
   // I just think it happens to be safer.
   if (angle <= stopElevatorThreshold) {
     Robot::m_elevator->Stop();
-    Robot::m_climber->Raise();
+    Robot::m_climber->Lower();
   }
   else if (angle >= stopClimberThreshold) {
-    Robot::m_elevator->Raise();
+    Robot::m_elevator->Lower();
     Robot::m_climber->Stop();
   }
   else {
-    Robot::m_elevator->Raise();
-    Robot::m_climber->Raise();
+    Robot::m_elevator->Lower();
+    Robot::m_climber->Lower();
   }
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool EvenlyClimbUp::IsFinished() {
-  return Robot::m_climber->AtUpperLimit();
+bool EvenlyClimbDown::IsFinished() {
+  return Robot::m_climber->AtLowerLimit();
 }
 
 // Called once after isFinished returns true
-void EvenlyClimbUp::End() {
+void EvenlyClimbDown::End() {
   Robot::m_elevator->Stop();
   Robot::m_climber->Stop();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void EvenlyClimbUp::Interrupted() { End(); }
+void EvenlyClimbDown::Interrupted() { End(); }
