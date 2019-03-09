@@ -10,6 +10,7 @@
 #include "subsystems/Elevator.h"
 #include "subsystems/Claw.h"
 #include "subsystems/Climber.h"
+#include "subsystems/IMU.h"
 
 #include "commands/ElevatorSetPosition.h"
 #include "commands/ElevatorCalibrate.h"
@@ -36,8 +37,8 @@ std::shared_ptr<BrushlessDrive> Robot::m_driveTrain;
 std::shared_ptr<Elevator> Robot::m_elevator;
 std::shared_ptr<CargoManipulator> Robot::m_cargoManipulator;
 std::shared_ptr<Claw> Robot::m_claw;
+std::shared_ptr<IMU> Robot::m_imu;
 std::shared_ptr<LineTracker> Robot::m_lineTracker;
-std::shared_ptr<AHRS> Robot::m_ahrs;
 std::shared_ptr<Climber> Robot::m_climber;
 std::shared_ptr<Vision> Robot::m_vision;
 std::shared_ptr<RangeFinder> Robot::m_rangeFinder;
@@ -52,8 +53,8 @@ void Robot::RobotInit() {
   m_elevator->SetPosition(0);
   m_cargoManipulator.reset(new CargoManipulator());
   m_claw.reset(new Claw());
+  m_imu.reset(new IMU());
   m_lineTracker.reset(new LineTracker());
-  m_ahrs = std::make_unique<AHRS>(frc::SPI::Port::kMXP);
   m_vision.reset(new Vision());
   m_climber.reset(new Climber());
   m_rangeFinder.reset(new RangeFinder());
@@ -103,6 +104,7 @@ void Robot::RobotInit() {
  * LiveWindow and SmartDashboard integrated updating.
  */
 void Robot::RobotPeriodic() {
+  frc::SmartDashboard::PutNumber("Robot tilt", m_imu->getAngle());
   frc::SmartDashboard::PutNumber("Elevator Sensor Position", m_elevator->GetSelectedSensorPosition());
   frc::SmartDashboard::PutNumber("Elevator Closed Loop Error", m_elevator->GetClosedLoopError());
   //frc::SmartDashboard::PutNumber("pGain value", m_elevator->GetPGainValue());

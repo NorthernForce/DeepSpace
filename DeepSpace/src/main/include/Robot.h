@@ -22,6 +22,7 @@
 // #include "subsystems/UltrasonicSensor.h"
 #include "subsystems/Climber.h"
 #include "subsystems/Claw.h"
+#include "subsystems/IMU.h"
 #include "subsystems/Vision.h"
 #include "subsystems/RangeFinder.h"
 
@@ -33,8 +34,8 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<Elevator> m_elevator;
   static std::shared_ptr<CargoManipulator> m_cargoManipulator;
   static std::shared_ptr<Claw> m_claw;
+  static std::shared_ptr<IMU> m_imu;
   static std::shared_ptr<LineTracker> m_lineTracker;
-  static std::shared_ptr<AHRS> m_ahrs;
   static std::shared_ptr<Climber> m_climber;
   static std::shared_ptr<Vision> m_vision;
   static std::shared_ptr<RangeFinder> m_rangeFinder;
