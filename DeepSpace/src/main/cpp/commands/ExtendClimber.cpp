@@ -29,8 +29,12 @@ bool ExtendClimber::IsFinished() {
  }
 
 // Called once after isFinished returns true
-void ExtendClimber::End() {}
+void ExtendClimber::End() {
+  Robot::m_climber->Stop();
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ExtendClimber::Interrupted() {}
+void ExtendClimber::Interrupted() {
+  End();
+}
