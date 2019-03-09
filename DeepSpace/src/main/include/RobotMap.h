@@ -67,7 +67,7 @@ namespace RobotMap {
         // This may need to be updated
         const static int k_retracterSolenoid_id = 5;
         const static double k_elevatorRaiseSpeed = 0.5;
-        const static double k_elevatorLowerSpeed = -0.2;
+        const static double k_elevatorLowerSpeed = -0.4;
     }
 
     namespace PCM {

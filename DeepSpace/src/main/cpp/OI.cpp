@@ -32,6 +32,7 @@
 #include "commands/PlatformDrive.h"
 #include "commands/ClimbStage1.h"
 #include "commands/ClimberDriveStop.h"
+#include "commands/EvenlyClimbUp.h"
 #include "commands/LowerClimber.h"
 #include "commands/RaiseClimber.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel1.h"
@@ -109,6 +110,8 @@ OI::OI() {
 
   WhileHeld(m_manipulatorController2, 3, new PlatformDrive());
   WhenReleased(m_manipulatorController2, 3, new ClimberDriveStop());
+
+  WhileHeld(m_manipulatorController2, 2, new EvenlyClimbUp());
 
   // WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
 
