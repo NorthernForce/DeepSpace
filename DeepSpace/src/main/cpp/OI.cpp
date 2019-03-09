@@ -20,6 +20,7 @@
 #include "commands/ElevatorStop.h"
 #include "commands/SetupRobot.h"
 #include "commands/ElevatorCalibrate.h"
+#include "commands/ElevatorExtend.h"
 #include "commands/ToggleClawRaise.h"
 #include "commands/CloseClaw.h"
 #include "commands/OpenClaw.h"
@@ -31,6 +32,7 @@
 #include "commands/PlatformDrive.h"
 #include "commands/ClimbStage1.h"
 #include "commands/ClimberDriveStop.h"
+#include "commands/LowerClimber.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel1.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel2.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel3.h"
@@ -98,13 +100,16 @@ OI::OI() {
   WhenReleased(m_manipulatorController2, 10, new ElevatorStop());
   WhenReleased(m_manipulatorController2, 11, new ElevatorStop());
 
-  WhenPressed(m_manipulatorController2, 5, new RetractClimber());
+  WhenPressed(m_manipulatorController2, 4, new ElevatorExtend());
+  WhenPressed(m_manipulatorController2, 5, new ElevatorCalibrate());
+
+  WhileHeld(m_manipulatorController2, 6, new LowerClimber());
+  WhenPressed(m_manipulatorController2, 7, new RetractClimber());
 
   WhileHeld(m_manipulatorController2, 3, new PlatformDrive());
   WhenReleased(m_manipulatorController2, 3, new ClimberDriveStop());
 
-
-  WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
+  // WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
 
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }

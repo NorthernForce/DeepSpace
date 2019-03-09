@@ -22,7 +22,9 @@ void RaiseClimber::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool RaiseClimber::IsFinished() { return false; }
+bool RaiseClimber::IsFinished() {
+  return Robot::m_climber->AtUpperLimit();
+}
 
 // Called once after isFinished returns true
 void RaiseClimber::End() {

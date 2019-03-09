@@ -23,7 +23,9 @@ void LowerClimber::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool LowerClimber::IsFinished() { return false; }
+bool LowerClimber::IsFinished() {
+  return Robot::m_climber->AtLowerLimit();
+}
 
 // Called once after isFinished returns true
 void LowerClimber::End() {
