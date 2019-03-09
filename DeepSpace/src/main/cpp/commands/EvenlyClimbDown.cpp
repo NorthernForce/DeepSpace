@@ -28,15 +28,15 @@ void EvenlyClimbDown::Execute() {
   // I just think it happens to be safer.
   if (angle <= stopBackThreshold) {
     Robot::m_elevator->Stop();
-    Robot::m_climber->Lower();
+    Robot::m_climber->Raise();
   }
   else if (angle >= stopFrontThreshold) {
-    Robot::m_elevator->Lower();
+    Robot::m_elevator->Raise();
     Robot::m_climber->Stop();
   }
   else {
-    Robot::m_elevator->Lower();
-    Robot::m_climber->Lower();
+    Robot::m_elevator->Raise();
+    Robot::m_climber->Raise();
   }
 }
 

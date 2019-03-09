@@ -27,16 +27,16 @@ void EvenlyClimbUp::Execute() {
   // So, stopping it should work, but it may be jerky.
   // I just think it happens to be safer.
   if (angle <= stopBackThreshold) {
-    Robot::m_elevator->Raise();
+    Robot::m_elevator->Lower();
     Robot::m_climber->Stop();
   }
   else if (angle >= stopFrontThreshold) {
     Robot::m_elevator->Stop();
-    Robot::m_climber->Raise();
+    Robot::m_climber->Lower();
   }
   else {
-    Robot::m_elevator->Raise();
-    Robot::m_climber->Raise();
+    Robot::m_elevator->Lower();
+    Robot::m_climber->Lower();
   }
 }
 
