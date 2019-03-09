@@ -9,7 +9,7 @@
 #include "Robot.h"
 #include "RobotMap.h"
 
-ElevatorRetract::ElevatorRetract() {
+ElevatorRetract::ElevatorRetract() : frc::TimedCommand(k_duration) {
   Requires(Robot::m_elevator.get());
 }
 
@@ -17,16 +17,3 @@ ElevatorRetract::ElevatorRetract() {
 void ElevatorRetract::Initialize() {
   Robot::m_elevator->Retract();
 }
-
-// Called repeatedly when this Command is scheduled to run
-void ElevatorRetract::Execute() {}
-
-// Make this return true when this Command no longer needs to run execute()
-bool ElevatorRetract::IsFinished() { return false; }
-
-// Called once after isFinished returns true
-void ElevatorRetract::End() {}
-
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void ElevatorRetract::Interrupted() {}

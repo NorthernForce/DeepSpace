@@ -33,6 +33,7 @@
 #include "commands/ClimbStage1.h"
 #include "commands/ClimberDriveStop.h"
 #include "commands/LowerClimber.h"
+#include "commands/ExtendClimber.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel1.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel2.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel3.h"
@@ -103,8 +104,8 @@ OI::OI() {
   WhenPressed(m_manipulatorController2, 4, new ElevatorExtend());
   WhenPressed(m_manipulatorController2, 5, new ElevatorCalibrate());
 
-  WhileHeld(m_manipulatorController2, 6, new LowerClimber());
-  WhenPressed(m_manipulatorController2, 7, new RetractClimber());
+  WhileHeld(m_manipulatorController2, 6, new ExtendClimber());
+  WhileHeld(m_manipulatorController2, 7, new RetractClimber());
 
   WhileHeld(m_manipulatorController2, 3, new PlatformDrive());
   WhenReleased(m_manipulatorController2, 3, new ClimberDriveStop());

@@ -9,7 +9,7 @@
 #include "Robot.h"
 #include "RobotMap.h"
 
-ElevatorExtend::ElevatorExtend() {
+ElevatorExtend::ElevatorExtend() : frc::TimedCommand(k_duration) {
   Requires(Robot::m_elevator.get());
 }
 
@@ -17,16 +17,3 @@ ElevatorExtend::ElevatorExtend() {
 void ElevatorExtend::Initialize() {
   Robot::m_elevator->Extend();
 }
-
-// Called repeatedly when this Command is scheduled to run
-void ElevatorExtend::Execute() {}
-
-// Make this return true when this Command no longer needs to run execute()
-bool ElevatorExtend::IsFinished() { return true; }
-
-// Called once after isFinished returns true
-void ElevatorExtend::End() {}
-
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void ElevatorExtend::Interrupted() {}
