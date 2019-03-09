@@ -5,44 +5,52 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ClimbEvenly.h"
+#include "commands/EvenlyClimbUp.h"
+
 #include "Robot.h"
 
-ClimbEvenly::ClimbEvenly() {
-  // Use Requires() here to declare subsystem dependencies
-  Requires(Robot::m_imu.get());
+EvenlyClimbUp::EvenlyClimbUp() {
   Requires(Robot::m_elevator.get());
   Requires(Robot::m_climber.get());
+  Requires(Robot::m_imu.get());
 }
 
 // Called just before this Command runs the first time
-void ClimbEvenly::Initialize() {
-
+void EvenlyClimbUp::Initialize() {
+  // Not sure if we wanna zero the imu.
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ClimbEvenly::Execute() {
-  int tiltGain = 4; //Angle from 0-180 
-  double tiltAngle = Robot::m_imu->getAngle();
-  
-  if ( tiltAngle > 5)
-  {
-    Robot::m_elevator->LowerExplicit(RobotMap::Climber::k_reverseMotorSpeed + tiltGain);
-    Robot::m_climber->LowerExplicit(RobotMap::Climber::k_reverseMotorSpeed - tiltGain);
-  }
-  
+void EvenlyClimbUp::Execute() {
+  auto angle = Robot::m_imu->getAngle();
 
+  // So, stopping it should work, but it may be jerky.
+  // I just think it happens to be safer.
+  if (angle <= stopElevatorThreshold) {
+    Robot::m_elevator->Stop();
+    Robot::m_climber->Raise();
+  }
+  else if (angle >= stopClimberThreshold) {
+    Robot::m_elevator->Raise();
+    Robot::m_climber->Stop();
+  }
+  else {
+    Robot::m_elevator->Raise();
+    Robot::m_climber->Raise();
+  }
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool ClimbEvenly::IsFinished() { return false; }
+bool EvenlyClimbUp::IsFinished() { 
+  return Robot::m_climber->AtUpperLimit();
+}
 
 // Called once after isFinished returns true
-void ClimbEvenly::End() {
-  //Should we put some hold voltage on the climber - 
-  //  motors to help keep the robot still if the command is aborted?
+void EvenlyClimbUp::End() {
+  Robot::m_elevator->Stop();
+  Robot::m_climber->Stop();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ClimbEvenly::Interrupted() {}
+void EvenlyClimbUp::Interrupted() { End(); }

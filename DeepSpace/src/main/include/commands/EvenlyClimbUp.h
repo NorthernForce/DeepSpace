@@ -9,12 +9,16 @@
 
 #include <frc/commands/Command.h>
 
-class ClimbEvenly : public frc::Command {
+class EvenlyClimbUp : public frc::Command {
  public:
-  ClimbEvenly();
+  EvenlyClimbUp();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
+
+ private:
+  const double stopElevatorThreshold = -8;
+  const double stopClimberThreshold = 8;
 };

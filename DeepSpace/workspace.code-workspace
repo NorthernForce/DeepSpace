@@ -8,6 +8,7 @@
 		"files.associations": {
 			"*.inc": "cpp",
 			"ostream": "cpp"
-		}
+		},
+		"java.configuration.updateBuildConfiguration": "disabled"
 	}
 }

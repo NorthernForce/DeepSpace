@@ -21,9 +21,14 @@ void IMU::InitDefaultCommand() {
 }
 
 float IMU::getAngle() {
-  if (m_ahrs.get() == nullptr)
-    return 0.1337;
-  else return m_ahrs->GetPitch();
+  if (m_ahrs.get() == nullptr) {
+    return 0.1337; // What does this mean??
+  }
+  else {
+    // Maybe needs switch
+    return m_ahrs->GetPitch();
+    // return m_ahrs->GetRoll();
+  }
 }
 
 // Put methods for controlling this subsystem
