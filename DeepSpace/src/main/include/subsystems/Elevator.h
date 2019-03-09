@@ -47,7 +47,7 @@ class Elevator : public frc::Subsystem {
   bool m_isRetracted = true;
 
   const double k_elevatorRaiseSpeed = 0.5;
-  const double k_elevatorLowerSpeed = -0.4;
+  const double k_elevatorLowerSpeed = -0.6;
 
  public:
   Elevator();
