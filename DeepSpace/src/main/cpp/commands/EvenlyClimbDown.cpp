@@ -26,11 +26,11 @@ void EvenlyClimbDown::Execute() {
 
   // So, stopping it should work, but it may be jerky.
   // I just think it happens to be safer.
-  if (angle <= stopElevatorThreshold) {
+  if (angle <= stopBackThreshold) {
     Robot::m_elevator->Stop();
     Robot::m_climber->Lower();
   }
-  else if (angle >= stopClimberThreshold) {
+  else if (angle >= stopFrontThreshold) {
     Robot::m_elevator->Lower();
     Robot::m_climber->Stop();
   }

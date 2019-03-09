@@ -19,6 +19,6 @@ class EvenlyClimbUp : public frc::Command {
   void Interrupted() override;
 
  private:
-  const double stopElevatorThreshold = -8;
-  const double stopClimberThreshold = 8;
+  const double stopBackThreshold = -10;
+  const double stopFrontThreshold = 10;
 };

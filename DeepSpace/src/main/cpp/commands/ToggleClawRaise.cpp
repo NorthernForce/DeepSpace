@@ -8,7 +8,7 @@
 #include "commands/ToggleClawRaise.h"
 #include "Robot.h"
 
-ToggleClawRaise::ToggleClawRaise(): TimedCommand(RobotMap::Claw::k_timeToRaise) {
+ToggleClawRaise::ToggleClawRaise() : TimedCommand(Claw::k_timeToRaise) {
   Requires(Robot::m_claw.get());
 }
 
