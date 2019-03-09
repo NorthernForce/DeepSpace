@@ -21,4 +21,6 @@ class EvenlyClimbUp : public frc::Command {
  private:
   const double stopBackThreshold = -3;
   const double stopFrontThreshold = 3;
+
+  bool m_climbingStarted = false;
 };

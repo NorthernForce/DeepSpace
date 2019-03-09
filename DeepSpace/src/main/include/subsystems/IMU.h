@@ -16,11 +16,13 @@ class IMU : public frc::Subsystem {
   // for methods that implement subsystem capabilities
   std::shared_ptr<AHRS> m_ahrs;
 //  ahrs = new AHRS(SPI::Port::kMXP);
+  double m_angleOffset = 0;
 
 
 
  public:
   IMU();
   float getAngle();
+  void resetAngle();
   void InitDefaultCommand() override;
 };

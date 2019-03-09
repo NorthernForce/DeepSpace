@@ -21,13 +21,10 @@ void IMU::InitDefaultCommand() {
 }
 
 float IMU::getAngle() {
-  if (m_ahrs.get() == nullptr) {
-    return 0.1337; // What does this mean??
-  }
-  else {
-    return m_ahrs->GetRoll();
-  }
+  return m_ahrs->GetRoll() - m_angleOffset;
 }
 
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
+void IMU::resetAngle() {
+  m_angleOffset = getAngle();
+}
+

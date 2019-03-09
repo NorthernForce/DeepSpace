@@ -17,7 +17,10 @@ EvenlyClimbUp::EvenlyClimbUp() {
 
 // Called just before this Command runs the first time
 void EvenlyClimbUp::Initialize() {
-  // Not sure if we wanna zero the imu.
+  if (!m_climbingStarted) {
+    m_climbingStarted = true;
+    Robot::m_imu->resetAngle();
+  }
 }
 
 // Called repeatedly when this Command is scheduled to run

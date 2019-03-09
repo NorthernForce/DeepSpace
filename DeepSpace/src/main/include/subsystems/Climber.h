@@ -34,5 +34,4 @@ private:
   const double k_reverseMotorSpeed = -0.5;
   const double k_driveForwardMotorSpeed = 0.5;
   const double k_driveBackwardMotorSpeed = -0.5;
-
 };
