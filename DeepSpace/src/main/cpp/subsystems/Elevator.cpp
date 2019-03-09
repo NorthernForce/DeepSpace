@@ -88,6 +88,11 @@ void Elevator::Raise(){
 
 //Elevator has 3 floors
 }
+void Elevator::LowerExplicit( double target ){
+   m_primaryTalonElevator->Set(std::min(target, RobotMap::Elevator::k_elevatorLowerSpeed));
+
+  //Elevator has 3 floors 
+}
 void Elevator::Lower(){
    m_primaryTalonElevator->Set(RobotMap::Elevator::k_elevatorLowerSpeed);
 

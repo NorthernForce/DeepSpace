@@ -8,6 +8,7 @@ class Climber: public frc::Subsystem
 public:
 	Climber();
 	void Lower();
+	void LowerExplicit(double target);
 	void Raise();
     void Stop();
     void DriveForward();

@@ -49,6 +49,7 @@ class Elevator : public frc::Subsystem {
  public:
   Elevator();
   void Raise();
+  void LowerExplicit( double target );
   void Lower();
   void Stop();
   void InitDefaultCommand() override;

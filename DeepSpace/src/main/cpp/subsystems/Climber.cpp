@@ -17,6 +17,10 @@ Climber::Climber() : Subsystem("Climber") {
     m_masterTalonWheels.reset(new WPI_TalonSRX (RobotMap::Climber::k_driveMotor_id));
 }
 
+void Climber::LowerExplicit(double target) {
+    m_masterTalonLifter->Set(std::min(target, RobotMap::Climber::k_reverseMotorSpeed));
+}
+
 void Climber::Lower() {
     m_masterTalonLifter->Set(RobotMap::Climber::k_reverseMotorSpeed);
 }

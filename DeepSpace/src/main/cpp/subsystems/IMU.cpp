@@ -18,7 +18,6 @@ IMU::IMU() : Subsystem("ExampleSubsystem") {
 
 void IMU::InitDefaultCommand() {
   // Set the default command for a subsystem here.
-  // SetDefaultCommand(new MySpecialCommand());
 }
 
 float IMU::getAngle() {
