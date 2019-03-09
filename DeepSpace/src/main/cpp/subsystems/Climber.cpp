@@ -1,10 +1,12 @@
 
 #include "subsystems/Climber.h"
-#include "RobotMap.h"
+
 #include <iostream>
 
-Climber::Climber() : Subsystem("Climber") {
+#include "RobotMap.h"
+#include "commands/SlowClimberDriveWhenLowered.h"
 
+Climber::Climber() : Subsystem("Climber") {
     m_masterTalonLifter.reset(new WPI_TalonSRX (RobotMap::Climber::k_leftClimbingMotor_id));
     m_slaveTalonLifter.reset(new WPI_TalonSRX (RobotMap::Climber::k_rightClimbingMotor_id));
 
@@ -15,6 +17,11 @@ Climber::Climber() : Subsystem("Climber") {
     m_masterTalonLifter->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
 
     m_masterTalonWheels.reset(new WPI_TalonSRX (RobotMap::Climber::k_driveMotor_id));
+}
+
+void Climber::InitDefaultCommand() {
+  // Set the default command for a subsystem here.
+  SetDefaultCommand(new SlowClimberDriveWhenLowered());
 }
 
 void Climber::LowerExplicit(double target) {
@@ -33,16 +40,20 @@ void Climber::Stop() {
     m_masterTalonLifter->Set(0.0);
 }
 
+void Climber::DriveWheels(double speed) {
+    m_masterTalonWheels->Set(speed);
+}
+
 void Climber::DriveForward() {
-    m_masterTalonWheels->Set(RobotMap::Climber::k_driveForwardMotorSpeed);
+    DriveWheels(RobotMap::Climber::k_driveForwardMotorSpeed);
 }
 
 void Climber::DriveBackward() {
-    m_masterTalonWheels->Set(RobotMap::Climber::k_driveBackwardMotorSpeed);
+    DriveWheels(RobotMap::Climber::k_driveBackwardMotorSpeed);
 }
 
 void Climber::DriveStop() {
-    m_masterTalonWheels->Set(0.0);
+    DriveWheels(0.0);
 }
 
 bool Climber::AtUpperLimit() {
