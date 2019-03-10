@@ -53,7 +53,7 @@ class Elevator : public frc::Subsystem {
   Elevator();
   void InitDefaultCommand() override;
   void raise();
-  void lowerExplicit( double target );
+  void setSpeed(double speed);
   void lower();
   void stop();
   void setPosition(int);

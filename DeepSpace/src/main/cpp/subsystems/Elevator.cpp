@@ -88,10 +88,16 @@ void Elevator::raise(){
 
 //Elevator has 3 floors
 }
-void Elevator::lowerExplicit(double target){
-   m_primaryTalonElevator->Set(std::min(target, k_elevatorLowerSpeed));
-
-  //Elevator has 3 floors 
+void Elevator::setSpeed(double speed){
+  if (speed > k_elevatorLowerSpeed && speed < k_elevatorRaiseSpeed) {
+   m_primaryTalonElevator->Set(speed);
+  }
+  else if (speed < k_elevatorLowerSpeed) {
+   m_primaryTalonElevator->Set(k_elevatorLowerSpeed);
+  }
+  else if (speed > k_elevatorRaiseSpeed) {
+   m_primaryTalonElevator->Set(k_elevatorRaiseSpeed);
+  }
 }
 void Elevator::lower(){
    m_primaryTalonElevator->Set(k_elevatorLowerSpeed);
