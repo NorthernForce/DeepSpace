@@ -13,4 +13,7 @@ class ClawToggleRaise : public frc::TimedCommand {
  public:
   ClawToggleRaise();
   void Initialize() override;
+
+ private:
+  const double k_duration = 0.4;
 };

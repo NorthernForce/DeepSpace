@@ -8,7 +8,6 @@
 #include "subsystems/BrushlessDrive.h"
 
 #include "RobotMap.h"
-
 #include "commands/DriveWithJoystick.h"
 
 BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {

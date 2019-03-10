@@ -6,9 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ClawToggleRaise.h"
+
 #include "Robot.h"
 
-ClawToggleRaise::ClawToggleRaise() : TimedCommand(Claw::k_timeToRaise) {
+ClawToggleRaise::ClawToggleRaise() : TimedCommand(k_duration) {
   Requires(Robot::m_claw.get());
 }
 

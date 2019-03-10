@@ -9,7 +9,7 @@
 #include "Robot.h"
 
 ElevatorLower::ElevatorLower() {
-	Requires(Robot::m_elevator.get());
+  Requires(Robot::m_elevator.get());
 }
 
 // Called just before this Command runs the first time
@@ -17,7 +17,7 @@ void ElevatorLower::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorLower::Execute() {
-   Robot::m_elevator->Lower(); 
+  Robot::m_elevator->Lower(); 
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -25,8 +25,9 @@ bool ElevatorLower::IsFinished() { return false; }
 
 // Called once after isFinished returns true
 void ElevatorLower::End() {
+  Robot::m_elevator->Stop();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ElevatorLower::Interrupted() {}
+void ElevatorLower::Interrupted() { End(); }

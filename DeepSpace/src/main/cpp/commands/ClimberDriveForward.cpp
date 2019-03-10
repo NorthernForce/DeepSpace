@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ClimberDriveForward.h"
+
 #include "Robot.h"
 
 ClimberDriveForward::ClimberDriveForward() {
@@ -13,9 +14,7 @@ ClimberDriveForward::ClimberDriveForward() {
 }
 
 // Called just before this Command runs the first time
-void ClimberDriveForward::Initialize() {
-  
-}
+void ClimberDriveForward::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ClimberDriveForward::Execute() {
@@ -27,9 +26,9 @@ bool ClimberDriveForward::IsFinished() { return true; }
 
 // Called once after isFinished returns true
 void ClimberDriveForward::End() {
- // Robot::m_climber->DriveStop();
+ Robot::m_climber->DriveStop();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ClimberDriveForward::Interrupted() {}
+void ClimberDriveForward::Interrupted() { End(); }

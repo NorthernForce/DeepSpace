@@ -31,6 +31,4 @@ void CargoEject::End() {
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void CargoEject::Interrupted() {
-  Robot::m_cargoManipulator->setSpeed(0);
-}
+void CargoEject::Interrupted() { End(); }

@@ -30,8 +30,10 @@ void ClimberDriveSlowWhileLowered::Execute() {
 bool ClimberDriveSlowWhileLowered::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void ClimberDriveSlowWhileLowered::End() {}
+void ClimberDriveSlowWhileLowered::End() {
+  Robot::m_climber->DriveStop();
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ClimberDriveSlowWhileLowered::Interrupted() {}
+void ClimberDriveSlowWhileLowered::Interrupted() { End(); }

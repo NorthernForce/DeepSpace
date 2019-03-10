@@ -13,4 +13,7 @@ class ClawOpen : public frc::TimedCommand {
  public:
   ClawOpen();
   void Initialize() override;
+
+ private:
+  const double k_duration = 0.4;
 };

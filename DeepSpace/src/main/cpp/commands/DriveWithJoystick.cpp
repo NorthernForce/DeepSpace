@@ -10,7 +10,7 @@
 #include "Robot.h"
 
 DriveWithJoystick::DriveWithJoystick() {
-	Requires(Robot::m_driveTrain.get());
+  Requires(Robot::m_driveTrain.get());
 }
 
 // Called just before this Command runs the first time
@@ -18,17 +18,19 @@ void DriveWithJoystick::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
-	auto steeringControls = Robot::m_oi->getSteeringControls();
+  auto steeringControls = Robot::m_oi->getSteeringControls();
 
-	Robot::m_driveTrain->arcDrive(steeringControls.first, steeringControls.second);
+  Robot::m_driveTrain->arcDrive(steeringControls.first, steeringControls.second);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveWithJoystick::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void DriveWithJoystick::End() {}
+void DriveWithJoystick::End() {
+  Robot::m_driveTrain->arcDrive(0, 0);
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void DriveWithJoystick::Interrupted() {}
+void DriveWithJoystick::Interrupted() { End(); }

@@ -6,10 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ClawLower.h"
-#include "Robot.h"
-#include "RobotMap.h"
 
-ClawLower::ClawLower() : TimedCommand(Claw::k_timeToLower) {
+#include "Robot.h"
+
+ClawLower::ClawLower() : TimedCommand(k_duration) {
     Requires(Robot::m_claw.get());
 }
 

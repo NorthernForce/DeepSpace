@@ -9,24 +9,11 @@
 
 #include "Robot.h"
 
-ClimberDriveStop::ClimberDriveStop() {
+ClimberDriveStop::ClimberDriveStop() : TimedCommand(k_duration) {
   Requires(Robot::m_climber.get());
 }
 
 // Called just before this Command runs the first time
-void ClimberDriveStop::Initialize() {}
-
-// Called repeatedly when this Command is scheduled to run
-void ClimberDriveStop::Execute() {
+void ClimberDriveStop::Initialize() {
   Robot::m_climber->DriveStop();
 }
-
-// Make this return true when this Command no longer needs to run execute()
-bool ClimberDriveStop::IsFinished() { return true; }
-
-// Called once after isFinished returns true
-void ClimberDriveStop::End() {}
-
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void ClimberDriveStop::Interrupted() {}

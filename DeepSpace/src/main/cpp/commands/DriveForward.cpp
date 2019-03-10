@@ -24,10 +24,10 @@ void DriveForward::Execute() {
 bool DriveForward::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void DriveForward::End() {}
+void DriveForward::End() {
+  Robot::m_driveTrain->arcDrive(0.0, k_rotation);
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void DriveForward::Interrupted() {
-  Robot::m_driveTrain->arcDrive(0.0, k_rotation);
-}
+void DriveForward::Interrupted() { End(); }

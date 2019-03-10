@@ -6,10 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ClawRaise.h"
-#include "Robot.h"
-#include "RobotMap.h"
 
-ClawRaise::ClawRaise(): TimedCommand(Claw::k_timeToRaise) {
+#include "Robot.h"
+
+ClawRaise::ClawRaise(): TimedCommand(k_duration) {
     Requires(Robot::m_claw.get());
 }
 

@@ -6,26 +6,14 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ElevatorStop.h"
+
 #include "Robot.h"
 
-ElevatorStop::ElevatorStop() {
+ElevatorStop::ElevatorStop() : TimedCommand(k_duration) {
   Requires(Robot::m_elevator.get());
 }
 
 // Called just before this Command runs the first time
-void ElevatorStop::Initialize() {}
-
-// Called repeatedly when this Command is scheduled to run
-void ElevatorStop::Execute() {
+void ElevatorStop::Initialize() {
   Robot::m_elevator->Stop();
 }
-
-// Make this return true when this Command no longer needs to run execute()
-bool ElevatorStop::IsFinished() { return false; }
-
-// Called once after isFinished returns true
-void ElevatorStop::End() {}
-
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void ElevatorStop::Interrupted() {}

@@ -37,9 +37,4 @@ class Claw : public frc::Subsystem {
   void ClawLower();
   bool IfRaised();
   void InitDefaultCommand() override;
-
-  constexpr static double k_timeToClose {0.4};
-  constexpr static double k_timeToOpen {0.4};
-  constexpr static double k_timeToRaise {0.4};
-  constexpr static double k_timeToLower {0.4};
 };

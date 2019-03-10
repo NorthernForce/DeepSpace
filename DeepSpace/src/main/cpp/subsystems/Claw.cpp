@@ -15,7 +15,6 @@ Claw::Claw() : Subsystem("Claw") {
 void Claw::InitDefaultCommand() {
   // Set the default command for a subsystem here.
   // SetDefaultCommand(new MySpecialCommand());
-
 }
 
 void Claw::SetOpen() {

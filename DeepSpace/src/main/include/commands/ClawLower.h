@@ -13,4 +13,7 @@ class ClawLower : public frc::TimedCommand {
  public:
   ClawLower();
   void Initialize() override;
+
+ private:
+  const double k_duration = 0.4;
 };

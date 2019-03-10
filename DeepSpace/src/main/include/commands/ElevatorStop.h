@@ -7,14 +7,13 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/TimedCommand.h>
 
-class ElevatorStop : public frc::Command {
+class ElevatorStop : public frc::TimedCommand {
  public:
   ElevatorStop();
   void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+
+ private:
+  const double k_duration = 0.1;
 };

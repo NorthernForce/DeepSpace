@@ -25,8 +25,10 @@ void ElevatorRaise::Execute() {
 bool ElevatorRaise::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void ElevatorRaise::End() {}
+void ElevatorRaise::End() {
+  Robot::m_elevator->Stop();
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ElevatorRaise::Interrupted() {}
+void ElevatorRaise::Interrupted() { End(); }

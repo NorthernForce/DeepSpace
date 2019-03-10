@@ -6,10 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ClawOpen.h"
-#include "Robot.h"
-#include "RobotMap.h"
 
-ClawOpen::ClawOpen() : frc::TimedCommand(Claw::k_timeToOpen) {
+#include "Robot.h"
+
+ClawOpen::ClawOpen() : frc::TimedCommand(k_duration) {
     Requires(Robot::m_claw.get());
 }
 
