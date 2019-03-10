@@ -21,6 +21,7 @@ enum class Position {
     CargoDepositLevel1,	
     CargoDepositLevel2,	
     CargoDepositLevel3,
+    CargoShipCargoDeposit,
     HatchDepositLevel1,
     HatchDepositLevel2,
     HatchDepositLevel3,

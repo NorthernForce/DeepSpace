@@ -39,6 +39,7 @@
 #include "commands/PositionSetups/SetupForCargoDepositLevel1.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel2.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel3.h"
+#include "commands/PositionSetups/SetupForCargoShipCargoDeposit.h"
 #include "commands/PositionSetups/SetupForCargoIntake.h"
 #include "commands/PositionSetups/SetupForHatchDepositLevel1.h"
 #include "commands/PositionSetups/SetupForHatchDepositLevel2.h"
@@ -90,7 +91,7 @@ OI::OI() {
   
   WhenPressed(m_manipulatorController1, 4, new SetupForHatchDepositLevel1());
   WhenPressed(m_manipulatorController1, 2, new SetupForHatchDepositLevel2());
-  WhenPressed(m_manipulatorController1, 5, new SetupForHatchDepositLevel3());
+  WhenPressed(m_manipulatorController1, 5, new SetupForCargoShipCargoDeposit());
 
   WhenPressed(m_manipulatorController1, 9, new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
   WhenPressed(m_manipulatorController1, 6, new SetupForCargoIntake());
