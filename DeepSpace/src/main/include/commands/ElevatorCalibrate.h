@@ -17,4 +17,7 @@ class ElevatorCalibrate : public frc::Command {
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
+
+ private:
+  const double k_lowerSpeed = -0.25;
 };

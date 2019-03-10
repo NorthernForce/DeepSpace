@@ -21,12 +21,12 @@ void ElevatorCalibrate::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorCalibrate::Execute() {
-  Robot::m_elevator->setSpeed(-0.25);
+  Robot::m_elevator->setSpeed(k_lowerSpeed);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ElevatorCalibrate::IsFinished() { 
-  return Robot::m_elevator->atLowerLimit();
+  return Robot::m_elevator->atLowerLimit() && !Robot::m_elevator->isRetracted();
  }
 
 // Called once after isFinished returns true
