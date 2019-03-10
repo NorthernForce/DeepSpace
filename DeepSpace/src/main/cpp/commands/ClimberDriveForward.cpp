@@ -10,7 +10,7 @@
 #include "Robot.h"
 
 ClimberDriveForward::ClimberDriveForward() {
-  Requires(Robot::m_climber.get());
+  Requires(Robot::m_climberDrive.get());
 }
 
 // Called just before this Command runs the first time
@@ -18,7 +18,7 @@ void ClimberDriveForward::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ClimberDriveForward::Execute() {
-Robot::m_climber->driveForward();
+Robot::m_climberDrive->setSpeed(k_speed);
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -26,7 +26,7 @@ bool ClimberDriveForward::IsFinished() { return true; }
 
 // Called once after isFinished returns true
 void ClimberDriveForward::End() {
- Robot::m_climber->driveStop();
+ Robot::m_climberDrive->stop();
 }
 
 // Called when another command which requires one or more of the same

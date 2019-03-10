@@ -12,10 +12,6 @@ public:
   void lowerExplicit(double target);
   void raise();
   void stop();
-  void driveWheels(double speed);
-  void driveForward();
-  void driveBackward();
-  void driveStop();
   void limitCurrent(WPI_TalonSRX&);
   bool atLowerLimit();
   bool atUpperLimit();
@@ -23,7 +19,6 @@ public:
 private:
   std::shared_ptr<WPI_TalonSRX> m_masterTalonLifter;
   std::shared_ptr<WPI_TalonSRX> m_slaveTalonLifter;
-  std::shared_ptr<WPI_TalonSRX> m_masterTalonWheels;
 
   constexpr static auto k_timeout = 0;
   constexpr static auto k_peakCurrent = 22;
@@ -32,6 +27,4 @@ private:
   
   const double k_forwardMotorSpeed = 0.5;
   const double k_reverseMotorSpeed = -0.5;
-  const double k_driveForwardMotorSpeed = 0.5;
-  const double k_driveBackwardMotorSpeed = -0.5;
 };

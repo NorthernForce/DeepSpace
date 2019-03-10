@@ -5,15 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ClimberDriveStop.h"
+#pragma once
 
-#include "Robot.h"
+#include <frc/commands/Subsystem.h>
+#include "ctre/Phoenix.h"
 
-ClimberDriveStop::ClimberDriveStop() : TimedCommand(k_duration) {
-  Requires(Robot::m_climberDrive.get());
-}
+class ClimberDrive : public frc::Subsystem {
+ private:
+  std::shared_ptr<WPI_TalonSRX> m_masterTalonWheels;
 
-// Called just before this Command runs the first time
-void ClimberDriveStop::Initialize() {
-  Robot::m_climberDrive->stop();
-}
+ public:
+  ClimberDrive();
+  void InitDefaultCommand() override;
+  void setSpeed(double speed);
+  void stop();
+};
