@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ElevatorSetPosition.h"
+
 #include <iostream>
 
 // allows for differetn limit switches between robots - adjust accordingly
@@ -26,12 +27,9 @@ const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoi
 ElevatorSetPosition::ElevatorSetPosition(Position pos) :
   m_elevator(Robot::m_elevator.get())
 {
-  
   // std::cout << "Created elevator set position with position " << (int)pos << "\n";
   m_position = pos;
 	Requires(m_elevator.get());
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
 }
 
 // Called just before this Command runs the first time

@@ -8,11 +8,11 @@
 #include "commands/PositionSetups/SetupForHatchDepositLevel3.h"
 
 #include "commands/ElevatorSetPosition.h"
-#include "commands/OpenClaw.h"
-#include "commands/LowerClaw.h"
+#include "commands/ClawOpen.h"
+#include "commands/ClawLower.h"
 
 SetupForHatchDepositLevel3::SetupForHatchDepositLevel3() {
   AddParallel(new ElevatorSetPosition(ElevatorSetPosition::Position::HatchDepositLevel3));
-  AddSequential(new OpenClaw());
-  AddSequential(new LowerClaw());
+  AddSequential(new ClawOpen());
+  AddSequential(new ClawLower());
 }

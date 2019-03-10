@@ -5,16 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ElevatorExtend.h"
+#pragma once
 
-#include "Robot.h"
-#include "RobotMap.h"
+#include <frc/commands/TimedCommand.h>
 
-ElevatorExtend::ElevatorExtend() : frc::TimedCommand(k_duration) {
-  Requires(Robot::m_elevator.get());
-}
-
-// Called just before this Command runs the first time
-void ElevatorExtend::Initialize() {
-  Robot::m_elevator->Extend();
-}
+class ClawOpen : public frc::TimedCommand {
+ public:
+  ClawOpen();
+  void Initialize() override;
+};

@@ -10,8 +10,6 @@
 #include "RobotMap.h"
 
 FollowLine::FollowLine() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(Robot::m_lineTracker.get());
   Requires(Robot::m_driveTrain.get());
   Requires(Robot::m_rangeFinder.get());

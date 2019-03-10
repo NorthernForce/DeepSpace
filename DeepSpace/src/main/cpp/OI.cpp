@@ -13,28 +13,29 @@
 #include <frc/buttons/JoystickButton.h>
 
 // Command inclusions
-#include "commands/IntakeCargo.h"
-#include "commands/EjectCargo.h"
+#include "commands/CargoIntake.h"
+#include "commands/CargoEject.h"
+
+#include "commands/ClawClose.h"
+#include "commands/ClawOpen.h"
+#include "commands/ClawToggleRaise.h"
+
+#include "commands/ClimbStage1.h"
+#include "commands/ClimbEvenlyUp.h"
+#include "commands/ClimberDriveStop.h"
+#include "commands/ClimberLower.h"
+#include "commands/ClimberRaise.h"
+
 #include "commands/ElevatorLower.h"
 #include "commands/ElevatorRaise.h"
 #include "commands/ElevatorStop.h"
-#include "commands/SetupRobot.h"
+#include "commands/ElevatorSetup.h"
 #include "commands/ElevatorCalibrate.h"
-#include "commands/ElevatorExtend.h"
-#include "commands/ToggleElevatorDeployment.h"
-#include "commands/ToggleClawRaise.h"
-#include "commands/CloseClaw.h"
-#include "commands/OpenClaw.h"
-#include "commands/RaiseClaw.h"
-#include "commands/LowerClaw.h"
+#include "commands/ElevatorToggleDeployment.h"
 #include "commands/ElevatorSetPosition.h"
-#include "commands/SetupRobot.h"
+
 #include "commands/PlatformDrive.h"
-#include "commands/ClimbStage1.h"
-#include "commands/ClimberDriveStop.h"
-#include "commands/EvenlyClimbUp.h"
-#include "commands/LowerClimber.h"
-#include "commands/RaiseClimber.h"
+
 #include "commands/PositionSetups/SetupForCargoDepositLevel1.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel2.h"
 #include "commands/PositionSetups/SetupForCargoDepositLevel3.h"
@@ -66,22 +67,22 @@ OI::OI() {
   m_manipulatorController2.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController2_id));
 
   // frc::ShuffleboardTab& basicCommandsTab = frc::Shuffleboard::GetTab("Basic Commands");
-  // basicCommandsTab.Add("SetupRobot", new SetupRobot());
+  // basicCommandsTab.Add("ElevatorSetup", new ElevatorSetup());
   // basicCommandsTab.Add("Calibrate Robot", new ElevatorCalibrate());
 
   // frc::ShuffleboardLayout& cargoLayout = basicCommandsTab.GetLayout("Cargo", "List Layout");
-  // cargoLayout.Add("IntakeCargo", new IntakeCargo());
-  // cargoLayout.Add("EjectCargo", new EjectCargo());
+  // cargoLayout.Add("CargoIntake", new CargoIntake());
+  // cargoLayout.Add("CargoEject", new CargoEject());
   // cargoLayout.Add("ElevatorRaise", new ElevatorRaise());
   // cargoLayout.Add("ElevatorLower", new ElevatorLower());
 
-  WhileHeld(m_manipulatorController1, 1, new IntakeCargo());
-  WhenPressed(m_manipulatorController1, 1, new CloseClaw());
-  WhenReleased(m_manipulatorController1, 1, new OpenClaw());
+  WhileHeld(m_manipulatorController1, 1, new CargoIntake());
+  WhenPressed(m_manipulatorController1, 1, new ClawClose());
+  WhenReleased(m_manipulatorController1, 1, new ClawOpen());
 
-  WhileHeld(m_manipulatorController1, 3, new EjectCargo());
+  WhileHeld(m_manipulatorController1, 3, new CargoEject());
   
-  WhenPressed(m_manipulatorController1, 8, new ToggleClawRaise());
+  WhenPressed(m_manipulatorController1, 8, new ClawToggleRaise());
 
   WhenPressed(m_manipulatorController1, 7, new SetupForCargoDepositLevel1());
   WhenPressed(m_manipulatorController1, 11, new SetupForCargoDepositLevel2());
@@ -94,7 +95,7 @@ OI::OI() {
   WhenPressed(m_manipulatorController1, 9, new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
   WhenPressed(m_manipulatorController1, 6, new SetupForCargoIntake());
 
-  WhenPressed(m_manipulatorController2, 8, new SetupRobot());
+  WhenPressed(m_manipulatorController2, 8, new ElevatorSetup());
 
   WhileHeld(m_manipulatorController2, 10, new ElevatorRaise());
   WhileHeld(m_manipulatorController2, 11, new ElevatorLower());
@@ -102,16 +103,16 @@ OI::OI() {
   WhenReleased(m_manipulatorController2, 10, new ElevatorStop());
   WhenReleased(m_manipulatorController2, 11, new ElevatorStop());
 
-  WhenPressed(m_manipulatorController2, 4, new ToggleElevatorDeployment());
+  WhenPressed(m_manipulatorController2, 4, new ElevatorToggleDeployment());
   WhenPressed(m_manipulatorController2, 5, new ElevatorCalibrate());
 
-  WhileHeld(m_manipulatorController2, 6, new LowerClimber());
-  WhileHeld(m_manipulatorController2, 7, new RaiseClimber());
+  WhileHeld(m_manipulatorController2, 6, new ClimberLower());
+  WhileHeld(m_manipulatorController2, 7, new ClimberRaise());
 
   WhileHeld(m_manipulatorController2, 3, new PlatformDrive());
   WhenReleased(m_manipulatorController2, 3, new ClimberDriveStop());
 
-  WhileHeld(m_manipulatorController2, 2, new EvenlyClimbUp());
+  WhileHeld(m_manipulatorController2, 2, new ClimbEvenlyUp());
 
   // WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
 

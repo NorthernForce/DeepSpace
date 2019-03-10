@@ -9,8 +9,6 @@
 #include "Robot.h"
 
 DriveForward::DriveForward() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(Robot::m_driveTrain.get());
 }
 

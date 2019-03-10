@@ -9,8 +9,7 @@
 #include "Robot.h"
 
 ClimberDriveBackward::ClimberDriveBackward() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
+  Requires(Robot::m_climber.get());
 }
 
 // Called just before this Command runs the first time

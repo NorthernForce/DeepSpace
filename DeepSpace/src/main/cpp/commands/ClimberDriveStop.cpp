@@ -6,11 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ClimberDriveStop.h"
+
 #include "Robot.h"
 
 ClimberDriveStop::ClimberDriveStop() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(Robot::m_climber.get());
 }
 

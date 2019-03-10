@@ -5,31 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ClimberDriveForward.h"
+#include "commands/VisionTargetNothing.h"
+
 #include "Robot.h"
 
-ClimberDriveForward::ClimberDriveForward() {
-  Requires(Robot::m_climber.get());
+VisionTargetNothing::VisionTargetNothing() {
+  Requires(Robot::m_vision.get());
 }
 
 // Called just before this Command runs the first time
-void ClimberDriveForward::Initialize() {
-  
+void VisionTargetNothing::Initialize() {
+  Robot::m_vision->setTarget("Elevator");
+  // Robot::m_vision->setTarget("ReflectiveTape");
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ClimberDriveForward::Execute() {
-Robot::m_climber->DriveForward();
-}
+void VisionTargetNothing::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool ClimberDriveForward::IsFinished() { return true; }
+bool VisionTargetNothing::IsFinished() { return true; }
 
 // Called once after isFinished returns true
-void ClimberDriveForward::End() {
- // Robot::m_climber->DriveStop();
-}
+void VisionTargetNothing::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ClimberDriveForward::Interrupted() {}
+void VisionTargetNothing::Interrupted() {}

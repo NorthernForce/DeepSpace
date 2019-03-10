@@ -5,16 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ElevatorExtend.h"
+#pragma once
 
-#include "Robot.h"
-#include "RobotMap.h"
+#include <frc/commands/Command.h>
 
-ElevatorExtend::ElevatorExtend() : frc::TimedCommand(k_duration) {
-  Requires(Robot::m_elevator.get());
-}
+class ClimberDriveSlowWhileLowered : public frc::Command {
+ public:
+  ClimberDriveSlowWhileLowered();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 
-// Called just before this Command runs the first time
-void ElevatorExtend::Initialize() {
-  Robot::m_elevator->Extend();
-}
+ private:
+  const double k_slowSpeed = 0.05;
+};

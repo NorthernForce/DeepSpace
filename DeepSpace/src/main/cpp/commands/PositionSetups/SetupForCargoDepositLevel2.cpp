@@ -8,11 +8,11 @@
 #include "commands/PositionSetups/SetupForCargoDepositLevel2.h"
 
 #include "commands/ElevatorSetPosition.h"
-#include "commands/CloseClaw.h"
-#include "commands/RaiseClaw.h"
+#include "commands/ClawClose.h"
+#include "commands/ClawRaise.h"
 
 SetupForCargoDepositLevel2::SetupForCargoDepositLevel2() {
   AddParallel(new ElevatorSetPosition(ElevatorSetPosition::Position::CargoDepositLevel2));
-  AddSequential(new RaiseClaw());
-  AddSequential(new CloseClaw());
+  AddSequential(new ClawRaise());
+  AddSequential(new ClawClose());
 }

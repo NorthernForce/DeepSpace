@@ -6,11 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/ElevatorSetHomePosition.h"
+
 #include "Robot.h"
 
 ElevatorSetHomePosition::ElevatorSetHomePosition() {
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
   Requires(Robot::m_elevator.get());
 }
 

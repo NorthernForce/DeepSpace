@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "RobotMap.h"
-#include "commands/SlowClimberDriveWhenLowered.h"
+#include "commands/ClimberDriveSlowWhileLowered.h"
 
 Climber::Climber() : Subsystem("Climber") {
     m_masterTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_leftClimbingMotor_id));
@@ -21,7 +21,7 @@ Climber::Climber() : Subsystem("Climber") {
 
 void Climber::InitDefaultCommand() {
   // Set the default command for a subsystem here.
-  SetDefaultCommand(new SlowClimberDriveWhenLowered());
+  SetDefaultCommand(new ClimberDriveSlowWhileLowered());
 }
 
 void Climber::LowerExplicit(double target) {

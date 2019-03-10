@@ -5,44 +5,55 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ElevatorCalibrate.h"
+#include "commands/ClimbEvenlyUp.h"
 
 #include "Robot.h"
 
-ElevatorCalibrate::ElevatorCalibrate() {
+ClimbEvenlyUp::ClimbEvenlyUp() {
   Requires(Robot::m_elevator.get());
+  Requires(Robot::m_climber.get());
+  Requires(Robot::m_imu.get());
 }
 
 // Called just before this Command runs the first time
-void ElevatorCalibrate::Initialize() {
-  Robot::m_elevator->EnableReverseLimitSwitch();
-  Robot::m_elevator->EnableForwardLimitSwitch();
+void ClimbEvenlyUp::Initialize() {
+  if (!m_climbingStarted) {
+    m_climbingStarted = true;
+    Robot::m_imu->resetAngle();
+  }
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ElevatorCalibrate::Execute() {
-  Robot::m_elevator->Lower();
+void ClimbEvenlyUp::Execute() {
+  auto angle = Robot::m_imu->getAngle();
+
+  // So, stopping it should work, but it may be jerky.
+  // I just think it happens to be safer.
+  if (angle <= stopBackThreshold) {
+    Robot::m_elevator->Lower();
+    Robot::m_climber->Stop();
+  }
+  else if (angle >= stopFrontThreshold) {
+    Robot::m_elevator->Stop();
+    Robot::m_climber->Lower();
+  }
+  else {
+    Robot::m_elevator->Lower();
+    Robot::m_climber->Lower();
+  }
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool ElevatorCalibrate::IsFinished() { 
-  return Robot::m_elevator->AtLowerLimit();
- }
+bool ClimbEvenlyUp::IsFinished() {
+  return Robot::m_climber->AtUpperLimit();
+}
 
 // Called once after isFinished returns true
-void ElevatorCalibrate::End() {
+void ClimbEvenlyUp::End() {
   Robot::m_elevator->Stop();
-  
-  if (Robot::m_elevator->AtLowerLimit()) {
-    Robot::m_elevator->SetHomePosition();
-  }
-  Robot::m_elevator->DisableReverseLimitSwitch();
-  Robot::m_elevator->DisableForwardLimitSwitch();
-
+  Robot::m_climber->Stop();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ElevatorCalibrate::Interrupted() {
-  End();
-}
+void ClimbEvenlyUp::Interrupted() { End(); }

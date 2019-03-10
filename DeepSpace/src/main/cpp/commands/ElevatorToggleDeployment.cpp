@@ -5,16 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ElevatorExtend.h"
+#include "commands/ElevatorToggleDeployment.h"
 
 #include "Robot.h"
-#include "RobotMap.h"
 
-ElevatorExtend::ElevatorExtend() : frc::TimedCommand(k_duration) {
+ElevatorToggleDeployment::ElevatorToggleDeployment() : TimedCommand(k_duration) {
   Requires(Robot::m_elevator.get());
 }
 
 // Called just before this Command runs the first time
-void ElevatorExtend::Initialize() {
-  Robot::m_elevator->Extend();
+void ElevatorToggleDeployment::Initialize() {
+  if (Robot::m_elevator->IsRetracted()) {
+    Robot::m_elevator->Extend();
+  }
+  else {
+    Robot::m_elevator->Retract();
+  }
 }

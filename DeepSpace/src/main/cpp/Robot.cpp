@@ -14,18 +14,17 @@
 
 #include "commands/ElevatorSetPosition.h"
 #include "commands/ElevatorCalibrate.h"
-#include "commands/SetupRobot.h"
 #include "commands/ElevatorSetHomePosition.h"
 #include "commands/ElevatorExtend.h"
 #include "commands/ElevatorRetract.h"
-#include "commands/LowerClimber.h"
-#include "commands/RaiseClimber.h"
+
+#include "commands/ClimberLower.h"
+#include "commands/ClimberRaise.h"
 #include "commands/ClimberDriveForward.h"
 #include "commands/ClimberDriveBackward.h"
 
-#include "commands/ComputerVisionTargetNothing.h"
-#include "commands/ComputerVisionTargetTape.h"
-#include "commands/FollowReflectiveTape.h"
+#include "commands/VisionTargetNothing.h"
+#include "commands/VisionTargetReflectiveTape.h"
 
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -78,14 +77,13 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Set Home Position", new ElevatorSetHomePosition());
   frc::SmartDashboard::PutData("Move elevator backward", new ElevatorRetract());
 
-  frc::SmartDashboard::PutData("Climber extend", new LowerClimber());
-  frc::SmartDashboard::PutData("Climber Retract", new RaiseClimber());
+  frc::SmartDashboard::PutData("Climber extend", new ClimberLower());
+  frc::SmartDashboard::PutData("Climber Retract", new ClimberRaise());
   frc::SmartDashboard::PutData("Climber Drive Forward", new ClimberDriveForward());
   frc::SmartDashboard::PutData("Climber Drive Backward", new ClimberDriveBackward());
 
-  frc::SmartDashboard::PutData("Camera: Target tape", new ComputerVisionTargetTape());
-  frc::SmartDashboard::PutData("Camera: No target", new ComputerVisionTargetNothing());
-  frc::SmartDashboard::PutData("Camera: Truly target tape", new ComputerVisionTargetNothing());
+  frc::SmartDashboard::PutData("Camera: Target tape", new VisionTargetReflectiveTape());
+  frc::SmartDashboard::PutData("Camera: No target", new VisionTargetNothing());
 
   // Initialize OI after subsystems
   m_oi.reset(new OI());

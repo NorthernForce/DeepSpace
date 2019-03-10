@@ -8,11 +8,11 @@
 #include "commands/PositionSetups/SetupForCargoIntake.h"
 
 #include "commands/ElevatorSetPosition.h"
-#include "commands/CloseClaw.h"
-#include "commands/RaiseClaw.h"
+#include "commands/ClawClose.h"
+#include "commands/ClawRaise.h"
 
 SetupForCargoIntake::SetupForCargoIntake() {
   AddParallel(new ElevatorSetPosition(ElevatorSetPosition::Position::CargoIntake));
-  AddSequential(new RaiseClaw());
-  AddSequential(new CloseClaw());
+  AddSequential(new ClawRaise());
+  AddSequential(new ClawClose());
 }

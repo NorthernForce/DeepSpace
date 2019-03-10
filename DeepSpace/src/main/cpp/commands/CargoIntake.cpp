@@ -5,31 +5,32 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ClimberDriveForward.h"
+#include "commands/CargoIntake.h"
+
 #include "Robot.h"
 
-ClimberDriveForward::ClimberDriveForward() {
-  Requires(Robot::m_climber.get());
+CargoIntake::CargoIntake() {
+  Requires(Robot::m_cargoManipulator.get());
 }
 
 // Called just before this Command runs the first time
-void ClimberDriveForward::Initialize() {
-  
-}
+void CargoIntake::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void ClimberDriveForward::Execute() {
-Robot::m_climber->DriveForward();
+void CargoIntake::Execute() {
+  Robot::m_cargoManipulator->setSpeed(CargoManipulator::k_intakeSpeed);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool ClimberDriveForward::IsFinished() { return true; }
+bool CargoIntake::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void ClimberDriveForward::End() {
- // Robot::m_climber->DriveStop();
+void CargoIntake::End() {
+  Robot::m_cargoManipulator->setSpeed(0);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ClimberDriveForward::Interrupted() {}
+void CargoIntake::Interrupted() {
+  Robot::m_cargoManipulator->setSpeed(0);
+}

@@ -5,16 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+#include "commands/ElevatorSetup.h"
+
 #include "commands/ElevatorExtend.h"
+#include "commands/ElevatorCalibrate.h"
 
-#include "Robot.h"
-#include "RobotMap.h"
-
-ElevatorExtend::ElevatorExtend() : frc::TimedCommand(k_duration) {
-  Requires(Robot::m_elevator.get());
-}
-
-// Called just before this Command runs the first time
-void ElevatorExtend::Initialize() {
-  Robot::m_elevator->Extend();
+ElevatorSetup::ElevatorSetup() {
+  AddSequential(new ElevatorExtend());
+  AddSequential(new ElevatorCalibrate());
 }

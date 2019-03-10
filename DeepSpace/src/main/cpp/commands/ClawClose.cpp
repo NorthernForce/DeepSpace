@@ -5,16 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ElevatorExtend.h"
-
+#include "commands/ClawClose.h"
 #include "Robot.h"
 #include "RobotMap.h"
 
-ElevatorExtend::ElevatorExtend() : frc::TimedCommand(k_duration) {
-  Requires(Robot::m_elevator.get());
+ClawClose::ClawClose() : frc::TimedCommand(Claw::k_timeToClose) {
+    Requires(Robot::m_claw.get());
 }
 
 // Called just before this Command runs the first time
-void ElevatorExtend::Initialize() {
-  Robot::m_elevator->Extend();
+void ClawClose::Initialize() {
+    Robot::m_claw->SetClosed();
 }

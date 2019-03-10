@@ -5,31 +5,34 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ClimberDriveForward.h"
+#include "commands/ClimberLower.h"
+
 #include "Robot.h"
 
-ClimberDriveForward::ClimberDriveForward() {
+ClimberLower::ClimberLower() {
   Requires(Robot::m_climber.get());
 }
 
 // Called just before this Command runs the first time
-void ClimberDriveForward::Initialize() {
-  
-}
+void ClimberLower::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
-void ClimberDriveForward::Execute() {
-Robot::m_climber->DriveForward();
+void ClimberLower::Execute() {
+    Robot::m_climber->Lower();
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool ClimberDriveForward::IsFinished() { return true; }
+bool ClimberLower::IsFinished() {
+  return Robot::m_climber->AtLowerLimit();
+}
 
 // Called once after isFinished returns true
-void ClimberDriveForward::End() {
- // Robot::m_climber->DriveStop();
+void ClimberLower::End() {
+  Robot::m_climber->Stop();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ClimberDriveForward::Interrupted() {}
+void ClimberLower::Interrupted() {
+  End();
+}

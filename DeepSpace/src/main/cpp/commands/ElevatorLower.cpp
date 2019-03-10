@@ -10,8 +10,6 @@
 
 ElevatorLower::ElevatorLower() {
 	Requires(Robot::m_elevator.get());
-  // Use Requires() here to declare subsystem dependencies
-  // eg. Requires(Robot::chassis.get());
 }
 
 // Called just before this Command runs the first time

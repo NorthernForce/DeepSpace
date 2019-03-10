@@ -5,16 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ElevatorExtend.h"
-
+#include "commands/ClawToggleRaise.h"
 #include "Robot.h"
-#include "RobotMap.h"
 
-ElevatorExtend::ElevatorExtend() : frc::TimedCommand(k_duration) {
-  Requires(Robot::m_elevator.get());
+ClawToggleRaise::ClawToggleRaise() : TimedCommand(Claw::k_timeToRaise) {
+  Requires(Robot::m_claw.get());
 }
 
 // Called just before this Command runs the first time
-void ElevatorExtend::Initialize() {
-  Robot::m_elevator->Extend();
+void ClawToggleRaise::Initialize() {
+  if (Robot::m_claw->IfRaised()) {
+    Robot::m_claw->ClawLower();
+  }
+  else {
+    Robot::m_claw->ClawRaise();
+  }
 }

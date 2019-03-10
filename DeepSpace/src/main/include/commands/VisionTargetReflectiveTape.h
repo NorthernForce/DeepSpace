@@ -5,16 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/ElevatorExtend.h"
+#pragma once
 
-#include "Robot.h"
-#include "RobotMap.h"
+#include <frc/commands/Command.h>
 
-ElevatorExtend::ElevatorExtend() : frc::TimedCommand(k_duration) {
-  Requires(Robot::m_elevator.get());
-}
-
-// Called just before this Command runs the first time
-void ElevatorExtend::Initialize() {
-  Robot::m_elevator->Extend();
-}
+class VisionTargetReflectiveTape : public frc::Command {
+ public:
+  VisionTargetReflectiveTape();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+};
