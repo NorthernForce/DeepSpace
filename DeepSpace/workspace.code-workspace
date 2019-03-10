@@ -7,7 +7,9 @@
 	"settings": {
 		"files.associations": {
 			"*.inc": "cpp",
-			"ostream": "cpp"
+			"ostream": "cpp",
+			"*.tcc": "cpp",
+			"fstream": "cpp"
 		},
 		"java.configuration.updateBuildConfiguration": "disabled"
 	}
