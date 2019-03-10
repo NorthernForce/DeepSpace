@@ -16,5 +16,5 @@ ElevatorExtend::ElevatorExtend() : frc::TimedCommand(k_duration) {
 
 // Called just before this Command runs the first time
 void ElevatorExtend::Initialize() {
-  Robot::m_elevator->Extend();
+  Robot::m_elevator->extend();
 }

@@ -18,21 +18,19 @@ void ClimberLower::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ClimberLower::Execute() {
-    Robot::m_climber->Lower();
+    Robot::m_climber->lower();
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ClimberLower::IsFinished() {
-  return Robot::m_climber->AtLowerLimit();
+  return Robot::m_climber->atLowerLimit();
 }
 
 // Called once after isFinished returns true
 void ClimberLower::End() {
-  Robot::m_climber->Stop();
+  Robot::m_climber->stop();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ClimberLower::Interrupted() {
-  End();
-}
+void ClimberLower::Interrupted() { End(); }

@@ -18,7 +18,7 @@ void ClimberStop::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ClimberStop::Execute() {
-    Robot::m_climber->Stop();
+    Robot::m_climber->stop();
 }
 
 // Make this return true when this Command no longer needs to run execute()

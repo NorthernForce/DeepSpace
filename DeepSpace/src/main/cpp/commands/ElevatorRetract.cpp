@@ -15,5 +15,5 @@ ElevatorRetract::ElevatorRetract() : frc::TimedCommand(k_duration) {
 
 // Called just before this Command runs the first time
 void ElevatorRetract::Initialize() {
-  Robot::m_elevator->Retract();
+  Robot::m_elevator->retract();
 }

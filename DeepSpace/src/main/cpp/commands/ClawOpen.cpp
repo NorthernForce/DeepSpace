@@ -15,6 +15,6 @@ ClawOpen::ClawOpen() : frc::TimedCommand(k_duration) {
 
 // Called just before this Command runs the first time
 void ClawOpen::Initialize() {
-    Robot::m_claw->SetOpen();
+    Robot::m_claw->open();
 }
 

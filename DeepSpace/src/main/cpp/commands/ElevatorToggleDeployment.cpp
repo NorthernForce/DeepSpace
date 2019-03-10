@@ -15,10 +15,10 @@ ElevatorToggleDeployment::ElevatorToggleDeployment() : TimedCommand(k_duration) 
 
 // Called just before this Command runs the first time
 void ElevatorToggleDeployment::Initialize() {
-  if (Robot::m_elevator->IsRetracted()) {
-    Robot::m_elevator->Extend();
+  if (Robot::m_elevator->isRetracted()) {
+    Robot::m_elevator->extend();
   }
   else {
-    Robot::m_elevator->Retract();
+    Robot::m_elevator->retract();
   }
 }

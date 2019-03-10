@@ -23,7 +23,7 @@ void FollowLine::Execute() {
   m_faultyCase = false;
   m_stopRobot = false;
 
-  switch(Robot::m_lineTracker->GetLineSensors())
+  switch(Robot::m_lineTracker->getLineSensors())
   {
     case 0b000: //No Line Detected
       m_faultyCase = true;

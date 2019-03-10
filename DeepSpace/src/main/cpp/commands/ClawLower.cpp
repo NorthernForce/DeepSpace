@@ -15,6 +15,6 @@ ClawLower::ClawLower() : TimedCommand(k_duration) {
 
 // Called just before this Command runs the first time
 void ClawLower::Initialize() {
-  Robot::m_claw->ClawLower();
+  Robot::m_claw->lower();
 }
 

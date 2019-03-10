@@ -17,27 +17,27 @@ void Claw::InitDefaultCommand() {
   // SetDefaultCommand(new MySpecialCommand());
 }
 
-void Claw::SetOpen() {
+void Claw::open() {
   m_clawSolenoid->Set(k_clawOpenValue);
 
 }
 
-void Claw::SetClosed() {
+void Claw::close() {
   m_clawSolenoid->Set(k_clawClosedValue);
 
 }
 
-void Claw::ClawRaise() {
+void Claw::raise() {
   m_raiseSolenoid->Set(k_clawRaisedValue);
   m_raisedState = State::Raised;
 }
 
-void Claw::ClawLower() {
+void Claw::lower() {
   m_raiseSolenoid->Set(k_clawLoweredValue);
   m_raisedState = State::Lowered;
 }
 
-bool Claw::IfRaised() {
+bool Claw::isRaised() {
   return m_raisedState == State::Raised;
 
 }

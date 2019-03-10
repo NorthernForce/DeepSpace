@@ -18,11 +18,9 @@ class IMU : public frc::Subsystem {
 //  ahrs = new AHRS(SPI::Port::kMXP);
   double m_angleOffset = 0;
 
-
-
  public:
   IMU();
+  void InitDefaultCommand() override;
   float getAngle();
   void resetAngle();
-  void InitDefaultCommand() override;
 };

@@ -48,8 +48,6 @@ void Robot::RobotInit() {
   // Initialize Subsystems
   m_driveTrain.reset(new BrushlessDrive());
   m_elevator.reset(new Elevator());
-  m_elevator->SetHomePosition();
-  m_elevator->SetPosition(0);
   m_cargoManipulator.reset(new CargoManipulator());
   m_claw.reset(new Claw());
   m_imu.reset(new IMU());
@@ -58,7 +56,7 @@ void Robot::RobotInit() {
   m_climber.reset(new Climber());
   m_rangeFinder.reset(new RangeFinder());
 
-  Robot::m_elevator->Retract();
+  Robot::m_elevator->retract();
 
  /* frc::SmartDashboard::PutData("Elevator Home", new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
   frc::SmartDashboard::PutData("Cargo Intake", new ElevatorSetPosition(ElevatorSetPosition::Position::CargoIntake));
@@ -103,8 +101,8 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() {
   frc::SmartDashboard::PutNumber("Robot tilt", m_imu->getAngle());
-  frc::SmartDashboard::PutNumber("Elevator Sensor Position", m_elevator->GetSelectedSensorPosition());
-  frc::SmartDashboard::PutNumber("Elevator Closed Loop Error", m_elevator->GetClosedLoopError());
+  frc::SmartDashboard::PutNumber("Elevator Sensor Position", m_elevator->getSelectedSensorPosition());
+  frc::SmartDashboard::PutNumber("Elevator Closed Loop Error", m_elevator->getClosedLoopError());
   //frc::SmartDashboard::PutNumber("pGain value", m_elevator->GetPGainValue());
   //frc::SmartDashboard::GetNumber("pGain value", m_elevator->GetPGainValue());
   frc::SmartDashboard::PutNumber("Range Finder", m_rangeFinder->getDistance());
@@ -134,7 +132,7 @@ void Robot::DisabledPeriodic() { frc::Scheduler::GetInstance()->Run(); }
  */
 void Robot::AutonomousInit() {
   std::cout << "AutonomousInit Started" << std::endl;
-  Robot::m_elevator->Extend();
+  Robot::m_elevator->extend();
 }
 
 void Robot::AutonomousPeriodic() { 
@@ -143,7 +141,7 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {
   std::cout << "TeleopInit Started" << std::endl;
-  Robot::m_elevator->Extend();
+  Robot::m_elevator->extend();
 }
 
 void Robot::TeleopPeriodic() { 

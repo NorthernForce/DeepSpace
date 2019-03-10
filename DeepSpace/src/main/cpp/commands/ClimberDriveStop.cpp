@@ -15,5 +15,5 @@ ClimberDriveStop::ClimberDriveStop() : TimedCommand(k_duration) {
 
 // Called just before this Command runs the first time
 void ClimberDriveStop::Initialize() {
-  Robot::m_climber->DriveStop();
+  Robot::m_climber->driveStop();
 }

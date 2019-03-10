@@ -31,10 +31,10 @@ class Claw : public frc::Subsystem {
 
  public:
   Claw();
-  void SetOpen();
-  void SetClosed();
-  void ClawRaise();
-  void ClawLower();
-  bool IfRaised();
   void InitDefaultCommand() override;
+  void open();
+  void close();
+  void raise();
+  void lower();
+  bool isRaised();
 };

@@ -22,6 +22,6 @@ class LineTracker : public frc::Subsystem {
 
  public:
   LineTracker();
-  int GetLineSensors();
   void InitDefaultCommand() override;
+  int getLineSensors();
 };

@@ -18,7 +18,7 @@ void ElevatorSetHomePosition::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorSetHomePosition::Execute() {
-  Robot::m_elevator->SetHomePosition();
+  Robot::m_elevator->setHomePosition();
 }
 
 // Make this return true when this Command no longer needs to run execute()

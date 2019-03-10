@@ -15,10 +15,10 @@ ClawToggleRaise::ClawToggleRaise() : TimedCommand(k_duration) {
 
 // Called just before this Command runs the first time
 void ClawToggleRaise::Initialize() {
-  if (Robot::m_claw->IfRaised()) {
-    Robot::m_claw->ClawLower();
+  if (Robot::m_claw->isRaised()) {
+    Robot::m_claw->lower();
   }
   else {
-    Robot::m_claw->ClawRaise();
+    Robot::m_claw->raise();
   }
 }

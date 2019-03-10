@@ -24,47 +24,47 @@ void Climber::InitDefaultCommand() {
   SetDefaultCommand(new ClimberDriveSlowWhileLowered());
 }
 
-void Climber::LowerExplicit(double target) {
+void Climber::lowerExplicit(double target) {
     m_masterTalonLifter->Set(std::min(target, k_reverseMotorSpeed));
 }
 
-void Climber::Lower() {
+void Climber::lower() {
     m_masterTalonLifter->Set(k_reverseMotorSpeed);
 }
 
-void Climber::Raise() {
+void Climber::raise() {
     m_masterTalonLifter->Set(k_forwardMotorSpeed);
 }
 
-void Climber::Stop() {
+void Climber::stop() {
     m_masterTalonLifter->Set(0.0);
 }
 
-void Climber::DriveWheels(double speed) {
+void Climber::driveWheels(double speed) {
     m_masterTalonWheels->Set(speed);
 }
 
-void Climber::DriveForward() {
-    DriveWheels(k_driveForwardMotorSpeed);
+void Climber::driveForward() {
+    driveWheels(k_driveForwardMotorSpeed);
 }
 
-void Climber::DriveBackward() {
-    DriveWheels(k_driveBackwardMotorSpeed);
+void Climber::driveBackward() {
+    driveWheels(k_driveBackwardMotorSpeed);
 }
 
-void Climber::DriveStop() {
-    DriveWheels(0.0);
+void Climber::driveStop() {
+    driveWheels(0.0);
 }
 
-bool Climber::AtUpperLimit() {
+bool Climber::atUpperLimit() {
     return m_masterTalonLifter->GetSensorCollection().IsFwdLimitSwitchClosed(); // might have to switch rev and fwd
 }
 
-bool Climber::AtLowerLimit() {
+bool Climber::atLowerLimit() {
     return m_masterTalonLifter->GetSensorCollection().IsRevLimitSwitchClosed();
 }
 
-void Climber::LimitCurrent(WPI_TalonSRX& controller) {
+void Climber::limitCurrent(WPI_TalonSRX& controller) {
     controller.ConfigPeakCurrentLimit(k_peakCurrent, k_timeout);
     controller.ConfigContinuousCurrentLimit(k_continuousCurrent, k_timeout);
     controller.ConfigPeakCurrentDuration(k_peakCurrentDuration, k_timeout);

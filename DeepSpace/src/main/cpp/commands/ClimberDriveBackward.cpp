@@ -18,7 +18,7 @@ void ClimberDriveBackward::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ClimberDriveBackward::Execute() {
-  Robot::m_climber->DriveBackward();
+  Robot::m_climber->driveBackward();
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -26,7 +26,7 @@ bool ClimberDriveBackward::IsFinished() { return false; }
 
 // Called once after isFinished returns true
 void ClimberDriveBackward::End() {
-  Robot::m_climber->DriveStop();
+  Robot::m_climber->driveStop();
 }
 
 // Called when another command which requires one or more of the same

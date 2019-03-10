@@ -18,11 +18,11 @@ void ClimberDriveSlowWhileLowered::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ClimberDriveSlowWhileLowered::Execute() {
-  if (Robot::m_climber->AtUpperLimit()) {
-    Robot::m_climber->DriveStop();
+  if (Robot::m_climber->atUpperLimit()) {
+    Robot::m_climber->driveStop();
   }
   else {
-    Robot::m_climber->DriveWheels(k_slowSpeed);
+    Robot::m_climber->driveWheels(k_slowSpeed);
   }
 }
 
@@ -31,7 +31,7 @@ bool ClimberDriveSlowWhileLowered::IsFinished() { return false; }
 
 // Called once after isFinished returns true
 void ClimberDriveSlowWhileLowered::End() {
-  Robot::m_climber->DriveStop();
+  Robot::m_climber->driveStop();
 }
 
 // Called when another command which requires one or more of the same

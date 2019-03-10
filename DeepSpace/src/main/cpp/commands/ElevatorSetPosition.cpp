@@ -41,7 +41,7 @@ void ElevatorSetPosition::Initialize() {
   // std::cout << "found setpoint " << "\n";
 	if (setpoint != m_setpoints.end()) {
   // std::cout << "setting position to " << setpoint->second  << "\n";
-		m_elevator->SetPosition(setpoint->second);
+		m_elevator->setPosition(setpoint->second);
 	}
 }
 
@@ -50,13 +50,13 @@ void ElevatorSetPosition::Execute() {
   
    const auto setpoint = m_setpoints.find(m_position);
   // std::cout << "ElevatorSetPosition executing " << "\n";
-  m_elevator->SetPosition(setpoint->second);
+  m_elevator->setPosition(setpoint->second);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ElevatorSetPosition::IsFinished() { 
   
-  return m_elevator->AtSetpoint();
+  return m_elevator->atSetpoint();
   
 }
 
@@ -66,5 +66,5 @@ void ElevatorSetPosition::End() {}
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void ElevatorSetPosition::Interrupted() {
-  m_elevator->Stop();
+  m_elevator->stop();
 }

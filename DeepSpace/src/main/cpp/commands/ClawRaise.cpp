@@ -15,5 +15,5 @@ ClawRaise::ClawRaise(): TimedCommand(k_duration) {
 
 // Called just before this Command runs the first time
 void ClawRaise::Initialize() {
-    Robot::m_claw->ClawRaise();
+    Robot::m_claw->raise();
 }

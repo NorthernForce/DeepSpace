@@ -15,5 +15,5 @@ ClawClose::ClawClose() : frc::TimedCommand(k_duration) {
 
 // Called just before this Command runs the first time
 void ClawClose::Initialize() {
-    Robot::m_claw->SetClosed();
+    Robot::m_claw->close();
 }

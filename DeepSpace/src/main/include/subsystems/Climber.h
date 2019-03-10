@@ -8,17 +8,17 @@ class Climber: public frc::Subsystem
 public:
   Climber();
   void InitDefaultCommand() override;
-  void Lower();
-  void LowerExplicit(double target);
-  void Raise();
-  void Stop();
-  void DriveWheels(double speed);
-  void DriveForward();
-  void DriveBackward();
-  void DriveStop();
-  void LimitCurrent(WPI_TalonSRX&);
-  bool AtLowerLimit();
-  bool AtUpperLimit();
+  void lower();
+  void lowerExplicit(double target);
+  void raise();
+  void stop();
+  void driveWheels(double speed);
+  void driveForward();
+  void driveBackward();
+  void driveStop();
+  void limitCurrent(WPI_TalonSRX&);
+  bool atLowerLimit();
+  bool atUpperLimit();
     
 private:
   std::shared_ptr<WPI_TalonSRX> m_masterTalonLifter;

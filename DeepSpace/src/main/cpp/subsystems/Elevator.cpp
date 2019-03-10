@@ -13,51 +13,50 @@
 #include <iostream>
 
 Elevator::Elevator() : Subsystem("Elevator") { 
-  
-    m_primaryTalonElevator.reset(new WPI_TalonSRX (RobotMap::Elevator::k_primary_id));
-    m_followerTalonElevator1.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower1_id));
-    m_followerTalonElevator2.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower2_id));
-    m_followerTalonElevator3.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower3_id));
-    m_elevatorExtenderSolenoid.reset(new frc::Solenoid (RobotMap::PCM::k_pcm_id, RobotMap::Elevator::k_extenderSolenoid_id));
-    m_elevatorRetracterSolenoid.reset(new frc::Solenoid (RobotMap::PCM::k_pcm_id, RobotMap::Elevator::k_retracterSolenoid_id));
+  m_primaryTalonElevator.reset(new WPI_TalonSRX (RobotMap::Elevator::k_primary_id));
+  m_followerTalonElevator1.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower1_id));
+  m_followerTalonElevator2.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower2_id));
+  m_followerTalonElevator3.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower3_id));
+  m_elevatorExtenderSolenoid.reset(new frc::Solenoid (RobotMap::PCM::k_pcm_id, RobotMap::Elevator::k_extenderSolenoid_id));
+  m_elevatorRetracterSolenoid.reset(new frc::Solenoid (RobotMap::PCM::k_pcm_id, RobotMap::Elevator::k_retracterSolenoid_id));
 
-    m_followerTalonElevator1->Follow(*m_primaryTalonElevator);
-    m_followerTalonElevator2->Follow(*m_primaryTalonElevator);
-    m_followerTalonElevator3->Follow(*m_primaryTalonElevator);
+  m_followerTalonElevator1->Follow(*m_primaryTalonElevator);
+  m_followerTalonElevator2->Follow(*m_primaryTalonElevator);
+  m_followerTalonElevator3->Follow(*m_primaryTalonElevator);
 
-    DisableForwardLimitSwitch();
-    DisableReverseLimitSwitch();
+  disableForwardLimitSwitch();
+  disableReverseLimitSwitch();
 
-    //m_primaryTalonElevator->SetSensorPhase(true);
-    m_primaryTalonElevator->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, pidIdx, 10);
+  //m_primaryTalonElevator->SetSensorPhase(true);
+  m_primaryTalonElevator->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, pidIdx, 10);
 
 
-    /* Set relevant frame periods to be at least as fast as periodic rate */
-    m_primaryTalonElevator->SetStatusFramePeriod(StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
-    m_primaryTalonElevator->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic, 10, 10);
+  /* Set relevant frame periods to be at least as fast as periodic rate */
+  m_primaryTalonElevator->SetStatusFramePeriod(StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
+  m_primaryTalonElevator->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic, 10, 10);
 
-    /* Set the peak and nominal outputs */
-    m_primaryTalonElevator->ConfigNominalOutputForward(0, 10);
-    m_primaryTalonElevator->ConfigNominalOutputReverse(0, 10);
-    m_primaryTalonElevator->ConfigPeakOutputForward(.8, 10);
-    m_primaryTalonElevator->ConfigPeakOutputReverse(-.5, 10);
+  /* Set the peak and nominal outputs */
+  m_primaryTalonElevator->ConfigNominalOutputForward(0, 10);
+  m_primaryTalonElevator->ConfigNominalOutputReverse(0, 10);
+  m_primaryTalonElevator->ConfigPeakOutputForward(.8, 10);
+  m_primaryTalonElevator->ConfigPeakOutputReverse(-.5, 10);
 
-    /* Set Motion Magic gains in slot0 - see documentation */
-    m_primaryTalonElevator->SelectProfileSlot(0, pidIdx);
-    m_primaryTalonElevator->Config_kF(pidIdx, 0.0, 10);
-    m_primaryTalonElevator->Config_kP(pidIdx, pGain, 10);
-    m_primaryTalonElevator->Config_kI(pidIdx, iGain, 10);
-    m_primaryTalonElevator->Config_kD(pidIdx, 0.0, 10);
-    m_primaryTalonElevator->ConfigMaxIntegralAccumulator(pidIdx, iLimit, timeoutMs);
-    m_primaryTalonElevator->ConfigOpenloopRamp(rampTime);
-    m_primaryTalonElevator->ConfigClosedloopRamp(rampTime);
+  /* Set Motion Magic gains in slot0 - see documentation */
+  m_primaryTalonElevator->SelectProfileSlot(0, pidIdx);
+  m_primaryTalonElevator->Config_kF(pidIdx, 0.0, 10);
+  m_primaryTalonElevator->Config_kP(pidIdx, pGain, 10);
+  m_primaryTalonElevator->Config_kI(pidIdx, iGain, 10);
+  m_primaryTalonElevator->Config_kD(pidIdx, 0.0, 10);
+  m_primaryTalonElevator->ConfigMaxIntegralAccumulator(pidIdx, iLimit, timeoutMs);
+  m_primaryTalonElevator->ConfigOpenloopRamp(rampTime);
+  m_primaryTalonElevator->ConfigClosedloopRamp(rampTime);
 
-    /* Set acceleration and vcruise velocity - see documentation */
-    m_primaryTalonElevator->ConfigMotionCruiseVelocity(1500, 10);
-    m_primaryTalonElevator->ConfigMotionAcceleration(1500, 10);
+  /* Set acceleration and vcruise velocity - see documentation */
+  m_primaryTalonElevator->ConfigMotionCruiseVelocity(1500, 10);
+  m_primaryTalonElevator->ConfigMotionAcceleration(1500, 10);
 
-    /* Zero the sensor */
-    m_primaryTalonElevator->SetSelectedSensorPosition(0, pidIdx, 10);
+  /* Zero the sensor */
+  m_primaryTalonElevator->SetSelectedSensorPosition(0, pidIdx, 10);
 /*
      //ConfigureCurrentLimits(defaultPeakAmps, defaultContinuousCurrent, timeoutMs);
 	m_primaryTalonElevator->ConfigNominalOutputForward(+0.0, timeoutMs);
@@ -76,36 +75,37 @@ Elevator::Elevator() : Subsystem("Elevator") {
   SetHomePosition();
   */
 
-
+  setHomePosition();
+  setPosition(0);
 }
 
 void Elevator::InitDefaultCommand() {
   // Set the default command for a subsystem here.
   // SetDefaultCommand(new MySpecialCommand());
 }
-void Elevator::Raise(){
+void Elevator::raise(){
    m_primaryTalonElevator->Set(k_elevatorRaiseSpeed);
 
 //Elevator has 3 floors
 }
-void Elevator::LowerExplicit( double target ){
+void Elevator::lowerExplicit( double target ){
    m_primaryTalonElevator->Set(std::min(target, k_elevatorLowerSpeed));
 
   //Elevator has 3 floors 
 }
-void Elevator::Lower(){
+void Elevator::lower(){
    m_primaryTalonElevator->Set(k_elevatorLowerSpeed);
 
   //Elevator has 3 floors 
 }
 
-void Elevator::Stop() {
+void Elevator::stop() {
   m_primaryTalonElevator->Set(0);
 }
 // Put methods for controlling this subsystem
 // here. Call these from Commands
 
-void Elevator::SetPosition(int setpoint)
+void Elevator::setPosition(int setpoint)
 {
   
   // std::cout << "Elevator set position to " << setpoint << std::endl;
@@ -114,7 +114,7 @@ void Elevator::SetPosition(int setpoint)
 	m_primaryTalonElevator->Set(ControlMode::Position, m_setpoint);
 }
 
-bool Elevator::AtSetpoint()
+bool Elevator::atSetpoint()
 {
   int pos = m_primaryTalonElevator->GetSelectedSensorPosition(pidIdx);
   int err = m_primaryTalonElevator->GetClosedLoopError(0);
@@ -127,7 +127,7 @@ bool Elevator::AtSetpoint()
 	return m_primaryTalonElevator->GetClosedLoopError(0) < 250;
 }
 
-void Elevator::SetHomePosition()
+void Elevator::setHomePosition()
 {
   // std::cout << "Elevator setting home position " << std::endl;
 	//DriverStation::ReportWarning("Elevator home position reset");
@@ -135,53 +135,52 @@ void Elevator::SetHomePosition()
   m_primaryTalonElevator->SetSelectedSensorPosition(m_setpoint, pidIdx, timeoutMs);
 }
 
-bool Elevator::AtLowerLimit() {
+bool Elevator::atLowerLimit() {
   return m_primaryTalonElevator->GetSensorCollection().IsRevLimitSwitchClosed();
 }
 
-void Elevator::Extend() {
+void Elevator::extend() {
   m_elevatorExtenderSolenoid->Set(true);
   m_elevatorRetracterSolenoid->Set(false);
   m_isRetracted = false;
 }
 
-void Elevator::Retract() {
+void Elevator::retract() {
   m_elevatorExtenderSolenoid->Set(false);
   m_elevatorRetracterSolenoid->Set(true);
   m_isRetracted = true;
 }
 
-void Elevator::HoldCurrentDeployment() {
+void Elevator::holdCurrentDeployment() {
   m_elevatorExtenderSolenoid->Set(false);
   m_elevatorRetracterSolenoid->Set(false);
 }
 
-bool Elevator::IsRetracted() {
+bool Elevator::isRetracted() {
   return m_isRetracted;
 }
 
-int Elevator::GetSelectedSensorPosition() {
+int Elevator::getSelectedSensorPosition() {
   return m_primaryTalonElevator->GetSelectedSensorPosition(0);
 }
 
-int Elevator::GetClosedLoopError() {
+int Elevator::getClosedLoopError() {
   return m_primaryTalonElevator->GetClosedLoopError(0);
 }
 
-double Elevator::GetPGainValue() {
+double Elevator::getPGainValue() {
   return pGain;
 }
 
-  void Elevator::EnableForwardLimitSwitch() {
+  void Elevator::enableForwardLimitSwitch() {
       m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
   }
-  void Elevator::DisableForwardLimitSwitch() {
+  void Elevator::disableForwardLimitSwitch() {
       m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, 0);
   }
-  void Elevator::EnableReverseLimitSwitch() {
+  void Elevator::enableReverseLimitSwitch() {
       m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
   }
-
-  void Elevator::DisableReverseLimitSwitch() {
+  void Elevator::disableReverseLimitSwitch() {
       m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, 0);
   }

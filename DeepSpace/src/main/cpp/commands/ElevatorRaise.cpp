@@ -18,7 +18,7 @@ void ElevatorRaise::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorRaise::Execute() {
-  Robot::m_elevator->Raise(); 
+  Robot::m_elevator->raise(); 
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -26,7 +26,7 @@ bool ElevatorRaise::IsFinished() { return false; }
 
 // Called once after isFinished returns true
 void ElevatorRaise::End() {
-  Robot::m_elevator->Stop();
+  Robot::m_elevator->stop();
 }
 
 // Called when another command which requires one or more of the same

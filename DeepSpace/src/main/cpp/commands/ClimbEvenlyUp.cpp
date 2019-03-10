@@ -30,28 +30,28 @@ void ClimbEvenlyUp::Execute() {
   // So, stopping it should work, but it may be jerky.
   // I just think it happens to be safer.
   if (angle <= stopBackThreshold) {
-    Robot::m_elevator->Lower();
-    Robot::m_climber->Stop();
+    Robot::m_elevator->lower();
+    Robot::m_climber->stop();
   }
   else if (angle >= stopFrontThreshold) {
-    Robot::m_elevator->Stop();
-    Robot::m_climber->Lower();
+    Robot::m_elevator->stop();
+    Robot::m_climber->lower();
   }
   else {
-    Robot::m_elevator->Lower();
-    Robot::m_climber->Lower();
+    Robot::m_elevator->lower();
+    Robot::m_climber->lower();
   }
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ClimbEvenlyUp::IsFinished() {
-  return Robot::m_climber->AtUpperLimit();
+  return Robot::m_climber->atUpperLimit();
 }
 
 // Called once after isFinished returns true
 void ClimbEvenlyUp::End() {
-  Robot::m_elevator->Stop();
-  Robot::m_climber->Stop();
+  Robot::m_elevator->stop();
+  Robot::m_climber->stop();
 }
 
 // Called when another command which requires one or more of the same

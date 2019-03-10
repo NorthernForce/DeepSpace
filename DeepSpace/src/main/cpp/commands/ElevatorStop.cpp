@@ -15,5 +15,5 @@ ElevatorStop::ElevatorStop() : TimedCommand(k_duration) {
 
 // Called just before this Command runs the first time
 void ElevatorStop::Initialize() {
-  Robot::m_elevator->Stop();
+  Robot::m_elevator->stop();
 }

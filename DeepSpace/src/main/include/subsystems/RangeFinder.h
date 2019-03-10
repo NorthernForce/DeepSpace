@@ -12,7 +12,6 @@
 #include <frc/AnalogInput.h>
 #include <frc/PIDSource.h>
 
-
 class RangeFinder : public frc::Subsystem, public frc::PIDSource
 {
  private:
