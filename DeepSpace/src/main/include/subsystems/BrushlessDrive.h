@@ -17,6 +17,10 @@ class BrushlessDrive : public frc::Subsystem {
   void InitDefaultCommand() override;
   void arcDrive(double speed, double rotation);
 
+  const static double k_rampRate;
+  const static double k_secondaryCurrentLimit;
+  const static int k_currentLimit;
+
  private:
   void ConfigureController(rev::CANSparkMax& controller);
 
@@ -27,8 +31,4 @@ class BrushlessDrive : public frc::Subsystem {
   std::shared_ptr<rev::CANSparkMax>        m_rightFollowerBrushless;
 
   std::shared_ptr<frc::DifferentialDrive>  m_robotBrushlessDrive;
-
-  constexpr static double k_rampRate = 0.2;
-  constexpr static double k_secondaryCurrentLimit = 80.0;
-  constexpr static int k_currentLimit = 50;
 };

@@ -23,11 +23,6 @@ class Claw : public frc::Subsystem {
 		Lowered
 	};
   State m_raisedState;
-  
-  const static bool k_clawOpenValue = 1;
-  const static bool k_clawClosedValue = 0;
-  const static bool k_clawRaisedValue = 0;
-  const static bool k_clawLoweredValue = 1;
 
  public:
   Claw();
@@ -37,4 +32,14 @@ class Claw : public frc::Subsystem {
   void raise();
   void lower();
   bool isRaised();
+
+  const static bool k_clawOpenValue;
+  const static bool k_clawClosedValue;
+  const static bool k_clawRaisedValue;
+  const static bool k_clawLoweredValue;
+
+  const static double k_timeToOpen;
+  const static double k_timeToClose;
+  const static double k_timeToRaise;
+  const static double k_timeToLower;
 };

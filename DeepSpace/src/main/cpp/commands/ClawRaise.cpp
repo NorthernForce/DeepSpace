@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ClawRaise::ClawRaise(): TimedCommand(k_duration) {
+ClawRaise::ClawRaise(): TimedCommand(Claw::k_timeToRaise) {
     Requires(Robot::m_claw.get());
 }
 

@@ -6,6 +6,16 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Claw.h"
+  
+const bool Claw::k_clawOpenValue = 1;
+const bool Claw::k_clawClosedValue = 0;
+const bool Claw::k_clawRaisedValue = 0;
+const bool Claw::k_clawLoweredValue = 1;
+
+const double Claw::k_timeToOpen = 0.4;
+const double Claw::k_timeToClose = 0.4;
+const double Claw::k_timeToRaise = 0.4;
+const double Claw::k_timeToLower = 0.4;
 
 Claw::Claw() : Subsystem("Claw") {
   m_clawSolenoid.reset(new frc::Solenoid(RobotMap::PCM::k_pcm_id, RobotMap::Claw::k_clawSolenoid_id));

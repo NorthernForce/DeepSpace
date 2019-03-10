@@ -13,7 +13,4 @@ class ClawClose : public frc::TimedCommand {
  public:
   ClawClose();
   void Initialize() override;
-
- private:
-  const double k_duration = 0.4;
 };

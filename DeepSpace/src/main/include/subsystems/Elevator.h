@@ -24,30 +24,8 @@ class Elevator : public frc::Subsystem {
   std::shared_ptr<frc::Solenoid> m_elevatorRetracterSolenoid;
 
   int m_setpoint;
-  constexpr static int timeoutMs = 10;
-	constexpr static int noTimeoutMs = 0;
-	constexpr static double freeSpeedRPM = 18730;
-	constexpr static double maxSpeedRPM = freeSpeedRPM * 0.80;
-	constexpr static double sensorUnitsPerRev = 256 * 4; // The TalonSRX counts 4 edges per encoder count, the quadrature encoder has 12 counts per revolution
-	constexpr static double maxSensorUnitsPer100ms = 1500; // sensorUnitsPerRev * maxSpeedRPM / 60 / 10;
-	constexpr static double feedForwardGain = 0.5; // 1023 / maxSensorUnitsPer100ms;
-	constexpr static double pGainPower = 0.15;
-	constexpr static double pGainError = 100;
-	constexpr static double pGain = 0.7; // (1023 * pGainPower) / pGainError;
-	constexpr static double iGain = 0.007;
-	constexpr static double iLimit = 1500;
-	constexpr static double dGain = 0.07; //pGain / 10;
-	constexpr static double timeToMaxSpeed = 0.75;
-	constexpr static int slotIdx = 0;
-	constexpr static int pidIdx = 0;
-	constexpr static int defaultPeakAmps = 15;
-	constexpr static int defaultContinuousCurrent = 12;
-	constexpr static double rampTime = 0.5;
 
   bool m_isRetracted = true;
-
-  const double k_elevatorRaiseSpeed = 0.5;
-  const double k_elevatorLowerSpeed = -0.6;
 
  public:
   Elevator();
@@ -71,4 +49,27 @@ class Elevator : public frc::Subsystem {
   void disableForwardLimitSwitch();
   void enableReverseLimitSwitch();
   void disableReverseLimitSwitch();
+  
+  const static int timeoutMs;
+	const static int noTimeoutMs;
+	const static double freeSpeedRPM;
+	const static double maxSpeedRPM;
+	const static double sensorUnitsPerRev;
+	const static double maxSensorUnitsPer100ms;
+	const static double feedForwardGain;
+	const static double pGainPower;
+	const static double pGainError;
+	const static double pGain;
+	const static double iGain;
+	const static double iLimit;
+	const static double dGain;
+	const static double timeToMaxSpeed;
+	const static int slotIdx;
+	const static int pidIdx;
+	const static int defaultPeakAmps;
+	const static int defaultContinuousCurrent;
+	const static double rampTime;
+
+  const static double k_elevatorMaxRaiseSpeed;
+  const static double k_elevatorMaxLowerSpeed;
 };

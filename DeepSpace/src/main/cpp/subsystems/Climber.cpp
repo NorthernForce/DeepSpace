@@ -5,15 +5,23 @@
 
 #include "RobotMap.h"
 
+const int Climber::k_timeout = 0;
+const int Climber::k_peakCurrent = 22;
+const int Climber::k_continuousCurrent = 11;
+const int Climber::k_peakCurrentDuration = 2000;
+
+const double Climber::k_forwardMotorSpeed = 0.5;
+const double Climber::k_reverseMotorSpeed = -0.5;
+
 Climber::Climber() : Subsystem("Climber") {
-    m_masterTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_leftClimbingMotor_id));
-    m_slaveTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_rightClimbingMotor_id));
+  m_masterTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_leftClimbingMotor_id));
+  m_slaveTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_rightClimbingMotor_id));
 
-    m_slaveTalonLifter->SetInverted(true);
-    m_slaveTalonLifter->Follow(*m_masterTalonLifter);
+  m_slaveTalonLifter->SetInverted(true);
+  m_slaveTalonLifter->Follow(*m_masterTalonLifter);
 
-    m_masterTalonLifter->ConfigForwardLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
-    m_masterTalonLifter->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+  m_masterTalonLifter->ConfigForwardLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+  m_masterTalonLifter->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
 }
 
 void Climber::InitDefaultCommand() {

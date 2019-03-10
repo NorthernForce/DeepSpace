@@ -12,6 +12,22 @@
 
 #include "RobotMap.h"
 
+const std::string Vision::Camera::k_defaultSettings = 
+  "brightness=133,"
+  "contrast=5,"
+  "saturation=83,"
+  // "white_balance_temperature_auto=0," // Must be manual to change settings.
+  // "white_balance_temperature=4500,"
+  // "white_balance_temperature_auto=1,"
+  "power_line_frequency=2,"
+  "sharpness=25,"
+  "backlight_compensation=0,"
+  "exposure_auto=1,"
+  "exposure_absolute=156,"
+  "pan_absolute=0,"
+  "tilt_absolute=0,"
+  "zoom_absolute=0";
+
 Vision::Vision() : Subsystem("Vision"),
   m_cameras{
     {"Elevator", std::make_shared<Camera>("Elevator Camera", RobotMap::Vision::k_elevatorCamera_path, 240, 180, 30, RobotMap::Vision::k_elevatorCameraLightRing_id)},

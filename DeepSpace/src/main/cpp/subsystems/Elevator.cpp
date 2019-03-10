@@ -11,6 +11,29 @@
 
 #include "RobotMap.h"
 #include <iostream>
+  
+  const int Elevator::timeoutMs = 10;
+	const int Elevator::noTimeoutMs = 0;
+	const double Elevator::freeSpeedRPM = 18730;
+	const double Elevator::maxSpeedRPM = freeSpeedRPM * 0.80;
+	const double Elevator::sensorUnitsPerRev = 256 * 4; // The TalonSRX counts 4 edges per encoder count, the quadrature encoder has 12 counts per revolution
+	const double Elevator::maxSensorUnitsPer100ms = 1500; // sensorUnitsPerRev * maxSpeedRPM / 60 / 10;
+	const double Elevator::feedForwardGain = 0.5; // 1023 / maxSensorUnitsPer100ms;
+	const double Elevator::pGainPower = 0.15;
+	const double Elevator::pGainError = 100;
+	const double Elevator::pGain = 0.7; // (1023 * pGainPower) / pGainError;
+	const double Elevator::iGain = 0.007;
+	const double Elevator::iLimit = 1500;
+	const double Elevator::dGain = 0.07; //pGain / 10;
+	const double Elevator::timeToMaxSpeed = 0.75;
+	const int Elevator::slotIdx = 0;
+	const int Elevator::pidIdx = 0;
+	const int Elevator::defaultPeakAmps = 15;
+	const int Elevator::defaultContinuousCurrent = 12;
+	const double Elevator::rampTime = 0.5;
+
+  const double Elevator::k_elevatorMaxRaiseSpeed = 0.5;
+  const double Elevator::k_elevatorMaxLowerSpeed = -0.6;
 
 Elevator::Elevator() : Subsystem("Elevator") { 
   m_primaryTalonElevator.reset(new WPI_TalonSRX (RobotMap::Elevator::k_primary_id));
@@ -83,26 +106,23 @@ void Elevator::InitDefaultCommand() {
   // Set the default command for a subsystem here.
   // SetDefaultCommand(new MySpecialCommand());
 }
-void Elevator::raise(){
-   m_primaryTalonElevator->Set(k_elevatorRaiseSpeed);
 
-//Elevator has 3 floors
-}
 void Elevator::setSpeed(double speed){
-  if (speed > k_elevatorLowerSpeed && speed < k_elevatorRaiseSpeed) {
+  if (speed > k_elevatorMaxLowerSpeed && speed < k_elevatorMaxRaiseSpeed) {
    m_primaryTalonElevator->Set(speed);
   }
-  else if (speed < k_elevatorLowerSpeed) {
-   m_primaryTalonElevator->Set(k_elevatorLowerSpeed);
+  else if (speed < k_elevatorMaxLowerSpeed) {
+   m_primaryTalonElevator->Set(k_elevatorMaxLowerSpeed);
   }
-  else if (speed > k_elevatorRaiseSpeed) {
-   m_primaryTalonElevator->Set(k_elevatorRaiseSpeed);
+  else if (speed > k_elevatorMaxRaiseSpeed) {
+   m_primaryTalonElevator->Set(k_elevatorMaxRaiseSpeed);
   }
 }
+void Elevator::raise(){
+   m_primaryTalonElevator->Set(k_elevatorMaxRaiseSpeed);
+}
 void Elevator::lower(){
-   m_primaryTalonElevator->Set(k_elevatorLowerSpeed);
-
-  //Elevator has 3 floors 
+   m_primaryTalonElevator->Set(k_elevatorMaxLowerSpeed);
 }
 
 void Elevator::stop() {

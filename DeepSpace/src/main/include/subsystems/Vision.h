@@ -37,6 +37,8 @@ class Vision : public frc::Subsystem {
     void setLightRing(bool turnOn);
     void setTarget(std::shared_ptr<Target> target);
 
+    const static std::string k_defaultSettings;
+
    private:
     std::string m_name;
     std::string m_path;
@@ -51,22 +53,6 @@ class Vision : public frc::Subsystem {
 
     std::shared_ptr<Target> m_objectToTarget;
     std::shared_ptr<Target> m_currentTarget;
-
-    const std::string k_defaultSettings = 
-      "brightness=133,"
-      "contrast=5,"
-      "saturation=83,"
-      // "white_balance_temperature_auto=0," // Must be manual to change settings.
-      // "white_balance_temperature=4500,"
-      // "white_balance_temperature_auto=1,"
-      "power_line_frequency=2,"
-      "sharpness=25,"
-      "backlight_compensation=0,"
-      "exposure_auto=1,"
-      "exposure_absolute=156,"
-      "pan_absolute=0,"
-      "tilt_absolute=0,"
-      "zoom_absolute=0";
   };
 
   class Target {

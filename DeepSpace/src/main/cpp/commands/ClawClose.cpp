@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ClawClose::ClawClose() : frc::TimedCommand(k_duration) {
+ClawClose::ClawClose() : frc::TimedCommand(Claw::k_timeToClose) {
     Requires(Robot::m_claw.get());
 }
 

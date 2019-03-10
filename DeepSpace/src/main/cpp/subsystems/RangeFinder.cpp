@@ -9,58 +9,51 @@
 
 #include "RobotMap.h"
 
-RangeFinder::RangeFinder() : Subsystem("RangeFinder"), PIDSource()
-{
-   m_ctrl.reset(new frc::DigitalOutput(RobotMap::Ultrasonic::k_digitalCtlPort));
-   m_voltageReader.reset(new frc::AnalogInput(RobotMap::Ultrasonic::k_analogPort));
-   m_ctrl->Set(k_ultrasonicOn);
-   this->SetPIDSourceType(frc::PIDSourceType::kDisplacement);
+const bool RangeFinder::k_ultrasonicOn = true;
+const bool RangeFinder::k_ultrasonicOff = false;
 
+RangeFinder::RangeFinder() : Subsystem("RangeFinder"), PIDSource() {
+  m_ctrl.reset(new frc::DigitalOutput(RobotMap::Ultrasonic::k_digitalCtlPort));
+  m_voltageReader.reset(new frc::AnalogInput(RobotMap::Ultrasonic::k_analogPort));
+  m_ctrl->Set(k_ultrasonicOn);
+  this->SetPIDSourceType(frc::PIDSourceType::kDisplacement);
 }
  
- 
-void RangeFinder::SetPIDSourceType(frc::PIDSourceType pidSource) 
-{
-    m_pidSource = pidSource;
+void RangeFinder::SetPIDSourceType(frc::PIDSourceType pidSource) {
+  m_pidSource = pidSource;
 }
 
 
-frc::PIDSourceType RangeFinder::GetPIDSourceType() const
-{
-   return m_pidSource;
+frc::PIDSourceType RangeFinder::GetPIDSourceType() const {
+  return m_pidSource;
 }
 
 
-double RangeFinder::PIDGet()
-{
+double RangeFinder::PIDGet() {
   return this->getDistance();
 }
 
 
-void RangeFinder::InitDefaultCommand() 
-{
+void RangeFinder::InitDefaultCommand() {
   // Set the default command for a subsystem here.
   // SetDefaultCommand(new MySpecialCommand());
 }
 
 
-double RangeFinder::getDistance()
-{
+double RangeFinder::getDistance() {
   m_voltage = m_voltageReader->GetVoltage();
   m_rangeInches = (m_voltage / 0.0098);
   return m_rangeInches;
 }
 
 
-int RangeFinder::enable()
-{
+int RangeFinder::enable() {
   m_ctrl->Set(k_ultrasonicOn);
   return 0;
 }
 
 
-int RangeFinder::disable()
-{
+int RangeFinder::disable() {
   m_ctrl->Set(k_ultrasonicOff);
   return 0;
 }

@@ -9,6 +9,17 @@
 
 #include "RobotMap.h"
 
+const double CargoManipulator::k_ejectSpeed = -1.0;
+const double CargoManipulator::k_intakeSpeed = 0.7;
+
+// Duration in micro seconds
+const int CargoManipulator::k_divideSpeedDuration = 200 * 1000;
+const double CargoManipulator::k_divideSpeedAmount = 0.5;
+
+const double CargoManipulator::k_rampRate = 0.2;
+const double CargoManipulator::k_secondaryCurrentLimit = 16.0;
+const int CargoManipulator::k_currentLimit = 8;
+
 CargoManipulator::CargoManipulator() : Subsystem("CargoManipulator") {
   m_motor.reset(new rev::CANSparkMax(RobotMap::CargoManipulator::k_motor_id, rev::CANSparkMax::MotorType::kBrushed));
 

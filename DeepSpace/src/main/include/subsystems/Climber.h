@@ -15,16 +15,16 @@ public:
   void limitCurrent(WPI_TalonSRX&);
   bool atLowerLimit();
   bool atUpperLimit();
+
+  const static int k_timeout;
+  const static int k_peakCurrent;
+  const static int k_continuousCurrent;
+  const static int k_peakCurrentDuration;
+  
+  const static double k_forwardMotorSpeed;
+  const static double k_reverseMotorSpeed;
     
 private:
   std::shared_ptr<WPI_TalonSRX> m_masterTalonLifter;
   std::shared_ptr<WPI_TalonSRX> m_slaveTalonLifter;
-
-  constexpr static auto k_timeout = 0;
-  constexpr static auto k_peakCurrent = 22;
-  constexpr static auto k_continuousCurrent = 11;
-  constexpr static auto k_peakCurrentDuration = 2000;
-  
-  const double k_forwardMotorSpeed = 0.5;
-  const double k_reverseMotorSpeed = -0.5;
 };

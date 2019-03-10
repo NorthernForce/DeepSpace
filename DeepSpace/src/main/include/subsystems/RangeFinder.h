@@ -17,24 +17,23 @@ class RangeFinder : public frc::Subsystem, public frc::PIDSource
  private:
   // It's desirable that everything possible under private except
   // for methods that implement subsystem capabilities
-   int m_lastRange; 
-   std::shared_ptr<frc::DigitalOutput> m_ctrl;
-   std::shared_ptr<frc::AnalogInput> m_voltageReader;
-   double m_voltage;
-   double m_rangeInches;
-   frc::PIDSourceType m_pidSource;
-
-  const static bool k_ultrasonicOn = true;
-  const static bool k_ultrasonicOff = false;
+  int m_lastRange; 
+  std::shared_ptr<frc::DigitalOutput> m_ctrl;
+  std::shared_ptr<frc::AnalogInput> m_voltageReader;
+  double m_voltage;
+  double m_rangeInches;
+  frc::PIDSourceType m_pidSource;
 
  public:
-   RangeFinder();
-   void InitDefaultCommand() override;
-   double getDistance();
-   int enable();
-   int disable();
-   void SetPIDSourceType(frc::PIDSourceType pidSource) override;
-   frc::PIDSourceType GetPIDSourceType() const override;
-   double PIDGet() override;
+  RangeFinder();
+  void InitDefaultCommand() override;
+  double getDistance();
+  int enable();
+  int disable();
+  void SetPIDSourceType(frc::PIDSourceType pidSource) override;
+  frc::PIDSourceType GetPIDSourceType() const override;
+  double PIDGet() override;
 
+  const static bool k_ultrasonicOn;
+  const static bool k_ultrasonicOff;
 };

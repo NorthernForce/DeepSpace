@@ -13,7 +13,4 @@ class ClawRaise : public frc::TimedCommand {
  public:
   ClawRaise();
   void Initialize() override;
-
- private:
-  const double k_duration = 0.4;
 };

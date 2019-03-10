@@ -10,6 +10,10 @@
 #include "RobotMap.h"
 #include "commands/DriveWithJoystick.h"
 
+const double BrushlessDrive::k_rampRate = 0.2;
+const double BrushlessDrive::k_secondaryCurrentLimit = 80.0;
+const int BrushlessDrive::k_currentLimit = 50;
+
 BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   // Left Side
   m_leftPrimaryBrushless.reset(new rev::CANSparkMax(RobotMap::BrushlessDrive::k_leftPrimary_id, rev::CANSparkMax::MotorType::kBrushless));
