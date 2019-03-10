@@ -7,20 +7,17 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/CommandGroup.h>
 
-class ClimbEvenlyUp : public frc::Command {
+#include "commands/ElevatorSetPosition.h"
+
+class SetupPosition : public frc::CommandGroup {
  public:
-  ClimbEvenlyUp();
-  void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
+  enum class TargetType {
+    None,
+    Cargo,
+    Hatch
+  };
 
- private:
-  const double stopBackThreshold = -2;
-  const double stopFrontThreshold = -0.5;
-
-  bool m_climbingStarted = false;
+  SetupPosition(ElevatorSetPosition::Position position, TargetType type = TargetType::None);
 };

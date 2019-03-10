@@ -27,8 +27,7 @@ void ClimbEvenlyUp::Initialize() {
 void ClimbEvenlyUp::Execute() {
   auto angle = Robot::m_imu->getAngle();
 
-  // So, stopping it should work, but it may be jerky.
-  // I just think it happens to be safer.
+  // Eventually this should be a function of the angle
   if (angle <= stopBackThreshold) {
     Robot::m_elevator->lower();
     Robot::m_climber->stop();

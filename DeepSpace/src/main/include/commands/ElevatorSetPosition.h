@@ -14,7 +14,7 @@
 class ElevatorSetPosition : public frc::Command {
  public:
 
-enum class Position {
+  enum class Position {
     HomePosition,
     CargoIntake,	
     HatchPanelIntake,		
@@ -26,7 +26,7 @@ enum class Position {
     HatchDepositLevel2,
     HatchDepositLevel3,
     ClimbPosition,
-    };
+  };
 
   ElevatorSetPosition(Position position);
   void Initialize() override;

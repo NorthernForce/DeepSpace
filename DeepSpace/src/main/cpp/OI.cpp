@@ -22,6 +22,7 @@
 
 #include "commands/ClimbStage1.h"
 #include "commands/ClimbEvenlyUp.h"
+#include "commands/ClimberDriveForward.h"
 #include "commands/ClimberDriveStop.h"
 #include "commands/ClimberLower.h"
 #include "commands/ClimberRaise.h"
@@ -44,6 +45,7 @@
 #include "commands/PositionSetups/SetupForHatchDepositLevel1.h"
 #include "commands/PositionSetups/SetupForHatchDepositLevel2.h"
 #include "commands/PositionSetups/SetupForHatchDepositLevel3.h"
+#include "commands/SetupPosition.h"
 
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
@@ -88,13 +90,27 @@ OI::OI() {
   WhenPressed(m_manipulatorController1, 7, new SetupForCargoDepositLevel1());
   WhenPressed(m_manipulatorController1, 11, new SetupForCargoDepositLevel2());
   WhenPressed(m_manipulatorController1, 10, new SetupForCargoDepositLevel3());
+  // WhenPressed(m_manipulatorController1, 7, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel1,
+  //                                                            SetupPosition::TargetType::Cargo));
+  // WhenPressed(m_manipulatorController1, 11, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel2,
+  //                                                            SetupPosition::TargetType::Cargo));
+  // WhenPressed(m_manipulatorController1, 10, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3,
+  //                                                            SetupPosition::TargetType::Cargo));
   
   WhenPressed(m_manipulatorController1, 4, new SetupForHatchDepositLevel1());
   WhenPressed(m_manipulatorController1, 2, new SetupForHatchDepositLevel2());
   WhenPressed(m_manipulatorController1, 5, new SetupForCargoShipCargoDeposit());
+  // WhenPressed(m_manipulatorController1, 4, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3,
+  //                                                            SetupPosition::TargetType::Hatch));
+  // WhenPressed(m_manipulatorController1, 2, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3,
+  //                                                            SetupPosition::TargetType::Hatch));
+  // WhenPressed(m_manipulatorController1, 5, new SetupPosition(ElevatorSetPosition::Position::CargoShipCargoDeposit,
+  //                                                            SetupPosition::TargetType::Cargo));
 
   WhenPressed(m_manipulatorController1, 9, new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
   WhenPressed(m_manipulatorController1, 6, new SetupForCargoIntake());
+  // WhenPressed(m_manipulatorController1, 6, new SetupPosition(ElevatorSetPosition::Position::CargoIntake,
+                                                            //  SetupPosition::TargetType::Cargo));
 
   WhenPressed(m_manipulatorController2, 8, new ElevatorSetup());
 
@@ -110,8 +126,7 @@ OI::OI() {
   WhileHeld(m_manipulatorController2, 6, new ClimberLower());
   WhileHeld(m_manipulatorController2, 7, new ClimberRaise());
 
-  WhileHeld(m_manipulatorController2, 3, new PlatformDrive());
-  WhenReleased(m_manipulatorController2, 3, new ClimberDriveStop());
+  WhileHeld(m_manipulatorController2, 3, new ClimberDriveForward());
 
   WhileHeld(m_manipulatorController2, 2, new ClimbEvenlyUp());
 

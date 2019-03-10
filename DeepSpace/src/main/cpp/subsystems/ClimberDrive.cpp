@@ -12,6 +12,8 @@
 
 ClimberDrive::ClimberDrive() : Subsystem("ExampleSubsystem") {
   m_masterTalonWheels.reset(new WPI_TalonSRX (RobotMap::ClimberDrive::k_driveMotor_id));
+
+  m_masterTalonWheels->ConfigContinuousCurrentLimit(12, 800);
 }
 
 void ClimberDrive::InitDefaultCommand() {
