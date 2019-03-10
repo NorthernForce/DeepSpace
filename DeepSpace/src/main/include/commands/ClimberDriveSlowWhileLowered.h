@@ -17,7 +17,4 @@ class ClimberDriveSlowWhileLowered : public frc::Command {
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-
- private:
-  const double k_slowSpeed = 0.15;
 };

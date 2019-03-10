@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ElevatorToggleDeployment::ElevatorToggleDeployment() : TimedCommand(k_duration) {
+ElevatorToggleDeployment::ElevatorToggleDeployment() : TimedCommand(Elevator::k_deployDelay) {
   Requires(Robot::m_elevator.get());
 }
 

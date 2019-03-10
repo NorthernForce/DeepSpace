@@ -9,7 +9,7 @@
 #include "Robot.h"
 #include "RobotMap.h"
 
-ElevatorRetract::ElevatorRetract() : frc::TimedCommand(k_duration) {
+ElevatorRetract::ElevatorRetract() : frc::TimedCommand(Elevator::k_deployDelay) {
   Requires(Robot::m_elevator.get());
 }
 

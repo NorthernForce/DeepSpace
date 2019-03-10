@@ -18,7 +18,6 @@ class DriveForward : public frc::Command {
   void End() override;
   void Interrupted() override;
 
- private:
- constexpr static double k_speed = 0.5; 
- constexpr static double k_rotation = 0.0;
+  const static double k_speed; 
+  const static double k_rotation;
 };

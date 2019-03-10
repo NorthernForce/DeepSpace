@@ -8,6 +8,9 @@
 #include "commands/DriveForward.h"
 #include "Robot.h"
 
+const double DriveForward::k_speed = 0.5; 
+const double DriveForward::k_rotation = 0.0;
+
 DriveForward::DriveForward() {
   Requires(Robot::m_driveTrain.get());
 }

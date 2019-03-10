@@ -13,7 +13,4 @@ class ElevatorToggleDeployment : public frc::TimedCommand {
  public:
   ElevatorToggleDeployment();
   void Initialize() override;
-  
- private:
-  const double k_duration = 0.8;
 };

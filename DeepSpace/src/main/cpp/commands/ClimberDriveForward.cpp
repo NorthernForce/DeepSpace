@@ -18,7 +18,7 @@ void ClimberDriveForward::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void ClimberDriveForward::Execute() {
-Robot::m_climberDrive->setSpeed(k_speed);
+  Robot::m_climberDrive->setSpeed(ClimberDrive::k_speedForward);
 }
 
 // Make this return true when this Command no longer needs to run execute()

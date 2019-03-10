@@ -28,8 +28,16 @@ void Climber::InitDefaultCommand() {
   // Set the default command for a subsystem here.
 }
 
-void Climber::lowerExplicit(double target) {
-    m_masterTalonLifter->Set(std::min(target, k_reverseMotorSpeed));
+void Climber::setSpeed(double speed) {
+  if (speed > k_reverseMotorSpeed && speed < k_forwardMotorSpeed) {
+   m_masterTalonLifter->Set(speed);
+  }
+  else if (speed < k_reverseMotorSpeed) {
+   m_masterTalonLifter->Set(k_reverseMotorSpeed);
+  }
+  else if (speed > k_forwardMotorSpeed) {
+   m_masterTalonLifter->Set(k_forwardMotorSpeed);
+  }
 }
 
 void Climber::lower() {

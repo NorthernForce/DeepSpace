@@ -19,4 +19,10 @@ class ClimberDrive : public frc::Subsystem {
   void InitDefaultCommand() override;
   void setSpeed(double speed);
   void stop();
+
+  const static double k_speedForward;
+  const static double k_speedBackward;
+  const static double k_speedIdle;
+
+  const static double k_stopDelay;
 };

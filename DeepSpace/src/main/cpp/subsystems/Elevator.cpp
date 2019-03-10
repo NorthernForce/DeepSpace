@@ -35,6 +35,9 @@
   const double Elevator::k_elevatorMaxRaiseSpeed = 0.5;
   const double Elevator::k_elevatorMaxLowerSpeed = -0.6;
 
+  const double Elevator::k_deployDelay = 0.8;
+  const double Elevator::k_motorStopDelay = 0.1;
+
 Elevator::Elevator() : Subsystem("Elevator") { 
   m_primaryTalonElevator.reset(new WPI_TalonSRX (RobotMap::Elevator::k_primary_id));
   m_followerTalonElevator1.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower1_id));

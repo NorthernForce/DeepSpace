@@ -13,6 +13,4 @@ class ElevatorRetract : public frc::TimedCommand {
  public:
   ElevatorRetract();
   void Initialize() override;
- private:
-  const double k_duration = 0.8;
 };

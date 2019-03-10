@@ -13,7 +13,4 @@ class ElevatorStop : public frc::TimedCommand {
  public:
   ElevatorStop();
   void Initialize() override;
-
- private:
-  const double k_duration = 0.1;
 };

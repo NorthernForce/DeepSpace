@@ -22,7 +22,7 @@ void ClimberDriveSlowWhileLowered::Execute() {
     Robot::m_climberDrive->stop();
   }
   else {
-    Robot::m_climberDrive->setSpeed(k_slowSpeed);
+    Robot::m_climberDrive->setSpeed(ClimberDrive::k_speedIdle);
   }
 }
 

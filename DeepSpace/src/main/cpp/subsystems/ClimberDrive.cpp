@@ -10,6 +10,10 @@
 #include "RobotMap.h"
 #include "commands/ClimberDriveSlowWhileLowered.h"
 
+const double ClimberDrive::k_speedForward = 0.5;
+const double ClimberDrive::k_speedBackward = -0.5;
+const double ClimberDrive::k_speedIdle = 0.15;
+
 ClimberDrive::ClimberDrive() : Subsystem("ExampleSubsystem") {
   m_masterTalonWheels.reset(new WPI_TalonSRX (RobotMap::ClimberDrive::k_driveMotor_id));
 

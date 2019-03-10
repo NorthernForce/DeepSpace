@@ -17,7 +17,4 @@ class ClimberDriveBackward : public frc::Command {
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-
- private:
-  const double k_speed = -0.5;
 };

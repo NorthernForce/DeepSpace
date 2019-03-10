@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ClimberDriveStop::ClimberDriveStop() : TimedCommand(k_duration) {
+ClimberDriveStop::ClimberDriveStop() : TimedCommand(ClimberDrive::k_stopDelay) {
   Requires(Robot::m_climberDrive.get());
 }
 

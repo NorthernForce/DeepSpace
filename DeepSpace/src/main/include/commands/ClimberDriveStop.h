@@ -13,7 +13,4 @@ class ClimberDriveStop : public frc::TimedCommand {
  public:
   ClimberDriveStop();
   void Initialize() override;
-
- private:
-  const double k_duration = 0.1;
 };

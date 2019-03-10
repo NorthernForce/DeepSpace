@@ -10,7 +10,6 @@
 #include <frc/commands/Command.h>
 #include "subsystems/LineTracker.h"
 
-
 class FollowLine : public frc::Command {
  private:
   bool m_faultyCase;

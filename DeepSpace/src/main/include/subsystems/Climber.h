@@ -9,7 +9,7 @@ public:
   Climber();
   void InitDefaultCommand() override;
   void lower();
-  void lowerExplicit(double target);
+  void setSpeed(double speed);
   void raise();
   void stop();
   void limitCurrent(WPI_TalonSRX&);

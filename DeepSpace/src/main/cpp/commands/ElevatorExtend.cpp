@@ -10,7 +10,7 @@
 #include "Robot.h"
 #include "RobotMap.h"
 
-ElevatorExtend::ElevatorExtend() : frc::TimedCommand(k_duration) {
+ElevatorExtend::ElevatorExtend() : frc::TimedCommand(Elevator::k_deployDelay) {
   Requires(Robot::m_elevator.get());
 }
 

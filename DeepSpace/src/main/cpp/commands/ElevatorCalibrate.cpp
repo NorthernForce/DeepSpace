@@ -9,6 +9,8 @@
 
 #include "Robot.h"
 
+const double ElevatorCalibrate::k_lowerSpeed = -0.25;
+
 ElevatorCalibrate::ElevatorCalibrate() {
   Requires(Robot::m_elevator.get());
 }
