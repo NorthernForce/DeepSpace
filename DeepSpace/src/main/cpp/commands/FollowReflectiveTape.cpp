@@ -11,6 +11,12 @@
 
 #include "Robot.h"
 
+const double FollowReflectiveTape::k_p = 0;
+const double FollowReflectiveTape::k_i = 0;
+const double FollowReflectiveTape::k_d = 0;
+
+const double FollowReflectiveTape::k_iterationTime = 0.02;
+
 FollowReflectiveTape::FollowReflectiveTape() {
   Requires(Robot::m_vision.get());
   Requires(Robot::m_driveTrain.get());

@@ -13,7 +13,4 @@ class VisionTargetReflectiveTape : public frc::TimedCommand {
  public:
   VisionTargetReflectiveTape();
   void Initialize() override;
-  
- private:
-  const double k_duration = 0.1;
 };

@@ -13,7 +13,4 @@ class VisionTargetNothing : public frc::TimedCommand {
  public:
   VisionTargetNothing();
   void Initialize() override;
-  
- private:
-  const double k_duration = 0.1;
 };

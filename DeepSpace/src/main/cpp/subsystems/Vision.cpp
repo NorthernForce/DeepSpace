@@ -47,6 +47,24 @@ std::pair<double, double> Vision::getOffset(std::string targetName) {
   return m_targets[targetName]->getOffset();
 }
 
+const std::string Vision::Camera::k_defaultSettings = 
+      "brightness=133,"
+      "contrast=5,"
+      "saturation=83,"
+      // "white_balance_temperature_auto=0," // Must be manual to change settings.
+      // "white_balance_temperature=4500,"
+      // "white_balance_temperature_auto=1,"
+      "power_line_frequency=2,"
+      "sharpness=25,"
+      "backlight_compensation=0,"
+      "exposure_auto=1,"
+      "exposure_absolute=156,"
+      "pan_absolute=0,"
+      "tilt_absolute=0,"
+      "zoom_absolute=0";
+
+const double Vision::Target::k_targetChangeDelay = 0.1;
+
 Vision::Camera::Camera(std::string name, std::string devPath, int width, int height, int fps, int lightRingID) {
   m_name = name;
   m_path = devPath;

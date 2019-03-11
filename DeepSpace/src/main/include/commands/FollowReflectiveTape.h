@@ -21,11 +21,13 @@ class FollowReflectiveTape : public frc::Command {
   void End() override;
   void Interrupted() override;
 
- private:
-  const double k_p = 0;
-  const double k_i = 0;
-  const double k_d = 0;
+  const static double k_p;
+  const static double k_i;
+  const static double k_d;
 
+  const static double k_iterationTime;
+
+ private:
   const std::string k_cameraName = "Elevator";
   const std::string k_targetName = "ReflectiveTape";
 
@@ -33,6 +35,4 @@ class FollowReflectiveTape : public frc::Command {
   double m_error_prior = 0;
   double m_integral = 0;
   double m_derivative = 0;
-
-  const double k_iterationTime = 0.02;
 };

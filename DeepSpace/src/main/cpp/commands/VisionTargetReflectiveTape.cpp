@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-VisionTargetReflectiveTape::VisionTargetReflectiveTape() : TimedCommand(k_duration) {
+VisionTargetReflectiveTape::VisionTargetReflectiveTape() : TimedCommand(Vision::Target::k_targetChangeDelay) {
   Requires(Robot::m_vision.get());
 }
 
