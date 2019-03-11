@@ -70,6 +70,8 @@ class Vision : public frc::Subsystem {
       return std::make_pair(m_horizontalOffset.load(), m_verticalOffset.load());
     }
 
+    const static double k_targetChangeDelay;
+
    protected:
     std::atomic<double> m_horizontalOffset;
     std::atomic<double> m_verticalOffset;

@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-VisionTargetNothing::VisionTargetNothing() : TimedCommand(k_duration) {
+VisionTargetNothing::VisionTargetNothing() : TimedCommand(Vision::Target::k_targetChangeDelay) {
   Requires(Robot::m_vision.get());
 }
 
