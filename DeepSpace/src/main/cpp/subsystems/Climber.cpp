@@ -30,13 +30,13 @@ void Climber::InitDefaultCommand() {
 
 void Climber::setSpeed(double speed) {
   if (speed > k_reverseMotorSpeed && speed < k_forwardMotorSpeed) {
-   m_masterTalonLifter->Set(speed);
+    m_masterTalonLifter->Set(speed);
   }
   else if (speed < k_reverseMotorSpeed) {
-   m_masterTalonLifter->Set(k_reverseMotorSpeed);
+    m_masterTalonLifter->Set(k_reverseMotorSpeed);
   }
   else if (speed > k_forwardMotorSpeed) {
-   m_masterTalonLifter->Set(k_forwardMotorSpeed);
+    m_masterTalonLifter->Set(k_forwardMotorSpeed);
   }
 }
 

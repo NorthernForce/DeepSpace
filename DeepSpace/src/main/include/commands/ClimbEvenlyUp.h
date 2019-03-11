@@ -18,8 +18,9 @@ class ClimbEvenlyUp : public frc::Command {
   void End() override;
   void Interrupted() override;
   
-  const static double k_stopBackThreshold;
-  const static double k_stopFrontThreshold;
+  const static double k_maxFrontTilt;
+  const static double k_maxBackTilt;
+  const static double k_targetTilt;
 
  private:
   bool m_climbingStarted = false;

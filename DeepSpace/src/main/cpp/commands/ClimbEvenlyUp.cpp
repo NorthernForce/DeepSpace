@@ -9,8 +9,9 @@
 
 #include "Robot.h"
   
-const double ClimbEvenlyUp::k_stopBackThreshold = -2;
-const double ClimbEvenlyUp::k_stopFrontThreshold = -0.5;
+const double ClimbEvenlyUp::k_maxFrontTilt = -2;
+const double ClimbEvenlyUp::k_maxBackTilt = -0.5;
+const double ClimbEvenlyUp::k_targetTilt = (k_maxBackTilt - k_maxFrontTilt) / 2;
 
 ClimbEvenlyUp::ClimbEvenlyUp() {
   Requires(Robot::m_elevator.get());
@@ -31,11 +32,11 @@ void ClimbEvenlyUp::Execute() {
   auto angle = Robot::m_imu->getAngle();
 
   // Eventually this should be a function of the angle
-  if (angle <= k_stopBackThreshold) {
+  if (angle <= k_maxFrontTilt) {
     Robot::m_elevator->lower();
     Robot::m_climber->stop();
   }
-  else if (angle >= k_stopFrontThreshold) {
+  else if (angle >= k_maxBackTilt) {
     Robot::m_elevator->stop();
     Robot::m_climber->lower();
   }
