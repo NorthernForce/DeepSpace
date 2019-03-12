@@ -11,7 +11,8 @@
   
 const double ClimbEvenlyUp::k_maxFrontTilt = -2;
 const double ClimbEvenlyUp::k_maxBackTilt = -0.5;
-const double ClimbEvenlyUp::k_targetTilt = (k_maxBackTilt - k_maxFrontTilt) / 2;
+const double ClimbEvenlyUp::k_targetTilt = (k_maxBackTilt + k_maxFrontTilt) / 2;
+const double ClimbEvenlyUp::k_rangeOfTilt = (k_maxBackTilt - k_maxFrontTilt) / 2;
 
 ClimbEvenlyUp::ClimbEvenlyUp() {
   Requires(Robot::m_elevator.get());
@@ -31,19 +32,41 @@ void ClimbEvenlyUp::Initialize() {
 void ClimbEvenlyUp::Execute() {
   auto angle = Robot::m_imu->getAngle();
 
-  // Eventually this should be a function of the angle
-  if (angle <= k_maxFrontTilt) {
-    Robot::m_elevator->lower();
-    Robot::m_climber->stop();
+  auto val = (angle - k_targetTilt) / k_rangeOfTilt;
+
+  if (val > 1) {
+    Robot::m_elevator->setSpeed(0);
+    Robot::m_climber->setSpeed(-1);
   }
-  else if (angle >= k_maxBackTilt) {
-    Robot::m_elevator->stop();
-    Robot::m_climber->lower();
+  else if (val > 0) {
+    Robot::m_elevator->setSpeed(-1 + std::abs(val));
+    Robot::m_climber->setSpeed(-1);
+  }
+  else if (val < -1) {
+    Robot::m_elevator->setSpeed(-1);
+    Robot::m_climber->setSpeed(0);
+  }
+  else if (val < 0) {
+    Robot::m_elevator->setSpeed(-1);
+    Robot::m_climber->setSpeed(-1 + std::abs(val));
   }
   else {
-    Robot::m_elevator->lower();
-    Robot::m_climber->lower();
+    Robot::m_elevator->setSpeed(-1);
+    Robot::m_climber->setSpeed(-1);
   }
+
+  // if (angle <= k_maxFrontTilt) {
+  //   Robot::m_elevator->lower();
+  //   Robot::m_climber->stop();
+  // }
+  // else if (angle >= k_maxBackTilt) {
+  //   Robot::m_elevator->stop();
+  //   Robot::m_climber->lower();
+  // }
+  // else {
+  //   Robot::m_elevator->lower();
+  //   Robot::m_climber->lower();
+  // }
 }
 
 // Make this return true when this Command no longer needs to run execute()

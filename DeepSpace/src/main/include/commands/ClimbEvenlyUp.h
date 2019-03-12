@@ -21,6 +21,7 @@ class ClimbEvenlyUp : public frc::Command {
   const static double k_maxFrontTilt;
   const static double k_maxBackTilt;
   const static double k_targetTilt;
+  const static double k_rangeOfTilt;
 
  private:
   bool m_climbingStarted = false;
