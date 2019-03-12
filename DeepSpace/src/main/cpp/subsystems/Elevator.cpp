@@ -12,31 +12,31 @@
 #include "RobotMap.h"
 #include <iostream>
   
-  const int Elevator::timeoutMs = 10;
-	const int Elevator::noTimeoutMs = 0;
-	const double Elevator::freeSpeedRPM = 18730;
-	const double Elevator::maxSpeedRPM = freeSpeedRPM * 0.80;
-	const double Elevator::sensorUnitsPerRev = 256 * 4; // The TalonSRX counts 4 edges per encoder count, the quadrature encoder has 12 counts per revolution
-	const double Elevator::maxSensorUnitsPer100ms = 1500; // sensorUnitsPerRev * maxSpeedRPM / 60 / 10;
-	const double Elevator::feedForwardGain = 0.5; // 1023 / maxSensorUnitsPer100ms;
-	const double Elevator::pGainPower = 0.15;
-	const double Elevator::pGainError = 100;
-	const double Elevator::pGain = 0.7; // (1023 * pGainPower) / pGainError;
-	const double Elevator::iGain = 0.007;
-	const double Elevator::iLimit = 1500;
-	const double Elevator::dGain = 0.07; //pGain / 10;
-	const double Elevator::timeToMaxSpeed = 0.75;
-	const int Elevator::slotIdx = 0;
-	const int Elevator::pidIdx = 0;
-	const int Elevator::defaultPeakAmps = 15;
-	const int Elevator::defaultContinuousCurrent = 12;
-	const double Elevator::rampTime = 0.5;
+const int Elevator::timeoutMs = 10;
+const int Elevator::noTimeoutMs = 0;
+const double Elevator::freeSpeedRPM = 18730;
+const double Elevator::maxSpeedRPM = freeSpeedRPM * 0.80;
+const double Elevator::sensorUnitsPerRev = 256 * 4; // The TalonSRX counts 4 edges per encoder count, the quadrature encoder has 12 counts per revolution
+const double Elevator::maxSensorUnitsPer100ms = 1500; // sensorUnitsPerRev * maxSpeedRPM / 60 / 10;
+const double Elevator::feedForwardGain = 0.5; // 1023 / maxSensorUnitsPer100ms;
+const double Elevator::pGainPower = 0.15;
+const double Elevator::pGainError = 100;
+const double Elevator::pGain = 0.7; // (1023 * pGainPower) / pGainError;
+const double Elevator::iGain = 0.007;
+const double Elevator::iLimit = 1500;
+const double Elevator::dGain = 0.07; //pGain / 10;
+const double Elevator::timeToMaxSpeed = 0.75;
+const int Elevator::slotIdx = 0;
+const int Elevator::pidIdx = 0;
+const int Elevator::defaultPeakAmps = 15;
+const int Elevator::defaultContinuousCurrent = 12;
+const double Elevator::rampTime = 0.5;
 
-  const double Elevator::k_elevatorMaxRaiseSpeed = 0.5;
-  const double Elevator::k_elevatorMaxLowerSpeed = -0.6;
+const double Elevator::k_elevatorMaxRaiseSpeed = 0.5;
+const double Elevator::k_elevatorMaxLowerSpeed = -0.6;
 
-  const double Elevator::k_deployDelay = 0.8;
-  const double Elevator::k_motorStopDelay = 0.1;
+const double Elevator::k_deployDelay = 0.8;
+const double Elevator::k_motorStopDelay = 0.1;
 
 Elevator::Elevator() : Subsystem("Elevator") { 
   m_primaryTalonElevator.reset(new WPI_TalonSRX (RobotMap::Elevator::k_primary_id));
@@ -111,14 +111,13 @@ void Elevator::InitDefaultCommand() {
 }
 
 void Elevator::setSpeed(double speed){
-  if (speed > k_elevatorMaxLowerSpeed && speed < k_elevatorMaxRaiseSpeed) {
-   m_primaryTalonElevator->Set(speed);
-  }
-  else if (speed < k_elevatorMaxLowerSpeed) {
-   m_primaryTalonElevator->Set(k_elevatorMaxLowerSpeed);
-  }
-  else if (speed > k_elevatorMaxRaiseSpeed) {
-   m_primaryTalonElevator->Set(k_elevatorMaxRaiseSpeed);
+  if (speed > -1 && speed < 1) {
+    if (speed > 0) {
+      m_primaryTalonElevator->Set(speed * k_elevatorMaxRaiseSpeed);
+    }
+    else if (speed < 0) {
+      m_primaryTalonElevator->Set(speed * k_elevatorMaxLowerSpeed * -1);
+    }
   }
 }
 void Elevator::raise(){
@@ -127,12 +126,9 @@ void Elevator::raise(){
 void Elevator::lower(){
    m_primaryTalonElevator->Set(k_elevatorMaxLowerSpeed);
 }
-
 void Elevator::stop() {
   m_primaryTalonElevator->Set(0);
 }
-// Put methods for controlling this subsystem
-// here. Call these from Commands
 
 void Elevator::setPosition(int setpoint)
 {
