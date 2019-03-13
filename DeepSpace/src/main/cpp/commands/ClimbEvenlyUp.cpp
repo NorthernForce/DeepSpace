@@ -31,15 +31,14 @@ void ClimbEvenlyUp::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void ClimbEvenlyUp::Execute() {
   auto angle = Robot::m_imu->getAngle();
-
-  auto val = (angle - k_targetTilt) / k_rangeOfTilt;
+  double val = (angle - k_targetTilt) / k_rangeOfTilt;
 
   if (val > 1) {
     Robot::m_elevator->setSpeed(0);
     Robot::m_climber->setSpeed(-1);
   }
   else if (val > 0) {
-    Robot::m_elevator->setSpeed(-1 + std::abs(val));
+    Robot::m_elevator->setSpeed(1 - val);
     Robot::m_climber->setSpeed(-1);
   }
   else if (val < -1) {
@@ -48,7 +47,7 @@ void ClimbEvenlyUp::Execute() {
   }
   else if (val < 0) {
     Robot::m_elevator->setSpeed(-1);
-    Robot::m_climber->setSpeed(-1 + std::abs(val));
+    Robot::m_climber->setSpeed(-1 - val);
   }
   else {
     Robot::m_elevator->setSpeed(-1);
