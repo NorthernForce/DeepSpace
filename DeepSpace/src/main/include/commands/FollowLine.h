@@ -11,11 +11,6 @@
 #include "subsystems/LineTracker.h"
 
 class FollowLine : public frc::Command {
- private:
-  bool m_faultyCase;
-  bool m_stopRobot;
-  double speed = 0;
-  double rotation = 0;
  public:
   FollowLine();
   void Initialize() override;
@@ -23,4 +18,10 @@ class FollowLine : public frc::Command {
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
+
+ private:
+  bool m_faultyCase;
+  bool m_stopRobot;
+  double speed = 0;
+  double rotation = 0;
 };

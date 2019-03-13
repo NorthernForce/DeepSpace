@@ -1,5 +1,15 @@
 #include "subsystems/VisionTargets/TargetReflectiveTape.h"
 
+const std::string TargetReflectiveTape::k_name = "ReflectiveTape";
+
+const std::string TargetReflectiveTape::k_cameraSettings =
+  "exposure_auto=1,"
+  "exposure_absolute=5"; // Valid exposures are "5, 10, 20, 39, 78, 156, 312, 625, 1250, 2500, 5000, 10000, 20000"
+
+const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(35, 150, 50);
+const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(90, 255, 255);
+const double TargetReflectiveTape::k_minArea = 15;
+
 void TargetReflectiveTape::setup(Vision::Camera *camera) {
   camera->updateSettings(k_cameraSettings);
   camera->setLightRing(true);
@@ -71,7 +81,7 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   centerX = (frame.cols / 2 - centerX) / (frame.cols / 2);
   centerY = (frame.rows / 2 - centerY) / (frame.rows / 2);
 
-  // std::cout << "area1: " << first.m00 << " area2: " << second.m00 << "\n";
+  std::cout << "area1: " << first.m00 << " area2: " << second.m00 << "\n";
   std::cout << "x: " << centerX << " y: " << centerY << "\n";
 
   m_horizontalOffset = centerX;

@@ -18,5 +18,6 @@ class ElevatorCalibrate : public frc::Command {
   void End() override;
   void Interrupted() override;
 
+ private:
   const static double k_lowerSpeed;
 };

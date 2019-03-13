@@ -35,8 +35,10 @@ class ElevatorSetPosition : public frc::Command {
   void End() override;
   void Interrupted() override;
 
-  private:
+ private:
   static const std::map<Position, int> m_setpoints;
-  Position m_position;
+
   const std::shared_ptr<Elevator> m_elevator;
+
+  Position m_position;
 };

@@ -36,8 +36,8 @@ Vision::Vision() : Subsystem("Vision"),
     {"Manipulator", std::make_shared<Camera>("Manipulator Camera", RobotMap::Vision::k_manipulatorCamera_path)},
   },
   m_targets{
-    {"ReflectiveTape", std::make_shared<TargetReflectiveTape>()},
-    {"Cargo", std::make_shared<TargetCargo>()}
+    {TargetReflectiveTape::k_name, std::make_shared<TargetReflectiveTape>()},
+    {TargetCargo::k_name, std::make_shared<TargetCargo>()}
   } {
 
   // Default target

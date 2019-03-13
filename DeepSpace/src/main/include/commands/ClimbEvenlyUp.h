@@ -17,12 +17,12 @@ class ClimbEvenlyUp : public frc::Command {
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-  
+
+ private:
   const static double k_maxFrontTilt;
   const static double k_maxBackTilt;
   const static double k_targetTilt;
   const static double k_rangeOfTilt;
 
- private:
   bool m_climbingStarted = false;
 };
