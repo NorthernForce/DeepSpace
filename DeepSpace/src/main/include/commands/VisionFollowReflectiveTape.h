@@ -12,24 +12,24 @@
 
 #include <string>
 
-class FollowReflectiveTape : public frc::Command {
+class VisionFollowReflectiveTape : public frc::Command {
  public:
-  FollowReflectiveTape();
+  VisionFollowReflectiveTape();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
 
+ private:
+  static const std::string k_cameraName;
+  static const std::string k_targetName;
+
   const static double k_p;
   const static double k_i;
   const static double k_d;
 
   const static double k_iterationTime;
-
- private:
-  const std::string k_cameraName = "Elevator";
-  const std::string k_targetName = "ReflectiveTape";
 
   double m_error = 0;
   double m_error_prior = 0;

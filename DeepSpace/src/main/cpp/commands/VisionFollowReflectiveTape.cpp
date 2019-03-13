@@ -5,19 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/FollowReflectiveTape.h"
+#include "commands/VisionFollowReflectiveTape.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
 #include "Robot.h"
 
-const double FollowReflectiveTape::k_p = 0;
-const double FollowReflectiveTape::k_i = 0;
-const double FollowReflectiveTape::k_d = 0;
+const std::string VisionFollowReflectiveTape::k_cameraName = "Elevator";
+const std::string VisionFollowReflectiveTape::k_targetName = "ReflectiveTape";
 
-const double FollowReflectiveTape::k_iterationTime = 0.02;
+const double VisionFollowReflectiveTape::k_p = 0;
+const double VisionFollowReflectiveTape::k_i = 0;
+const double VisionFollowReflectiveTape::k_d = 0;
 
-FollowReflectiveTape::FollowReflectiveTape() {
+const double VisionFollowReflectiveTape::k_iterationTime = 0.02;
+
+VisionFollowReflectiveTape::VisionFollowReflectiveTape() {
   Requires(Robot::m_vision.get());
   Requires(Robot::m_driveTrain.get());
 
@@ -27,7 +30,7 @@ FollowReflectiveTape::FollowReflectiveTape() {
 }
 
 // Called just before this Command runs the first time
-void FollowReflectiveTape::Initialize() {
+void VisionFollowReflectiveTape::Initialize() {
   std::cout << "1" << std::endl;
 
   Robot::m_vision->setTarget(k_cameraName, k_targetName);
@@ -35,7 +38,7 @@ void FollowReflectiveTape::Initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-void FollowReflectiveTape::Execute() {
+void VisionFollowReflectiveTape::Execute() {
   std::cout << "3" << std::endl;
   // Not really sure how this works...
   m_error = Robot::m_vision->getOffset(k_targetName).first * -1;
@@ -55,20 +58,20 @@ void FollowReflectiveTape::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool FollowReflectiveTape::IsFinished() {
+bool VisionFollowReflectiveTape::IsFinished() {
   // return (std::abs(m_error) < 0.1);
   return false;
 }
 
 // Called once after isFinished returns true
-void FollowReflectiveTape::End() {
+void VisionFollowReflectiveTape::End() {
   Robot::m_vision->setTarget("Elevator", "");
   Robot::m_driveTrain->arcDrive(0, 0);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void FollowReflectiveTape::Interrupted() {
+void VisionFollowReflectiveTape::Interrupted() {
   Robot::m_vision->setTarget("Elevator", "");
   Robot::m_driveTrain->arcDrive(0, 0);
 }
