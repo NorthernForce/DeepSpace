@@ -6,8 +6,11 @@ const std::string TargetReflectiveTape::k_cameraSettings =
   "exposure_auto=1,"
   "exposure_absolute=5"; // Valid exposures are "5, 10, 20, 39, 78, 156, 312, 625, 1250, 2500, 5000, 10000, 20000"
 
-const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(35, 150, 50);
-const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(90, 255, 255);
+// const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(35, 150, 50);
+// const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(90, 255, 255);
+// Pink
+const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(165, 150, 150);
+const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(185, 255, 255);
 const double TargetReflectiveTape::k_minArea = 15;
 
 void TargetReflectiveTape::setup(Vision::Camera *camera) {
@@ -58,15 +61,23 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
     }
   }
 
+  double centerX, centerY;
   // Make sure two targets were found.
   if (second.m00 == 0) {
-    m_horizontalOffset = 0;
-    m_verticalOffset = 0;
-    return;
+    if (first.m00 == 0) {
+      m_horizontalOffset = 0;
+      m_verticalOffset = 0;
+      return;
+    }
+    else {
+      centerX = first.m10/first.m00;
+      centerY = first.m01/first.m00;
+    }
   }
-
-  double centerX = (first.m10/first.m00 + second.m10/second.m00) / 2;
-  double centerY = (first.m01/first.m00 + second.m01/second.m00) / 2;
+  else {
+    centerX = (first.m10/first.m00 + second.m10/second.m00) / 2;
+    centerY = (first.m01/first.m00 + second.m01/second.m00) / 2;
+  }
 
   // Debug
   // cv::cvtColor(frame, frame, cv::COLOR_HSV2BGR);
@@ -81,8 +92,8 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   centerX = (frame.cols / 2 - centerX) / (frame.cols / 2);
   centerY = (frame.rows / 2 - centerY) / (frame.rows / 2);
 
-  std::cout << "area1: " << first.m00 << " area2: " << second.m00 << "\n";
-  std::cout << "x: " << centerX << " y: " << centerY << "\n";
+  // std::cout << "area1: " << first.m00 << " area2: " << second.m00 << "\n";
+  // std::cout << "x: " << centerX << " y: " << centerY << "\n";
 
   m_horizontalOffset = centerX;
   m_verticalOffset = centerY;

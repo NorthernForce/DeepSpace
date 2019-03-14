@@ -47,6 +47,8 @@
 #include "commands/PositionSetups/SetupForHatchDepositLevel3.h"
 #include "commands/SetupPosition.h"
 
+#include "commands/VisionFollowReflectiveTape.h"
+
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
   auto joystickButton = new frc::JoystickButton(joystick.get(), button);
@@ -129,6 +131,8 @@ OI::OI() {
   WhileHeld(m_manipulatorController2, 3, new ClimberDriveForward());
 
   WhileHeld(m_manipulatorController2, 2, new ClimbEvenlyUp());
+
+  WhileHeld(m_driverController, 10, new VisionFollowReflectiveTape());
 
   // WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
 
