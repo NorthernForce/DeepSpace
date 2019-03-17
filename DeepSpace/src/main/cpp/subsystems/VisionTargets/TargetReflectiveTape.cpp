@@ -163,8 +163,8 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   cv::circle(debug, largestTarget.center, 2, cv::Scalar(0, 255, 255), 2);
 
   // Convert to -1.0 to 1.0 where quadrant I is positive
-  m_horizontalOffset = (frame.cols / 2.0 - largestTarget.center.x) / (frame.cols / 2.0) * -1;
-  m_verticalOffset = (frame.rows / 2.0 - largestTarget.center.y) / (frame.rows / 2.0);
+  m_horizontalOffset = (largestTarget.center.x - frame.cols / 2.0) / (frame.cols / 2.0);
+  m_verticalOffset = (largestTarget.center.y - frame.rows / 2.0) / (frame.rows / 2.0) * -1;
 
   std::cout << "m_horizontalOffset: " << m_horizontalOffset.load() << " m_verticalOffset: " << m_verticalOffset.load() << "\n";
 }
