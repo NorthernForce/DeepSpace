@@ -11,7 +11,7 @@ const int Climber::k_continuousCurrent = 11;
 const int Climber::k_peakCurrentDuration = 2000;
 
 const double Climber::k_forwardMotorSpeed = 0.5;
-const double Climber::k_reverseMotorSpeed = -0.5;
+const double Climber::k_reverseMotorSpeed = 0.5; // abs of
 
 Climber::Climber() : Subsystem("Climber") {
   m_masterTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_leftClimbingMotor_id));
@@ -39,7 +39,7 @@ void Climber::setSpeed(double speed) {
     m_masterTalonLifter->Set(k_reverseMotorSpeed);
   }
   else if (speed < 0) {
-    m_masterTalonLifter->Set(speed * std::abs(k_reverseMotorSpeed));
+    m_masterTalonLifter->Set(speed * k_reverseMotorSpeed);
   }
   else {
     m_masterTalonLifter->Set(0);
