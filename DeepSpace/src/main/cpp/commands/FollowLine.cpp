@@ -29,9 +29,9 @@ void FollowLine::Execute() {
     case 0b000: //No Line Detected
       m_faultyCase = true;
       break;
-    case 0b001: //Right Sensor Detected Line; Turn Right
+    case 0b001: //Right Sensor Detected Line; Turn Right (left?)
       speed = 0.7;
-      rotation = 0.4;
+      rotation = -0.4;
       break;
     case 0b010: //Center Sensor Detected Line; Don't Turn
       speed = 0.7;
@@ -41,9 +41,9 @@ void FollowLine::Execute() {
       speed = 0.7;
       rotation = -0.2;
       break;
-    case 0b100: //Left Sensor Detected Line; Turn Left
+    case 0b100: //Left Sensor Detected Line; Turn Left (right?)
       speed = 0.7;
-      rotation = -0.4;
+      rotation = 0.4;
       break;
     case 0b101: //Should not happen; Stop
       m_faultyCase = true;

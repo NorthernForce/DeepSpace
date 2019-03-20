@@ -140,7 +140,7 @@ OI::OI() {
 }
 
 std::pair<double, double> OI::getSteeringControls() {
-  double speed = m_driverController->GetY(frc::XboxController::JoystickHand::kLeftHand) * -1;
+  double speed = m_driverController->GetY(frc::XboxController::JoystickHand::kLeftHand);
   double rotation = m_driverController->GetX(frc::XboxController::JoystickHand::kRightHand) * 0.85;
 
   if (m_driverController->GetTriggerAxis(frc::XboxController::JoystickHand::kRightHand) < 0.5) {
