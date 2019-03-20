@@ -9,6 +9,8 @@
 
 #include <ctre/Phoenix.h>
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 #include "RobotMap.h"
 #include <iostream>
   
