@@ -50,7 +50,9 @@ void VisionFollowReflectiveTape::Execute() {
 
   std::cout << " output: " << output << "\n";
 
-  Robot::m_driveTrain->arcDrive(0, output);
+  auto steeringControls = Robot::m_oi->getSteeringControls();
+
+  Robot::m_driveTrain->arcDrive(steeringControls.first, output);
 }
 
 // Make this return true when this Command no longer needs to run execute()
