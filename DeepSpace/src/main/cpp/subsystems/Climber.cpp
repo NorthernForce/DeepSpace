@@ -29,23 +29,30 @@ void Climber::InitDefaultCommand() {
 }
 
 void Climber::setSpeed(double speed) {
-  if (speed > -1 && speed < 1) {
-    if (speed > 0) {
-      m_masterTalonLifter->Set(speed * k_forwardMotorSpeed);
-    }
-    else if (speed < 0) {
-      m_masterTalonLifter->Set(speed * k_reverseMotorSpeed * -1);
-    }
+  if (speed > 1) {
+    m_masterTalonLifter->Set(k_forwardMotorSpeed);
+  }
+  else if (speed > 0) {
+    m_masterTalonLifter->Set(speed * k_forwardMotorSpeed);
+  }
+  else if (speed < -1) {
+    m_masterTalonLifter->Set(k_reverseMotorSpeed);
+  }
+  else if (speed < 0) {
+    m_masterTalonLifter->Set(speed * std::abs(k_reverseMotorSpeed));
+  }
+  else {
+    m_masterTalonLifter->Set(0);
   }
 }
 void Climber::lower() {
-    m_masterTalonLifter->Set(k_reverseMotorSpeed);
+  setSpeed(-1);
 }
 void Climber::raise() {
-    m_masterTalonLifter->Set(k_forwardMotorSpeed);
+  setSpeed(1);
 }
 void Climber::stop() {
-    m_masterTalonLifter->Set(0.0);
+  setSpeed(0);
 }
 
 bool Climber::atUpperLimit() {

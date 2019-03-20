@@ -103,6 +103,9 @@ Elevator::Elevator() : Subsystem("Elevator") {
 
   setHomePosition();
   setPosition(0);
+
+  frc::SmartDashboard::PutNumber("Elevator: Raise Speed", k_elevatorMaxRaiseSpeed);
+  frc::SmartDashboard::PutNumber("Elevator: Lower Speed", k_elevatorMaxLowerSpeed);
 }
 
 void Elevator::InitDefaultCommand() {
@@ -110,24 +113,35 @@ void Elevator::InitDefaultCommand() {
   // SetDefaultCommand(new MySpecialCommand());
 }
 
-void Elevator::setSpeed(double speed){
-  if (speed > -1 && speed < 1) {
-    if (speed > 0) {
-      m_primaryTalonElevator->Set(speed * k_elevatorMaxRaiseSpeed);
-    }
-    else if (speed < 0) {
-      m_primaryTalonElevator->Set(speed * k_elevatorMaxLowerSpeed * -1);
-    }
+void Elevator::setSpeed(double speed) {
+  if (speed > 1) {
+    // m_primaryTalonElevator->Set(k_elevatorMaxRaiseSpeed);
+    m_primaryTalonElevator->Set(frc::SmartDashboard::GetNumber("Elevator: Raise Speed", k_elevatorMaxRaiseSpeed));
+  }
+  else if (speed > 0) {
+    // m_primaryTalonElevator->Set(speed * k_elevatorMaxRaiseSpeed);
+    m_primaryTalonElevator->Set(speed * frc::SmartDashboard::GetNumber("Elevator: Raise Speed", k_elevatorMaxRaiseSpeed));
+  }
+  else if (speed < -1) {
+    // m_primaryTalonElevator->Set(k_elevatorMaxLowerSpeed);
+    m_primaryTalonElevator->Set(frc::SmartDashboard::GetNumber("Elevator: Lower Speed", k_elevatorMaxLowerSpeed));
+  }
+  else if (speed < 0) {
+    // m_primaryTalonElevator->Set(speed * std::abs(k_elevatorMaxLowerSpeed));
+    m_primaryTalonElevator->Set(speed * std::abs(frc::SmartDashboard::GetNumber("Elevator: Lower Speed", k_elevatorMaxLowerSpeed)));
+  }
+  else {
+    m_primaryTalonElevator->Set(0);
   }
 }
 void Elevator::raise(){
-   m_primaryTalonElevator->Set(k_elevatorMaxRaiseSpeed);
+  setSpeed(1);
 }
 void Elevator::lower(){
-   m_primaryTalonElevator->Set(k_elevatorMaxLowerSpeed);
+  setSpeed(-1);
 }
 void Elevator::stop() {
-  m_primaryTalonElevator->Set(0);
+  setSpeed(0);
 }
 
 void Elevator::setPosition(int setpoint)
