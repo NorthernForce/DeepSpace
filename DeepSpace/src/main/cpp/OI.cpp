@@ -11,7 +11,6 @@
 
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/buttons/JoystickButton.h>
-#include <frc/buttons/Button.h>
 
 // Command inclusions
 #include "commands/CargoIntake.h"
