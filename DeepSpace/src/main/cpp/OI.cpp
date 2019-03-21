@@ -147,6 +147,11 @@ std::pair<double, double> OI::getSteeringControls() {
     return std::make_pair(speed, rotation * 0.75);
   }
   else {
-    return std::make_pair(speed * 0.6, rotation * std::abs(rotation + 0.01) * 0.425);
+    if (rotation > 0) {
+      return std::make_pair(speed * 0.6, std::sqrt(rotation * 2 - std::pow(rotation, 2)));
+    } 
+    else {
+      return std::make_pair(speed * 0.6, (std::sqrt(rotation * -2 - std::pow(rotation, 2)) * -1));
+    }
   }
 }
