@@ -4,6 +4,7 @@
 
 class TargetReflectiveTape : public Vision::Target {
  public:
+  TargetReflectiveTape();
   virtual void setup(Vision::Camera *camera) override;
   virtual void run(cv::Mat &frame) override;
   const static std::string k_name;

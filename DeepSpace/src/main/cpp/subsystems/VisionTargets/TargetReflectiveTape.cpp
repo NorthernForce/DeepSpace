@@ -33,6 +33,17 @@ struct ReflectiveTarget {
 	double totalArea = 0;
 };
 
+TargetReflectiveTape::TargetReflectiveTape() {
+  // Add smart dashboard stuff...
+  frc::SmartDashboard::PutNumber("Vision: INVERT", 0);
+  frc::SmartDashboard::PutNumber("Vision: H MIN", 0);
+  frc::SmartDashboard::PutNumber("Vision: H MAX", 255);
+  frc::SmartDashboard::PutNumber("Vision: S MIN", 0);
+  frc::SmartDashboard::PutNumber("Vision: S MAX", 255);
+  frc::SmartDashboard::PutNumber("Vision: V MIN", 0);
+  frc::SmartDashboard::PutNumber("Vision: V MAX", 255);
+}
+
 void TargetReflectiveTape::setup(Vision::Camera *camera) {
   camera->updateSettings(k_cameraSettings);
   camera->setLightRing(true);
@@ -49,19 +60,19 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
 
   // Try to threshold the tape
   int invert = frc::SmartDashboard::GetNumber("Vision: INVERT", 0);
-  int hueMin = frc::SmartDashboard::GetNumber("Vision: H MIN", 0);
-  int hueMax = frc::SmartDashboard::GetNumber("Vision: H MAX", 255);
-  int satMin = frc::SmartDashboard::GetNumber("Vision: S MIN", 0);
-  int satMax = frc::SmartDashboard::GetNumber("Vision: S MAX", 255);
-  int valMin = frc::SmartDashboard::GetNumber("Vision: V MIN", 0);
-  int valMax = frc::SmartDashboard::GetNumber("Vision: V MAX", 255);
+  int hueMin = frc::SmartDashboard::GetNumber("Vision: HUE MIN", 0);
+  int hueMax = frc::SmartDashboard::GetNumber("Vision: HUE MAX", 255);
+  int satMin = frc::SmartDashboard::GetNumber("Vision: SAT MIN", 0);
+  int satMax = frc::SmartDashboard::GetNumber("Vision: SAT MAX", 255);
+  int valMin = frc::SmartDashboard::GetNumber("Vision: VAL MIN", 0);
+  int valMax = frc::SmartDashboard::GetNumber("Vision: VAL MAX", 255);
   
-  cv::inRange(filtered, k_minHSV, k_maxHSV, filtered);
-  // cv::inRange(filtered, cv::Scalar(hueMin, satMin, valMin), cv::Scalar(hueMax, satMax, valMax), filtered);
+  // cv::inRange(filtered, k_minHSV, k_maxHSV, filtered);
+  cv::inRange(filtered, cv::Scalar(hueMin, satMin, valMin), cv::Scalar(hueMax, satMax, valMax), filtered);
   // If mask must be inverted try this:
-  // if (invert != 0) {
-  //   cv::bitwise_not(filtered, filtered);
-  // }
+  if (invert != 0) {
+    cv::bitwise_not(filtered, filtered);
+  }
 
   // frame = filtered.clone();
 
