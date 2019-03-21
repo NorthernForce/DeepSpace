@@ -132,7 +132,7 @@ OI::OI() {
 
   WhileHeld(m_manipulatorController2, 2, new ClimbEvenlyUp());
 
-  WhileHeld(m_driverController, 10, new VisionFollowReflectiveTape());
+  WhileHeld(m_driverController, 5, new VisionFollowReflectiveTape());
 
   // WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
 

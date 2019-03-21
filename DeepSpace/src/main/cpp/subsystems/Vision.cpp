@@ -12,6 +12,8 @@
 
 #include "RobotMap.h"
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 const std::string Vision::Camera::k_defaultSettings = 
   "brightness=133,"
   "contrast=5,"
@@ -42,6 +44,14 @@ Vision::Vision() : Subsystem("Vision"),
 
   // Default target
   // setTarget("Elevator", "ReflectiveTape");
+
+  frc::SmartDashboard::PutNumber("Vision: INVERT", 0);
+  frc::SmartDashboard::PutNumber("Vision: H MIN", 0);
+  frc::SmartDashboard::PutNumber("Vision: H MAX", 255);
+  frc::SmartDashboard::PutNumber("Vision: S MIN", 0);
+  frc::SmartDashboard::PutNumber("Vision: S MAX", 255);
+  frc::SmartDashboard::PutNumber("Vision: V MIN", 0);
+  frc::SmartDashboard::PutNumber("Vision: V MAX", 255);
 
   m_visionThread.reset(new std::thread([&]{
     for (;;) {

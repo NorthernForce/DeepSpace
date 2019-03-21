@@ -1,5 +1,7 @@
 #include "subsystems/VisionTargets/TargetReflectiveTape.h"
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 const std::string TargetReflectiveTape::k_name = "ReflectiveTape";
 
 const std::string TargetReflectiveTape::k_cameraSettings =
@@ -10,9 +12,11 @@ const std::string TargetReflectiveTape::k_cameraSettings =
 // Green:
 // const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(35, 150, 50);
 // const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(90, 255, 255);
-// Pink:
-const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(165, 150, 150);
-const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(185, 255, 255);
+// Pink: (NOT)
+const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(0, 0, 230);
+const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(180, 100, 255);
+// const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(160, 0, 150);
+// const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(200, 100, 255);
 
 const double TargetReflectiveTape::k_minArea = 15;
 
@@ -36,7 +40,6 @@ void TargetReflectiveTape::setup(Vision::Camera *camera) {
 
 void TargetReflectiveTape::run(cv::Mat &frame) {
   cv::Mat filtered = frame.clone();
-  cv::Mat debug = frame.clone();
 
   // Attempt to remove some noise.
   cv::blur(filtered, filtered, cv::Size(3, 3));
@@ -45,13 +48,26 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   cv::cvtColor(filtered, filtered, cv::COLOR_BGR2HSV);
 
   // Try to threshold the tape
+  int invert = frc::SmartDashboard::GetNumber("Vision: INVERT", 0);
+  int hueMin = frc::SmartDashboard::GetNumber("Vision: H MIN", 0);
+  int hueMax = frc::SmartDashboard::GetNumber("Vision: H MAX", 255);
+  int satMin = frc::SmartDashboard::GetNumber("Vision: S MIN", 0);
+  int satMax = frc::SmartDashboard::GetNumber("Vision: S MAX", 255);
+  int valMin = frc::SmartDashboard::GetNumber("Vision: V MIN", 0);
+  int valMax = frc::SmartDashboard::GetNumber("Vision: V MAX", 255);
+  
   cv::inRange(filtered, k_minHSV, k_maxHSV, filtered);
+  // cv::inRange(filtered, cv::Scalar(hueMin, satMin, valMin), cv::Scalar(hueMax, satMax, valMax), filtered);
   // If mask must be inverted try this:
-  // filtered = 255 - filtered;
+  // if (invert != 0) {
+  //   cv::bitwise_not(filtered, filtered);
+  // }
 
-  // // Get rid of spots.
-  // cv::erode(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
-  // cv::dilate(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
+  // frame = filtered.clone();
+
+  // Get rid of spots.
+  cv::erode(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
+  cv::dilate(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
 
   // Find contours.
   std::vector<std::vector<cv::Point>> contours;
@@ -155,12 +171,12 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   });
 
   // Debug
-  cv::drawContours(debug, contours, -1, cv::Scalar(0, 255, 0));
+  cv::drawContours(frame, contours, -1, cv::Scalar(0, 255, 0));
   for (auto &target : targets) {
-    cv::line(debug, target.leftTape.center, target.rightTape.center, cv::Scalar(255, 0, 0));
-    cv::circle(debug, target.center, 1, cv::Scalar(0, 0, 255), 2);
+    cv::line(frame, target.leftTape.center, target.rightTape.center, cv::Scalar(255, 0, 0));
+    cv::circle(frame, target.center, 1, cv::Scalar(0, 0, 255), 2);
   }
-  cv::circle(debug, largestTarget.center, 2, cv::Scalar(0, 255, 255), 2);
+  cv::circle(frame, largestTarget.center, 2, cv::Scalar(0, 255, 255), 2);
 
   // Convert to -1.0 to 1.0 where quadrant I is positive
   m_horizontalOffset = (largestTarget.center.x - frame.cols / 2.0) / (frame.cols / 2.0);
