@@ -11,6 +11,7 @@
 
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/buttons/JoystickButton.h>
+#include <frc/buttons/Button.h>
 
 // Command inclusions
 #include "commands/CargoIntake.h"
@@ -49,20 +50,51 @@
 
 #include "commands/VisionFollowReflectiveTape.h"
 
+class SimpleAxis : public Button {
+ public:
+  SimpleAxis(GenericHID* joystick, int axisNumber, int threshold = 0.5) 
+    : m_joystick(joystick), m_axisNumber(axisNumber) {}
+
+  virtual ~SimpleAxis() = default;
+
+  SimpleAxis(SimpleAxis&&) = default;
+  SimpleAxis& operator=(SimpleAxis&&) = default;
+
+  virtual bool Get() {
+    return (m_joystick->GetRawAxis(m_axisNumber) > m_threshold);
+  };
+
+ private:
+  GenericHID* m_joystick;
+  int m_axisNumber;
+  double m_threshold;
+};
+
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
   auto joystickButton = new frc::JoystickButton(joystick.get(), button);
   joystickButton->WhenPressed(command);
 }
-
 static void WhenReleased(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
   auto joystickButton = new frc::JoystickButton(joystick.get(), button);
   joystickButton->WhenReleased(command);
 }
-
 static void WhileHeld(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
   auto joystickButton = new frc::JoystickButton(joystick.get(), button);
   joystickButton->WhileHeld(command);
+}
+
+static void WhenAxisPressed(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, frc::Command* command) {
+  auto axis = new SimpleAxis(joystick.get(), axisNumber);
+  axis->WhenPressed(command);
+}
+static void WhenAxisReleased(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, frc::Command* command) {
+  auto axis = new SimpleAxis(joystick.get(), axisNumber);
+  axis->WhenReleased(command);
+}
+static void WhileAxisHeld(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, frc::Command* command) {
+  auto axis = new SimpleAxis(joystick.get(), axisNumber);
+  axis->WhileHeld(command);
 }
 
 OI::OI() {
@@ -134,6 +166,12 @@ OI::OI() {
 
   WhileHeld(m_driverController, 5, new VisionFollowReflectiveTape());
 
+  WhileAxisHeld(m_driverController, 3, new CargoIntake());
+  WhenAxisPressed(m_driverController, 3, new ClawClose());
+  WhenAxisReleased(m_driverController, 3, new ClawOpen());
+
+  WhileAxisHeld(m_driverController, 2, new CargoEject());
+
   // WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
 
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
@@ -143,7 +181,8 @@ std::pair<double, double> OI::getSteeringControls() {
   double speed = m_driverController->GetY(frc::XboxController::JoystickHand::kLeftHand) * -1;
   double rotation = m_driverController->GetX(frc::XboxController::JoystickHand::kRightHand);
 
-  if (m_driverController->GetTriggerAxis(frc::XboxController::JoystickHand::kRightHand) < 0.5) {
+  // if (m_driverController->GetTriggerAxis(frc::XboxController::JoystickHand::kRightHand) < 0.5) {
+  if (m_driverController->GetBumper(frc::XboxController::JoystickHand::kRightHand) == false) {
     return std::make_pair(speed, rotation * 0.75);
   }
   else {
