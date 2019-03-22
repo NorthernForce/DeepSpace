@@ -158,14 +158,14 @@ void Elevator::setPosition(int setpoint)
 bool Elevator::atSetpoint()
 {
   int pos = m_primaryTalonElevator->GetSelectedSensorPosition(pidIdx);
-  int err = m_primaryTalonElevator->GetClosedLoopError(0);
+  int err = m_primaryTalonElevator->GetClosedLoopError(pidIdx);
   double motorOutput = m_primaryTalonElevator->GetMotorOutputPercent();
   int velocity = m_primaryTalonElevator->GetSelectedSensorVelocity(pidIdx);
   // std::cout << "Elevator current position: " << pos
     // << ", motor output: " << motorOutput
     // << ", sensor velocity: " << velocity
     // << ", error " << err << "\n";
-	return m_primaryTalonElevator->GetClosedLoopError(0) < 250;
+	return m_primaryTalonElevator->GetClosedLoopError(pidIdx) < 250;
 }
 
 void Elevator::setHomePosition()
@@ -202,11 +202,11 @@ bool Elevator::isRetracted() {
 }
 
 int Elevator::getSelectedSensorPosition() {
-  return m_primaryTalonElevator->GetSelectedSensorPosition(0);
+  return m_primaryTalonElevator->GetSelectedSensorPosition(pidIdx);
 }
 
 int Elevator::getClosedLoopError() {
-  return m_primaryTalonElevator->GetClosedLoopError(0);
+  return m_primaryTalonElevator->GetClosedLoopError(pidIdx);
 }
 
 double Elevator::getPGainValue() {
