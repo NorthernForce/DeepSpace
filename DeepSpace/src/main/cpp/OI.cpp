@@ -51,8 +51,8 @@
 
 class SimpleAxis : public Button {
  public:
-  SimpleAxis(GenericHID* joystick, int axisNumber, int threshold = 0.5) 
-    : m_joystick(joystick), m_axisNumber(axisNumber) {}
+  SimpleAxis(GenericHID* joystick, int axisNumber, double threshold = 0.5) 
+    : m_joystick(joystick), m_axisNumber(axisNumber), m_threshold(threshold) {}
 
   virtual ~SimpleAxis() = default;
 
@@ -185,11 +185,13 @@ std::pair<double, double> OI::getSteeringControls() {
     return std::make_pair(speed, rotation * 0.75);
   }
   else {
+    double rotationScaled = std::sqrt(std::abs(rotation) * 2 - std::pow(rotation, 2)) * 0.75;
+
     if (rotation > 0) {
-      return std::make_pair(speed * 0.6, std::sqrt(rotation * 2 - std::pow(rotation, 2)));
-    } 
+      return std::make_pair(speed * 0.6, rotationScaled);
+    }
     else {
-      return std::make_pair(speed * 0.6, (std::sqrt(rotation * -2 - std::pow(rotation, 2)) * -1));
+      return std::make_pair(speed * 0.6, rotationScaled * -1);
     }
   }
 }
