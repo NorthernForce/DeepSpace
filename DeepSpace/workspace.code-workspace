@@ -9,7 +9,8 @@
 			"*.inc": "cpp",
 			"ostream": "cpp",
 			"*.tcc": "cpp",
-			"fstream": "cpp"
+			"fstream": "cpp",
+			"cmath": "cpp"
 		},
 		"java.configuration.updateBuildConfiguration": "disabled"
 	}

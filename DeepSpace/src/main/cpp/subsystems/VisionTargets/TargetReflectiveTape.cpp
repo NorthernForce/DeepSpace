@@ -35,13 +35,13 @@ struct ReflectiveTarget {
 
 TargetReflectiveTape::TargetReflectiveTape() {
   // Add smart dashboard stuff...
-  frc::SmartDashboard::PutNumber("Vision: INVERT", 0);
-  frc::SmartDashboard::PutNumber("Vision: H MIN", 0);
-  frc::SmartDashboard::PutNumber("Vision: H MAX", 255);
-  frc::SmartDashboard::PutNumber("Vision: S MIN", 0);
-  frc::SmartDashboard::PutNumber("Vision: S MAX", 255);
-  frc::SmartDashboard::PutNumber("Vision: V MIN", 0);
-  frc::SmartDashboard::PutNumber("Vision: V MAX", 255);
+  frc::SmartDashboard::PutNumber("Vision: HUE INVERT", 0);
+  frc::SmartDashboard::PutNumber("Vision: HUE MIN", 0);
+  frc::SmartDashboard::PutNumber("Vision: HUE MAX", 180);
+  frc::SmartDashboard::PutNumber("Vision: SAT MIN", 0);
+  frc::SmartDashboard::PutNumber("Vision: SAT MAX", 255);
+  frc::SmartDashboard::PutNumber("Vision: VAL MIN", 0);
+  frc::SmartDashboard::PutNumber("Vision: VAL MAX", 255);
 }
 
 void TargetReflectiveTape::setup(Vision::Camera *camera) {
@@ -59,26 +59,34 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   cv::cvtColor(filtered, filtered, cv::COLOR_BGR2HSV);
 
   // Try to threshold the tape
-  int invert = frc::SmartDashboard::GetNumber("Vision: INVERT", 0);
+  int invert = frc::SmartDashboard::GetNumber("Vision: HUE INVERT", 0);
   int hueMin = frc::SmartDashboard::GetNumber("Vision: HUE MIN", 0);
-  int hueMax = frc::SmartDashboard::GetNumber("Vision: HUE MAX", 255);
+  int hueMax = frc::SmartDashboard::GetNumber("Vision: HUE MAX", 180);
   int satMin = frc::SmartDashboard::GetNumber("Vision: SAT MIN", 0);
   int satMax = frc::SmartDashboard::GetNumber("Vision: SAT MAX", 255);
   int valMin = frc::SmartDashboard::GetNumber("Vision: VAL MIN", 0);
   int valMax = frc::SmartDashboard::GetNumber("Vision: VAL MAX", 255);
   
   // cv::inRange(filtered, k_minHSV, k_maxHSV, filtered);
-  cv::inRange(filtered, cv::Scalar(hueMin, satMin, valMin), cv::Scalar(hueMax, satMax, valMax), filtered);
-  // If mask must be inverted try this:
-  if (invert != 0) {
-    cv::bitwise_not(filtered, filtered);
+  if (invert == 0) {
+    cv::inRange(filtered, cv::Scalar(hueMin, satMin, valMin), cv::Scalar(hueMax, satMax, valMax), filtered);
   }
+  else {
+    cv::Mat lower, upper;
+    cv::inRange(filtered, cv::Scalar(0, satMin, valMin), cv::Scalar(hueMin, satMax, valMax), lower);
+    cv::inRange(filtered, cv::Scalar(hueMax, satMin, valMin), cv::Scalar(180, satMax, valMax), upper);
+    cv::bitwise_or(lower, upper, filtered);
+  }
+  // If mask must be inverted try this:
+  // if (invert != 0) {
+  //   cv::bitwise_not(filtered, filtered);
+  // }
 
   // frame = filtered.clone();
 
   // Get rid of spots.
-  cv::erode(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
-  cv::dilate(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
+  // cv::erode(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
+  // cv::dilate(filtered, filtered, cv::Mat(), cv::Point(-1, -1), 2);
 
   // Find contours.
   std::vector<std::vector<cv::Point>> contours;
@@ -113,7 +121,7 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
     }
   }
 
-  // Return if not tapes were found
+  // Return if no tapes were found
   if (tapes.empty()) {
     m_horizontalOffset = 0;
     m_verticalOffset = 0;
@@ -193,5 +201,5 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   m_horizontalOffset = (largestTarget.center.x - frame.cols / 2.0) / (frame.cols / 2.0);
   m_verticalOffset = (largestTarget.center.y - frame.rows / 2.0) / (frame.rows / 2.0) * -1;
 
-  std::cout << "m_horizontalOffset: " << m_horizontalOffset.load() << " m_verticalOffset: " << m_verticalOffset.load() << "\n";
+  // std::cout << "m_horizontalOffset: " << m_horizontalOffset.load() << " m_verticalOffset: " << m_verticalOffset.load() << "\n";
 }
