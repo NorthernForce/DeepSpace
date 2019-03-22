@@ -19,6 +19,7 @@
 #include <map>
 #include <atomic>
 #include <string>
+#include <chrono>
 
 class Vision : public frc::Subsystem {
  public:
@@ -53,6 +54,8 @@ class Vision : public frc::Subsystem {
 
     std::shared_ptr<Target> m_objectToTarget;
     std::shared_ptr<Target> m_currentTarget;
+
+    const static int k_cameraSettingsDelayMillis;
   };
 
   class Target {

@@ -37,7 +37,7 @@ void VisionFollowReflectiveTape::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void VisionFollowReflectiveTape::Execute() {
   // Not really sure how this works...
-  m_error = Robot::m_vision->getOffset(k_targetName).first * -1;
+  m_error = Robot::m_vision->getOffset(k_targetName).first;
   std::cout << "error: " << m_error;
   m_integral += m_error * k_iterationTime;
   m_derivative = (m_error - m_error_prior) / k_iterationTime;
@@ -52,7 +52,9 @@ void VisionFollowReflectiveTape::Execute() {
 
   auto steeringControls = Robot::m_oi->getSteeringControls();
 
-  Robot::m_driveTrain->arcDrive(steeringControls.first, output);
+  if (m_error != 0) {
+    Robot::m_driveTrain->arcDrive(steeringControls.first, output);
+  }
 }
 
 // Make this return true when this Command no longer needs to run execute()

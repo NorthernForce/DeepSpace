@@ -7,10 +7,14 @@
 
 #pragma once
 
-#include <frc/commands/TimedCommand.h>
+#include <frc/commands/Command.h>
 
-class VisionTargetNothing : public frc::TimedCommand {
+class VisionTargetNothing : public frc::Command {
  public:
   VisionTargetNothing();
   void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };

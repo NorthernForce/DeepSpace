@@ -30,7 +30,7 @@ const std::string Vision::Camera::k_defaultSettings =
   "tilt_absolute=0,"
   "zoom_absolute=0";
 
-const double Vision::Target::k_targetChangeDelay = 0.1;
+const int Vision::Camera::k_cameraSettingsDelayMillis = 200;
 
 Vision::Vision() : Subsystem("Vision"),
   m_cameras{
@@ -123,6 +123,8 @@ void Vision::Camera::process() {
 
 void Vision::Camera::updateSettings(std::string newSettings) {
   system((m_baseCommand +newSettings).c_str());
+  // Pause the camera thread while camera settings update
+  std::this_thread::sleep_for(std::chrono::milliseconds(k_cameraSettingsDelayMillis));
 }
 
 void Vision::Camera::setLightRing(bool turnOn) {
