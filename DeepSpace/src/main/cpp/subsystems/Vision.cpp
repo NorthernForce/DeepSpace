@@ -30,7 +30,7 @@ const std::string Vision::Camera::k_defaultSettings =
   "tilt_absolute=0,"
   "zoom_absolute=0";
 
-const int Vision::Camera::k_cameraSettingsDelayMillis = 200;
+const int Vision::Camera::k_cameraSettingsDelayMillis = 250;
 
 Vision::Vision() : Subsystem("Vision"),
   m_cameras{

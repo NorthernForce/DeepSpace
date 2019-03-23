@@ -15,6 +15,6 @@ class TargetReflectiveTape : public Vision::Target {
   const static cv::Scalar k_minHSV;
   const static cv::Scalar k_maxHSV;
   const static double k_minArea;
-  const static double k_centerMassRange;
-  const static double k_centerMassOffset;
+  const static double k_centerMassDistance;
+  // const static double k_centerMassOffset;
 };

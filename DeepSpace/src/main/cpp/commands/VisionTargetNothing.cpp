@@ -14,18 +14,16 @@ VisionTargetNothing::VisionTargetNothing() {
 }
 
 // Called just before this Command runs the first time
-void VisionTargetNothing::Initialize() {
+void VisionTargetNothing::Initialize() {}
+
+// Called repeatedly when this Command is scheduled to run
+void VisionTargetNothing::Execute() {
   Robot::m_vision->setTarget("Elevator");
   // Robot::m_vision->setTarget("ReflectiveTape");
 }
 
-// Called repeatedly when this Command is scheduled to run
-void VisionTargetNothing::Execute() {}
-
 // Make this return true when this Command no longer needs to run execute()
-bool VisionTargetNothing::IsFinished() {
-  return true;
-}
+bool VisionTargetNothing::IsFinished() { return true; }
 
 // Called once after isFinished returns true
 void VisionTargetNothing::End() {}

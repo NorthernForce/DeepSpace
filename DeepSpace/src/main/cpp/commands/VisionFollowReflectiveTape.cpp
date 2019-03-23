@@ -20,6 +20,8 @@ const double VisionFollowReflectiveTape::k_d = 0;
 
 const double VisionFollowReflectiveTape::k_iterationTime = 0.02;
 
+const double VisionFollowReflectiveTape::k_maxTurnSpeed = 0.7;
+
 VisionFollowReflectiveTape::VisionFollowReflectiveTape() {
   Requires(Robot::m_vision.get());
   Requires(Robot::m_driveTrain.get());
@@ -38,7 +40,7 @@ void VisionFollowReflectiveTape::Initialize() {
 void VisionFollowReflectiveTape::Execute() {
   // Not really sure how this works...
   m_error = Robot::m_vision->getOffset(k_targetName).first;
-  std::cout << "error: " << m_error;
+  // std::cout << "error: " << m_error;
   m_integral += m_error * k_iterationTime;
   m_derivative = (m_error - m_error_prior) / k_iterationTime;
   // double output = k_p*m_error + k_i*m_integral + k_d*m_derivative;
@@ -48,7 +50,14 @@ void VisionFollowReflectiveTape::Execute() {
                 + frc::SmartDashboard::GetNumber("CameraTracking: D", k_d) * m_derivative;
   m_error_prior = m_error;
 
-  std::cout << " output: " << output << "\n";
+  if (output < k_maxTurnSpeed * -1) {
+    output = k_maxTurnSpeed * -1;
+  }
+  else if (output > k_maxTurnSpeed) {
+    output = k_maxTurnSpeed;
+  }
+
+  // std::cout << " output: " << output << "\n";
 
   auto steeringControls = Robot::m_oi->getSteeringControls();
 
