@@ -20,6 +20,9 @@ const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(180, 100, 255);
 
 const double TargetReflectiveTape::k_minArea = 15;
 
+const double TargetReflectiveTape::k_centerMassRange = 0.3;
+const double TargetReflectiveTape::k_centerMassOffset = 0.5 - k_centerMassRange / 2;
+
 struct ReflectiveTape {
 	cv::Point center;
 	double area = 0;
@@ -77,11 +80,8 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
     cv::inRange(filtered, cv::Scalar(hueMax, satMin, valMin), cv::Scalar(180, satMax, valMax), upper);
     cv::bitwise_or(lower, upper, filtered);
   }
-  // If mask must be inverted try this:
-  // if (invert != 0) {
-  //   cv::bitwise_not(filtered, filtered);
-  // }
 
+  // For debugging threshold values (display bitmap on smartdashboard)
   // frame = filtered.clone();
 
   // Get rid of spots.
@@ -103,14 +103,41 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
       tape.area = test.m00;
       tape.center = cv::Point(test.m10/test.m00, test.m01/test.m00);
       
-      // Find furthest left and right points (extreme points)
-      auto points = std::minmax_element(contour.begin(), contour.end(),
-        [](cv::Point &a, cv::Point &b) {
-          return a.x < b.x;
-      });
+      // Find furthest left and right points (extreme points).
+      // auto points = std::minmax_element(contour.begin(), contour.end(),
+      //   [](cv::Point &a, cv::Point &b) {
+      //     return a.x < b.x;
+      // });
+      cv::Point leftTop = contour[0], leftBot = contour[0], rightTop = contour[0], rightBot = contour[0];
+      for (auto &point : contour) {
+        if (point.x < leftTop.x) {
+          leftTop = point;
+          leftBot = point;
+        }
+        else if (point.x == leftTop.x) {
+          if (point.y < leftTop.y) {
+            leftTop = point;
+          }
+          else if (point.y > leftBot.y) {
+            leftBot = point;
+          }
+        }
+        else if (point.x > rightTop.x) {
+          rightTop = point;
+          rightBot = point;
+        }
+        else if (point.x == rightTop.x) {
+          if (point.y < rightTop.y) {
+            rightTop = point;
+          }
+          else if (point.y > rightBot.y) {
+            rightBot = point;
+          }
+        }
+      }
 
       // Compares heights of extreme points to determine whether left or right
-      if (points.first->y < points.second->y) {
+      if ((leftTop.y + leftBot.y) / 2 < (rightTop.y + rightTop.y) / 2) {
         tape.isLeft = false;
       }
       else {
@@ -167,20 +194,37 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
 
   // Define target areas and centers
   for (auto &target : targets) {
-    // Only use average center if both tapes are found
-    if (target.leftTape.area > 0 && target.rightTape.area == 0) {
-      target.center = target.leftTape.center;
-    }
-    else if (target.leftTape.area == 0 && target.rightTape.area > 0) {
-      target.center = target.rightTape.center;
-    }
-    else if (target.leftTape.area > 0 && target.rightTape.area > 0) {
-      target.center = cv::Point((target.leftTape.center.x + target.rightTape.center.x) / 2,
-                    (target.leftTape.center.y + target.rightTape.center.y) / 2);
-    }
-
     // Total area is just addition of taoe areas
     target.totalArea = target.leftTape.area + target.rightTape.area;
+
+    // Only use average center if both tapes are found
+    if (target.rightTape.area == 0) {
+      target.center = target.leftTape.center;
+    }
+    else if (target.leftTape.area == 0) {
+      target.center = target.rightTape.center;
+    }
+    else {
+      // // Calculate raw average point
+      // target.center = cv::Point((target.leftTape.center.x + target.rightTape.center.x) / 2,
+      //               (target.leftTape.center.y + target.rightTape.center.y) / 2);
+
+      // Scale the point based on the size of the seperate tapes
+      double severity = (target.leftTape.area / (target.totalArea) - k_centerMassOffset) / k_centerMassRange;
+
+      if (severity < 0) {
+        target.center = target.leftTape.center;
+      }
+      else if (severity > 1) {
+        target.center = target.rightTape.center;
+      }
+      else {
+        int centerX = target.leftTape.center.x + (target.rightTape.center.x - target.leftTape.center.x) * severity;
+        int centerY = target.leftTape.center.y + (target.rightTape.center.y - target.leftTape.center.y) * severity;
+
+        target.center = cv::Point(centerX, centerY);
+      }
+    }
   }
 
   // Find target with the greatest area
