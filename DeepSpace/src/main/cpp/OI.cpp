@@ -40,6 +40,7 @@
 #include "commands/SetupPosition.h"
 
 #include "commands/VisionFollowReflectiveTape.h"
+#include "commands/GotoTarget.h"
 
 class SimpleAxis : public Button {
  public:
@@ -120,7 +121,6 @@ OI::OI() {
   WhenPressed(m_manipulatorController1, 2, new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel2, SetupPosition::TargetType::Hatch));
   WhenPressed(m_manipulatorController1, 5, new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel3, SetupPosition::TargetType::Hatch));
 
-  WhenPressed(m_manipulatorController1, 9, new SetupPosition(ElevatorSetPosition::Position::HomePosition));
   WhenPressed(m_manipulatorController1, 6, new SetupPosition(ElevatorSetPosition::Position::CargoIntake, SetupPosition::TargetType::Cargo));
   WhenPressed(m_manipulatorController1, 9, new SetupPosition(ElevatorSetPosition::Position::CargoShipCargoDeposit, SetupPosition::TargetType::Cargo));
 
@@ -142,7 +142,8 @@ OI::OI() {
 
   WhileHeld(m_manipulatorController2, 2, new ClimbEvenlyUp());
 
-  WhileHeld(m_driverController, 5, new VisionFollowReflectiveTape());
+  // WhileHeld(m_driverController, 5, new VisionFollowReflectiveTape());
+  WhileHeld(m_driverController, 5, new GotoTarget());
 
   WhileAxisHeld(m_driverController, 3, new CargoIntake());
   WhenAxisPressed(m_driverController, 3, new ClawClose());

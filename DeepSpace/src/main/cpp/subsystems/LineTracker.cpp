@@ -16,9 +16,9 @@ LineTracker::LineTracker() : Subsystem("LineTracker") {
 void LineTracker::InitDefaultCommand() {}
 
 int LineTracker::getLineSensors() {
-  int left = m_lineSensorLeft->Get() ? 0b100 : 0;
-  int center = m_lineSensorCenter->Get() ? 0b010 : 0;
-  int right = m_lineSensorRight->Get() ? 0b001 : 0;
+  int left = m_lineSensorLeft->Get() ? 0 : 0b100;
+  int center = m_lineSensorCenter->Get() ? 0 : 0b010;
+  int right = m_lineSensorRight->Get() ? 0 : 0b001;
   
   return left | center | right; 
 }

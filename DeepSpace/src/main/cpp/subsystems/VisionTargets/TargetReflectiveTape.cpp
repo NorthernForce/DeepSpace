@@ -14,7 +14,7 @@ const std::string TargetReflectiveTape::k_cameraSettings =
 const int TargetReflectiveTape::k_invertHue = 0;
 const int TargetReflectiveTape::k_minHue = 35;
 const int TargetReflectiveTape::k_maxHue = 85;
-const int TargetReflectiveTape::k_minSat = 200;
+const int TargetReflectiveTape::k_minSat = 150;
 const int TargetReflectiveTape::k_maxSat = 255;
 const int TargetReflectiveTape::k_minVal = 115;
 const int TargetReflectiveTape::k_maxVal = 255;
@@ -31,7 +31,7 @@ const int TargetReflectiveTape::k_maxVal = 255;
 const double TargetReflectiveTape::k_minArea = 15;
 
 const double TargetReflectiveTape::k_maxAreaDiff = 0.1;
-const double TargetReflectiveTape::k_maxCenterOffset = 0.25;
+const double TargetReflectiveTape::k_maxCenterOffset = 0.15;
 
 struct ReflectiveTape {
 	cv::Point center;
