@@ -123,6 +123,7 @@ OI::OI() {
   WhenPressed(m_manipulatorController1, 7, new SetupForCargoDepositLevel1());
   WhenPressed(m_manipulatorController1, 11, new SetupForCargoDepositLevel2());
   WhenPressed(m_manipulatorController1, 10, new SetupForCargoDepositLevel3());
+  WhenPressed(m_manipulatorController1, 9, new SetupForCargoShipCargoDeposit());
   // WhenPressed(m_manipulatorController1, 7, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel1,
   //                                                            SetupPosition::TargetType::Cargo));
   // WhenPressed(m_manipulatorController1, 11, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel2,
@@ -132,7 +133,7 @@ OI::OI() {
   
   WhenPressed(m_manipulatorController1, 4, new SetupForHatchDepositLevel1());
   WhenPressed(m_manipulatorController1, 2, new SetupForHatchDepositLevel2());
-  WhenPressed(m_manipulatorController1, 5, new SetupForCargoShipCargoDeposit());
+  WhenPressed(m_manipulatorController1, 5, new SetupForHatchDepositLevel3());
   // WhenPressed(m_manipulatorController1, 4, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3,
   //                                                            SetupPosition::TargetType::Hatch));
   // WhenPressed(m_manipulatorController1, 2, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3,
