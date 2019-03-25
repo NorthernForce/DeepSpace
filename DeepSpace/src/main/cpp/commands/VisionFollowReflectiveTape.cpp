@@ -14,11 +14,9 @@
 const std::string VisionFollowReflectiveTape::k_cameraName = "Elevator";
 const std::string VisionFollowReflectiveTape::k_targetName = "ReflectiveTape";
 
-const double VisionFollowReflectiveTape::k_p = 0;
-const double VisionFollowReflectiveTape::k_i = 0;
-const double VisionFollowReflectiveTape::k_d = 0;
-
-const double VisionFollowReflectiveTape::k_iterationTime = 0.02;
+const double VisionFollowReflectiveTape::k_p = 1.2;
+const double VisionFollowReflectiveTape::k_i = 0.1;
+const double VisionFollowReflectiveTape::k_d = 0.1;
 
 const double VisionFollowReflectiveTape::k_maxTurnSpeed = 0.7;
 
@@ -26,6 +24,7 @@ VisionFollowReflectiveTape::VisionFollowReflectiveTape() {
   Requires(Robot::m_vision.get());
   Requires(Robot::m_driveTrain.get());
 
+  // Add smart dashboard stuff
   frc::SmartDashboard::PutNumber("CameraTracking: P", k_p);
   frc::SmartDashboard::PutNumber("CameraTracking: I", k_i);
   frc::SmartDashboard::PutNumber("CameraTracking: D", k_d);
@@ -38,39 +37,38 @@ void VisionFollowReflectiveTape::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void VisionFollowReflectiveTape::Execute() {
-  // Not really sure how this works...
+  double p = frc::SmartDashboard::GetNumber("CameraTracking: P", k_p);
+  double i = frc::SmartDashboard::GetNumber("CameraTracking: I", k_i);
+  double d = frc::SmartDashboard::GetNumber("CameraTracking: D", k_d);
+
+  // PID Loop math taken from some site on the internet
   m_error = Robot::m_vision->getOffset(k_targetName).first;
-  // std::cout << "error: " << m_error;
-  m_integral += m_error * k_iterationTime;
-  m_derivative = (m_error - m_error_prior) / k_iterationTime;
-  // double output = k_p*m_error + k_i*m_integral + k_d*m_derivative;
-  // For tuning:
-  double output = frc::SmartDashboard::GetNumber("CameraTracking: P", k_p) * m_error 
-                + frc::SmartDashboard::GetNumber("CameraTracking: I", k_i) * m_integral
-                + frc::SmartDashboard::GetNumber("CameraTracking: D", k_d) * m_derivative;
+  if (m_error == 0) {
+    m_integral = 0;
+  }
+
+  m_integral += m_error * Robot::kDefaultPeriod;
+  m_derivative = (m_error - m_error_prior) / Robot::kDefaultPeriod;
+
+  double rotation = k_p*m_error + k_i*m_integral + k_d*m_derivative;
+
   m_error_prior = m_error;
 
-  if (output < k_maxTurnSpeed * -1) {
-    output = k_maxTurnSpeed * -1;
+  // Limit max turn speed
+  if (rotation < k_maxTurnSpeed * -1) {
+    rotation = k_maxTurnSpeed * -1;
   }
-  else if (output > k_maxTurnSpeed) {
-    output = k_maxTurnSpeed;
+  else if (rotation > k_maxTurnSpeed) {
+    rotation = k_maxTurnSpeed;
   }
 
-  // std::cout << " output: " << output << "\n";
+  // std::cout << "VisionFollowReflectiveTape: rotation: " << rotation << "\n";
 
-  auto steeringControls = Robot::m_oi->getSteeringControls();
-
-  if (m_error != 0) {
-    Robot::m_driveTrain->arcDrive(steeringControls.first, output);
-  }
+  Robot::m_driveTrain->arcDrive(Robot::m_oi->getSteeringControls().first, rotation);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool VisionFollowReflectiveTape::IsFinished() {
-  // return (std::abs(m_error) < 0.1);
-  return false;
-}
+bool VisionFollowReflectiveTape::IsFinished() { return false; }
 
 // Called once after isFinished returns true
 void VisionFollowReflectiveTape::End() {

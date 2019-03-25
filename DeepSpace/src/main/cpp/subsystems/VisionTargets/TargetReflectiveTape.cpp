@@ -9,10 +9,29 @@ const std::string TargetReflectiveTape::k_cameraSettings =
   "exposure_absolute=5," // Valid exposures are "5, 10, 20, 39, 78, 156, 312, 625, 1250, 2500, 5000, 10000, 20000"
   "white_balance_temperature_auto=0";
 
+#define LIGHT_RING_COLOR_GREEN
+#ifdef LIGHT_RING_COLOR_GREEN
+const int TargetReflectiveTape::k_invertHue = 0;
+const int TargetReflectiveTape::k_minHue = 35;
+const int TargetReflectiveTape::k_maxHue = 85;
+const int TargetReflectiveTape::k_minSat = 200;
+const int TargetReflectiveTape::k_maxSat = 255;
+const int TargetReflectiveTape::k_minVal = 115;
+const int TargetReflectiveTape::k_maxVal = 255;
+#else
+const int TargetReflectiveTape::k_invertHue = 1;
+const int TargetReflectiveTape::k_minHue = 20;
+const int TargetReflectiveTape::k_maxHue = 160;
+const int TargetReflectiveTape::k_minSat = 15;
+const int TargetReflectiveTape::k_maxSat = 200;
+const int TargetReflectiveTape::k_minVal = 150;
+const int TargetReflectiveTape::k_maxVal = 255;
+#endif
+
 const double TargetReflectiveTape::k_minArea = 15;
 
-const double TargetReflectiveTape::k_centerMassDistance = 0.1;
-// const double TargetReflectiveTape::k_centerMassOffset = 0.5 - k_centerMassRange / 2;
+const double TargetReflectiveTape::k_maxAreaDiff = 0.1;
+const double TargetReflectiveTape::k_maxCenterOffset = 0.25;
 
 struct ReflectiveTape {
 	cv::Point center;
@@ -29,13 +48,13 @@ struct ReflectiveTarget {
 
 TargetReflectiveTape::TargetReflectiveTape() {
   // Add smart dashboard stuff...
-  frc::SmartDashboard::PutNumber("Vision: HUE INVERT", 0);
-  frc::SmartDashboard::PutNumber("Vision: HUE MIN", 0);
-  frc::SmartDashboard::PutNumber("Vision: HUE MAX", 180);
-  frc::SmartDashboard::PutNumber("Vision: SAT MIN", 0);
-  frc::SmartDashboard::PutNumber("Vision: SAT MAX", 255);
-  frc::SmartDashboard::PutNumber("Vision: VAL MIN", 0);
-  frc::SmartDashboard::PutNumber("Vision: VAL MAX", 255);
+  frc::SmartDashboard::PutNumber("Vision: HUE INVERT", k_invertHue);
+  frc::SmartDashboard::PutNumber("Vision: HUE MIN", k_minHue);
+  frc::SmartDashboard::PutNumber("Vision: HUE MAX", k_maxHue);
+  frc::SmartDashboard::PutNumber("Vision: SAT MIN", k_minSat);
+  frc::SmartDashboard::PutNumber("Vision: SAT MAX", k_maxSat);
+  frc::SmartDashboard::PutNumber("Vision: VAL MIN", k_minVal);
+  frc::SmartDashboard::PutNumber("Vision: VAL MAX", k_maxVal);
 }
 
 void TargetReflectiveTape::setup(Vision::Camera *camera) {
@@ -52,43 +71,27 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   // Use HSV
   cv::cvtColor(filtered, filtered, cv::COLOR_BGR2HSV);
 
-  // Try to threshold the tape
-  // Tuning via the smart dashboard
-  // int invert = frc::SmartDashboard::GetNumber("Vision: HUE INVERT", 0);
-  // int hueMin = frc::SmartDashboard::GetNumber("Vision: HUE MIN", 0);
-  // int hueMax = frc::SmartDashboard::GetNumber("Vision: HUE MAX", 180);
-  // int satMin = frc::SmartDashboard::GetNumber("Vision: SAT MIN", 0);
-  // int satMax = frc::SmartDashboard::GetNumber("Vision: SAT MAX", 255);
-  // int valMin = frc::SmartDashboard::GetNumber("Vision: VAL MIN", 0);
-  // int valMax = frc::SmartDashboard::GetNumber("Vision: VAL MAX", 255);
-  // Pink light ring settings:
-  // int invert = 1;
-  // int hueMin = 20;
-  // int hueMax = 160;
-  // int satMin = 15;
-  // int satMax = 200;
-  // int valMin = 150;
-  // int valMax = 255;
-  // Green light ring settings:
-  int invert = 0;
-  int hueMin = 35;
-  int hueMax = 85;
-  int satMin = 200;
-  int satMax = 255;
-  int valMin = 115;
-  int valMax = 255;
+  // Gather values from the Smart Dashboard
+  int invertHue = frc::SmartDashboard::GetNumber("Vision: HUE INVERT", k_invertHue);
+  int minHue = frc::SmartDashboard::GetNumber("Vision: HUE MIN", k_minHue);
+  int maxHue = frc::SmartDashboard::GetNumber("Vision: HUE MAX", k_maxHue);
+  int minSat = frc::SmartDashboard::GetNumber("Vision: SAT MIN", k_minSat);
+  int maxSat = frc::SmartDashboard::GetNumber("Vision: SAT MAX", k_maxSat);
+  int minVal = frc::SmartDashboard::GetNumber("Vision: VAL MIN", k_minVal);
+  int maxVal = frc::SmartDashboard::GetNumber("Vision: VAL MAX", k_maxVal);
   
-  if (invert == 0) {
-    cv::inRange(filtered, cv::Scalar(hueMin, satMin, valMin), cv::Scalar(hueMax, satMax, valMax), filtered);
+  // Threshold the image
+  if (invertHue == 0) {
+    cv::inRange(filtered, cv::Scalar(minHue, minSat, minVal), cv::Scalar(maxHue, maxSat, maxVal), filtered);
   }
   else {
     cv::Mat lower, upper;
-    cv::inRange(filtered, cv::Scalar(0, satMin, valMin), cv::Scalar(hueMin, satMax, valMax), lower);
-    cv::inRange(filtered, cv::Scalar(hueMax, satMin, valMin), cv::Scalar(180, satMax, valMax), upper);
+    cv::inRange(filtered, cv::Scalar(0, minSat, minVal), cv::Scalar(minHue, maxSat, maxVal), lower);
+    cv::inRange(filtered, cv::Scalar(maxHue, minSat, minVal), cv::Scalar(180, maxSat, maxVal), upper);
     cv::bitwise_or(lower, upper, filtered);
   }
 
-  // For debugging threshold values (display bitmap on smartdashboard)
+  // For debugging show the bitmap on the smartdashboard
   // frame = filtered.clone();
 
   // Get rid of spots.
@@ -99,7 +102,7 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   std::vector<std::vector<cv::Point>> contours;
   cv::findContours(filtered, contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
 
-  // Analyze contours
+  // Analyze the contours (as tapes)
   std::vector<ReflectiveTape> tapes;
   for (auto &contour : contours) {
     cv::Moments test = cv::moments(contour, false);
@@ -115,6 +118,8 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
       //   [](cv::Point &a, cv::Point &b) {
       //     return a.x < b.x;
       // });
+
+      // Finds the average of the leftest and rightest points (extreme points)
       cv::Point leftTop = contour[0], leftBot = contour[0], rightTop = contour[0], rightBot = contour[0];
       for (auto &point : contour) {
         if (point.x < leftTop.x) {
@@ -217,7 +222,7 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
       //               (target.leftTape.center.y + target.rightTape.center.y) / 2);
 
       // Scale the point based on the size of the seperate tapes
-      double severity = (target.leftTape.area / target.totalArea - 0.5) / k_centerMassDistance;
+      double severity = (target.leftTape.area / target.totalArea - 0.5) / k_maxAreaDiff;
 
       if (severity < -1) {
         severity = -1;
@@ -226,7 +231,7 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
         severity = 1;
       }
 
-      severity *= 0.25;
+      severity *= k_maxCenterOffset;
 
       int centerX = (target.leftTape.center.x + target.rightTape.center.x) / 2 + (target.rightTape.center.x - target.leftTape.center.x) * severity;
       int centerY = (target.leftTape.center.y + target.rightTape.center.y) / 2 + (target.rightTape.center.y - target.leftTape.center.y) * severity;

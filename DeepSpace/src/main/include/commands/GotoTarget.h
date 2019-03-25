@@ -8,11 +8,10 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include "subsystems/LineTracker.h"
 
-class FollowLine : public frc::Command {
+class GotoTarget : public frc::Command {
  public:
-  FollowLine();
+  GotoTarget();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
@@ -20,8 +19,6 @@ class FollowLine : public frc::Command {
   void Interrupted() override;
 
  private:
-  bool m_faultyCase;
-  bool m_stopRobot;
-  double speed = 0;
-  double rotation = 0;
+  frc::Command *m_followLine;
+  frc::Command *m_followReflectiveTape;
 };
