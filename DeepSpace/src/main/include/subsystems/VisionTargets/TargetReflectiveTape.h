@@ -12,7 +12,12 @@ class TargetReflectiveTape : public Vision::Target {
  private:
   const static std::string k_cameraSettings;
 
-  const static cv::Scalar k_minHSV;
-  const static cv::Scalar k_maxHSV;
+  const static int k_invertHue;
+  const static int k_minHue, k_maxHue;
+  const static int k_minSat, k_maxSat;
+  const static int k_minVal, k_maxVal;
+
   const static double k_minArea;
+  const static double k_maxAreaDiff;
+  const static double k_maxCenterOffset;
 };

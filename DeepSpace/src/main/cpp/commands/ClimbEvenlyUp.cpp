@@ -38,7 +38,7 @@ void ClimbEvenlyUp::Execute() {
     Robot::m_climber->setSpeed(-1);
   }
   else if (val > 0) {
-    Robot::m_elevator->setSpeed(1 - val);
+    Robot::m_elevator->setSpeed(-1 + val);
     Robot::m_climber->setSpeed(-1);
   }
   else if (val < -1) {
@@ -53,24 +53,11 @@ void ClimbEvenlyUp::Execute() {
     Robot::m_elevator->setSpeed(-1);
     Robot::m_climber->setSpeed(-1);
   }
-
-  // if (angle <= k_maxFrontTilt) {
-  //   Robot::m_elevator->lower();
-  //   Robot::m_climber->stop();
-  // }
-  // else if (angle >= k_maxBackTilt) {
-  //   Robot::m_elevator->stop();
-  //   Robot::m_climber->lower();
-  // }
-  // else {
-  //   Robot::m_elevator->lower();
-  //   Robot::m_climber->lower();
-  // }
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ClimbEvenlyUp::IsFinished() {
-  return Robot::m_climber->atUpperLimit();
+  return Robot::m_climber->atLowerLimit();
 }
 
 // Called once after isFinished returns true

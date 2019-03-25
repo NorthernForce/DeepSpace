@@ -8,10 +8,9 @@
 #include "subsystems/LineTracker.h"
 
 LineTracker::LineTracker() : Subsystem("LineTracker") {
-  m_lineSensorCenter.reset(new frc::DigitalInput(RobotMap::LineTracker::k_CenterLineSensor_id));
+  m_lineSensorCenter.reset(new frc::DigitalInput(RobotMap::LineTracker::k_centerLineSensor_id));
   m_lineSensorLeft.reset(new frc::DigitalInput(RobotMap::LineTracker::k_leftLineSensor_id));
-  m_lineSensorRight.reset(new frc::DigitalInput(RobotMap::LineTracker::k_RightLineSensor_id));
-
+  m_lineSensorRight.reset(new frc::DigitalInput(RobotMap::LineTracker::k_rightLineSensor_id));
 }
 
 void LineTracker::InitDefaultCommand() {}
@@ -21,10 +20,6 @@ int LineTracker::getLineSensors() {
   int center = m_lineSensorCenter->Get() ? 0b010 : 0;
   int right = m_lineSensorRight->Get() ? 0b001 : 0;
   
-  return left + center + right; 
+  return left | center | right; 
 }
 
-
-
-// Put methods for controlling this subsystem
-// here. Call these from Commands.

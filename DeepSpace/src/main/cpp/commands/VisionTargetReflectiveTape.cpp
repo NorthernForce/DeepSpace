@@ -15,16 +15,15 @@ VisionTargetReflectiveTape::VisionTargetReflectiveTape() {
 
 // Called just before this Command runs the first time
 void VisionTargetReflectiveTape::Initialize() {
-  Robot::m_vision->setTarget("Elevator", "ReflectiveTape");
 }
 
 // Called repeatedly when this Command is scheduled to run
-void VisionTargetReflectiveTape::Execute() {}
+void VisionTargetReflectiveTape::Execute() {
+  Robot::m_vision->setTarget("Elevator", "ReflectiveTape");
+}
 
 // Make this return true when this Command no longer needs to run execute()
-bool VisionTargetReflectiveTape::IsFinished() {
-  return true;
-}
+bool VisionTargetReflectiveTape::IsFinished() { return true; }
 
 // Called once after isFinished returns true
 void VisionTargetReflectiveTape::End() {}

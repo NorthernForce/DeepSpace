@@ -7,9 +7,18 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
+#include <frc/commands/Command.h>
 
-class SetupForHatchDepositLevel1 : public frc::CommandGroup {
+class GotoTarget : public frc::Command {
  public:
-  SetupForHatchDepositLevel1();
+  GotoTarget();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+
+ private:
+  frc::Command *m_followLine;
+  frc::Command *m_followReflectiveTape;
 };

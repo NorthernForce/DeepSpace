@@ -9,16 +9,29 @@ const std::string TargetReflectiveTape::k_cameraSettings =
   "exposure_absolute=5," // Valid exposures are "5, 10, 20, 39, 78, 156, 312, 625, 1250, 2500, 5000, 10000, 20000"
   "white_balance_temperature_auto=0";
 
-// Green:
-// const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(35, 150, 50);
-// const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(90, 255, 255);
-// Pink: (NOT)
-const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(0, 0, 230);
-const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(180, 100, 255);
-// const cv::Scalar TargetReflectiveTape::k_minHSV = cv::Scalar(160, 0, 150);
-// const cv::Scalar TargetReflectiveTape::k_maxHSV = cv::Scalar(200, 100, 255);
+#define LIGHT_RING_COLOR_GREEN
+#ifdef LIGHT_RING_COLOR_GREEN
+const int TargetReflectiveTape::k_invertHue = 0;
+const int TargetReflectiveTape::k_minHue = 35;
+const int TargetReflectiveTape::k_maxHue = 85;
+const int TargetReflectiveTape::k_minSat = 200;
+const int TargetReflectiveTape::k_maxSat = 255;
+const int TargetReflectiveTape::k_minVal = 115;
+const int TargetReflectiveTape::k_maxVal = 255;
+#else
+const int TargetReflectiveTape::k_invertHue = 1;
+const int TargetReflectiveTape::k_minHue = 20;
+const int TargetReflectiveTape::k_maxHue = 160;
+const int TargetReflectiveTape::k_minSat = 15;
+const int TargetReflectiveTape::k_maxSat = 200;
+const int TargetReflectiveTape::k_minVal = 150;
+const int TargetReflectiveTape::k_maxVal = 255;
+#endif
 
 const double TargetReflectiveTape::k_minArea = 15;
+
+const double TargetReflectiveTape::k_maxAreaDiff = 0.1;
+const double TargetReflectiveTape::k_maxCenterOffset = 0.25;
 
 struct ReflectiveTape {
 	cv::Point center;
@@ -35,13 +48,13 @@ struct ReflectiveTarget {
 
 TargetReflectiveTape::TargetReflectiveTape() {
   // Add smart dashboard stuff...
-  frc::SmartDashboard::PutNumber("Vision: HUE INVERT", 0);
-  frc::SmartDashboard::PutNumber("Vision: HUE MIN", 0);
-  frc::SmartDashboard::PutNumber("Vision: HUE MAX", 180);
-  frc::SmartDashboard::PutNumber("Vision: SAT MIN", 0);
-  frc::SmartDashboard::PutNumber("Vision: SAT MAX", 255);
-  frc::SmartDashboard::PutNumber("Vision: VAL MIN", 0);
-  frc::SmartDashboard::PutNumber("Vision: VAL MAX", 255);
+  frc::SmartDashboard::PutNumber("Vision: HUE INVERT", k_invertHue);
+  frc::SmartDashboard::PutNumber("Vision: HUE MIN", k_minHue);
+  frc::SmartDashboard::PutNumber("Vision: HUE MAX", k_maxHue);
+  frc::SmartDashboard::PutNumber("Vision: SAT MIN", k_minSat);
+  frc::SmartDashboard::PutNumber("Vision: SAT MAX", k_maxSat);
+  frc::SmartDashboard::PutNumber("Vision: VAL MIN", k_minVal);
+  frc::SmartDashboard::PutNumber("Vision: VAL MAX", k_maxVal);
 }
 
 void TargetReflectiveTape::setup(Vision::Camera *camera) {
@@ -58,30 +71,27 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   // Use HSV
   cv::cvtColor(filtered, filtered, cv::COLOR_BGR2HSV);
 
-  // Try to threshold the tape
-  int invert = frc::SmartDashboard::GetNumber("Vision: HUE INVERT", 0);
-  int hueMin = frc::SmartDashboard::GetNumber("Vision: HUE MIN", 0);
-  int hueMax = frc::SmartDashboard::GetNumber("Vision: HUE MAX", 180);
-  int satMin = frc::SmartDashboard::GetNumber("Vision: SAT MIN", 0);
-  int satMax = frc::SmartDashboard::GetNumber("Vision: SAT MAX", 255);
-  int valMin = frc::SmartDashboard::GetNumber("Vision: VAL MIN", 0);
-  int valMax = frc::SmartDashboard::GetNumber("Vision: VAL MAX", 255);
+  // Gather values from the Smart Dashboard
+  int invertHue = frc::SmartDashboard::GetNumber("Vision: HUE INVERT", k_invertHue);
+  int minHue = frc::SmartDashboard::GetNumber("Vision: HUE MIN", k_minHue);
+  int maxHue = frc::SmartDashboard::GetNumber("Vision: HUE MAX", k_maxHue);
+  int minSat = frc::SmartDashboard::GetNumber("Vision: SAT MIN", k_minSat);
+  int maxSat = frc::SmartDashboard::GetNumber("Vision: SAT MAX", k_maxSat);
+  int minVal = frc::SmartDashboard::GetNumber("Vision: VAL MIN", k_minVal);
+  int maxVal = frc::SmartDashboard::GetNumber("Vision: VAL MAX", k_maxVal);
   
-  // cv::inRange(filtered, k_minHSV, k_maxHSV, filtered);
-  if (invert == 0) {
-    cv::inRange(filtered, cv::Scalar(hueMin, satMin, valMin), cv::Scalar(hueMax, satMax, valMax), filtered);
+  // Threshold the image
+  if (invertHue == 0) {
+    cv::inRange(filtered, cv::Scalar(minHue, minSat, minVal), cv::Scalar(maxHue, maxSat, maxVal), filtered);
   }
   else {
     cv::Mat lower, upper;
-    cv::inRange(filtered, cv::Scalar(0, satMin, valMin), cv::Scalar(hueMin, satMax, valMax), lower);
-    cv::inRange(filtered, cv::Scalar(hueMax, satMin, valMin), cv::Scalar(180, satMax, valMax), upper);
+    cv::inRange(filtered, cv::Scalar(0, minSat, minVal), cv::Scalar(minHue, maxSat, maxVal), lower);
+    cv::inRange(filtered, cv::Scalar(maxHue, minSat, minVal), cv::Scalar(180, maxSat, maxVal), upper);
     cv::bitwise_or(lower, upper, filtered);
   }
-  // If mask must be inverted try this:
-  // if (invert != 0) {
-  //   cv::bitwise_not(filtered, filtered);
-  // }
 
+  // For debugging show the bitmap on the smartdashboard
   // frame = filtered.clone();
 
   // Get rid of spots.
@@ -92,7 +102,7 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   std::vector<std::vector<cv::Point>> contours;
   cv::findContours(filtered, contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
 
-  // Analyze contours
+  // Analyze the contours (as tapes)
   std::vector<ReflectiveTape> tapes;
   for (auto &contour : contours) {
     cv::Moments test = cv::moments(contour, false);
@@ -103,14 +113,43 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
       tape.area = test.m00;
       tape.center = cv::Point(test.m10/test.m00, test.m01/test.m00);
       
-      // Find furthest left and right points (extreme points)
-      auto points = std::minmax_element(contour.begin(), contour.end(),
-        [](cv::Point &a, cv::Point &b) {
-          return a.x < b.x;
-      });
+      // Find furthest left and right points (extreme points).
+      // auto points = std::minmax_element(contour.begin(), contour.end(),
+      //   [](cv::Point &a, cv::Point &b) {
+      //     return a.x < b.x;
+      // });
+
+      // Finds the average of the leftest and rightest points (extreme points)
+      cv::Point leftTop = contour[0], leftBot = contour[0], rightTop = contour[0], rightBot = contour[0];
+      for (auto &point : contour) {
+        if (point.x < leftTop.x) {
+          leftTop = point;
+          leftBot = point;
+        }
+        else if (point.x == leftTop.x) {
+          if (point.y < leftTop.y) {
+            leftTop = point;
+          }
+          else if (point.y > leftBot.y) {
+            leftBot = point;
+          }
+        }
+        else if (point.x > rightTop.x) {
+          rightTop = point;
+          rightBot = point;
+        }
+        else if (point.x == rightTop.x) {
+          if (point.y < rightTop.y) {
+            rightTop = point;
+          }
+          else if (point.y > rightBot.y) {
+            rightBot = point;
+          }
+        }
+      }
 
       // Compares heights of extreme points to determine whether left or right
-      if (points.first->y < points.second->y) {
+      if ((leftTop.y + leftBot.y) / 2 < (rightTop.y + rightTop.y) / 2) {
         tape.isLeft = false;
       }
       else {
@@ -167,20 +206,38 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
 
   // Define target areas and centers
   for (auto &target : targets) {
-    // Only use average center if both tapes are found
-    if (target.leftTape.area > 0 && target.rightTape.area == 0) {
-      target.center = target.leftTape.center;
-    }
-    else if (target.leftTape.area == 0 && target.rightTape.area > 0) {
-      target.center = target.rightTape.center;
-    }
-    else if (target.leftTape.area > 0 && target.rightTape.area > 0) {
-      target.center = cv::Point((target.leftTape.center.x + target.rightTape.center.x) / 2,
-                    (target.leftTape.center.y + target.rightTape.center.y) / 2);
-    }
-
     // Total area is just addition of taoe areas
     target.totalArea = target.leftTape.area + target.rightTape.area;
+
+    // Only use average center if both tapes are found
+    if (target.rightTape.area == 0) {
+      target.center = target.leftTape.center;
+    }
+    else if (target.leftTape.area == 0) {
+      target.center = target.rightTape.center;
+    }
+    else {
+      // // Calculate raw average point
+      // target.center = cv::Point((target.leftTape.center.x + target.rightTape.center.x) / 2,
+      //               (target.leftTape.center.y + target.rightTape.center.y) / 2);
+
+      // Scale the point based on the size of the seperate tapes
+      double severity = (target.leftTape.area / target.totalArea - 0.5) / k_maxAreaDiff;
+
+      if (severity < -1) {
+        severity = -1;
+      }
+      else if (severity > 1) {
+        severity = 1;
+      }
+
+      severity *= k_maxCenterOffset;
+
+      int centerX = (target.leftTape.center.x + target.rightTape.center.x) / 2 + (target.rightTape.center.x - target.leftTape.center.x) * severity;
+      int centerY = (target.leftTape.center.y + target.rightTape.center.y) / 2 + (target.rightTape.center.y - target.leftTape.center.y) * severity;
+
+      target.center = cv::Point(centerX, centerY);
+    }
   }
 
   // Find target with the greatest area
@@ -202,4 +259,8 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   m_verticalOffset = (largestTarget.center.y - frame.rows / 2.0) / (frame.rows / 2.0) * -1;
 
   // std::cout << "m_horizontalOffset: " << m_horizontalOffset.load() << " m_verticalOffset: " << m_verticalOffset.load() << "\n";
+  // std::cout << "percentage: " << (largestTarget.leftTape.area / largestTarget.totalArea) << "\n";
+  std::cout << "leftArea: " << largestTarget.leftTape.area;
+  std::cout << " rightArea: " << largestTarget.rightTape.area;
+  std::cout << " distance: " << std::sqrt(std::pow(largestTarget.rightTape.center.x - largestTarget.leftTape.center.x, 2) + std::pow(largestTarget.rightTape.center.y - largestTarget.leftTape.center.y, 2)) << "\n";
 }

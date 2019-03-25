@@ -7,9 +7,19 @@
 
 #pragma once
 
-#include <frc/commands/CommandGroup.h>
+#include "subsystems/LineTracker.h"
 
-class SetupForHatchDepositLevel2 : public frc::CommandGroup {
+#include <frc/commands/Command.h>
+
+class LineTrackerFollowLine : public frc::Command {
  public:
-  SetupForHatchDepositLevel2();
+  LineTrackerFollowLine();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+
+ private:
+  const static double k_turnSpeed;
 };
