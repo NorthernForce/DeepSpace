@@ -26,6 +26,11 @@
 #include "subsystems/Vision.h"
 #include "subsystems/RangeFinder.h"
 
+#define COMPETITION_ROBOT
+#ifndef COMPETITION_ROBOT
+#define PRACTICE_ROBOT
+#endif
+
 class Robot : public frc::TimedRobot {
  public:
   static std::shared_ptr<OI> m_oi;

@@ -14,6 +14,17 @@ const int limitSwitchOffset = 0;
 
 const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoints = {
 		{ ElevatorSetPosition::Position::HomePosition, 0 + limitSwitchOffset},
+#ifdef COMPETITION_ROBOT
+    { ElevatorSetPosition::Position::CargoIntake, 280 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::HatchPanelIntake, 1250 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::CargoDepositLevel1, 4000 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::CargoDepositLevel2, 8600 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::CargoDepositLevel3, 12800 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::CargoShipCargoDeposit, 6585 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::HatchDepositLevel1, 1250 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::HatchDepositLevel2, 5830 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::HatchDepositLevel3, 10380 + limitSwitchOffset},
+#else
     { ElevatorSetPosition::Position::CargoIntake, 215 + limitSwitchOffset},
     { ElevatorSetPosition::Position::HatchPanelIntake, 664 + limitSwitchOffset},
     { ElevatorSetPosition::Position::CargoDepositLevel1, 3188 + limitSwitchOffset},
@@ -23,9 +34,10 @@ const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoi
     { ElevatorSetPosition::Position::HatchDepositLevel1, 664 + limitSwitchOffset},
     { ElevatorSetPosition::Position::HatchDepositLevel2, 4505 + limitSwitchOffset},
     { ElevatorSetPosition::Position::HatchDepositLevel3, 8356 + limitSwitchOffset},
+#endif
 };
 
-ElevatorSetPosition::ElevatorSetPosition(Position pos) :
+ElevatorSetPosition::ElevatorSetPosition(Position pos) : Command("ElevatorSetPosition"),
   m_elevator(Robot::m_elevator.get())
 {
   // std::cout << "Created elevator set position with position " << (int)pos << "\n";
