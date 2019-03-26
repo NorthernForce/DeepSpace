@@ -14,8 +14,8 @@ const double Climber::k_forwardMotorSpeed = 0.5;
 const double Climber::k_reverseMotorSpeed = 0.5; // abs of
 
 Climber::Climber() : Subsystem("Climber") {
-  m_masterTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_leftClimbingMotor_id));
-  m_slaveTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_rightClimbingMotor_id));
+  m_masterTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_primary_id));
+  m_slaveTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_follower_id));
 
   m_slaveTalonLifter->SetInverted(true);
   m_slaveTalonLifter->Follow(*m_masterTalonLifter);
