@@ -22,17 +22,13 @@ void GotoTarget::Initialize() {}
 
 // Called repeatedly when this Command is scheduled to run
 void GotoTarget::Execute() {
-  std::cout << "muiyo " << Robot::m_lineTracker->getLineSensors() << " ";
   if (Robot::m_lineTracker->getLineSensors() != 0) {
-    std::cout << "Here ";
     if (!m_followLine->IsRunning()) {
-      std::cout << "yas" << "\n";
       m_followReflectiveTape->Cancel();
       m_followLine->Start();
     }
   }
   else {
-    std::cout << " yeahyyey\n";
     if (!m_followReflectiveTape->IsRunning()) {
       m_followLine->Cancel();
       m_followReflectiveTape->Start();

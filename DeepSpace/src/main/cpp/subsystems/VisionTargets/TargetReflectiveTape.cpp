@@ -13,7 +13,7 @@ const std::string TargetReflectiveTape::k_cameraSettings =
 #ifdef LIGHT_RING_COLOR_GREEN
 const int TargetReflectiveTape::k_invertHue = 0;
 const int TargetReflectiveTape::k_minHue = 35;
-const int TargetReflectiveTape::k_maxHue = 85;
+const int TargetReflectiveTape::k_maxHue = 145;
 const int TargetReflectiveTape::k_minSat = 150;
 const int TargetReflectiveTape::k_maxSat = 255;
 const int TargetReflectiveTape::k_minVal = 115;
@@ -48,13 +48,13 @@ struct ReflectiveTarget {
 
 TargetReflectiveTape::TargetReflectiveTape() {
   // Add smart dashboard stuff...
-  frc::SmartDashboard::PutNumber("Vision: HUE INVERT", k_invertHue);
-  frc::SmartDashboard::PutNumber("Vision: HUE MIN", k_minHue);
-  frc::SmartDashboard::PutNumber("Vision: HUE MAX", k_maxHue);
-  frc::SmartDashboard::PutNumber("Vision: SAT MIN", k_minSat);
-  frc::SmartDashboard::PutNumber("Vision: SAT MAX", k_maxSat);
-  frc::SmartDashboard::PutNumber("Vision: VAL MIN", k_minVal);
-  frc::SmartDashboard::PutNumber("Vision: VAL MAX", k_maxVal);
+  frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: HUE INVERT", k_invertHue);
+  frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: HUE MIN", k_minHue);
+  frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: HUE MAX", k_maxHue);
+  frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: SAT MIN", k_minSat);
+  frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: SAT MAX", k_maxSat);
+  frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: VAL MIN", k_minVal);
+  frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: VAL MAX", k_maxVal);
 }
 
 void TargetReflectiveTape::setup(Vision::Camera *camera) {
@@ -72,13 +72,13 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
   cv::cvtColor(filtered, filtered, cv::COLOR_BGR2HSV);
 
   // Gather values from the Smart Dashboard
-  int invertHue = frc::SmartDashboard::GetNumber("Vision: HUE INVERT", k_invertHue);
-  int minHue = frc::SmartDashboard::GetNumber("Vision: HUE MIN", k_minHue);
-  int maxHue = frc::SmartDashboard::GetNumber("Vision: HUE MAX", k_maxHue);
-  int minSat = frc::SmartDashboard::GetNumber("Vision: SAT MIN", k_minSat);
-  int maxSat = frc::SmartDashboard::GetNumber("Vision: SAT MAX", k_maxSat);
-  int minVal = frc::SmartDashboard::GetNumber("Vision: VAL MIN", k_minVal);
-  int maxVal = frc::SmartDashboard::GetNumber("Vision: VAL MAX", k_maxVal);
+  int invertHue = frc::SmartDashboard::GetNumber("Vision: ReflectiveTape: HUE INVERT", k_invertHue);
+  int minHue = frc::SmartDashboard::GetNumber("Vision: ReflectiveTape: HUE MIN", k_minHue);
+  int maxHue = frc::SmartDashboard::GetNumber("Vision: ReflectiveTape: HUE MAX", k_maxHue);
+  int minSat = frc::SmartDashboard::GetNumber("Vision: ReflectiveTape: SAT MIN", k_minSat);
+  int maxSat = frc::SmartDashboard::GetNumber("Vision: ReflectiveTape: SAT MAX", k_maxSat);
+  int minVal = frc::SmartDashboard::GetNumber("Vision: ReflectiveTape: VAL MIN", k_minVal);
+  int maxVal = frc::SmartDashboard::GetNumber("Vision: ReflectiveTape: VAL MAX", k_maxVal);
   
   // Threshold the image
   if (invertHue == 0) {
