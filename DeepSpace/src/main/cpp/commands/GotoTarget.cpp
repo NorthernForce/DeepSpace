@@ -12,7 +12,7 @@
 #include "commands/LineTrackerFollowLine.h"
 #include "commands/VisionFollowReflectiveTape.h"
 
-GotoTarget::GotoTarget() {
+GotoTarget::GotoTarget() : Command("GotoTarget") {
   m_followLine = new LineTrackerFollowLine();
   m_followReflectiveTape = new VisionFollowReflectiveTape();
 }

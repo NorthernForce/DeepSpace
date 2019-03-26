@@ -8,7 +8,7 @@
 #include "commands/ElevatorLower.h"
 #include "Robot.h"
 
-ElevatorLower::ElevatorLower() {
+ElevatorLower::ElevatorLower() : Command("ElevatorLower") {
   Requires(Robot::m_elevator.get());
 }
 

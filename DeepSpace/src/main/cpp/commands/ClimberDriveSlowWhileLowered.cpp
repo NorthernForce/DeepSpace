@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ClimberDriveSlowWhileLowered::ClimberDriveSlowWhileLowered() {
+ClimberDriveSlowWhileLowered::ClimberDriveSlowWhileLowered() : Command("ClimberDriveSlowWhileLowered") {
   Requires(Robot::m_climberDrive.get());
 }
 

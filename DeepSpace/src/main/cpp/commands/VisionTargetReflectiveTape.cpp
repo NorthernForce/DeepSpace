@@ -9,25 +9,11 @@
 
 #include "Robot.h"
 
-VisionTargetReflectiveTape::VisionTargetReflectiveTape() {
+VisionTargetReflectiveTape::VisionTargetReflectiveTape() : TimedCommand("VisionTargetReflectiveTape", 0.02) {
   Requires(Robot::m_vision.get());
 }
 
 // Called just before this Command runs the first time
 void VisionTargetReflectiveTape::Initialize() {
-}
-
-// Called repeatedly when this Command is scheduled to run
-void VisionTargetReflectiveTape::Execute() {
   Robot::m_vision->setTarget("Elevator", "ReflectiveTape");
 }
-
-// Make this return true when this Command no longer needs to run execute()
-bool VisionTargetReflectiveTape::IsFinished() { return true; }
-
-// Called once after isFinished returns true
-void VisionTargetReflectiveTape::End() {}
-
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void VisionTargetReflectiveTape::Interrupted() {}

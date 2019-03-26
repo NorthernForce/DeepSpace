@@ -11,7 +11,7 @@
 const double DriveForward::k_speed = 0.5; 
 const double DriveForward::k_rotation = 0.0;
 
-DriveForward::DriveForward() {
+DriveForward::DriveForward() : Command("DriveForward") {
   Requires(Robot::m_driveTrain.get());
 }
 

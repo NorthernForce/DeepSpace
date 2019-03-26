@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ElevatorStop::ElevatorStop() : TimedCommand(Elevator::k_motorStopDelay) {
+ElevatorStop::ElevatorStop() : TimedCommand("ElevatorStop", Elevator::k_motorStopDelay) {
   Requires(Robot::m_elevator.get());
 }
 

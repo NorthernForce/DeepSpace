@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ElevatorRaise::ElevatorRaise() {
+ElevatorRaise::ElevatorRaise() : Command("ElevatorRaise") {
 	Requires(Robot::m_elevator.get());
 }
 

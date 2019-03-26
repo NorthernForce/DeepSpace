@@ -12,7 +12,7 @@
 
 const double LineTrackerFollowLine::k_turnSpeed = 0.2;
 
-LineTrackerFollowLine::LineTrackerFollowLine() {
+LineTrackerFollowLine::LineTrackerFollowLine() : Command("LineTrackerFollowLine") {
   Requires(Robot::m_lineTracker.get());
   Requires(Robot::m_driveTrain.get());
 }

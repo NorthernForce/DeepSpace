@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ClimberDriveForward::ClimberDriveForward() {
+ClimberDriveForward::ClimberDriveForward() : Command("ClimberDriveForward") {
   Requires(Robot::m_climberDrive.get());
 }
 

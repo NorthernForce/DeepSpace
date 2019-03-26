@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-CargoEject::CargoEject() {
+CargoEject::CargoEject() : Command("CargoEject") {
   Requires(Robot::m_cargoManipulator.get());
 }
 

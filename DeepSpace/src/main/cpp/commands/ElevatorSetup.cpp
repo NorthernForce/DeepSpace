@@ -10,7 +10,7 @@
 #include "commands/ElevatorExtend.h"
 #include "commands/ElevatorCalibrate.h"
 
-ElevatorSetup::ElevatorSetup() {
+ElevatorSetup::ElevatorSetup() : CommandGroup("ElevatorSetup") {
   AddSequential(new ElevatorExtend());
   AddSequential(new ElevatorCalibrate());
 }

@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ElevatorSetHomePosition::ElevatorSetHomePosition() {
+ElevatorSetHomePosition::ElevatorSetHomePosition() : Command("ElevatorSetHomePosition") {
   Requires(Robot::m_elevator.get());
 }
 

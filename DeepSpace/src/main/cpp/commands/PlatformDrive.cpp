@@ -9,7 +9,7 @@
 #include "commands/ClimberDriveForward.h"
 #include "commands/DriveForward.h"
 
-PlatformDrive::PlatformDrive() {
+PlatformDrive::PlatformDrive() : CommandGroup("PlatformDrive") {
   AddParallel(new ClimberDriveForward());
   //AddParallel(new DriveForward());
 }

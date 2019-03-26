@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ClimberStop::ClimberStop() {
+ClimberStop::ClimberStop() : Command("ClimberStop") {
   Requires(Robot::m_climber.get());
 }
 

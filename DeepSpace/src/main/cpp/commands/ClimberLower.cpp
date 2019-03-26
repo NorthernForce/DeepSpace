@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-ClimberLower::ClimberLower() {
+ClimberLower::ClimberLower() : Command("ClimberLower") {
   Requires(Robot::m_climber.get());
 }
 

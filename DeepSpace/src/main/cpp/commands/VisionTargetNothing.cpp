@@ -9,25 +9,12 @@
 
 #include "Robot.h"
 
-VisionTargetNothing::VisionTargetNothing() {
+VisionTargetNothing::VisionTargetNothing() : TimedCommand("VisionTargetNothing", 0.02) {
   Requires(Robot::m_vision.get());
 }
 
 // Called just before this Command runs the first time
-void VisionTargetNothing::Initialize() {}
-
-// Called repeatedly when this Command is scheduled to run
-void VisionTargetNothing::Execute() {
+void VisionTargetNothing::Initialize() {
   Robot::m_vision->setTarget("Elevator");
   // Robot::m_vision->setTarget("ReflectiveTape");
 }
-
-// Make this return true when this Command no longer needs to run execute()
-bool VisionTargetNothing::IsFinished() { return true; }
-
-// Called once after isFinished returns true
-void VisionTargetNothing::End() {}
-
-// Called when another command which requires one or more of the same
-// subsystems is scheduled to run
-void VisionTargetNothing::Interrupted() {}

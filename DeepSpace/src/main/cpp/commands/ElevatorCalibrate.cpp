@@ -11,7 +11,7 @@
 
 const double ElevatorCalibrate::k_lowerSpeed = -0.25;
 
-ElevatorCalibrate::ElevatorCalibrate() {
+ElevatorCalibrate::ElevatorCalibrate() : Command("ElevatorCalibrate") {
   Requires(Robot::m_elevator.get());
 }
 

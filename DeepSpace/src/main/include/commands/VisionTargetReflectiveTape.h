@@ -7,14 +7,10 @@
 
 #pragma once
 
-#include <frc/commands/Command.h>
+#include <frc/commands/TimedCommand.h>
 
-class VisionTargetReflectiveTape : public frc::Command {
+class VisionTargetReflectiveTape : public frc::TimedCommand {
  public:
   VisionTargetReflectiveTape();
   void Initialize() override;
-  void Execute() override;
-  bool IsFinished() override;
-  void End() override;
-  void Interrupted() override;
 };

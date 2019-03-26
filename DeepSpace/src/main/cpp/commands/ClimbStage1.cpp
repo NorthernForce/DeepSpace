@@ -10,7 +10,7 @@
 #include "commands/ElevatorSetPosition.h"
 #include "commands/ClimberLower.h"
 
-ClimbStage1::ClimbStage1() {
+ClimbStage1::ClimbStage1() : CommandGroup("ClimbStage1") {
   AddParallel(new ClimberLower());
   AddParallel(new ElevatorSetPosition(ElevatorSetPosition::Position::HomePosition));
 }

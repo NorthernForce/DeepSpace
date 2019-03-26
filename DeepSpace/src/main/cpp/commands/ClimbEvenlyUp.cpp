@@ -14,7 +14,7 @@ const double ClimbEvenlyUp::k_maxBackTilt = -0.5;
 const double ClimbEvenlyUp::k_targetTilt = (k_maxBackTilt + k_maxFrontTilt) / 2;
 const double ClimbEvenlyUp::k_rangeOfTilt = (k_maxBackTilt - k_maxFrontTilt) / 2;
 
-ClimbEvenlyUp::ClimbEvenlyUp() {
+ClimbEvenlyUp::ClimbEvenlyUp() : Command("ClimbEvenlyUp") {
   Requires(Robot::m_elevator.get());
   Requires(Robot::m_climber.get());
   Requires(Robot::m_imu.get());

@@ -12,7 +12,7 @@
 #include "commands/ClawLower.h"
 #include "commands/ClawRaise.h"
 
-SetupPosition::SetupPosition(ElevatorSetPosition::Position position, TargetType type) {
+SetupPosition::SetupPosition(ElevatorSetPosition::Position position, TargetType type) : CommandGroup("SetupPosition") {
   AddParallel(new ElevatorSetPosition(position));
 
   if (type == TargetType::Cargo) {

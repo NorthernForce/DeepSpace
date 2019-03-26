@@ -20,7 +20,7 @@ const double VisionFollowReflectiveTape::k_d = 0.1;
 
 const double VisionFollowReflectiveTape::k_maxTurnSpeed = 0.7;
 
-VisionFollowReflectiveTape::VisionFollowReflectiveTape() {
+VisionFollowReflectiveTape::VisionFollowReflectiveTape() : Command("VisionFollowReflectiveTape") {
   Requires(Robot::m_vision.get());
   Requires(Robot::m_driveTrain.get());
 
