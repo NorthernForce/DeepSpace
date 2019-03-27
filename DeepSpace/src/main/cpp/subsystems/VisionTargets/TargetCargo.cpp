@@ -17,6 +17,7 @@ const double TargetCargo::k_minArea = 15;
 TargetCargo::TargetCargo() {
   // Add smart dashboard stuff...
   frc::SmartDashboard::PutNumber("Vision: Cargo: HUE INVERT", k_invertHue);
+  frc::SmartDashboard::PutNumber("Vision: Cargo: HUE MIN", k_invertHue);
   frc::SmartDashboard::PutNumber("Vision: Cargo: HUE MAX", k_maxHue);
   frc::SmartDashboard::PutNumber("Vision: Cargo: SAT MIN", k_minSat);
   frc::SmartDashboard::PutNumber("Vision: Cargo: SAT MAX", k_maxSat);
