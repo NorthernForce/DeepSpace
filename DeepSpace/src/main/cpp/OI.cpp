@@ -10,7 +10,10 @@
 #include "RobotMap.h"
 
 #include <frc/shuffleboard/Shuffleboard.h>
-#include <frc/buttons/JoystickButton.h>
+
+#include "triggers/SimpleAxis.h"
+#include "triggers/SimpleButton.h"
+#include "triggers/ComboButton.h"
 
 // Command inclusions
 #include "commands/CargoIntake.h"
@@ -42,51 +45,15 @@
 #include "commands/VisionFollowReflectiveTape.h"
 #include "commands/GotoTarget.h"
 
-class SimpleAxis : public Button {
- public:
-  SimpleAxis(GenericHID* joystick, int axisNumber, double threshold = 0.5) 
-    : m_joystick(joystick), m_axisNumber(axisNumber), m_threshold(threshold) {}
-
-  virtual ~SimpleAxis() = default;
-
-  SimpleAxis(SimpleAxis&&) = default;
-  SimpleAxis& operator=(SimpleAxis&&) = default;
-
-  virtual bool Get() {
-    return (m_joystick->GetRawAxis(m_axisNumber) > m_threshold);
-  };
-
- private:
-  GenericHID* m_joystick;
-  int m_axisNumber;
-  double m_threshold;
-};
-
 // Functions to simplify button mapping.
-static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
-  auto joystickButton = new frc::JoystickButton(joystick.get(), button);
-  joystickButton->WhenPressed(command);
+static void WhenPressed(frc::Trigger* trigger, frc::Command* command) {
+  trigger->WhenActive(command);
 }
-static void WhenReleased(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
-  auto joystickButton = new frc::JoystickButton(joystick.get(), button);
-  joystickButton->WhenReleased(command);
+static void WhenReleased(frc::Trigger* trigger, frc::Command* command) {
+  trigger->WhenInactive(command);
 }
-static void WhileHeld(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
-  auto joystickButton = new frc::JoystickButton(joystick.get(), button);
-  joystickButton->WhileHeld(command);
-}
-
-static void WhenAxisPressed(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, frc::Command* command) {
-  auto axis = new SimpleAxis(joystick.get(), axisNumber);
-  axis->WhenPressed(command);
-}
-static void WhenAxisReleased(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, frc::Command* command) {
-  auto axis = new SimpleAxis(joystick.get(), axisNumber);
-  axis->WhenReleased(command);
-}
-static void WhileAxisHeld(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, frc::Command* command) {
-  auto axis = new SimpleAxis(joystick.get(), axisNumber);
-  axis->WhileHeld(command);
+static void WhileHeld(frc::Trigger* trigger, frc::Command* command) {
+  trigger->WhileActive(command);
 }
 
 OI::OI() {
@@ -94,10 +61,11 @@ OI::OI() {
   m_driverController.reset(new frc::XboxController(RobotMap::OI::k_driverController_id));
   m_manipulatorController1.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController1_id));
   m_manipulatorController2.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController2_id));
+  m_manipulatorController3.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController3_id));
 
-  // frc::ShuffleboardTab& basicCommandsTab = frc::Shuffleboard::GetTab("Basic Commands");
-  // basicCommandsTab.Add("ElevatorSetup", new ElevatorSetup());
-  // basicCommandsTab.Add("Calibrate Robot", new ElevatorCalibrate());
+  // auto &basicCommandsTab = frc::Shuffleboard::GetTab("Basic Commands");
+  // basicCommandsTab.Add("Cargo Intake", new CargoIntake());
+  // basicCommandsTab.Add(new ElevatorCalibrate());
 
   // frc::ShuffleboardLayout& cargoLayout = basicCommandsTab.GetLayout("Cargo", "List Layout");
   // cargoLayout.Add("CargoIntake", new CargoIntake());
@@ -105,53 +73,66 @@ OI::OI() {
   // cargoLayout.Add("ElevatorRaise", new ElevatorRaise());
   // cargoLayout.Add("ElevatorLower", new ElevatorLower());
 
-  WhileHeld(m_manipulatorController1, 1, new CargoIntake());
-  WhenPressed(m_manipulatorController1, 1, new ClawClose());
-  WhenReleased(m_manipulatorController1, 1, new ClawOpen());
+  // auto test = new SimpleButton(m_manipulatorController1, 1);
+  // test->WhileActive(new CargoIntake());
+  WhileHeld(new SimpleButton(m_manipulatorController1, 1), new CargoIntake());
+  WhenPressed(new SimpleButton(m_manipulatorController1, 1), new ClawClose());
+  WhenReleased(new SimpleButton(m_manipulatorController1, 1), new ClawOpen());
 
-  WhileHeld(m_manipulatorController1, 3, new CargoEject());
+  WhileHeld(new SimpleButton(m_manipulatorController1, 3), new CargoEject());
   
-  WhenPressed(m_manipulatorController1, 8, new ClawToggleRaise());
+  WhenPressed(new SimpleButton(m_manipulatorController1, 8), new ClawToggleRaise());
 
-  WhenPressed(m_manipulatorController1, 7, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel1, SetupPosition::TargetType::Cargo));
-  WhenPressed(m_manipulatorController1, 11, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel2, SetupPosition::TargetType::Cargo));
-  WhenPressed(m_manipulatorController1, 10, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3, SetupPosition::TargetType::Cargo));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 7), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel1, SetupPosition::TargetType::Cargo));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 11), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel2, SetupPosition::TargetType::Cargo));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 10), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3, SetupPosition::TargetType::Cargo));
   
-  WhenPressed(m_manipulatorController1, 4, new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel1, SetupPosition::TargetType::Hatch));
-  WhenPressed(m_manipulatorController1, 2, new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel2, SetupPosition::TargetType::Hatch));
-  WhenPressed(m_manipulatorController1, 5, new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel3, SetupPosition::TargetType::Hatch));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 4), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel1, SetupPosition::TargetType::Hatch));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 2), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel2, SetupPosition::TargetType::Hatch));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 5), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel3, SetupPosition::TargetType::Hatch));
 
-  WhenPressed(m_manipulatorController1, 6, new SetupPosition(ElevatorSetPosition::Position::CargoIntake, SetupPosition::TargetType::Cargo));
-  WhenPressed(m_manipulatorController1, 9, new SetupPosition(ElevatorSetPosition::Position::CargoShipCargoDeposit, SetupPosition::TargetType::Cargo));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 6), new SetupPosition(ElevatorSetPosition::Position::CargoIntake, SetupPosition::TargetType::Cargo));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 9), new SetupPosition(ElevatorSetPosition::Position::CargoShipCargoDeposit, SetupPosition::TargetType::Cargo));
 
-  WhenPressed(m_manipulatorController2, 8, new ElevatorSetup());
+  WhenPressed(new SimpleButton(m_manipulatorController2, 8), new ElevatorSetup());
 
-  WhileHeld(m_manipulatorController2, 10, new ElevatorRaise());
-  WhileHeld(m_manipulatorController2, 11, new ElevatorLower());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 10), new ElevatorRaise());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 11), new ElevatorLower());
 
-  WhenReleased(m_manipulatorController2, 10, new ElevatorStop());
-  WhenReleased(m_manipulatorController2, 11, new ElevatorStop());
+  WhenReleased(new SimpleButton(m_manipulatorController2, 10), new ElevatorStop());
+  WhenReleased(new SimpleButton(m_manipulatorController2, 11), new ElevatorStop());
 
-  WhenPressed(m_manipulatorController2, 4, new ElevatorToggleDeployment());
-  WhenPressed(m_manipulatorController2, 5, new ElevatorCalibrate());
+  WhenPressed(new SimpleButton(m_manipulatorController2, 4), new ElevatorToggleDeployment());
+  WhenPressed(new SimpleButton(m_manipulatorController2, 5), new ElevatorCalibrate());
 
-  WhileHeld(m_manipulatorController2, 6, new ClimberLower());
-  WhileHeld(m_manipulatorController2, 7, new ClimberRaise());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 6), new ClimberLower());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 7), new ClimberRaise());
 
-  WhileHeld(m_manipulatorController2, 3, new ClimberDriveForward());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 3), new ClimberDriveForward());
 
-  WhileHeld(m_manipulatorController2, 2, new ClimbEvenlyUp());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 2), new ClimbEvenlyUp());
 
-  // WhileHeld(m_driverController, 5, new VisionFollowReflectiveTape());
-  WhileHeld(m_driverController, 5, new GotoTarget());
+  WhileHeld(new SimpleButton(m_driverController, 5), new VisionFollowReflectiveTape());
+  // SimpleButton(m_driverController, 5), new GotoTarget());
 
-  WhileAxisHeld(m_driverController, 3, new CargoIntake());
-  WhenAxisPressed(m_driverController, 3, new ClawClose());
-  WhenAxisReleased(m_driverController, 3, new ClawOpen());
+  WhileHeld(new SimpleAxis(m_driverController, 3), new CargoIntake());
+  WhenPressed(new SimpleAxis(m_driverController, 3), new ClawClose());
+  WhenReleased(new SimpleAxis(m_driverController, 3), new ClawOpen());
 
-  WhileAxisHeld(m_driverController, 2, new CargoEject());
+  WhileHeld(new SimpleAxis(m_driverController, 2), new CargoEject());
+  
+  WhenPressed(new ComboButton(m_manipulatorController2, 8, 9), new ClimberDriveForward());
+  WhenPressed(new ComboButton(m_manipulatorController3, 6, 3), new ClimberDriveForward());
 
-  // WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
+  WhenPressed(new ComboButton(m_manipulatorController3, 5, 1), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel1, SetupPosition::TargetType::Cargo));
+  WhenPressed(new ComboButton(m_manipulatorController3, 5, 2), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel2, SetupPosition::TargetType::Cargo));
+  WhenPressed(new ComboButton(m_manipulatorController3, 5, 4), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3, SetupPosition::TargetType::Cargo));
+
+  WhenPressed(new ComboButton(m_manipulatorController3, 6, 1), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel1, SetupPosition::TargetType::Hatch));
+  WhenPressed(new ComboButton(m_manipulatorController3, 6, 2), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel2, SetupPosition::TargetType::Hatch));
+  WhenPressed(new ComboButton(m_manipulatorController3, 6, 4), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel3, SetupPosition::TargetType::Hatch));
+
+  // SimpleButton(m_manipulatorController2, 6), new ClimbStage1());
 
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }

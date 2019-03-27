@@ -42,6 +42,7 @@ namespace RobotMap {
         const static int k_driverController_id = 0;
         const static int k_manipulatorController1_id = 1;
         const static int k_manipulatorController2_id = 2;
+        const static int k_manipulatorController3_id = 3;
     }
 
     namespace Climber {

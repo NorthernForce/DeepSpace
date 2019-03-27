@@ -43,7 +43,7 @@ Vision::Vision() : Subsystem("Vision"),
   } {
 
   // Default target
-  // setTarget("Elevator", "ReflectiveTape");
+  setTarget("Elevator", "ReflectiveTape");
 
   m_visionThread.reset(new std::thread([&]{
     for (;;) {
