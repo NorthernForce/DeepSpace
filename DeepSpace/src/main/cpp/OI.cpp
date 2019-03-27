@@ -62,6 +62,27 @@ class SimpleAxis : public Button {
   double m_threshold;
 };
 
+class ComboButton : public Button {
+ public:
+  ComboButton(GenericHID* joystick, int buttonNumberPrimary, int buttonNumberSecondary) 
+    : m_joystick(joystick), m_primary(buttonNumberPrimary), m_secondary(buttonNumberSecondary) {}
+
+  virtual ~ComboButton() = default;
+
+  ComboButton(ComboButton&&) = default;
+  ComboButton& operator=(ComboButton&&) = default;
+
+  virtual bool Get() {
+    return (m_joystick->GetRawButton(m_primary) && m_joystick->GetRawButton(m_secondary));
+  };
+
+ private:
+  GenericHID* m_joystick;
+  int m_primary;
+  int m_secondary;
+  double m_threshold;
+};
+
 // Functions to simplify button mapping.
 static void WhenPressed(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
   auto joystickButton = new frc::JoystickButton(joystick.get(), button);
@@ -74,6 +95,11 @@ static void WhenReleased(std::shared_ptr<frc::GenericHID> joystick, int button, 
 static void WhileHeld(std::shared_ptr<frc::GenericHID> joystick, int button, frc::Command* command) {
   auto joystickButton = new frc::JoystickButton(joystick.get(), button);
   joystickButton->WhileHeld(command);
+}
+
+static void WhenCombod(std::shared_ptr<frc::GenericHID> joystick, int button1, int button2, frc::Command* command) {
+  auto combo = new ComboButton(joystick.get(), button1, button2);
+  combo->WhenPressed(command);
 }
 
 static void WhenAxisPressed(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, frc::Command* command) {
@@ -94,6 +120,7 @@ OI::OI() {
   m_driverController.reset(new frc::XboxController(RobotMap::OI::k_driverController_id));
   m_manipulatorController1.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController1_id));
   m_manipulatorController2.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController2_id));
+  m_manipulatorController3.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController3_id));
 
   // frc::ShuffleboardTab& basicCommandsTab = frc::Shuffleboard::GetTab("Basic Commands");
   // basicCommandsTab.Add("ElevatorSetup", new ElevatorSetup());
@@ -150,6 +177,17 @@ OI::OI() {
   WhenAxisReleased(m_driverController, 3, new ClawOpen());
 
   WhileAxisHeld(m_driverController, 2, new CargoEject());
+  
+  WhenCombod(m_manipulatorController2, 8, 9, new ClimberDriveForward());
+  WhenCombod(m_manipulatorController3, 6, 3, new ClimberDriveForward());
+
+  WhenCombod(m_manipulatorController3, 5, 1, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel1, SetupPosition::TargetType::Cargo));
+  WhenCombod(m_manipulatorController3, 5, 2, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel2, SetupPosition::TargetType::Cargo));
+  WhenCombod(m_manipulatorController3, 5, 4, new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3, SetupPosition::TargetType::Cargo));
+
+  WhenCombod(m_manipulatorController3, 6, 1, new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel1, SetupPosition::TargetType::Hatch));
+  WhenCombod(m_manipulatorController3, 6, 2, new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel2, SetupPosition::TargetType::Hatch));
+  WhenCombod(m_manipulatorController3, 6, 4, new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel3, SetupPosition::TargetType::Hatch));
 
   // WhenPressed(m_manipulatorController2, 6, new ClimbStage1());
 
