@@ -142,8 +142,8 @@ OI::OI() {
 
   WhileHeld(m_manipulatorController2, 2, new ClimbEvenlyUp());
 
-  WhileHeld(m_driverController, 5, new VisionFollowReflectiveTape());
-  // WhileHeld(m_driverController, 5, new GotoTarget());
+  // WhileHeld(m_driverController, 5, new VisionFollowReflectiveTape());
+  WhileHeld(m_driverController, 5, new GotoTarget());
 
   WhileAxisHeld(m_driverController, 3, new CargoIntake());
   WhenAxisPressed(m_driverController, 3, new ClawClose());
