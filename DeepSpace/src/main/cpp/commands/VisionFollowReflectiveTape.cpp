@@ -72,7 +72,7 @@ bool VisionFollowReflectiveTape::IsFinished() { return false; }
 
 // Called once after isFinished returns true
 void VisionFollowReflectiveTape::End() {
-  // Robot::m_vision->setTarget("Elevator", "");
+  Robot::m_vision->setTarget("Elevator", "");
   Robot::m_driveTrain->arcDrive(0, 0);
 }
 
