@@ -260,7 +260,7 @@ void TargetReflectiveTape::run(cv::Mat &frame) {
 
   // std::cout << "m_horizontalOffset: " << m_horizontalOffset.load() << " m_verticalOffset: " << m_verticalOffset.load() << "\n";
   // std::cout << "percentage: " << (largestTarget.leftTape.area / largestTarget.totalArea) << "\n";
-  std::cout << "leftArea: " << largestTarget.leftTape.area;
-  std::cout << " rightArea: " << largestTarget.rightTape.area;
-  std::cout << " distance: " << std::sqrt(std::pow(largestTarget.rightTape.center.x - largestTarget.leftTape.center.x, 2) + std::pow(largestTarget.rightTape.center.y - largestTarget.leftTape.center.y, 2)) << "\n";
+  // std::cout << "leftArea: " << largestTarget.leftTape.area;
+  // std::cout << " rightArea: " << largestTarget.rightTape.area;
+  // std::cout << " distance: " << std::sqrt(std::pow(largestTarget.rightTape.center.x - largestTarget.leftTape.center.x, 2) + std::pow(largestTarget.rightTape.center.y - largestTarget.leftTape.center.y, 2)) << "\n";
 }

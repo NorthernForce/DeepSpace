@@ -45,6 +45,17 @@
 #include "commands/VisionFollowReflectiveTape.h"
 #include "commands/GotoTarget.h"
 
+// Functions to simplify button mapping.
+static void WhenPressed(frc::Trigger* trigger, frc::Command* command) {
+  trigger->WhenActive(command);
+}
+static void WhenReleased(frc::Trigger* trigger, frc::Command* command) {
+  trigger->WhenInactive(command);
+}
+static void WhileHeld(frc::Trigger* trigger, frc::Command* command) {
+  trigger->WhileActive(command);
+}
+
 OI::OI() {
   // Initialize the controllers
   m_driverController.reset(new frc::XboxController(RobotMap::OI::k_driverController_id));
@@ -62,64 +73,66 @@ OI::OI() {
   // cargoLayout.Add("ElevatorRaise", new ElevatorRaise());
   // cargoLayout.Add("ElevatorLower", new ElevatorLower());
 
-  SimpleButton(m_manipulatorController1, 1).WhileActive(new CargoIntake());
-  SimpleButton(m_manipulatorController1, 1).WhenActive(new ClawClose());
-  SimpleButton(m_manipulatorController1, 1).WhenInactive(new ClawOpen());
+  // auto test = new SimpleButton(m_manipulatorController1, 1);
+  // test->WhileActive(new CargoIntake());
+  WhileHeld(new SimpleButton(m_manipulatorController1, 1), new CargoIntake());
+  WhenPressed(new SimpleButton(m_manipulatorController1, 1), new ClawClose());
+  WhenReleased(new SimpleButton(m_manipulatorController1, 1), new ClawOpen());
 
-  SimpleButton(m_manipulatorController1, 3).WhileActive(new CargoEject());
+  WhileHeld(new SimpleButton(m_manipulatorController1, 3), new CargoEject());
   
-  SimpleButton(m_manipulatorController1, 8).WhenActive(new ClawToggleRaise());
+  WhenPressed(new SimpleButton(m_manipulatorController1, 8), new ClawToggleRaise());
 
-  SimpleButton(m_manipulatorController1, 7).WhenActive(new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel1, SetupPosition::TargetType::Cargo));
-  SimpleButton(m_manipulatorController1, 11).WhenActive(new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel2, SetupPosition::TargetType::Cargo));
-  SimpleButton(m_manipulatorController1, 10).WhenActive(new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3, SetupPosition::TargetType::Cargo));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 7), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel1, SetupPosition::TargetType::Cargo));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 11), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel2, SetupPosition::TargetType::Cargo));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 10), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3, SetupPosition::TargetType::Cargo));
   
-  SimpleButton(m_manipulatorController1, 4).WhenActive(new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel1, SetupPosition::TargetType::Hatch));
-  SimpleButton(m_manipulatorController1, 2).WhenActive(new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel2, SetupPosition::TargetType::Hatch));
-  SimpleButton(m_manipulatorController1, 5).WhenActive(new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel3, SetupPosition::TargetType::Hatch));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 4), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel1, SetupPosition::TargetType::Hatch));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 2), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel2, SetupPosition::TargetType::Hatch));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 5), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel3, SetupPosition::TargetType::Hatch));
 
-  SimpleButton(m_manipulatorController1, 6).WhenActive(new SetupPosition(ElevatorSetPosition::Position::CargoIntake, SetupPosition::TargetType::Cargo));
-  SimpleButton(m_manipulatorController1, 9).WhenActive(new SetupPosition(ElevatorSetPosition::Position::CargoShipCargoDeposit, SetupPosition::TargetType::Cargo));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 6), new SetupPosition(ElevatorSetPosition::Position::CargoIntake, SetupPosition::TargetType::Cargo));
+  WhenPressed(new SimpleButton(m_manipulatorController1, 9), new SetupPosition(ElevatorSetPosition::Position::CargoShipCargoDeposit, SetupPosition::TargetType::Cargo));
 
-  SimpleButton(m_manipulatorController2, 8).WhenActive(new ElevatorSetup());
+  WhenPressed(new SimpleButton(m_manipulatorController2, 8), new ElevatorSetup());
 
-  SimpleButton(m_manipulatorController2, 10).WhileActive(new ElevatorRaise());
-  SimpleButton(m_manipulatorController2, 11).WhileActive(new ElevatorLower());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 10), new ElevatorRaise());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 11), new ElevatorLower());
 
-  SimpleButton(m_manipulatorController2, 10).WhenInactive(new ElevatorStop());
-  SimpleButton(m_manipulatorController2, 11).WhenInactive(new ElevatorStop());
+  WhenReleased(new SimpleButton(m_manipulatorController2, 10), new ElevatorStop());
+  WhenReleased(new SimpleButton(m_manipulatorController2, 11), new ElevatorStop());
 
-  SimpleButton(m_manipulatorController2, 4).WhenActive(new ElevatorToggleDeployment());
-  SimpleButton(m_manipulatorController2, 5).WhenActive(new ElevatorCalibrate());
+  WhenPressed(new SimpleButton(m_manipulatorController2, 4), new ElevatorToggleDeployment());
+  WhenPressed(new SimpleButton(m_manipulatorController2, 5), new ElevatorCalibrate());
 
-  SimpleButton(m_manipulatorController2, 6).WhileActive(new ClimberLower());
-  SimpleButton(m_manipulatorController2, 7).WhileActive(new ClimberRaise());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 6), new ClimberLower());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 7), new ClimberRaise());
 
-  SimpleButton(m_manipulatorController2, 3).WhileActive(new ClimberDriveForward());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 3), new ClimberDriveForward());
 
-  SimpleButton(m_manipulatorController2, 2).WhileActive(new ClimbEvenlyUp());
+  WhileHeld(new SimpleButton(m_manipulatorController2, 2), new ClimbEvenlyUp());
 
-  // SimpleButton(m_driverController, 5).WhileActive(new VisionFollowReflectiveTape());
-  SimpleButton(m_driverController, 5).WhileActive(new GotoTarget());
+  WhileHeld(new SimpleButton(m_driverController, 5), new VisionFollowReflectiveTape());
+  // SimpleButton(m_driverController, 5), new GotoTarget());
 
-  SimpleAxis(m_driverController, 3).WhileActive(new CargoIntake());
-  SimpleAxis(m_driverController, 3).WhenActive(new ClawClose());
-  SimpleAxis(m_driverController, 3).WhenInactive(new ClawOpen());
+  WhileHeld(new SimpleAxis(m_driverController, 3), new CargoIntake());
+  WhenPressed(new SimpleAxis(m_driverController, 3), new ClawClose());
+  WhenReleased(new SimpleAxis(m_driverController, 3), new ClawOpen());
 
-  SimpleAxis(m_driverController, 2).WhileActive(new CargoEject());
+  WhileHeld(new SimpleAxis(m_driverController, 2), new CargoEject());
   
-  ComboButton(m_manipulatorController2, 8, 9).WhenActive(new ClimberDriveForward());
-  ComboButton(m_manipulatorController3, 6, 3).WhenActive(new ClimberDriveForward());
+  WhenPressed(new ComboButton(m_manipulatorController2, 8, 9), new ClimberDriveForward());
+  WhenPressed(new ComboButton(m_manipulatorController3, 6, 3), new ClimberDriveForward());
 
-  ComboButton(m_manipulatorController3, 5, 1).WhenActive(new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel1, SetupPosition::TargetType::Cargo));
-  ComboButton(m_manipulatorController3, 5, 2).WhenActive(new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel2, SetupPosition::TargetType::Cargo));
-  ComboButton(m_manipulatorController3, 5, 4).WhenActive(new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3, SetupPosition::TargetType::Cargo));
+  WhenPressed(new ComboButton(m_manipulatorController3, 5, 1), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel1, SetupPosition::TargetType::Cargo));
+  WhenPressed(new ComboButton(m_manipulatorController3, 5, 2), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel2, SetupPosition::TargetType::Cargo));
+  WhenPressed(new ComboButton(m_manipulatorController3, 5, 4), new SetupPosition(ElevatorSetPosition::Position::CargoDepositLevel3, SetupPosition::TargetType::Cargo));
 
-  ComboButton(m_manipulatorController3, 6, 1).WhenActive(new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel1, SetupPosition::TargetType::Hatch));
-  ComboButton(m_manipulatorController3, 6, 2).WhenActive(new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel2, SetupPosition::TargetType::Hatch));
-  ComboButton(m_manipulatorController3, 6, 4).WhenActive(new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel3, SetupPosition::TargetType::Hatch));
+  WhenPressed(new ComboButton(m_manipulatorController3, 6, 1), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel1, SetupPosition::TargetType::Hatch));
+  WhenPressed(new ComboButton(m_manipulatorController3, 6, 2), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel2, SetupPosition::TargetType::Hatch));
+  WhenPressed(new ComboButton(m_manipulatorController3, 6, 4), new SetupPosition(ElevatorSetPosition::Position::HatchDepositLevel3, SetupPosition::TargetType::Hatch));
 
-  // SimpleButton(m_manipulatorController2, 6).WhenActive(new ClimbStage1());
+  // SimpleButton(m_manipulatorController2, 6), new ClimbStage1());
 
   // m_driverController->SetRumble(frc::GenericHID::kLeftRumble, 1.0);
 }
