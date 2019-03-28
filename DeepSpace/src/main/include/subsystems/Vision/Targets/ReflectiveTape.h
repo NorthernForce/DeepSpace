@@ -1,11 +1,13 @@
 #pragma once
 
-#include "subsystems/Vision.h"
+#include "subsystems/Vision/Targets/Target.h"
 
-class TargetReflectiveTape : public Vision::Target {
+namespace Vision {
+
+class ReflectiveTape : public Target {
  public:
-  TargetReflectiveTape();
-  virtual void setup(Vision::Camera *camera) override;
+  ReflectiveTape();
+  virtual void setup(Camera *camera) override;
   virtual void run(cv::Mat &frame) override;
   const static std::string k_name;
 
@@ -21,3 +23,5 @@ class TargetReflectiveTape : public Vision::Target {
   const static double k_maxAreaDiff;
   const static double k_maxCenterOffset;
 };
+
+}

@@ -1,20 +1,20 @@
-#include "subsystems/VisionTargets/TargetCargo.h"
+#include "subsystems/Vision/Targets/Cargo.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
-const std::string TargetCargo::k_name = "Cargo";
+const std::string Vision::Cargo::k_name = "Cargo";
 
-const int TargetCargo::k_invertHue = 0;
-const int TargetCargo::k_minHue = 35;
-const int TargetCargo::k_maxHue = 85;
-const int TargetCargo::k_minSat = 150;
-const int TargetCargo::k_maxSat = 255;
-const int TargetCargo::k_minVal = 115;
-const int TargetCargo::k_maxVal = 255;
+const int Vision::Cargo::k_invertHue = 0;
+const int Vision::Cargo::k_minHue = 35;
+const int Vision::Cargo::k_maxHue = 85;
+const int Vision::Cargo::k_minSat = 150;
+const int Vision::Cargo::k_maxSat = 255;
+const int Vision::Cargo::k_minVal = 115;
+const int Vision::Cargo::k_maxVal = 255;
 
-const double TargetCargo::k_minArea = 15;
+const double Vision::Cargo::k_minArea = 15;
 
-TargetCargo::TargetCargo() {
+Vision::Cargo::Cargo() {
   // Add smart dashboard stuff...
   frc::SmartDashboard::PutNumber("Vision: Cargo: HUE INVERT", k_invertHue);
   frc::SmartDashboard::PutNumber("Vision: Cargo: HUE MIN", k_invertHue);
@@ -25,10 +25,9 @@ TargetCargo::TargetCargo() {
   frc::SmartDashboard::PutNumber("Vision: Cargo: VAL MAX", k_maxVal);
 }
 
-void TargetCargo::setup(Vision::Camera *camera) {}
+void Vision::Cargo::setup(Vision::Camera *camera) {}
 
-void TargetCargo::run(cv::Mat &frame) {
-
+void Vision::Cargo::run(cv::Mat &frame) {
   cv::Mat filtered = frame.clone();
 
   // Attempt to remove some noise.

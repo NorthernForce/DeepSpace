@@ -1,11 +1,13 @@
 #pragma once
 
-#include "subsystems/Vision.h"
+#include "subsystems/Vision/Targets/Target.h"
 
-class TargetCargo : public Vision::Target {
+namespace Vision {
+
+class Cargo : public Target {
  public:
-  TargetCargo();
-  virtual void setup(Vision::Camera *camera) override;
+  Cargo();
+  virtual void setup(Camera *camera) override;
   virtual void run(cv::Mat &frame) override;
   const static std::string k_name;
 
@@ -17,3 +19,5 @@ class TargetCargo : public Vision::Target {
 
   const static double k_minArea;
 };
+
+}

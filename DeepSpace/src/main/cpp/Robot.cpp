@@ -40,7 +40,7 @@ std::shared_ptr<IMU> Robot::m_imu;
 std::shared_ptr<LineTracker> Robot::m_lineTracker;
 std::shared_ptr<Climber> Robot::m_climber;
 std::shared_ptr<ClimberDrive> Robot::m_climberDrive;
-std::shared_ptr<Vision> Robot::m_vision;
+std::shared_ptr<Vision::Manager> Robot::m_vision;
 std::shared_ptr<RangeFinder> Robot::m_rangeFinder;
 
 void Robot::RobotInit() {
@@ -53,7 +53,7 @@ void Robot::RobotInit() {
   m_claw.reset(new Claw());
   m_imu.reset(new IMU());
   m_lineTracker.reset(new LineTracker());
-  m_vision.reset(new Vision());
+  m_vision.reset(new Vision::Manager());
   m_climber.reset(new Climber());
   m_climberDrive.reset(new ClimberDrive());
   m_rangeFinder.reset(new RangeFinder());

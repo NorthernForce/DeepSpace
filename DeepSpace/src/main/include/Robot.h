@@ -23,7 +23,7 @@
 #include "subsystems/ClimberDrive.h"
 #include "subsystems/Claw.h"
 #include "subsystems/IMU.h"
-#include "subsystems/Vision.h"
+#include "subsystems/VisionManager.h"
 #include "subsystems/RangeFinder.h"
 
 #define COMPETITION_ROBOT
@@ -43,7 +43,7 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<LineTracker> m_lineTracker;
   static std::shared_ptr<Climber> m_climber;
   static std::shared_ptr<ClimberDrive> m_climberDrive;
-  static std::shared_ptr<Vision> m_vision;
+  static std::shared_ptr<Vision::Manager> m_vision;
   static std::shared_ptr<RangeFinder> m_rangeFinder;
 
   void RobotInit() override;
