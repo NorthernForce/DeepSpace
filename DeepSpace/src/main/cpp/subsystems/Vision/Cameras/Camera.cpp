@@ -38,6 +38,8 @@ Vision::Camera::Camera(std::string name, std::string devPath, int width, int hei
   if (lightRingID != -1) {
     m_lightRing.reset(new frc::Relay(lightRingID, frc::Relay::kForwardOnly));
   }
+
+  m_isEnabled = true;
 }
 
 void Vision::Camera::process() {
@@ -103,4 +105,18 @@ void Vision::Camera::setLightRing(bool turnOn) {
 
 void Vision::Camera::setTarget(std::shared_ptr<Vision::Target> target) {
   std::atomic_store(&m_objectToTarget, target);
+
+  enable(true);
+}
+
+void Vision::Camera::enable(bool enable) {
+  if (!enable) {
+    setLightRing(false);
+  }
+
+  m_isEnabled = enable;
+}
+
+bool Vision::Camera::isEnabled() {
+  return m_isEnabled.load();
 }

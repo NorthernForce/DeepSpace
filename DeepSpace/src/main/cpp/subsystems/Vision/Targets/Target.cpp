@@ -6,5 +6,5 @@ void Vision::Target::resetOffset() {
 }
 
 std::pair<double, double> Vision::Target::getOffset() {
-    return std::make_pair(m_horizontalOffset.load(), m_verticalOffset.load());
-  }
+  return std::make_pair(m_horizontalOffset.load(), m_verticalOffset.load());
+}

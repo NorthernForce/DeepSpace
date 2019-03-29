@@ -30,7 +30,9 @@ Vision::Manager::Manager() : Subsystem("VisionManager"),
   m_visionThread.reset(new std::thread([&]{
     for (;;) {
       for (const auto& camera : m_cameras) {
-        camera.second->process();
+        if (camera.second->isEnabled()) {
+          camera.second->process();
+        }
       }
     }
   }));
@@ -47,4 +49,8 @@ void Vision::Manager::setTarget(std::string cameraName, std::string targetName) 
 
 std::pair<double, double> Vision::Manager::getOffset(std::string targetName) {
   return m_targets[targetName]->getOffset();
+}
+
+void Vision::Manager::enableCamera(std::string cameraName, bool enable) {
+  m_cameras[cameraName]->enable(enable);
 }

@@ -29,6 +29,7 @@ namespace Vision {
     Manager();
     void setTarget(std::string cameraName, std::string targetName = "");
     std::pair<double, double> getOffset(std::string targetName);
+    void enableCamera(std::string cameraName, bool enable = true);
 
   private:
     std::shared_ptr<std::thread> m_visionThread;
