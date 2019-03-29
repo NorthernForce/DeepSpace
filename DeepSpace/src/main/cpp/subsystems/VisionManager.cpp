@@ -30,9 +30,7 @@ Vision::Manager::Manager() : Subsystem("VisionManager"),
   m_visionThread.reset(new std::thread([&]{
     for (;;) {
       for (const auto& camera : m_cameras) {
-        if (camera.second->isEnabled()) {
-          camera.second->process();
-        }
+        camera.second->process();
       }
     }
   }));

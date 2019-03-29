@@ -43,6 +43,10 @@ Vision::Camera::Camera(std::string name, std::string devPath, int width, int hei
 }
 
 void Vision::Camera::process() {
+  if (!isEnabled()) {
+    return;
+  }
+
   if (m_currentTarget != m_objectToTarget) {
     if (m_currentTarget != nullptr) {
       m_currentTarget->resetOffset();
