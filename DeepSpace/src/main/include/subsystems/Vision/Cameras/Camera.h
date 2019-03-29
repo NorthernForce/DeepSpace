@@ -18,11 +18,9 @@ class Camera {
  public:
   Camera(std::string name, std::string devPath, int width = 160, int height = 120, int fps = 30, int lightRingID = -1);
   void process();
-  void updateSettings(std::string newSettings);
+  void updateSettings(std::string newSettings = "");
   void setLightRing(bool turnOn);
   void setTarget(std::shared_ptr<Target> target);
-
-  const static std::string k_defaultSettings;
 
  private:
   std::string m_name;
@@ -39,7 +37,10 @@ class Camera {
   std::shared_ptr<Target> m_objectToTarget;
   std::shared_ptr<Target> m_currentTarget;
 
-  const static int k_cameraSettingsDelayMillis;
+  std::string m_currentSettings;
+  const static std::string k_defaultSettings;
+  const static int k_settingsChangeDelayMillis;
+  const static int k_lightringChangeDelayMillis;
 };
 
 }

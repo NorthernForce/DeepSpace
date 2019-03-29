@@ -16,8 +16,8 @@
 
 Vision::Manager::Manager() : Subsystem("VisionManager"),
   m_cameras{
-    {"Elevator", std::make_shared<Vision::Camera>("Elevator Camera", RobotMap::Vision::k_elevatorCamera_path, 240, 180, 30, RobotMap::Vision::k_elevatorCameraLightRing_id)},
-    {"Manipulator", std::make_shared<Vision::Camera>("Manipulator Camera", RobotMap::Vision::k_manipulatorCamera_path)},
+    {"Targeter", std::make_shared<Vision::Camera>("Targeter Camera", RobotMap::Vision::k_targeterCamera_path, 240, 180, 30, RobotMap::Vision::k_targeterCameraLightRing_id)},
+    {"Driver", std::make_shared<Vision::Camera>("Driver Camera", RobotMap::Vision::k_driverCamera_path)},
   },
   m_targets{
     {Vision::ReflectiveTape::k_name, std::make_shared<Vision::ReflectiveTape>()},
@@ -25,7 +25,7 @@ Vision::Manager::Manager() : Subsystem("VisionManager"),
   } {
 
   // Default target
-  setTarget("Elevator", "ReflectiveTape");
+  setTarget("Targeter", "ReflectiveTape");
 
   m_visionThread.reset(new std::thread([&]{
     for (;;) {

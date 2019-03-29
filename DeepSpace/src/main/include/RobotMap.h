@@ -83,9 +83,9 @@ namespace RobotMap {
     }
 
     namespace Vision {
-        const static char *k_elevatorCamera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0";
-        const static int k_elevatorCameraLightRing_id = 0;
-        const static char *k_manipulatorCamera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0";
+        const static char *k_targeterCamera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.1:1.0-video-index0";
+        const static int k_targeterCameraLightRing_id = 0;
+        const static char *k_driverCamera_path = "/dev/v4l/by-path/platform-ci_hdrc.0-usb-0:1.2:1.0-video-index0";
     }
 
     namespace LineTracker {

@@ -15,5 +15,5 @@ VisionTargetReflectiveTape::VisionTargetReflectiveTape() : TimedCommand("VisionT
 
 // Called just before this Command runs the first time
 void VisionTargetReflectiveTape::Initialize() {
-  Robot::m_vision->setTarget("Elevator", "ReflectiveTape");
+  Robot::m_vision->setTarget("Targeter", "ReflectiveTape");
 }

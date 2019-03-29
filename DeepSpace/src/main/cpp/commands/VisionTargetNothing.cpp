@@ -15,6 +15,6 @@ VisionTargetNothing::VisionTargetNothing() : TimedCommand("VisionTargetNothing",
 
 // Called just before this Command runs the first time
 void VisionTargetNothing::Initialize() {
-  Robot::m_vision->setTarget("Elevator");
+  Robot::m_vision->setTarget("Targeter");
   // Robot::m_vision->setTarget("ReflectiveTape");
 }

@@ -16,7 +16,8 @@ const std::string Vision::Camera::k_defaultSettings =
   // "tilt_absolute=0,"
   // "zoom_absolute=0";
 
-const int Vision::Camera::k_cameraSettingsDelayMillis = 250;
+const int Vision::Camera::k_settingsChangeDelayMillis = 250;
+const int Vision::Camera::k_lightringChangeDelayMillis = 50;
 
 Vision::Camera::Camera(std::string name, std::string devPath, int width, int height, int fps, int lightRingID) {
   m_name = name;
@@ -73,18 +74,29 @@ void Vision::Camera::process() {
 }
 
 void Vision::Camera::updateSettings(std::string newSettings) {
-  system((m_baseCommand + newSettings).c_str());
-  // Pause the camera thread while camera settings update
-  std::this_thread::sleep_for(std::chrono::milliseconds(k_cameraSettingsDelayMillis));
+  if (newSettings != m_currentSettings) {
+    if (newSettings == "") {
+      newSettings = k_defaultSettings;
+    }
+
+    system((m_baseCommand + newSettings).c_str());
+
+    m_currentSettings = newSettings;
+
+    // Pause the camera thread while camera settings update
+    std::this_thread::sleep_for(std::chrono::milliseconds(k_settingsChangeDelayMillis));
+  }
 }
 
 void Vision::Camera::setLightRing(bool turnOn) {
   if (m_lightRing != nullptr) {
-    if (turnOn) {
-      m_lightRing->Set(frc::Relay::kOn);
-    }
-    else {
-      m_lightRing->Set(frc::Relay::kOff);
+    frc::Relay::Value val = (turnOn ? frc::Relay::kOn : frc::Relay::kOff);
+
+    if (m_lightRing->Get() != val) {
+      m_lightRing->Set(val);
+
+      // Pause the camera thread while the lightring turns on/off
+      std::this_thread::sleep_for(std::chrono::milliseconds(k_lightringChangeDelayMillis));
     }
   }
 }
