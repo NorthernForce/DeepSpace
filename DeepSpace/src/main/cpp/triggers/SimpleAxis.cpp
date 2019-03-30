@@ -7,9 +7,16 @@
 
 #include "triggers/SimpleAxis.h"
 
-SimpleAxis::SimpleAxis(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, double threshold) 
-  : m_joystick(joystick), m_axisNumber(axisNumber), m_threshold(threshold) {}
+SimpleAxis::SimpleAxis(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, double lowerThreshold, double upperThreshold) 
+  : m_joystick(joystick), m_axisNumber(axisNumber), m_lowerThreshold(lowerThreshold), m_upperThreshold(upperThreshold) {}
 
-bool SimpleAxis::Get() { 
-  return (m_joystick->GetRawAxis(m_axisNumber) > m_threshold);
+bool SimpleAxis::Get() {
+  double value = m_joystick->GetRawAxis(m_axisNumber);
+
+  if (value < m_lowerThreshold || value > m_upperThreshold) {
+    return false;
+  }
+  else {
+    return true;
+  }
 }

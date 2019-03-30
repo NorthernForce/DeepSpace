@@ -12,11 +12,12 @@
 
 class SimpleAxis : public frc::Trigger {
  public:
-  SimpleAxis(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, double threshold = 0.5);
+  SimpleAxis(std::shared_ptr<frc::GenericHID> joystick, int axisNumber, double lowerThreshold = 0.5, double upperThreshold = 1);
   bool Get() override;
 
  private:
   std::shared_ptr<frc::GenericHID> m_joystick;
   int m_axisNumber;
-  double m_threshold;
+  double m_lowerThreshold;
+  double m_upperThreshold;
 };

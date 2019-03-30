@@ -7,9 +7,9 @@
 
 #include "triggers/ComboButton.h"
 
-ComboButton::ComboButton(std::shared_ptr<frc::GenericHID> joystick, int buttonNumberPrimary, int buttonNumberSecondary)
-  : m_joystick(joystick), m_primaryBtn(buttonNumberPrimary), m_secondaryBtn(buttonNumberSecondary) {}
+ComboButton::ComboButton(frc::Trigger *button1, frc::Trigger *button2)
+  : m_button1(button1), m_button2(button2) {}
 
 bool ComboButton::Get() {
-  return (m_joystick->GetRawButton(m_primaryBtn) && m_joystick->GetRawButton(m_secondaryBtn));
+  return (m_button1->Get() && m_button2->Get());
 }

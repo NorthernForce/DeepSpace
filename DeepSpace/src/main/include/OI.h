@@ -20,5 +20,5 @@ class OI {
   std::shared_ptr<frc::XboxController> m_driverController;
   std::shared_ptr<frc::Joystick> m_manipulatorController1;
   std::shared_ptr<frc::Joystick> m_manipulatorController2;
-  std::shared_ptr<frc::Joystick> m_manipulatorController3;
+  std::shared_ptr<frc::XboxController> m_manipulatorController3;
 };

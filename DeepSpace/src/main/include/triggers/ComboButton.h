@@ -12,11 +12,10 @@
 
 class ComboButton : public frc::Trigger {
  public:
-  ComboButton(std::shared_ptr<frc::GenericHID> joystick, int buttonNumberPrimary, int buttonNumberSecondary);
+  ComboButton(frc::Trigger *button1, frc::Trigger *button2);
   bool Get() override;
 
  private:
-  std::shared_ptr<frc::GenericHID> m_joystick;
-  int m_primaryBtn;
-  int m_secondaryBtn;
+  frc::Trigger *m_button1;
+  frc::Trigger *m_button2;
 };

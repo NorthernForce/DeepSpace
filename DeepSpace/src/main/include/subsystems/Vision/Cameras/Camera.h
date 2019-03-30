@@ -19,7 +19,7 @@ class Camera {
   Camera(std::string name, std::string devPath, int width = 160, int height = 120, int fps = 30, int lightRingID = -1);
   void process();
   void updateSettings(std::string newSettings = "");
-  void setLightRing(bool turnOn);
+  void setLightRing(bool turnOn = false);
   void setTarget(std::shared_ptr<Target> target);
   void enable(bool enable);
   bool isEnabled();

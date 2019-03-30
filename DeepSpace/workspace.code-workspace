@@ -10,7 +10,8 @@
 			"ostream": "cpp",
 			"*.tcc": "cpp",
 			"fstream": "cpp",
-			"cmath": "cpp"
+			"cmath": "cpp",
+			"chrono": "cpp"
 		},
 		"java.configuration.updateBuildConfiguration": "disabled"
 	}
