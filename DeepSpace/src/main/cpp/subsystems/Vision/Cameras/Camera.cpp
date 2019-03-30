@@ -55,7 +55,6 @@ void Vision::Camera::process() {
     m_currentTarget = m_objectToTarget;
 
     // Reset all camera settings
-    updateSettings(k_defaultSettings);
     setLightRing(false);
 
     // Call target setup
@@ -81,13 +80,15 @@ void Vision::Camera::process() {
 
 void Vision::Camera::updateSettings(std::string newSettings) {
   if (newSettings != m_currentSettings) {
-    if (newSettings == "") {
-      newSettings = k_defaultSettings;
+    system((m_baseCommand + k_defaultSettings).c_str());
+
+    if (newSettings != "") {
+      system((m_baseCommand + newSettings).c_str());
+      m_currentSettings = newSettings;
     }
-
-    system((m_baseCommand + newSettings).c_str());
-
-    m_currentSettings = newSettings;
+    else {
+      m_currentSettings = k_defaultSettings;
+    }
 
     // Pause the camera thread while camera settings update
     std::this_thread::sleep_for(std::chrono::milliseconds(k_settingsChangeDelayMillis));

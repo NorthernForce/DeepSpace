@@ -31,7 +31,7 @@ const int Vision::ReflectiveTape::k_maxVal = 255;
 const double Vision::ReflectiveTape::k_minArea = 15;
 
 const double Vision::ReflectiveTape::k_maxAreaDiff = 0.1;
-const double Vision::ReflectiveTape::k_maxCenterOffset = 0.15;
+const double Vision::ReflectiveTape::k_maxCenterOffset = 0.1;
 
 struct ReflectiveTapeBlob {
 	cv::Point center;

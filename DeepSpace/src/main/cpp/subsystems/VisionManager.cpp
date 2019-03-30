@@ -17,7 +17,7 @@
 Vision::Manager::Manager() : Subsystem("VisionManager"),
   m_cameras{
     {"Targeter", std::make_shared<Vision::Camera>("Targeter Camera", RobotMap::Vision::k_targeterCamera_path, 240, 180, 30, RobotMap::Vision::k_targeterCameraLightRing_id)},
-    {"Driver", std::make_shared<Vision::Camera>("Driver Camera", RobotMap::Vision::k_driverCamera_path)},
+    {"Driver", std::make_shared<Vision::Camera>("Driver Camera", RobotMap::Vision::k_driverCamera_path, 240, 180, 30)},
   },
   m_targets{
     {Vision::ReflectiveTape::k_name, std::make_shared<Vision::ReflectiveTape>()},
