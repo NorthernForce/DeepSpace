@@ -14,11 +14,11 @@
 const std::string VisionFollowReflectiveTape::k_cameraName = "Targeter";
 const std::string VisionFollowReflectiveTape::k_targetName = "ReflectiveTape";
 
-const double VisionFollowReflectiveTape::k_p = 1.2;
-const double VisionFollowReflectiveTape::k_i = 0.01;
-const double VisionFollowReflectiveTape::k_d = 0.1;
+const double VisionFollowReflectiveTape::k_p = 1;
+const double VisionFollowReflectiveTape::k_i = 0;
+const double VisionFollowReflectiveTape::k_d = 0;
 
-const double VisionFollowReflectiveTape::k_maxTurnSpeed = 0.55;
+const double VisionFollowReflectiveTape::k_maxTurnSpeed = 0.3;
 
 VisionFollowReflectiveTape::VisionFollowReflectiveTape() : Command("VisionFollowReflectiveTape") {
   Requires(Robot::m_vision.get());

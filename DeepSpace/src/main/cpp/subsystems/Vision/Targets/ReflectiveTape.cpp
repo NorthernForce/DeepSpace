@@ -16,7 +16,7 @@ const int Vision::ReflectiveTape::k_minHue = 35;
 const int Vision::ReflectiveTape::k_maxHue = 145;
 const int Vision::ReflectiveTape::k_minSat = 150;
 const int Vision::ReflectiveTape::k_maxSat = 255;
-const int Vision::ReflectiveTape::k_minVal = 115;
+const int Vision::ReflectiveTape::k_minVal = 50;
 const int Vision::ReflectiveTape::k_maxVal = 255;
 #else
 const int Vision::ReflectiveTape::k_invertHue = 1;

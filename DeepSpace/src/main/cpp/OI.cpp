@@ -149,8 +149,8 @@ OI::OI() {
   WhileHeld(new SimpleAxis(m_manipulatorController3, 1, -1, -0.5), new ElevatorRaise());
   WhileHeld(new SimpleAxis(m_manipulatorController3, 1, 0.5, 1), new ElevatorLower());
   
-  WhileHeld(new SimpleAxis(m_manipulatorController3, 5, -1, -0.5), new ClimberLower());
-  WhileHeld(new SimpleAxis(m_manipulatorController3, 5, 0.5, 1), new ClimberRaise());
+  WhileHeld(new SimpleAxis(m_manipulatorController3, 5, -1, -0.5), new ClimberRaise());
+  WhileHeld(new SimpleAxis(m_manipulatorController3, 5, 0.5, 1), new ClimberLower());
 
   // SimpleButton(m_manipulatorController2, 6), new ClimbStage1());
 
