@@ -140,8 +140,8 @@ OI::OI() {
 
   WhenPressed(new frc::POVButton(*m_manipulatorController3, 270), new ClimbEvenlyUp());
   WhenPressed(new frc::POVButton(*m_manipulatorController3, 225), new ClimbEvenlyUp());
-  WhenPressed(new frc::POVButton(*m_manipulatorController3, 225), new ClimberDriveForward());
-  WhenPressed(new frc::POVButton(*m_manipulatorController3, 180), new ClimberDriveForward());
+  WhileHeld(new frc::POVButton(*m_manipulatorController3, 225), new ClimberDriveForward());
+  WhileHeld(new frc::POVButton(*m_manipulatorController3, 180), new ClimberDriveForward());
   
   WhenPressed(new ComboButton(new SimpleButton(m_manipulatorController3, 5), new SimpleAxis(m_manipulatorController3, 2)), new SetupPosition(ElevatorSetPosition::Position::CargoIntake, SetupPosition::TargetType::Cargo));
   WhenPressed(new ComboButton(new SimpleButton(m_manipulatorController3, 5), new SimpleAxis(m_manipulatorController3, 3)), new SetupPosition(ElevatorSetPosition::Position::CargoShipCargoDeposit, SetupPosition::TargetType::Cargo));
