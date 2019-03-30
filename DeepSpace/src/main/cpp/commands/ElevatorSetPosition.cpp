@@ -21,18 +21,18 @@ const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoi
     // { ElevatorSetPosition::Position::CargoDepositLevel2, 8600 + limitSwitchOffset},
     // { ElevatorSetPosition::Position::CargoDepositLevel3, 12800 + limitSwitchOffset},
     // { ElevatorSetPosition::Position::CargoShipCargoDeposit, 6585 + limitSwitchOffset},
-    // { ElevatorSetPosition::Position::HatchDepositLevel1, 1250 + limitSwitchOffset}, // 365
+    // { ElevatorSetPosition::Position::HatchDepositLevel1, 1250 + limitSwitchOffset},
     // { ElevatorSetPosition::Position::HatchDepositLevel2, 5830 + limitSwitchOffset},
-    // { ElevatorSetPosition::Position::HatchDepositLevel3, 10380 + limitSwitchOffset}, // 9563
-    { ElevatorSetPosition::Position::CargoIntake, -340 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchPanelIntake, 630 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoDepositLevel1, 3380 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoDepositLevel2, 7980 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoDepositLevel3, 12080 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoShipCargoDeposit, 5965 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchDepositLevel1, 630 + limitSwitchOffset}, // 365
-    { ElevatorSetPosition::Position::HatchDepositLevel2, 5210 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchDepositLevel3, 9760 + limitSwitchOffset}, // 9563
+    // { ElevatorSetPosition::Position::HatchDepositLevel3, 10380 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::CargoIntake, -320 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::HatchPanelIntake, 650 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::CargoDepositLevel1, 3400 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::CargoDepositLevel2, 8000 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::CargoDepositLevel3, 13000 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::CargoShipCargoDeposit, 5985 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::HatchDepositLevel1, 650 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::HatchDepositLevel2, 5230 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::HatchDepositLevel3, 9780 + limitSwitchOffset},
 #else
     { ElevatorSetPosition::Position::CargoIntake, 215 + limitSwitchOffset},
     { ElevatorSetPosition::Position::HatchPanelIntake, 664 + limitSwitchOffset},
