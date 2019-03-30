@@ -36,7 +36,7 @@ void Climber::setSpeed(double speed) {
     m_masterTalonLifter->Set(speed * k_forwardMotorSpeed);
   }
   else if (speed < -1) {
-    m_masterTalonLifter->Set(k_reverseMotorSpeed);
+    m_masterTalonLifter->Set(-1 * k_reverseMotorSpeed);
   }
   else if (speed < 0) {
     m_masterTalonLifter->Set(speed * k_reverseMotorSpeed);

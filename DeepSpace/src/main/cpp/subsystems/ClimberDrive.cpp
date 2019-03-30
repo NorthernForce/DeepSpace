@@ -27,11 +27,11 @@ void ClimberDrive::InitDefaultCommand() {
 }
 
 void ClimberDrive::setSpeed(double speed) {
-    m_masterTalonWheels->Set(speed);
+  m_masterTalonWheels->Set(speed);
 }
 
 void ClimberDrive::stop() {
-    setSpeed(0.0);
+  setSpeed(0.0);
 }
 
 // Put methods for controlling this subsystem

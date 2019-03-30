@@ -15,6 +15,7 @@ const int limitSwitchOffset = 0;
 const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoints = {
 		{ ElevatorSetPosition::Position::HomePosition, 0 + limitSwitchOffset},
 #ifdef COMPETITION_ROBOT
+// Old homing level (when it pushes into the floor)
     // { ElevatorSetPosition::Position::CargoIntake, 280 + limitSwitchOffset},
     // { ElevatorSetPosition::Position::HatchPanelIntake, 1250 + limitSwitchOffset},
     // { ElevatorSetPosition::Position::CargoDepositLevel1, 4000 + limitSwitchOffset},
@@ -24,6 +25,7 @@ const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoi
     // { ElevatorSetPosition::Position::HatchDepositLevel1, 1250 + limitSwitchOffset},
     // { ElevatorSetPosition::Position::HatchDepositLevel2, 5830 + limitSwitchOffset},
     // { ElevatorSetPosition::Position::HatchDepositLevel3, 10380 + limitSwitchOffset},
+// New homing level (when it is 1/4" off the floor)
     { ElevatorSetPosition::Position::CargoIntake, -320 + limitSwitchOffset},
     { ElevatorSetPosition::Position::HatchPanelIntake, 650 + limitSwitchOffset},
     { ElevatorSetPosition::Position::CargoDepositLevel1, 3400 + limitSwitchOffset},

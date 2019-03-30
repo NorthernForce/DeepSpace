@@ -125,8 +125,8 @@ void Elevator::setSpeed(double speed) {
     m_primaryTalonElevator->Set(speed * frc::SmartDashboard::GetNumber("Elevator: Raise Speed", k_elevatorMaxRaiseSpeed));
   }
   else if (speed < -1) {
-    // m_primaryTalonElevator->Set(k_elevatorMaxLowerSpeed);
-    m_primaryTalonElevator->Set(frc::SmartDashboard::GetNumber("Elevator: Lower Speed", k_elevatorMaxLowerSpeed));
+    // m_primaryTalonElevator->Set(-1 * k_elevatorMaxLowerSpeed);
+    m_primaryTalonElevator->Set(-1 * frc::SmartDashboard::GetNumber("Elevator: Lower Speed", k_elevatorMaxLowerSpeed));
   }
   else if (speed < 0) {
     // m_primaryTalonElevator->Set(speed * k_elevatorMaxLowerSpeed);
