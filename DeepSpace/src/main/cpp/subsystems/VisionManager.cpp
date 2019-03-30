@@ -26,6 +26,7 @@ Vision::Manager::Manager() : Subsystem("VisionManager"),
 
   // Default target
   setTarget("Targeter", "ReflectiveTape");
+  enableCamera("Targeter", false);
 
   m_visionThread.reset(new std::thread([&]{
     for (;;) {

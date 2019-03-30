@@ -39,7 +39,7 @@ Vision::Camera::Camera(std::string name, std::string devPath, int width, int hei
     m_lightRing.reset(new frc::Relay(lightRingID, frc::Relay::kForwardOnly));
   }
 
-  m_isEnabled = true;
+  m_isEnabled = false;
 }
 
 void Vision::Camera::process() {
@@ -96,13 +96,13 @@ void Vision::Camera::updateSettings(std::string newSettings) {
 
 void Vision::Camera::setLightRing(bool turnOn) {
   if (m_lightRing != nullptr) {
-    frc::Relay::Value val = (turnOn ? frc::Relay::kOn : frc::Relay::kOff);
+    frc::Relay::Value val = ((turnOn && isEnabled()) ? frc::Relay::kOn : frc::Relay::kOff);
 
     if (m_lightRing->Get() != val) {
       m_lightRing->Set(val);
 
-      // Pause the camera thread while the lightring turns on/off
-      std::this_thread::sleep_for(std::chrono::milliseconds(k_lightringChangeDelayMillis));
+      // // Pause the camera thread while the lightring turns on/off
+      // std::this_thread::sleep_for(std::chrono::milliseconds(k_lightringChangeDelayMillis));
     }
   }
 }
@@ -110,15 +110,22 @@ void Vision::Camera::setLightRing(bool turnOn) {
 void Vision::Camera::setTarget(std::shared_ptr<Vision::Target> target) {
   std::atomic_store(&m_objectToTarget, target);
 
-  enable(true);
+  if (target != nullptr) {
+    enable(true);
+  }
 }
 
 void Vision::Camera::enable(bool enable) {
+  m_isEnabled = enable;
+
   if (!enable) {
     setLightRing(false);
   }
-
-  m_isEnabled = enable;
+  else {
+    if (m_currentTarget != nullptr) {
+      m_currentTarget->setup(this);
+    }
+  }
 }
 
 bool Vision::Camera::isEnabled() {
