@@ -26,6 +26,8 @@
 #include "commands/VisionTargetNothing.h"
 #include "commands/VisionTargetReflectiveTape.h"
 
+#include "commands/IndicatorLightsExample.h"
+
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -86,6 +88,8 @@ void Robot::RobotInit() {
 
   frc::SmartDashboard::PutData("Camera: Target tape", new VisionTargetReflectiveTape());
   frc::SmartDashboard::PutData("Camera: No target", new VisionTargetNothing());
+
+  frc::SmartDashboard::PutData("Test LEDs from RIO", new IndicatorLightsExample());
 
   // Initialize OI after subsystems
   m_oi.reset(new OI());

@@ -28,34 +28,37 @@ IndicatorLights::IndicatorLights() : Subsystem("IndicatorLights") {
 void IndicatorLights::InitDefaultCommand() {}
 
 void IndicatorLights::assembleFrame(uint8_t *colors, int numberOfColors) {
-  if (numberOfColors > k_maxLEDs) {
-    numberOfColors = k_maxLEDs;
-  }
+  // if (numberOfColors > k_maxLEDs) {
+  //   numberOfColors = k_maxLEDs;
+  // }
 
-  // Clear the buffer.
-  std::memset(m_buffer, 0, k_bufferSize);
+  // // Clear the buffer.
+  // std::memset(m_buffer, 0, k_bufferSize);
 
-  for (int colorI = 0; colorI < numberOfColors; colorI++) {
-    for (int channelI = 0; channelI < 3; channelI++) {
-      for (int bitI = 0; bitI < 8; bitI += 2) {
-        int bytePos = colorI * 12 + channelI * 4 + bitI / 2;
+  // for (int colorI = 0; colorI < numberOfColors; colorI++) {
+  //   for (int channelI = 0; channelI < 3; channelI++) {
+  //     for (int bitI = 0; bitI < 8; bitI += 2) {
+  //       int bytePos = colorI * 12 + channelI * 4 + bitI / 2;
 
-        if ((1 << bitI) & colors[colorI + channelI]) {
-          m_buffer[bytePos] |= 0b11000000;
-        }
-        else {
-          m_buffer[bytePos] |= 0b10000000;
-        }
+  //       if ((0b10000000 >> bitI) & colors[colorI + channelI]) {
+  //         m_buffer[bytePos] |= 0b11000000;
+  //       }
+  //       else {
+  //         m_buffer[bytePos] |= 0b10000000;
+  //       }
 
-        if ((1 << (bitI + 1)) & colors[colorI + channelI]) {
-          m_buffer[bytePos] |= 0b00001100;
-        }
-        else {
-          m_buffer[bytePos] |= 0b00001000;
-        }
-      }
-    }
-  }
+  //       if ((0b10000000 >> (bitI + 1)) & colors[colorI + channelI]) {
+  //         m_buffer[bytePos] |= 0b00001100;
+  //       }
+  //       else {
+  //         m_buffer[bytePos] |= 0b00001000;
+  //       }
+  //     }
+  //   }
+  // }
+
+  // Testing, maybe set the whole buffer to a color to test logic
+  std::memset(m_buffer, 255, k_bufferSize);
 }
 
 void IndicatorLights::sendFrame() {
