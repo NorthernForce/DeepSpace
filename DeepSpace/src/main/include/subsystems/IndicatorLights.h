@@ -15,9 +15,14 @@ class IndicatorLights : public frc::Subsystem {
  public:
   IndicatorLights();
   void InitDefaultCommand() override;
+  void assembleFrame(uint8_t *colors, int numberOfColors);
+  void sendFrame();
 
  private:
   std::shared_ptr<frc::SPI> m_spi;
+  uint8_t *m_rawBuffer;
+
+  const static int k_numberOfLeds;
 
   const static double k_hz;
 };
