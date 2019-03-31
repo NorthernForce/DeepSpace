@@ -7,23 +7,14 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
+#include <frc/commands/Command.h>
 
-#include <frc/SPI.h>
-
-class IndicatorLights : public frc::Subsystem {
+class IndicatorLightsExample : public frc::Command {
  public:
-  IndicatorLights();
-  void InitDefaultCommand() override;
-  void assembleFrame(uint8_t *colors, int numberOfColors);
-  void sendFrame();
-
- private:
-  std::shared_ptr<frc::SPI> m_spi;
-  uint8_t *m_buffer;
-
-  const static int k_maxLEDs;
-  const static int k_bufferSize;
-
-  const static double k_hz;
+  IndicatorLightsExample();
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
 };
