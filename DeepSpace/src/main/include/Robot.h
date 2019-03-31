@@ -25,6 +25,7 @@
 #include "subsystems/IMU.h"
 #include "subsystems/VisionManager.h"
 #include "subsystems/RangeFinder.h"
+#include "subsystems/IndicatorLights.h"
 
 #define COMPETITION_ROBOT
 #ifndef COMPETITION_ROBOT
@@ -45,6 +46,7 @@ class Robot : public frc::TimedRobot {
   static std::shared_ptr<ClimberDrive> m_climberDrive;
   static std::shared_ptr<Vision::Manager> m_vision;
   static std::shared_ptr<RangeFinder> m_rangeFinder;
+  static std::shared_ptr<IndicatorLights> m_indicatorLights;
 
   void RobotInit() override;
   void RobotPeriodic() override;
