@@ -15,10 +15,9 @@ IndicatorLightsExample::IndicatorLightsExample() {
 
 // Called just before this Command runs the first time
 void IndicatorLightsExample::Initialize() {
-  uint8_t sampleColor[5 * 3];
-  std::memset(sampleColor, 255, sizeof(sampleColor));
+  std::vector<std::vector<uint8_t>> colors(5, std::vector<uint8_t>{255, 0, 0});
 
-  Robot::m_indicatorLights->assembleFrame(sampleColor, 5);
+  Robot::m_indicatorLights->assembleFrame(colors);
 }
 
 // Called repeatedly when this Command is scheduled to run

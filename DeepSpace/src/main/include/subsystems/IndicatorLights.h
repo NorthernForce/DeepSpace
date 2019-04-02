@@ -11,11 +11,13 @@
 
 #include <frc/SPI.h>
 
+#include <vector>
+
 class IndicatorLights : public frc::Subsystem {
  public:
   IndicatorLights();
   void InitDefaultCommand() override;
-  void assembleFrame(uint8_t *colors, int numberOfColors);
+  void assembleFrame(std::vector<std::vector<uint8_t>> colors);
   void sendFrame();
 
  private:
