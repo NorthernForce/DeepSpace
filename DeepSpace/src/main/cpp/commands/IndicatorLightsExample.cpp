@@ -15,7 +15,7 @@ IndicatorLightsExample::IndicatorLightsExample() {
 
 // Called just before this Command runs the first time
 void IndicatorLightsExample::Initialize() {
-  std::vector<std::vector<uint8_t>> colors(5, std::vector<uint8_t>{255, 0, 0});
+  std::vector<std::vector<uint8_t>> colors(4, std::vector<uint8_t>{0, 255, 0});
 
   Robot::m_indicatorLights->assembleFrame(colors);
 }

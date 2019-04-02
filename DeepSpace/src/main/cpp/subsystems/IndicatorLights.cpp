@@ -9,10 +9,10 @@
 
 #include "RobotMap.h"
 
-const int IndicatorLights::k_maxLEDs = 5;
+const int IndicatorLights::k_maxLEDs = 6;
 const int IndicatorLights::k_bufferSize = k_maxLEDs * 12;
 
-// 4 MHz -> Period of 0.25 us per bit
+// 4 MHz -> Period of 0.25 micro seconds
 const double IndicatorLights::k_hz = 4000000;
 
 IndicatorLights::IndicatorLights() : Subsystem("IndicatorLights") {
@@ -58,8 +58,8 @@ void IndicatorLights::assembleFrame(std::vector<std::vector<uint8_t>> colors) {
     }
   }
 
-  // Testing, set the whole buffer to a color to test logic
-  std::memset(m_buffer, 0b11001100, k_bufferSize);
+  // // Testing, set the whole buffer to a color to test logic
+  // std::memset(m_buffer, 0b11001100, k_bufferSize);
 }
 
 void IndicatorLights::sendFrame() {
