@@ -257,4 +257,6 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
   // Convert center to -1.0 to 1.0 where quadrant I is positive
   m_horizontalOffset = (largestTarget.center.x - frame.cols / 2.0) / (frame.cols / 2.0);
   m_verticalOffset = (largestTarget.center.y - frame.rows / 2.0) / (frame.rows / 2.0) * -1;
+
+  std::cout << "x: " << m_horizontalOffset.load() << " y: " << m_verticalOffset.load() << "\n";
 }
