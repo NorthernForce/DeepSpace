@@ -5,29 +5,47 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "subsystems/IndicatorLights.h"
+#include "subsystems/IndicatorLightsManager.h"
 
 #include "RobotMap.h"
 
-const int IndicatorLights::k_maxLEDs = 6;
-const int IndicatorLights::k_bufferSize = k_maxLEDs * 12;
+const int IndicatorLights::Manager::k_maxLEDs = 6;
+const int IndicatorLights::Manager::k_bytesPerChannel = 4;
+const int IndicatorLights::Manager::k_channelsPerLED = 3;
+const int IndicatorLights::Manager::k_bytesPerLED = k_channelsPerLED * k_bytesPerChannel;
+const int IndicatorLights::Manager::k_bufferSize = k_maxLEDs * k_bytesPerLED;
 
 // 4 MHz -> Period of 0.25 micro seconds
-const double IndicatorLights::k_hz = 4000000;
+const double IndicatorLights::Manager::k_hz = 4000000;
 
-IndicatorLights::IndicatorLights() : Subsystem("IndicatorLights") {
+IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
   m_spi.reset(new frc::SPI(static_cast<frc::SPI::Port>(RobotMap::IndicatorLights::k_chipSelect_id)));
   m_buffer = (uint8_t*)std::malloc(k_bufferSize);
 
   // This way 1 on + 3 off = 0 and 2 on + 2 off = 1
   m_spi->SetClockRate(k_hz);
-  // TODO: consider the algorithm
+
   m_spi->SetMSBFirst();
 }
 
-void IndicatorLights::InitDefaultCommand() {}
+void IndicatorLights::Manager::InitDefaultCommand() {}
 
-void IndicatorLights::assembleFrame(std::vector<std::vector<uint8_t>> colors) {
+void IndicatorLights::Manager::Periodic() {
+  if (m_effect != nullptr) {
+    assembleFrame(m_effect->run());
+    sendFrame();
+
+    if (m_effect->isDone()) {
+      m_effect = nullptr;
+    }
+  }
+}
+
+void IndicatorLights::Manager::setEffect(std::shared_ptr<IndicatorLights::Effect> effect) {
+  m_effect = effect;
+}
+
+void IndicatorLights::Manager::assembleFrame(std::vector<std::vector<uint8_t>> colors) {
   auto numberOfColors = colors.size();
   if (numberOfColors > k_maxLEDs) {
     numberOfColors = k_maxLEDs;
@@ -36,10 +54,16 @@ void IndicatorLights::assembleFrame(std::vector<std::vector<uint8_t>> colors) {
   // Clear the buffer.
   std::memset(m_buffer, 0, k_bufferSize);
 
+  // Must have a color (will turn off LEDs)
+  if (numberOfColors < 1) {
+    return;
+  }
+
+  // Run through and assemble each bit
   for (int colorI = 0; colorI < numberOfColors; colorI++) {
-    for (int channelI = 0; channelI < 3; channelI++) {
+    for (int channelI = 0; channelI < k_channelsPerLED; channelI++) {
       for (int bitI = 0; bitI < 8; bitI += 2) {
-        int bytePos = colorI * 12 + channelI * 4 + bitI / 2;
+        int bytePos = colorI * k_bytesPerLED + channelI * k_bytesPerChannel + bitI / 2;
 
         if ((0b10000000 >> bitI) & colors[colorI][channelI]) {
           m_buffer[bytePos] |= 0b11000000;
@@ -58,10 +82,15 @@ void IndicatorLights::assembleFrame(std::vector<std::vector<uint8_t>> colors) {
     }
   }
 
+  // Copy the last LED value for any left over LEDs
+  for (int copyI = numberOfColors; copyI < k_maxLEDs; copyI++) {
+    std::memcpy(&m_buffer[copyI * k_bytesPerLED], &m_buffer[(numberOfColors - 1) * k_bytesPerLED], k_bytesPerLED);
+  }
+
   // // Testing, set the whole buffer to a color to test logic
   // std::memset(m_buffer, 0b11001100, k_bufferSize);
 }
 
-void IndicatorLights::sendFrame() {
+void IndicatorLights::Manager::sendFrame() {
   m_spi->Write(m_buffer, k_bufferSize);
 }

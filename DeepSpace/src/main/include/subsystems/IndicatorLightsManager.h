@@ -11,21 +11,35 @@
 
 #include <frc/SPI.h>
 
+#include "subsystems/IndicatorLights/Effect.h"
+
 #include <vector>
 
-class IndicatorLights : public frc::Subsystem {
+namespace IndicatorLights {
+
+class Manager : public frc::Subsystem {
  public:
-  IndicatorLights();
+  Manager();
   void InitDefaultCommand() override;
+  void Periodic() override;
+  void setEffect(std::shared_ptr<IndicatorLights::Effect> effect);
+
+ private:
   void assembleFrame(std::vector<std::vector<uint8_t>> colors);
   void sendFrame();
 
- private:
   std::shared_ptr<frc::SPI> m_spi;
   uint8_t *m_buffer;
 
+  std::shared_ptr<IndicatorLights::Effect> m_effect;
+
   const static int k_maxLEDs;
+  const static int k_bytesPerChannel;
+  const static int k_channelsPerLED;
+  const static int k_bytesPerLED;
   const static int k_bufferSize;
 
   const static double k_hz;
 };
+
+}

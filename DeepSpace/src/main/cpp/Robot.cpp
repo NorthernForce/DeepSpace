@@ -44,7 +44,7 @@ std::shared_ptr<Climber> Robot::m_climber;
 std::shared_ptr<ClimberDrive> Robot::m_climberDrive;
 std::shared_ptr<Vision::Manager> Robot::m_vision;
 std::shared_ptr<RangeFinder> Robot::m_rangeFinder;
-std::shared_ptr<IndicatorLights> Robot::m_indicatorLights;
+std::shared_ptr<IndicatorLights::Manager> Robot::m_indicatorLights;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
@@ -60,7 +60,7 @@ void Robot::RobotInit() {
   m_climber.reset(new Climber());
   m_climberDrive.reset(new ClimberDrive());
   m_rangeFinder.reset(new RangeFinder());
-  m_indicatorLights.reset(new IndicatorLights());
+  m_indicatorLights.reset(new IndicatorLights::Manager());
 
   Robot::m_elevator->retract();
 

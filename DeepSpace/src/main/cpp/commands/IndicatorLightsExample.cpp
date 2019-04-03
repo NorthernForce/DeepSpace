@@ -7,26 +7,25 @@
 
 #include "commands/IndicatorLightsExample.h"
 
+#include "subsystems/IndicatorLights/Pulse.h"
+#include "subsystems/IndicatorLights/Solid.h"
+
 #include "Robot.h"
 
 IndicatorLightsExample::IndicatorLightsExample() {
-  Requires(Robot::m_indicatorLights.get());
+  // Requires(Robot::m_indicatorLights.get());
 }
 
 // Called just before this Command runs the first time
 void IndicatorLightsExample::Initialize() {
-  std::vector<std::vector<uint8_t>> colors(4, std::vector<uint8_t>{0, 255, 0});
-
-  Robot::m_indicatorLights->assembleFrame(colors);
+  Robot::m_indicatorLights->setEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{255, 0, 0}, 0.02));
 }
 
 // Called repeatedly when this Command is scheduled to run
-void IndicatorLightsExample::Execute() {
-  Robot::m_indicatorLights->sendFrame();
-}
+void IndicatorLightsExample::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool IndicatorLightsExample::IsFinished() { return false; }
+bool IndicatorLightsExample::IsFinished() { return true; }
 
 // Called once after isFinished returns true
 void IndicatorLightsExample::End() {}
