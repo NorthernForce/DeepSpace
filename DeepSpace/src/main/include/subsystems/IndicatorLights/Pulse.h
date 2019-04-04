@@ -7,7 +7,7 @@ namespace IndicatorLights {
 class Pulse : public Effect {
  public:
   Pulse(std::vector<uint8_t> color, double speed);
-  std::vector<std::vector<uint8_t>> run() override;
+  void run() override;
 
  private:
   std::vector<uint8_t> m_color;

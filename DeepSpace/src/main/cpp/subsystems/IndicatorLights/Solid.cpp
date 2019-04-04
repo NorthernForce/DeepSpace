@@ -2,10 +2,11 @@
 
 IndicatorLights::Solid::Solid(std::vector<uint8_t> color) {
   m_color = color;
+  m_colors.push_back(std::vector<uint8_t>{0, 0, 0});
 }
 
-std::vector<std::vector<uint8_t>> IndicatorLights::Solid::run() {
+void IndicatorLights::Solid::run() {
+  m_colors[0] = m_color;
+
   m_done = true;
-  
-  return std::vector<std::vector<uint8_t>>{m_color};
 }

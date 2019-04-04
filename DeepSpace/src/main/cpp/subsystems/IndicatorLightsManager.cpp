@@ -32,7 +32,8 @@ void IndicatorLights::Manager::InitDefaultCommand() {}
 
 void IndicatorLights::Manager::Periodic() {
   if (m_effect != nullptr) {
-    assembleFrame(m_effect->run());
+    m_effect->run();
+    assembleFrame(m_effect->getColors());
     sendFrame();
 
     if (m_effect->isDone()) {
@@ -41,7 +42,7 @@ void IndicatorLights::Manager::Periodic() {
   }
 }
 
-void IndicatorLights::Manager::setEffect(std::shared_ptr<IndicatorLights::Effect> effect) {
+void IndicatorLights::Manager::setEffect(std::shared_ptr<Effect> effect) {
   m_effect = effect;
 }
 

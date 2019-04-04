@@ -22,7 +22,7 @@ class Manager : public frc::Subsystem {
   Manager();
   void InitDefaultCommand() override;
   void Periodic() override;
-  void setEffect(std::shared_ptr<IndicatorLights::Effect> effect);
+  void setEffect(std::shared_ptr<Effect> effect);
 
  private:
   void assembleFrame(std::vector<std::vector<uint8_t>> colors);
