@@ -42,7 +42,7 @@ void VisionFollowReflectiveTape::Execute() {
   double d = frc::SmartDashboard::GetNumber("CameraTracking: D", k_d);
 
   // PID Loop math taken from some site on the internet
-  m_error = Robot::m_vision->getOffset(k_targetName).first;
+  m_error = Robot::m_vision->getOffset(k_targetName).first - 0.05;
   if (m_error == 0) {
     m_integral = 0;
   }
