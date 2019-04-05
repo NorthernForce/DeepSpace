@@ -14,6 +14,11 @@ class Targetting : public Effect {
 
  private:
   const static std::string k_cameraName;
+
+  const static double k_redThreshold;
+  const static double k_greenThreshold;
+  const static double k_averageThreshold;
+  const static double k_rangeThreshold;
 };
 
 }
