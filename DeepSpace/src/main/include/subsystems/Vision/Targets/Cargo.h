@@ -9,7 +9,6 @@ class Cargo : public Target {
   Cargo();
   virtual void setup(Camera *camera) override;
   virtual void run(cv::Mat &frame) override;
-  const static std::string k_name;
 
  private:
   const static int k_invertHue;

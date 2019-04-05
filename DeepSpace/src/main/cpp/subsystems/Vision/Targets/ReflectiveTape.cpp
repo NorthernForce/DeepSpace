@@ -2,8 +2,6 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
-const std::string Vision::ReflectiveTape::k_name = "ReflectiveTape";
-
 const std::string Vision::ReflectiveTape::k_cameraSettings =
   "exposure_auto=1,"
   "exposure_absolute=5," // Valid exposures are "5, 10, 20, 39, 78, 156, 312, 625, 1250, 2500, 5000, 10000, 20000"
@@ -47,6 +45,8 @@ struct ReflectiveTargetBlob {
 };
 
 Vision::ReflectiveTape::ReflectiveTape() {
+  k_name = "ReflectiveTape";
+
   // Add smart dashboard stuff...
   frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: HUE INVERT", k_invertHue);
   frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: HUE MIN", k_minHue);
@@ -258,5 +258,5 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
   m_horizontalOffset = (largestTarget.center.x - frame.cols / 2.0) / (frame.cols / 2.0);
   m_verticalOffset = (largestTarget.center.y - frame.rows / 2.0) / (frame.rows / 2.0) * -1;
 
-  std::cout << "x: " << m_horizontalOffset.load() << " y: " << m_verticalOffset.load() << "\n";
+  // std::cout << "x: " << m_horizontalOffset.load() << " y: " << m_verticalOffset.load() << "\n";
 }

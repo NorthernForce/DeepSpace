@@ -22,7 +22,9 @@ class Manager : public frc::Subsystem {
   Manager();
   void InitDefaultCommand() override;
   void Periodic() override;
-  void setEffect(std::shared_ptr<Effect> effect);
+  void setEffect(std::shared_ptr<Effect> effect = nullptr);
+  
+  const static int k_maxLEDs;
 
  private:
   void assembleFrame(std::vector<std::vector<uint8_t>> colors);
@@ -32,8 +34,8 @@ class Manager : public frc::Subsystem {
   uint8_t *m_buffer;
 
   std::shared_ptr<IndicatorLights::Effect> m_effect;
+  std::shared_ptr<IndicatorLights::Effect> m_defaultEffect;
 
-  const static int k_maxLEDs;
   const static int k_bytesPerChannel;
   const static int k_channelsPerLED;
   const static int k_bytesPerLED;

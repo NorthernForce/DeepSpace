@@ -7,6 +7,8 @@
 
 #include "subsystems/IndicatorLightsManager.h"
 
+#include "subsystems/IndicatorLights/Turning.h"
+
 #include "RobotMap.h"
 
 const int IndicatorLights::Manager::k_maxLEDs = 6;
@@ -26,9 +28,15 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
   m_spi->SetClockRate(k_hz);
 
   m_spi->SetMSBFirst();
+
+  // Set the default effect
+  m_defaultEffect = std::make_shared<Turning>();
+  setEffect();
 }
 
-void IndicatorLights::Manager::InitDefaultCommand() {}
+void IndicatorLights::Manager::InitDefaultCommand() {
+
+}
 
 void IndicatorLights::Manager::Periodic() {
   if (m_effect != nullptr) {
@@ -43,7 +51,12 @@ void IndicatorLights::Manager::Periodic() {
 }
 
 void IndicatorLights::Manager::setEffect(std::shared_ptr<Effect> effect) {
-  m_effect = effect;
+  if (effect != nullptr) {
+    m_effect = effect;
+  }
+  else {
+    m_effect = m_defaultEffect;
+  }
 }
 
 void IndicatorLights::Manager::assembleFrame(std::vector<std::vector<uint8_t>> colors) {

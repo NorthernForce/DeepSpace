@@ -2,8 +2,6 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
-const std::string Vision::Cargo::k_name = "Cargo";
-
 const int Vision::Cargo::k_invertHue = 0;
 const int Vision::Cargo::k_minHue = 35;
 const int Vision::Cargo::k_maxHue = 85;
@@ -15,6 +13,8 @@ const int Vision::Cargo::k_maxVal = 255;
 const double Vision::Cargo::k_minArea = 15;
 
 Vision::Cargo::Cargo() {
+  k_name = "Cargo";
+
   // Add smart dashboard stuff...
   frc::SmartDashboard::PutNumber("Vision: Cargo: HUE INVERT", k_invertHue);
   frc::SmartDashboard::PutNumber("Vision: Cargo: HUE MIN", k_invertHue);

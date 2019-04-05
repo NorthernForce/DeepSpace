@@ -10,23 +10,25 @@
 #include "subsystems/Vision/Targets/ReflectiveTape.h"
 #include "subsystems/Vision/Targets/Cargo.h"
 
+#include "Robot.h"
 #include "RobotMap.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
 Vision::Manager::Manager() : Subsystem("VisionManager"),
   m_cameras{
-    {"Targeter", std::make_shared<Vision::Camera>("Targeter Camera", RobotMap::Vision::k_targeterCamera_path, 240, 180, 30, RobotMap::Vision::k_targeterCameraLightRing_id)},
+    {"Targeter", std::make_shared<Vision::Camera>("Targeter Camera", RobotMap::Vision::k_targeterCamera_path, 240, 180, 30, true, RobotMap::Vision::k_targeterCameraLightRing_id)},
     {"Driver", std::make_shared<Vision::Camera>("Driver Camera", RobotMap::Vision::k_driverCamera_path, 240, 180, 30)},
   },
   m_targets{
-    {Vision::ReflectiveTape::k_name, std::make_shared<Vision::ReflectiveTape>()},
-    {Vision::Cargo::k_name, std::make_shared<Vision::Cargo>()}
+    {"ReflectiveTape", std::make_shared<Vision::ReflectiveTape>()},
+    {"Cargo", std::make_shared<Vision::Cargo>()}
   } {
 
+  m_indicatorLightsEffect.reset(new IndicatorLights::Targetting());
+
   // Default target
-  setTarget("Targeter", "ReflectiveTape");
-  enableCamera("Targeter", false);
+  setTarget("Targeter", "ReflectiveTape", false);
 
   m_visionThread.reset(new std::thread([&]{
     for (;;) {
@@ -37,9 +39,12 @@ Vision::Manager::Manager() : Subsystem("VisionManager"),
   }));
 }
 
-void Vision::Manager::setTarget(std::string cameraName, std::string targetName) {
+void Vision::Manager::setTarget(std::string cameraName, std::string targetName, bool enable) {
   if (targetName != "") {
     m_cameras[cameraName]->setTarget(m_targets[targetName]);
+    if (enable) {
+      enableCamera(cameraName);
+    }
   }
   else {
     m_cameras[cameraName]->setTarget(nullptr);
@@ -50,6 +55,20 @@ std::pair<double, double> Vision::Manager::getOffset(std::string targetName) {
   return m_targets[targetName]->getOffset();
 }
 
+std::string Vision::Manager::getTarget(std::string cameraName) {
+  return m_cameras[cameraName]->getTarget();
+}
+
 void Vision::Manager::enableCamera(std::string cameraName, bool enable) {
   m_cameras[cameraName]->enable(enable);
+
+  std::cout << "Camera Enabled\n" << std::endl;
+
+  if (enable && m_cameras[cameraName]->getTarget() != "") {
+    std::cout << "Indicator Lights Effect Enabled\n" << std::endl;
+    Robot::m_indicatorLights->setEffect(m_indicatorLightsEffect);
+  }
+  else {
+    Robot::m_indicatorLights->setEffect();
+  }
 }

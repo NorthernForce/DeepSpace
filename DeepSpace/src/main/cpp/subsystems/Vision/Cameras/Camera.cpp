@@ -19,7 +19,7 @@ const std::string Vision::Camera::k_defaultSettings =
 const int Vision::Camera::k_settingsChangeDelayMillis = 250;
 const int Vision::Camera::k_lightringChangeDelayMillis = 50;
 
-Vision::Camera::Camera(std::string name, std::string devPath, int width, int height, int fps, int lightRingID) {
+Vision::Camera::Camera(std::string name, std::string devPath, int width, int height, int fps, bool flipOutput, int lightRingID) {
   m_name = name;
   m_path = devPath;
 
@@ -34,6 +34,8 @@ Vision::Camera::Camera(std::string name, std::string devPath, int width, int hei
   m_camera->SetFPS(fps);
   m_cameraSink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo(m_name));
   m_debugStream = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo(m_name +" Debug", width, height));
+
+  m_flipOutput = flipOutput;
 
   if (lightRingID != -1) {
     m_lightRing.reset(new frc::Relay(lightRingID, frc::Relay::kForwardOnly));
@@ -66,6 +68,10 @@ void Vision::Camera::process() {
   if (m_currentTarget != nullptr) {
     cv::Mat frame;
     auto status = m_cameraSink->GrabFrame(frame);
+
+    if (m_flipOutput) {
+      cv::flip(frame, frame, -1);
+    }
 
     if (status == 0) {
       std::cout << "Vision Error: " << m_name << ": " << m_cameraSink->GetError() << "\n";
@@ -110,9 +116,14 @@ void Vision::Camera::setLightRing(bool turnOn) {
 
 void Vision::Camera::setTarget(std::shared_ptr<Vision::Target> target) {
   std::atomic_store(&m_objectToTarget, target);
+}
 
-  if (target != nullptr) {
-    enable(true);
+std::string Vision::Camera::getTarget() {
+  if (m_objectToTarget == nullptr) {
+    return "";
+  }
+  else {
+    return m_objectToTarget->k_name;
   }
 }
 

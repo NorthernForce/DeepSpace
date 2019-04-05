@@ -16,11 +16,12 @@ class Target;
 
 class Camera {
  public:
-  Camera(std::string name, std::string devPath, int width = 160, int height = 120, int fps = 30, int lightRingID = -1);
+  Camera(std::string name, std::string devPath, int width = 160, int height = 120, int fps = 30, bool flipOutput = false, int lightRingID = -1);
   void process();
   void updateSettings(std::string newSettings = "");
   void setLightRing(bool turnOn = false);
   void setTarget(std::shared_ptr<Target> target);
+  std::string getTarget();
   void enable(bool enable);
   bool isEnabled();
   
@@ -35,6 +36,8 @@ class Camera {
   std::shared_ptr<cs::UsbCamera> m_camera;
   std::shared_ptr<cs::CvSink> m_cameraSink;
   std::shared_ptr<cs::CvSource> m_debugStream;
+
+  bool m_flipOutput;
 
   std::shared_ptr<frc::Relay> m_lightRing;
 
