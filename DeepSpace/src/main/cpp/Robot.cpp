@@ -7,11 +7,6 @@
 
 #include "Robot.h"
 
-#include "subsystems/Elevator.h"
-#include "subsystems/Claw.h"
-#include "subsystems/Climber.h"
-#include "subsystems/IMU.h"
-
 #include "commands/ElevatorSetPosition.h"
 #include "commands/ElevatorCalibrate.h"
 #include "commands/ElevatorSetHomePosition.h"

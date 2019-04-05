@@ -1,6 +1,7 @@
 #include "subsystems/IndicatorLights/Morse.h"
 
 #include <algorithm>
+#include <iostream>
 
 IndicatorLights::Morse::Morse(std::string message, int speedOfDot, std::vector<uint8_t> onColor, std::vector<uint8_t> offColor) {
   std::string m_message = message;
@@ -10,19 +11,22 @@ IndicatorLights::Morse::Morse(std::string message, int speedOfDot, std::vector<u
   m_onColor = onColor;
   m_offColor = offColor;
   m_colors.push_back(m_offColor);
+
+  reset();
 }
 
 void IndicatorLights::Morse::run() {
+  std::cout << "c";
   // Time to change color
-  if (m_counter == m_speedOfDot) {
+  if (m_counter >= m_speedOfDot) {
+    std::cout << "Counter complete\n" << std::endl;
     // Must get a new code
-    if (m_codeIndex == m_code.size()) {
-      m_stringIndex++;
-      
+    if (m_codeIndex >= m_code.size()) {
       // No more codes
       if (m_stringIndex >= m_message.size()) {
-          m_done = true;
-          return;
+        std::cout << "string index: " << m_stringIndex << " m_messages.size(): " << m_message.size() << std::endl;
+        m_done = true;
+        return;
       }
     
       // Get a new code
@@ -59,6 +63,9 @@ void IndicatorLights::Morse::run() {
 
       // Prep for new code
       m_codeIndex = 0;
+
+      // Next character
+      m_stringIndex++;
     }
 
     // Process code. Dash is twice as long as dot, space is an off
