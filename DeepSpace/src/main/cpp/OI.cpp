@@ -88,7 +88,7 @@ OI::OI() {
 
   WhileHeld(new SimpleAxis(m_driverController, 2), new CargoEject());
 
-  WhenPressed(new SimpleButton(m_driverController, 3), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.01)));
+  WhenPressed(new SimpleButton(m_driverController, 3), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
 
   // auto test = new SimpleButton(m_manipulatorController1, 1);
   // test->WhileActive(new CargoIntake());
