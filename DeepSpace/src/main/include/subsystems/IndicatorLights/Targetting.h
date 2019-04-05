@@ -10,6 +10,7 @@ class Targetting : public Effect {
  public:
   Targetting();
   void run() override;
+  void reset() override;
 
  private:
   const static std::string k_cameraName;
