@@ -56,11 +56,11 @@ void Robot::RobotInit() {
   m_claw.reset(new Claw());
   m_imu.reset(new IMU());
   m_lineTracker.reset(new LineTracker());
+  m_indicatorLights.reset(new IndicatorLights::Manager());
   m_vision.reset(new Vision::Manager());
   m_climber.reset(new Climber());
   m_climberDrive.reset(new ClimberDrive());
   m_rangeFinder.reset(new RangeFinder());
-  m_indicatorLights.reset(new IndicatorLights::Manager());
 
   Robot::m_elevator->retract();
 

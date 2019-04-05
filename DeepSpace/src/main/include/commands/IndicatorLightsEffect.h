@@ -7,23 +7,19 @@
 
 #pragma once
 
-#include <frc/commands/Subsystem.h>
-#include <AHRS.h>
+#include <frc/commands/Command.h>
 
-class IMU : public frc::Subsystem {
- private:
-  // It's desirable that everything possible under private except
-  // for methods that implement subsystem capabilities
-  std::shared_ptr<AHRS> m_ahrs;
-//  ahrs = new AHRS(SPI::Port::kMXP);
-  double m_angleOffset = 0;
-  double m_rotationOffset = 0;
+#include "subsystems/IndicatorLights/Effect.h"
 
+class IndicatorLightsEffect : public frc::Command {
  public:
-  IMU();
-  void InitDefaultCommand() override;
-  float getAngle();
-  void resetAngle();
-  float getRotation();
-  void resetRotation();
+  IndicatorLightsEffect(std::shared_ptr<IndicatorLights::Effect> effect);
+  void Initialize() override;
+  void Execute() override;
+  bool IsFinished() override;
+  void End() override;
+  void Interrupted() override;
+
+ private:
+  std::shared_ptr<IndicatorLights::Effect> m_effect;
 };

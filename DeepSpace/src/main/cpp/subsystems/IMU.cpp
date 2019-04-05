@@ -28,3 +28,10 @@ void IMU::resetAngle() {
   m_angleOffset = getAngle();
 }
 
+float IMU::getRotation() {
+  return m_ahrs->GetYaw() - m_rotationOffset;
+}
+
+void IMU::resetRotation() {
+  m_rotationOffset = getRotation();
+}
