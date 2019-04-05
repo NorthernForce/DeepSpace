@@ -17,6 +17,10 @@ const int IndicatorLights::Manager::k_channelsPerLED = 3;
 const int IndicatorLights::Manager::k_bytesPerLED = k_channelsPerLED * k_bytesPerChannel;
 const int IndicatorLights::Manager::k_bufferSize = k_maxLEDs * k_bytesPerLED;
 
+/*
+ * IMPORTANT: Color format is "BRG", NOT "RGB"
+ */
+
 // 4 MHz -> Period of 0.25 micro seconds
 const double IndicatorLights::Manager::k_hz = 4000000;
 
@@ -45,7 +49,7 @@ void IndicatorLights::Manager::Periodic() {
     sendFrame();
 
     if (m_effect->isDone()) {
-      m_effect = nullptr;
+      setEffect();
     }
   }
 }

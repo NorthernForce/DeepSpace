@@ -46,6 +46,9 @@
 #include "commands/VisionFollowReflectiveTape.h"
 #include "commands/GotoTarget.h"
 
+#include "commands/IndicatorLightsEffect.h"
+#include "subsystems/IndicatorLights/Pulse.h"
+
 // Functions to simplify button mapping.
 static void WhenPressed(frc::Trigger* trigger, frc::Command* command) {
   trigger->WhenActive(command);
@@ -84,6 +87,8 @@ OI::OI() {
   WhenReleased(new SimpleAxis(m_driverController, 3), new ClawOpen());
 
   WhileHeld(new SimpleAxis(m_driverController, 2), new CargoEject());
+
+  WhenPressed(new SimpleButton(m_driverController, 3), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.01)));
 
   // auto test = new SimpleButton(m_manipulatorController1, 1);
   // test->WhileActive(new CargoIntake());

@@ -16,6 +16,7 @@ IndicatorLightsEffect::IndicatorLightsEffect(std::shared_ptr<IndicatorLights::Ef
 
 // Called just before this Command runs the first time
 void IndicatorLightsEffect::Initialize() {
+  m_effect->reset();
   Robot::m_indicatorLights->setEffect(m_effect);
 }
 

@@ -30,6 +30,10 @@ void IndicatorLights::Turning::run() {
   }
 
   m_colors[0][0] = b * 255;
-  m_colors[0][1] = g * 255;
-  m_colors[0][2] = r * 255;
+  m_colors[0][1] = r * 255;
+  m_colors[0][2] = g * 255;
+}
+
+void IndicatorLights::Turning::reset() {
+  Robot::m_imu->resetRotation();
 }

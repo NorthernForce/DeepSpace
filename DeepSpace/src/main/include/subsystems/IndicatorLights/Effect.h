@@ -14,6 +14,7 @@ class Effect {
   bool isDone() {
     return m_done;
   }
+  virtual void reset() = 0;
 
  protected:
   bool m_done = false;

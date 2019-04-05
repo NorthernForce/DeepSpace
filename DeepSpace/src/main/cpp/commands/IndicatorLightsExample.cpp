@@ -18,7 +18,7 @@ IndicatorLightsExample::IndicatorLightsExample() {
 
 // Called just before this Command runs the first time
 void IndicatorLightsExample::Initialize() {
-  Robot::m_indicatorLights->setEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{255, 0, 0}, 0.02));
+  Robot::m_indicatorLights->setEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{0, 255, 0}, 0.02));
 }
 
 // Called repeatedly when this Command is scheduled to run
