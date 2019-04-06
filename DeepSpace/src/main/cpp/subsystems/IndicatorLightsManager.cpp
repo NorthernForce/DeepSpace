@@ -8,6 +8,7 @@
 #include "subsystems/IndicatorLightsManager.h"
 
 #include "subsystems/IndicatorLights/Turning.h"
+#include "subsystems/IndicatorLights/Morse.h"
 
 #include "RobotMap.h"
 
@@ -34,13 +35,12 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
   m_spi->SetMSBFirst();
 
   // Set the default effect
-  m_defaultEffect = std::make_shared<Turning>();
+  // m_defaultEffect = std::make_shared<Turning>();
+  m_defaultEffect = std::make_shared<Morse>("SOS");
   setEffect();
 }
 
-void IndicatorLights::Manager::InitDefaultCommand() {
-
-}
+void IndicatorLights::Manager::InitDefaultCommand() {}
 
 void IndicatorLights::Manager::Periodic() {
   if (m_effect != nullptr) {
@@ -59,6 +59,10 @@ void IndicatorLights::Manager::setEffect(std::shared_ptr<Effect> effect) {
     m_effect = effect;
   }
   else {
+    if (m_defaultEffect->isDone()) {
+      m_defaultEffect->reset();
+    }
+
     m_effect = m_defaultEffect;
   }
 }

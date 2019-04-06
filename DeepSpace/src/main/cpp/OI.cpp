@@ -49,6 +49,7 @@
 #include "commands/IndicatorLightsEffect.h"
 #include "subsystems/IndicatorLights/Pulse.h"
 #include "subsystems/IndicatorLights/Morse.h"
+#include "subsystems/IndicatorLights/Turning.h"
 
 // Functions to simplify button mapping.
 static void WhenPressed(frc::Trigger* trigger, frc::Command* command) {
@@ -90,7 +91,10 @@ OI::OI() {
   WhileHeld(new SimpleAxis(m_driverController, 2), new CargoEject());
 
   WhenPressed(new SimpleButton(m_driverController, 9), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
-  // WhenPressed(new frc::POVButton(*m_driverController, 90), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("SOS", 20)));
+  WhenPressed(new frc::POVButton(*m_driverController, 90), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Turning>()));
+  WhenPressed(new frc::POVButton(*m_driverController, 0), new IndicatorLightsEffect());
+  WhenPressed(new frc::POVButton(*m_driverController, 180), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("we will pillage your village", 20, std::vector<uint8_t>{255, 255, 0})));
+  WhenPressed(new frc::POVButton(*m_driverController, 270), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("go 172", 20, std::vector<uint8_t>{156, 254, 127})));
 
   // auto test = new SimpleButton(m_manipulatorController1, 1);
   // test->WhileActive(new CargoIntake());
@@ -187,6 +191,6 @@ std::pair<double, double> OI::getSteeringControls() {
 }
 
 void OI::setControllerRumble(double value) {
-  m_driverController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
+  // m_driverController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
   m_driverController->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
 }

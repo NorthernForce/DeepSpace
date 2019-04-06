@@ -13,7 +13,7 @@
 
 class IndicatorLightsEffect : public frc::Command {
  public:
-  IndicatorLightsEffect(std::shared_ptr<IndicatorLights::Effect> effect);
+  IndicatorLightsEffect(std::shared_ptr<IndicatorLights::Effect> effect = nullptr);
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;

@@ -8,7 +8,7 @@ namespace IndicatorLights {
 
 class Morse : public Effect {
  public:
-  Morse(std::string message, int speedOfDot = 20, std::vector<uint8_t> onColor = std::vector<uint8_t>{0, 255, 0}, std::vector<uint8_t> offColor = std::vector<uint8_t>{0, 0, 0});
+  Morse(std::string message = "", int speedOfDot = 20, std::vector<uint8_t> onColor = std::vector<uint8_t>{0, 255, 0}, std::vector<uint8_t> offColor = std::vector<uint8_t>{0, 0, 0});
   void run() override;
   void reset() override;
 
