@@ -31,6 +31,8 @@ class VisionFollowReflectiveTape : public frc::Command {
 
   const static double k_maxTurnSpeed;
 
+  const static double k_targetOffset;
+
   double m_error = 0;
   double m_error_prior = 0;
   double m_integral = 0;

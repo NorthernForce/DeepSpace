@@ -20,6 +20,9 @@ const double VisionFollowReflectiveTape::k_d = 0.1;
 
 const double VisionFollowReflectiveTape::k_maxTurnSpeed = 0.35;
 
+// It seems to aim to the right
+const double VisionFollowReflectiveTape::k_targetOffset = -0.05;
+
 VisionFollowReflectiveTape::VisionFollowReflectiveTape() : Command("VisionFollowReflectiveTape") {
   Requires(Robot::m_vision.get());
   Requires(Robot::m_driveTrain.get());
@@ -42,7 +45,7 @@ void VisionFollowReflectiveTape::Execute() {
   double d = frc::SmartDashboard::GetNumber("CameraTracking: D", k_d);
 
   // PID Loop math taken from some site on the internet
-  m_error = Robot::m_vision->getOffset(k_targetName).first - 0.05;
+  m_error = Robot::m_vision->getOffset(k_targetName).first + k_targetOffset;
   if (m_error == 0) {
     m_integral = 0;
   }
