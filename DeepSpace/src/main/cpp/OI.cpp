@@ -89,7 +89,7 @@ OI::OI() {
 
   WhileHeld(new SimpleAxis(m_driverController, 2), new CargoEject());
 
-  WhenPressed(new SimpleButton(m_driverController, 3), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
+  WhenPressed(new SimpleButton(m_driverController, 9), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
   // WhenPressed(new frc::POVButton(*m_driverController, 90), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("SOS", 20)));
 
   // auto test = new SimpleButton(m_manipulatorController1, 1);
@@ -182,6 +182,11 @@ std::pair<double, double> OI::getSteeringControls() {
     }
   }
   else {
-    return std::make_pair(speed, rotation * 0.75);
+    return std::make_pair(speed, rotation * 0.835);
   }
+}
+
+void OI::setControllerRumble(double value) {
+  m_driverController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
+  m_driverController->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
 }
