@@ -35,8 +35,7 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
   m_spi->SetMSBFirst();
 
   // Set the default effect
-  // m_defaultEffect = std::make_shared<Turning>();
-  m_defaultEffect = std::make_shared<Morse>("SOS");
+  m_defaultEffect = std::make_shared<Turning>();
   setEffect();
 }
 

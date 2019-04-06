@@ -90,9 +90,10 @@ OI::OI() {
 
   WhileHeld(new SimpleAxis(m_driverController, 2), new CargoEject());
 
+  WhenPressed(new SimpleButton(m_driverController, 3), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
   WhenPressed(new SimpleButton(m_driverController, 9), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
-  WhenPressed(new frc::POVButton(*m_driverController, 90), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Turning>()));
   WhenPressed(new frc::POVButton(*m_driverController, 0), new IndicatorLightsEffect());
+  WhenPressed(new frc::POVButton(*m_driverController, 90), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("SOS")));
   WhenPressed(new frc::POVButton(*m_driverController, 180), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("we will pillage your village", 20, std::vector<uint8_t>{255, 255, 0})));
   WhenPressed(new frc::POVButton(*m_driverController, 270), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("go 172", 20, std::vector<uint8_t>{156, 254, 127})));
 
