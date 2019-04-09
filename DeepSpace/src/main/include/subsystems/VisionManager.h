@@ -31,7 +31,7 @@ namespace Vision {
     Manager();
     void setTarget(std::string cameraName, std::string targetName = "", bool enable = true);
     std::pair<double, double> getOffset(std::string targetName);
-    void enableCamera(std::string cameraName, bool enable = true);
+    void enableTargetting(std::string cameraName, bool enable = true);
     std::string getTarget(std::string cameraName);
 
   private:

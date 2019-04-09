@@ -22,8 +22,8 @@ class Camera {
   void setLightRing(bool turnOn = false);
   void setTarget(std::shared_ptr<Target> target);
   std::string getTarget();
-  void enable(bool enable);
-  bool isEnabled();
+  void enableTargetting(bool enable);
+  bool isTargetting();
   
   const static std::string k_defaultSettings;
 
@@ -44,7 +44,7 @@ class Camera {
   std::shared_ptr<Target> m_objectToTarget;
   std::shared_ptr<Target> m_currentTarget;
 
-  std::atomic<bool> m_isEnabled;
+  std::atomic<bool> m_isTargetting;
 
   std::string m_currentSettings;
   const static int k_settingsChangeDelayMillis;

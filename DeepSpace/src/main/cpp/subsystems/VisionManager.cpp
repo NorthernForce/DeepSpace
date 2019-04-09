@@ -43,12 +43,12 @@ void Vision::Manager::setTarget(std::string cameraName, std::string targetName, 
   if (targetName != "") {
     m_cameras[cameraName]->setTarget(m_targets[targetName]);
     if (enable) {
-      enableCamera(cameraName);
+      enableTargetting(cameraName);
     }
   }
   else {
     m_cameras[cameraName]->setTarget(nullptr);
-    enableCamera(cameraName, false);
+    enableTargetting(cameraName, false);
   }
 }
 
@@ -60,8 +60,8 @@ std::string Vision::Manager::getTarget(std::string cameraName) {
   return m_cameras[cameraName]->getTarget();
 }
 
-void Vision::Manager::enableCamera(std::string cameraName, bool enable) {
-  m_cameras[cameraName]->enable(enable);
+void Vision::Manager::enableTargetting(std::string cameraName, bool enable) {
+  m_cameras[cameraName]->enableTargetting(enable);
 
   if (enable && m_cameras[cameraName]->getTarget() != "") {
     Robot::m_indicatorLights->setEffect(m_indicatorLightsEffect);

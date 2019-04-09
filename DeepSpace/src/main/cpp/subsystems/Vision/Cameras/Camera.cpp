@@ -41,11 +41,11 @@ Vision::Camera::Camera(std::string name, std::string devPath, int width, int hei
     m_lightRing.reset(new frc::Relay(lightRingID, frc::Relay::kForwardOnly));
   }
 
-  m_isEnabled = false;
+  m_isTargetting = false;
 }
 
 void Vision::Camera::process() {
-  if (!isEnabled()) {
+  if (!isTargetting()) {
     return;
   }
 
@@ -85,29 +85,37 @@ void Vision::Camera::process() {
 }
 
 void Vision::Camera::updateSettings(std::string newSettings) {
-  if (newSettings != m_currentSettings) {
-    system((m_baseCommand + k_defaultSettings).c_str());
+  if (newSettings == "") {
+    newSettings = k_defaultSettings;
+  }
 
-    if (newSettings != "") {
-      system((m_baseCommand + newSettings).c_str());
-      m_currentSettings = newSettings;
+  if (newSettings == m_currentSettings) {
+    // Update settings, just in case something happened
+    system((m_baseCommand +newSettings).c_str());
+  }
+  else {
+    // Reset old settings, too
+    if (newSettings != k_defaultSettings) {
+      newSettings = k_defaultSettings +"," +newSettings;
     }
-    else {
-      m_currentSettings = k_defaultSettings;
-    }
+
+    system((m_baseCommand +newSettings).c_str());
 
     // Pause the camera thread while camera settings update
     std::this_thread::sleep_for(std::chrono::milliseconds(k_settingsChangeDelayMillis));
   }
+
+  m_currentSettings = newSettings;
 }
 
 void Vision::Camera::setLightRing(bool turnOn) {
   if (m_lightRing != nullptr) {
-    frc::Relay::Value val = ((turnOn && isEnabled()) ? frc::Relay::kOn : frc::Relay::kOff);
+    frc::Relay::Value val = ((turnOn && isTargetting()) ? frc::Relay::kOn : frc::Relay::kOff);
 
     if (m_lightRing->Get() != val) {
       m_lightRing->Set(val);
 
+      // THIS SHOULDN'T MATTER!
       // // Pause the camera thread while the lightring turns on/off
       // std::this_thread::sleep_for(std::chrono::milliseconds(k_lightringChangeDelayMillis));
     }
@@ -127,8 +135,8 @@ std::string Vision::Camera::getTarget() {
   }
 }
 
-void Vision::Camera::enable(bool enable) {
-  m_isEnabled = enable;
+void Vision::Camera::enableTargetting(bool enable) {
+  m_isTargetting = enable;
 
   if (!enable) {
     setLightRing(false);
@@ -140,6 +148,6 @@ void Vision::Camera::enable(bool enable) {
   }
 }
 
-bool Vision::Camera::isEnabled() {
-  return m_isEnabled.load();
+bool Vision::Camera::isTargetting() {
+  return m_isTargetting.load();
 }

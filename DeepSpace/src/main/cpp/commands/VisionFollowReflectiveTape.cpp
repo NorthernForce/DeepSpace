@@ -75,7 +75,7 @@ bool VisionFollowReflectiveTape::IsFinished() { return false; }
 
 // Called once after isFinished returns true
 void VisionFollowReflectiveTape::End() {
-  Robot::m_vision->enableCamera(k_cameraName, false);
+  Robot::m_vision->enableTargetting(k_cameraName, false);
   Robot::m_driveTrain->arcDrive(0, 0);
 }
 
