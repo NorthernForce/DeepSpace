@@ -29,7 +29,10 @@ const int Vision::ReflectiveTape::k_maxVal = 255;
 const double Vision::ReflectiveTape::k_minArea = 15;
 
 const double Vision::ReflectiveTape::k_maxAreaDiff = 0.1;
-const double Vision::ReflectiveTape::k_maxCenterOffset = -0.1;
+const double Vision::ReflectiveTape::k_maxCenterOffset = 0.5;
+
+const double Vision::ReflectiveTape::k_areaToCenter = 20;
+const double Vision::ReflectiveTape::k_servityAreaSoftener = 700;
 
 struct ReflectiveTapeBlob {
 	cv::Point center;
@@ -209,21 +212,16 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     // Total area is just addition of taoe areas
     target.area = target.leftTape.area + target.rightTape.area;
 
-    // Only use average center if both tapes are found
+    // Use an estimated center if only one tape is found
     if (target.rightTape.area == 0) {
-      target.center = target.leftTape.center;
+      target.center = cv::Point(target.leftTape.center.x + target.leftTape.area / k_areaToCenter, target.leftTape.center.y);
     }
     else if (target.leftTape.area == 0) {
-      target.center = target.rightTape.center;
+      target.center = cv::Point(target.rightTape.center.x - target.rightTape.area / k_areaToCenter, target.rightTape.center.y);
     }
     else {
-      // // Calculate raw average point
-      // target.center = cv::Point((target.leftTape.center.x + target.rightTape.center.x) / 2,
-      //               (target.leftTape.center.y + target.rightTape.center.y) / 2);
-
-      // Scale the point based on the size of the seperate tapes
+      // Find offset based on tape areas
       double severity = (target.leftTape.area / target.area - 0.5) / k_maxAreaDiff;
-
       if (severity < -1) {
         severity = -1;
       }
@@ -231,7 +229,13 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
         severity = 1;
       }
 
-      severity *= k_maxCenterOffset;
+      // Find the offset softener (larger area = less offset)
+      double softener = (k_servityAreaSoftener - target.area) / k_servityAreaSoftener;
+      if (softener < 0) {
+        softener = 0;
+      }
+
+      severity *= k_maxCenterOffset * softener;
 
       int centerX = (target.leftTape.center.x + target.rightTape.center.x) / 2 + (target.rightTape.center.x - target.leftTape.center.x) * severity;
       int centerY = (target.leftTape.center.y + target.rightTape.center.y) / 2 + (target.rightTape.center.y - target.leftTape.center.y) * severity;
@@ -257,6 +261,4 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
   // Convert center to -1.0 to 1.0 where quadrant I is positive
   m_horizontalOffset = (largestTarget.center.x - frame.cols / 2.0) / (frame.cols / 2.0);
   m_verticalOffset = (largestTarget.center.y - frame.rows / 2.0) / (frame.rows / 2.0) * -1;
-
-  // std::cout << "x: " << m_horizontalOffset.load() << " y: " << m_verticalOffset.load() << "\n";
 }
