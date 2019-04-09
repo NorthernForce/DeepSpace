@@ -25,6 +25,8 @@ const int IndicatorLights::Manager::k_bufferSize = k_maxLEDs * k_bytesPerLED;
 // 4 MHz -> Period of 0.25 micro seconds
 const double IndicatorLights::Manager::k_hz = 4000000;
 
+const std::chrono::milliseconds IndicatorLights::Manager::k_framePeriod = std::chrono::milliseconds(35);
+
 IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
   m_spi.reset(new frc::SPI(static_cast<frc::SPI::Port>(RobotMap::IndicatorLights::k_chipSelect_id)));
   m_buffer = (uint8_t*)std::malloc(k_bufferSize);
@@ -36,34 +38,64 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
 
   // Set the default effect
   m_defaultEffect = std::make_shared<Turning>();
-  setEffect();
+
+  m_indicatorLightsThread.reset(new std::thread([&]{
+    for (;;) {
+      std::chrono::system_clock::time_point startTime = std::chrono::system_clock::now();
+
+      if (m_newEffect == nullptr) {
+        setEffect(m_defaultEffect);
+      }
+
+      if (m_newEffect != m_currentEffect) {
+        m_currentEffect = m_newEffect;
+
+        if (m_currentEffect->isDone()) {
+          m_currentEffect->reset();
+        }
+      }
+
+      m_currentEffect->run();
+      assembleFrame(m_currentEffect->getColors());
+      sendFrame();
+
+      if (m_currentEffect->isDone()) {
+        m_currentEffect = nullptr;
+        setEffect();
+      }
+
+      std::this_thread::sleep_until(startTime + k_framePeriod);
+    }
+  }));
 }
 
 void IndicatorLights::Manager::InitDefaultCommand() {}
 
-void IndicatorLights::Manager::Periodic() {
-  if (m_effect != nullptr) {
-    m_effect->run();
-    assembleFrame(m_effect->getColors());
-    sendFrame();
+// void IndicatorLights::Manager::Periodic() {
+//   if (m_effect != nullptr) {
+//     m_effect->run();
+//     assembleFrame(m_effect->getColors());
+//     sendFrame();
 
-    if (m_effect->isDone()) {
-      setEffect();
-    }
-  }
-}
+//     if (m_effect->isDone()) {
+//       setEffect();
+//     }
+//   }
+// }
 
 void IndicatorLights::Manager::setEffect(std::shared_ptr<Effect> effect) {
-  if (effect != nullptr) {
-    m_effect = effect;
-  }
-  else {
-    if (m_defaultEffect->isDone()) {
-      m_defaultEffect->reset();
-    }
+  // if (effect != nullptr) {
+  //   m_effectToRun = effect;
+  // }
+  // else {
+  //   if (m_defaultEffect->isDone()) {
+  //     m_defaultEffect->reset();
+  //   }
 
-    m_effect = m_defaultEffect;
-  }
+  //   m_effectToRun = m_defaultEffect;
+  // }
+
+  std::atomic_store(&m_newEffect, effect);
 }
 
 void IndicatorLights::Manager::assembleFrame(std::vector<std::vector<uint8_t>> colors) {

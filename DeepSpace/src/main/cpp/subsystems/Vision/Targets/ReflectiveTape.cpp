@@ -220,7 +220,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       target.center = cv::Point(target.rightTape.center.x - target.rightTape.area / k_areaToCenter, target.rightTape.center.y);
     }
     else {
-      // Find offset based on tape areas
+      // Find offset severity based on tape areas
       double severity = (target.leftTape.area / target.area - 0.5) / k_maxAreaDiff;
       if (severity < -1) {
         severity = -1;

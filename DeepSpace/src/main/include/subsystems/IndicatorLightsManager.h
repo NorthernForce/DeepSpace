@@ -14,6 +14,8 @@
 #include "subsystems/IndicatorLights/Effect.h"
 
 #include <vector>
+#include <thread>
+#include <chrono>
 
 namespace IndicatorLights {
 
@@ -21,7 +23,7 @@ class Manager : public frc::Subsystem {
  public:
   Manager();
   void InitDefaultCommand() override;
-  void Periodic() override;
+  // void Periodic() override;
   void setEffect(std::shared_ptr<Effect> effect = nullptr);
   
   const static int k_maxLEDs;
@@ -33,7 +35,10 @@ class Manager : public frc::Subsystem {
   std::shared_ptr<frc::SPI> m_spi;
   uint8_t *m_buffer;
 
-  std::shared_ptr<IndicatorLights::Effect> m_effect;
+  std::shared_ptr<std::thread> m_indicatorLightsThread;
+
+  std::shared_ptr<IndicatorLights::Effect> m_currentEffect;
+  std::shared_ptr<IndicatorLights::Effect> m_newEffect;
   std::shared_ptr<IndicatorLights::Effect> m_defaultEffect;
 
   const static int k_bytesPerChannel;
@@ -42,6 +47,7 @@ class Manager : public frc::Subsystem {
   const static int k_bufferSize;
 
   const static double k_hz;
+  const static std::chrono::milliseconds k_framePeriod;
 };
 
 }
