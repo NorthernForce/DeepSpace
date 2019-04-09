@@ -177,17 +177,10 @@ std::pair<double, double> OI::getSteeringControls() {
 
   // if (m_driverController->GetTriggerAxis(frc::XboxController::JoystickHand::kRightHand) < 0.5) {
   if (m_driverController->GetBumper(frc::XboxController::JoystickHand::kRightHand) == 1) {
-    double rotationScaled = std::sqrt(std::abs(rotation) * 2 - std::pow(rotation, 2)) * 0.75;
-
-    if (rotation > 0) {
-      return std::make_pair(speed * 0.6, rotationScaled);
-    }
-    else {
-      return std::make_pair(speed * 0.6, rotationScaled * -1);
-    }
+    return std::make_pair(speed * 0.5, rotationScaled * 0.3);
   }
   else {
-    return std::make_pair(speed, rotation * 0.835);
+    return std::make_pair(speed, rotation * 0.3);
   }
 }
 
