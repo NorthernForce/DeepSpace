@@ -1,5 +1,7 @@
 #include "subsystems/Vision/Targets/ReflectiveTape.h"
 
+#include "subsystems/Vision/Utilities.h"
+
 #include <frc/smartdashboard/SmartDashboard.h>
 
 const std::string Vision::ReflectiveTape::k_cameraSettings =
@@ -36,7 +38,7 @@ struct ReflectiveTapeBlob {
 	cv::Point center;
 	double area = 0;
 	bool isLeft;
-  bool isOut = false;
+  bool isOut = true;
 };
 
 struct ReflectiveTargetBlob {
@@ -114,61 +116,104 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       ReflectiveTapeBlob tape;
       tape.area = testArea;
 
-      // Check whether the contour goes out of the frame
-      cv::Rect rect = cv::boundingRect(contour);
-      if (rect.x <= 0 || rect.y <= 0 || (rect.x + rect.width) >= (frame.cols - 1) || (rect.y + rect.height) >= (frame.rows - 1)) {
-        tape.isOut = true;
-      }
-      else {
-        tape.isOut = false;
-      }
+      // Find the extreme points
+      cv::Point top, right, bot, left;
+      std::tie(top, right, bot, left) = Utilities::FindExtremePoints(contour);
 
-      // Finds the average of the leftest and rightest points (extreme points)
-      cv::Point leftTop = contour[0], leftBot = contour[0], rightTop = contour[0], rightBot = contour[0];
-      for (auto &point : contour) {
-        if (point.x < leftTop.x) {
-          leftTop = point;
-          leftBot = point;
-        }
-        else if (point.x == leftTop.x) {
-          if (point.y < leftTop.y) {
-            leftTop = point;
-          }
-          else if (point.y > leftBot.y) {
-            leftBot = point;
-          }
-        }
-        else if (point.x > rightTop.x) {
-          rightTop = point;
-          rightBot = point;
-        }
-        else if (point.x == rightTop.x) {
-          if (point.y < rightTop.y) {
-            rightTop = point;
-          }
-          else if (point.y > rightBot.y) {
-            rightBot = point;
-          }
-        }
-      }
-
-      cv::Point leftAverage = cv::Point((leftTop.x + leftBot.x) / 2, (leftTop.y + leftBot.y) / 2);
-      cv::Point rightAverage = cv::Point((rightTop.x + rightBot.x) / 2, (rightTop.y + rightBot.y) / 2);
-
-      // Compares heights of extreme points to determine whether left or right
-      if (leftAverage.y < rightAverage.y) {
-        tape.isLeft = false;
-      }
-      else {
+      // Determine type of tape
+      tape.isOut = true;
+      if (left.x <= 0) {
         tape.isLeft = true;
       }
+      else if (right.x >= (frame.cols - 1)) {
+        tape.isLeft = false;
+      }
+      // else if (top.y <= 0) {
+      //   if ((bot.x - left.x) > (right.x - bot.x)) {
+      //     tape.isLeft = false;
+      //   }
+      //   else {
+      //     tape.isLeft = true;
+      //   }
+      // }
+      // else if (bot.y >= (frame.rows - 1)) {
+      //   if ((top.x - left.x) > (right.x - top.x)) {
+      //     tape.isLeft = true;
+      //   }
+      //   else {
+      //     tape.isLeft = false;
+      //   }
+      // }
+      else {
+        if (left.y < right.y) {
+          tape.isLeft = false;
+        }
+        else {
+          tape.isLeft = true;
+        }
+
+        if (top.y > 0 && bot.y < (frame.rows - 1)) {
+          tape.isOut = false;
+        }
+      }
+
+      // // Check whether the contour goes out of the frame
+      // cv::Rect rect = cv::boundingRect(contour);
+      // if (rect.x <= 0 || rect.y <= 0 || (rect.x + rect.width) >= (frame.cols - 1) || (rect.y + rect.height) >= (frame.rows - 1)) {
+      //   tape.isOut = true;
+      // }
+      // else {
+      //   tape.isOut = false;
+      // }
+
+      // // Find extreme points
+      // cv::Point leftTop = contour[0], leftBot = contour[0], rightTop = contour[0], rightBot = contour[0];
+      // for (auto &point : contour) {
+      //   if (point.x < leftTop.x) {
+      //     leftTop = point;
+      //     leftBot = point;
+      //   }
+      //   else if (point.x == leftTop.x) {
+      //     if (point.y < leftTop.y) {
+      //       leftTop = point;
+      //     }
+      //     else if (point.y > leftBot.y) {
+      //       leftBot = point;
+      //     }
+      //   }
+      //   else if (point.x > rightTop.x) {
+      //     rightTop = point;
+      //     rightBot = point;
+      //   }
+      //   else if (point.x == rightTop.x) {
+      //     if (point.y < rightTop.y) {
+      //       rightTop = point;
+      //     }
+      //     else if (point.y > rightBot.y) {
+      //       rightBot = point;
+      //     }
+      //   }
+      // }
+
+      // // cv::Point top = ;
+      // cv::Point right = Vision::Utilities::CalcAvgPoint(rightTop, rightBot);
+      // // cv::Point bot = ;
+      // cv::Point left = Vision::Utilities::CalcAvgPoint(leftTop, leftBot);
+
+      // // Compares heights of extreme points to determine whether left or right
+      // if (left.y < right.y) {
+      //   tape.isLeft = false;
+      // }
+      // else {
+      //   tape.isLeft = true;
+      // }
 
       // Set the key points for targetting
       if (tape.isLeft) {
-        tape.center = rightAverage;
+        tape.center = right;
       }
       else {
-        tape.center = leftAverage;
+        tape.center = left;
       }
 
       tapes.push_back(tape);
@@ -244,7 +289,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     }
     else if (target.leftTape.isOut || target.rightTape.isOut) {
       // Use the raw center if either tape is out
-      target.center = cv::Point((target.leftTape.center.x + target.rightTape.center.x) / 2, (target.leftTape.center.y + target.rightTape.center.y) / 2);
+      target.center = Utilities::CalcAvgPoint(target.rightTape.center, target.leftTape.center);;
     }
     else {
       // Find offset severity based on tape areas
@@ -265,8 +310,10 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       // Calculate the true severity of the difference of areas
       severity *= softener * k_maxCenterOffset;
 
-      int centerX = (target.leftTape.center.x + target.rightTape.center.x) / 2 + (target.rightTape.center.x - target.leftTape.center.x) * severity;
-      int centerY = (target.leftTape.center.y + target.rightTape.center.y) / 2 + (target.rightTape.center.y - target.leftTape.center.y) * severity;
+      cv::Point avgCenter = Utilities::CalcAvgPoint(target.leftTape.center, target.rightTape.center);
+
+      int centerX = avgCenter.x + (target.rightTape.center.x - target.leftTape.center.x) * severity;
+      int centerY = avgCenter.y + (target.rightTape.center.y - target.leftTape.center.y) * severity;
 
       target.center = cv::Point(centerX, centerY);
     }
