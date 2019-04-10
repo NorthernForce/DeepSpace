@@ -15,13 +15,13 @@ const std::string VisionFollowReflectiveTape::k_cameraName = "Targeter";
 const std::string VisionFollowReflectiveTape::k_targetName = "ReflectiveTape";
 
 const double VisionFollowReflectiveTape::k_p = 1.5;
-const double VisionFollowReflectiveTape::k_i = 0.05;
+const double VisionFollowReflectiveTape::k_i = 0.01;
 const double VisionFollowReflectiveTape::k_d = 0.1;
 
 const double VisionFollowReflectiveTape::k_maxTurnSpeed = 0.35;
 
 // It seems to aim to the right
-const double VisionFollowReflectiveTape::k_targetOffset = -0.05;
+const double VisionFollowReflectiveTape::k_targetOffset = 0;
 
 VisionFollowReflectiveTape::VisionFollowReflectiveTape() : Command("VisionFollowReflectiveTape") {
   Requires(Robot::m_vision.get());
@@ -65,9 +65,9 @@ void VisionFollowReflectiveTape::Execute() {
     rotation = k_maxTurnSpeed;
   }
 
-  // std::cout << "VisionFollowReflectiveTape: rotation: " << rotation << "\n";
+  auto steeringControls = Robot::m_oi->getSteeringControls();
 
-  Robot::m_driveTrain->arcDrive(Robot::m_oi->getSteeringControls().first, rotation);
+  Robot::m_driveTrain->arcDrive(steeringControls.first, rotation + steeringControls.second * 0.5);
 }
 
 // Make this return true when this Command no longer needs to run execute()
