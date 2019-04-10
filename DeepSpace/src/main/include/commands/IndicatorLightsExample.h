@@ -8,33 +8,13 @@
 #pragma once
 
 #include <frc/commands/Command.h>
-#include <frc/PIDController.h>
 
-#include <string>
-
-class VisionFollowReflectiveTape : public frc::Command {
+class IndicatorLightsExample : public frc::Command {
  public:
-  VisionFollowReflectiveTape();
+  IndicatorLightsExample();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
   void End() override;
   void Interrupted() override;
-
- private:
-  static const std::string k_cameraName;
-  static const std::string k_targetName;
-
-  const static double k_p;
-  const static double k_i;
-  const static double k_d;
-
-  const static double k_maxTurnSpeed;
-
-  const static double k_targetOffset;
-
-  double m_error = 0;
-  double m_error_prior = 0;
-  double m_integral = 0;
-  double m_derivative = 0;
 };

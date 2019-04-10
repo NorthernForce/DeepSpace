@@ -30,11 +30,12 @@ const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoi
     { ElevatorSetPosition::Position::HatchPanelIntake, 650 + limitSwitchOffset},
     { ElevatorSetPosition::Position::CargoDepositLevel1, 3400 + limitSwitchOffset},
     { ElevatorSetPosition::Position::CargoDepositLevel2, 8000 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoDepositLevel3, 13000 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::CargoDepositLevel3, 12426 + limitSwitchOffset},
     { ElevatorSetPosition::Position::CargoShipCargoDeposit, 5859 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchDepositLevel1, 650 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::HatchDepositLevel1, 450 + limitSwitchOffset},
     { ElevatorSetPosition::Position::HatchDepositLevel2, 5230 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchDepositLevel3, 9780 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::HatchDepositLevel3, 9791 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::ClimbPosition, 3355 + limitSwitchOffset},
 #else
     { ElevatorSetPosition::Position::CargoIntake, 215 + limitSwitchOffset},
     { ElevatorSetPosition::Position::HatchPanelIntake, 664 + limitSwitchOffset},
@@ -45,6 +46,7 @@ const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoi
     { ElevatorSetPosition::Position::HatchDepositLevel1, 664 + limitSwitchOffset},
     { ElevatorSetPosition::Position::HatchDepositLevel2, 4505 + limitSwitchOffset},
     { ElevatorSetPosition::Position::HatchDepositLevel3, 8356 + limitSwitchOffset},
+    { ElevatorSetPosition::Position::ClimbPosition, 3188 + limitSwitchOffset},
 #endif
 };
 

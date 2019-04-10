@@ -9,7 +9,6 @@ class ReflectiveTape : public Target {
   ReflectiveTape();
   virtual void setup(Camera *camera) override;
   virtual void run(cv::Mat &frame) override;
-  const static std::string k_name;
 
  private:
   const static std::string k_cameraSettings;
@@ -22,6 +21,9 @@ class ReflectiveTape : public Target {
   const static double k_minArea;
   const static double k_maxAreaDiff;
   const static double k_maxCenterOffset;
+  
+  const static double k_areaToCenter;
+  const static double k_servityAreaSoftener;
 };
 
 }

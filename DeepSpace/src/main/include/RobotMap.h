@@ -93,4 +93,8 @@ namespace RobotMap {
         const static int k_centerLineSensor_id = 0;
         const static int k_rightLineSensor_id = 1;
     }
+
+    namespace IndicatorLights {
+        const static int k_chipSelect_id = 0;
+    }
 }

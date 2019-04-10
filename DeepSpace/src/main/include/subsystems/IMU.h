@@ -8,6 +8,7 @@
 #pragma once
 
 #include <frc/commands/Subsystem.h>
+#include <frc/Timer.h>
 #include <AHRS.h>
 
 class IMU : public frc::Subsystem {
@@ -17,10 +18,24 @@ class IMU : public frc::Subsystem {
   std::shared_ptr<AHRS> m_ahrs;
 //  ahrs = new AHRS(SPI::Port::kMXP);
   double m_angleOffset = 0;
+  double m_rotationOffset = 0;
 
  public:
   IMU();
   void InitDefaultCommand() override;
+  void Periodic() override;
   float getAngle();
   void resetAngle();
+  float getRotation();
+  void resetRotation();
+
+  // std::shared_ptr<frc::Timer> m_rumbleTimer;
+  // const static double k_rumbleTimeout;
+
+  // const static double k_maxJerk;
+
+  const static double k_rumbleMultiplier;
+
+  double m_lastAccelX = 0.0;
+  double m_lastAccelY = 0.0;
 };

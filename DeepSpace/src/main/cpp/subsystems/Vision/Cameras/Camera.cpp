@@ -19,7 +19,7 @@ const std::string Vision::Camera::k_defaultSettings =
 const int Vision::Camera::k_settingsChangeDelayMillis = 250;
 const int Vision::Camera::k_lightringChangeDelayMillis = 50;
 
-Vision::Camera::Camera(std::string name, std::string devPath, int width, int height, int fps, int lightRingID) {
+Vision::Camera::Camera(std::string name, std::string devPath, int width, int height, int fps, bool flipOutput, int lightRingID) {
   m_name = name;
   m_path = devPath;
 
@@ -35,15 +35,17 @@ Vision::Camera::Camera(std::string name, std::string devPath, int width, int hei
   m_cameraSink = std::make_shared<cs::CvSink>(frc::CameraServer::GetInstance()->GetVideo(m_name));
   m_debugStream = std::make_shared<cs::CvSource>(frc::CameraServer::GetInstance()->PutVideo(m_name +" Debug", width, height));
 
+  m_flipOutput = flipOutput;
+
   if (lightRingID != -1) {
     m_lightRing.reset(new frc::Relay(lightRingID, frc::Relay::kForwardOnly));
   }
 
-  m_isEnabled = false;
+  m_isTargetting = false;
 }
 
 void Vision::Camera::process() {
-  if (!isEnabled()) {
+  if (!isTargetting()) {
     return;
   }
 
@@ -67,6 +69,10 @@ void Vision::Camera::process() {
     cv::Mat frame;
     auto status = m_cameraSink->GrabFrame(frame);
 
+    if (m_flipOutput) {
+      cv::flip(frame, frame, -1);
+    }
+
     if (status == 0) {
       std::cout << "Vision Error: " << m_name << ": " << m_cameraSink->GetError() << "\n";
     }
@@ -79,29 +85,37 @@ void Vision::Camera::process() {
 }
 
 void Vision::Camera::updateSettings(std::string newSettings) {
-  if (newSettings != m_currentSettings) {
-    system((m_baseCommand + k_defaultSettings).c_str());
+  if (newSettings == "") {
+    newSettings = k_defaultSettings;
+  }
 
-    if (newSettings != "") {
-      system((m_baseCommand + newSettings).c_str());
-      m_currentSettings = newSettings;
+  if (newSettings == m_currentSettings) {
+    // Update settings, just in case something happened
+    system((m_baseCommand +newSettings).c_str());
+  }
+  else {
+    // Reset old settings, too
+    if (newSettings != k_defaultSettings) {
+      newSettings = k_defaultSettings +"," +newSettings;
     }
-    else {
-      m_currentSettings = k_defaultSettings;
-    }
+
+    system((m_baseCommand +newSettings).c_str());
 
     // Pause the camera thread while camera settings update
     std::this_thread::sleep_for(std::chrono::milliseconds(k_settingsChangeDelayMillis));
   }
+
+  m_currentSettings = newSettings;
 }
 
 void Vision::Camera::setLightRing(bool turnOn) {
   if (m_lightRing != nullptr) {
-    frc::Relay::Value val = ((turnOn && isEnabled()) ? frc::Relay::kOn : frc::Relay::kOff);
+    frc::Relay::Value val = ((turnOn && isTargetting()) ? frc::Relay::kOn : frc::Relay::kOff);
 
     if (m_lightRing->Get() != val) {
       m_lightRing->Set(val);
 
+      // THIS SHOULDN'T MATTER!
       // // Pause the camera thread while the lightring turns on/off
       // std::this_thread::sleep_for(std::chrono::milliseconds(k_lightringChangeDelayMillis));
     }
@@ -110,14 +124,19 @@ void Vision::Camera::setLightRing(bool turnOn) {
 
 void Vision::Camera::setTarget(std::shared_ptr<Vision::Target> target) {
   std::atomic_store(&m_objectToTarget, target);
+}
 
-  if (target != nullptr) {
-    enable(true);
+std::string Vision::Camera::getTarget() {
+  if (m_objectToTarget == nullptr) {
+    return "";
+  }
+  else {
+    return m_objectToTarget->k_name;
   }
 }
 
-void Vision::Camera::enable(bool enable) {
-  m_isEnabled = enable;
+void Vision::Camera::enableTargetting(bool enable) {
+  m_isTargetting = enable;
 
   if (!enable) {
     setLightRing(false);
@@ -129,6 +148,6 @@ void Vision::Camera::enable(bool enable) {
   }
 }
 
-bool Vision::Camera::isEnabled() {
-  return m_isEnabled.load();
+bool Vision::Camera::isTargetting() {
+  return m_isTargetting.load();
 }

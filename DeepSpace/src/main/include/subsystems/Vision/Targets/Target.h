@@ -15,7 +15,7 @@ class Target {
  public:
   virtual void setup(Camera *camera) = 0;
   virtual void run(cv::Mat &frame) = 0;
-  const std::string name = "";
+  std::string k_name = "";
 
   void resetOffset();
   std::pair<double, double> getOffset();

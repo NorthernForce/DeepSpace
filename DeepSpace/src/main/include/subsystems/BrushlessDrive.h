@@ -15,6 +15,7 @@ class BrushlessDrive : public frc::Subsystem {
  public:
   BrushlessDrive();
   void InitDefaultCommand() override;
+  void Periodic() override;
   void arcDrive(double speed, double rotation);
 
   const static double k_rampRate;
