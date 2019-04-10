@@ -180,7 +180,7 @@ std::pair<double, double> OI::getSteeringControls() {
     return std::make_pair(speed * 0.5, rotation * 0.3);
   }
   else {
-    return std::make_pair(speed, rotation * 0.3);
+    return std::make_pair(speed, rotation * 0.835);
   }
 }
 
