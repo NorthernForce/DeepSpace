@@ -29,15 +29,14 @@ const int Vision::ReflectiveTape::k_maxVal = 255;
 const double Vision::ReflectiveTape::k_minArea = 15;
 
 const double Vision::ReflectiveTape::k_maxAreaDiff = 0.1;
-const double Vision::ReflectiveTape::k_maxCenterOffset = 0.5;
-
-const double Vision::ReflectiveTape::k_areaToCenter = 20;
-const double Vision::ReflectiveTape::k_servityAreaSoftener = 700;
+const double Vision::ReflectiveTape::k_maxCenterOffset = 2;
+const double Vision::ReflectiveTape::k_areaSoftenerThreshold = 700;
 
 struct ReflectiveTapeBlob {
 	cv::Point center;
 	double area = 0;
 	bool isLeft;
+  bool isOut = false;
 };
 
 struct ReflectiveTargetBlob {
@@ -108,19 +107,21 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
   // Analyze the contours (as tapes)
   std::vector<ReflectiveTapeBlob> tapes;
   for (auto &contour : contours) {
-    cv::Moments test = cv::moments(contour, false);
+    double testArea = cv::contourArea(contour);
 
     // Test for minimum area.
-    if (test.m00 >= k_minArea) {
+    if (testArea >= k_minArea) {
       ReflectiveTapeBlob tape;
-      tape.area = test.m00;
-      tape.center = cv::Point(test.m10/test.m00, test.m01/test.m00);
-      
-      // Find furthest left and right points (extreme points).
-      // auto points = std::minmax_element(contour.begin(), contour.end(),
-      //   [](cv::Point &a, cv::Point &b) {
-      //     return a.x < b.x;
-      // });
+      tape.area = testArea;
+
+      // Check whether the contour goes out of the frame
+      cv::Rect rect = cv::boundingRect(contour);
+      if (rect.x <= 0 || rect.y <= 0 || (rect.x + rect.width) >= (frame.cols - 1) || (rect.y + rect.height) >= (frame.rows - 1)) {
+        tape.isOut = true;
+      }
+      else {
+        tape.isOut = false;
+      }
 
       // Finds the average of the leftest and rightest points (extreme points)
       cv::Point leftTop = contour[0], leftBot = contour[0], rightTop = contour[0], rightBot = contour[0];
@@ -151,12 +152,23 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
         }
       }
 
+      cv::Point leftAverage = cv::Point((leftTop.x + leftBot.x) / 2, (leftTop.y + leftBot.y) / 2);
+      cv::Point rightAverage = cv::Point((rightTop.x + rightBot.x) / 2, (rightTop.y + rightBot.y) / 2);
+
       // Compares heights of extreme points to determine whether left or right
-      if ((leftTop.y + leftBot.y) / 2 < (rightTop.y + rightTop.y) / 2) {
+      if (leftAverage.y < rightAverage.y) {
         tape.isLeft = false;
       }
       else {
         tape.isLeft = true;
+      }
+
+      // Set the key points for targetting
+      if (tape.isLeft) {
+        tape.center = rightAverage;
+      }
+      else {
+        tape.center = leftAverage;
       }
 
       tapes.push_back(tape);
@@ -209,15 +221,30 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
 
   // Define target areas and centers
   for (auto &target : targets) {
-    // Total area is just addition of taoe areas
+    // Total area is just addition of both areas
     target.area = target.leftTape.area + target.rightTape.area;
 
-    // Use an estimated center if only one tape is found
     if (target.rightTape.area == 0) {
-      target.center = cv::Point(target.leftTape.center.x + target.leftTape.area / k_areaToCenter, target.leftTape.center.y);
+      // Don't use a single tape unless it doesn't touch a boundary
+      if (target.leftTape.isOut) {
+        target.center = cv::Point(frame.cols / 2, frame.rows / 2);
+      }
+      else {
+        target.center = cv::Point(target.leftTape.center);
+      }
     }
     else if (target.leftTape.area == 0) {
-      target.center = cv::Point(target.rightTape.center.x - target.rightTape.area / k_areaToCenter, target.rightTape.center.y);
+      // Don't use a single tape unless it doesn't touch a boundary
+      if (target.rightTape.isOut) {
+        target.center = cv::Point(frame.cols / 2, frame.rows / 2);
+      }
+      else {
+        target.center = cv::Point(target.rightTape.center);
+      }
+    }
+    else if (target.leftTape.isOut || target.rightTape.isOut) {
+      // Use the raw center if either tape is out
+      target.center = cv::Point((target.leftTape.center.x + target.rightTape.center.x) / 2, (target.leftTape.center.y + target.rightTape.center.y) / 2);
     }
     else {
       // Find offset severity based on tape areas
@@ -230,12 +257,13 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       }
 
       // Find the offset softener (larger area = less offset)
-      double softener = (k_servityAreaSoftener - target.area) / k_servityAreaSoftener;
+      double softener = (k_areaSoftenerThreshold - target.area) / k_areaSoftenerThreshold;
       if (softener < 0) {
         softener = 0;
       }
 
-      severity *= k_maxCenterOffset * softener;
+      // Calculate the true severity of the difference of areas
+      severity *= softener * k_maxCenterOffset;
 
       int centerX = (target.leftTape.center.x + target.rightTape.center.x) / 2 + (target.rightTape.center.x - target.leftTape.center.x) * severity;
       int centerY = (target.leftTape.center.y + target.rightTape.center.y) / 2 + (target.rightTape.center.y - target.leftTape.center.y) * severity;
@@ -250,7 +278,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       return a.area < b.area;
   });
 
-  // Debug
+  // Debugging
   cv::drawContours(frame, contours, -1, cv::Scalar(0, 255, 0));
   for (auto &target : targets) {
     cv::line(frame, target.leftTape.center, target.rightTape.center, cv::Scalar(255, 0, 0));
