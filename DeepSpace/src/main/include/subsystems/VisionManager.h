@@ -18,8 +18,6 @@
 #include "subsystems/Vision/Cameras/Camera.h"
 #include "subsystems/Vision/Targets/Target.h"
 
-#include "subsystems/IndicatorLights/Targetting.h"
-
 #include <thread>
 #include <map>
 #include <string>
@@ -29,18 +27,15 @@ namespace Vision {
   class Manager : public frc::Subsystem {
   public:
     Manager();
-    void setTarget(std::string cameraName, std::string targetName = "", bool enable = true);
+    void setTarget(std::string cameraName, std::string targetName = "");
     std::pair<double, double> getOffset(std::string targetName);
-    void enableTargetting(std::string cameraName, bool enable = true);
-    std::string getTarget(std::string cameraName);
+    void enableCamera(std::string cameraName, bool enable = true);
 
   private:
     std::shared_ptr<std::thread> m_visionThread;
 
     std::map<std::string, std::shared_ptr<Vision::Target>> m_targets;
     std::map<std::string, std::shared_ptr<Vision::Camera>> m_cameras;
-
-    std::shared_ptr<IndicatorLights::Targetting> m_indicatorLightsEffect = nullptr;
   };
 
 }

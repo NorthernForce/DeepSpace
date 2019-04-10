@@ -6,8 +6,8 @@
 #include "RobotMap.h"
 
 const int Climber::k_timeout = 0;
-const int Climber::k_peakCurrent = 35;
-const int Climber::k_continuousCurrent = 25;
+const int Climber::k_peakCurrent = 22;
+const int Climber::k_continuousCurrent = 11;
 const int Climber::k_peakCurrentDuration = 2000;
 
 const double Climber::k_forwardMotorSpeed = 0.5;

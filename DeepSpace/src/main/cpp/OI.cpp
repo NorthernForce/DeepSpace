@@ -46,11 +46,6 @@
 #include "commands/VisionFollowReflectiveTape.h"
 #include "commands/GotoTarget.h"
 
-#include "commands/IndicatorLightsEffect.h"
-#include "subsystems/IndicatorLights/Pulse.h"
-#include "subsystems/IndicatorLights/Morse.h"
-#include "subsystems/IndicatorLights/Turning.h"
-
 // Functions to simplify button mapping.
 static void WhenPressed(frc::Trigger* trigger, frc::Command* command) {
   trigger->WhenActive(command);
@@ -80,7 +75,7 @@ OI::OI() {
   // cargoLayout.Add("ElevatorLower", new ElevatorLower());
 
   WhileHeld(new SimpleButton(m_driverController, 5), new VisionFollowReflectiveTape());
-  // WhileHeld(new SimpleButton(m_driverController, 5), new GotoTarget());
+  // SimpleButton(m_driverController, 5), new GotoTarget());
   
   WhileHeld(new SimpleButton(m_driverController, 1), new ClawToggleRaise());
 
@@ -89,13 +84,6 @@ OI::OI() {
   WhenReleased(new SimpleAxis(m_driverController, 3), new ClawOpen());
 
   WhileHeld(new SimpleAxis(m_driverController, 2), new CargoEject());
-
-  WhenPressed(new SimpleButton(m_driverController, 3), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
-  WhenPressed(new SimpleButton(m_driverController, 9), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
-  WhenPressed(new frc::POVButton(*m_driverController, 0), new IndicatorLightsEffect());
-  WhenPressed(new frc::POVButton(*m_driverController, 90), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("SOS")));
-  WhenPressed(new frc::POVButton(*m_driverController, 180), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("we will pillage your village", 20, std::vector<uint8_t>{255, 255, 0})));
-  WhenPressed(new frc::POVButton(*m_driverController, 270), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("go 172", 20, std::vector<uint8_t>{156, 254, 127})));
 
   // auto test = new SimpleButton(m_manipulatorController1, 1);
   // test->WhileActive(new CargoIntake());
@@ -154,8 +142,6 @@ OI::OI() {
   WhenPressed(new frc::POVButton(*m_manipulatorController3, 225), new ClimbEvenlyUp());
   WhileHeld(new frc::POVButton(*m_manipulatorController3, 225), new ClimberDriveForward());
   WhileHeld(new frc::POVButton(*m_manipulatorController3, 180), new ClimberDriveForward());
-
-  WhenPressed(new frc::POVButton(*m_manipulatorController3, 0), new SetupPosition(ElevatorSetPosition::Position::ClimbPosition, SetupPosition::TargetType::Cargo));
   
   WhenPressed(new ComboButton(new SimpleButton(m_manipulatorController3, 5), new SimpleAxis(m_manipulatorController3, 2)), new SetupPosition(ElevatorSetPosition::Position::CargoIntake, SetupPosition::TargetType::Cargo));
   WhenPressed(new ComboButton(new SimpleButton(m_manipulatorController3, 5), new SimpleAxis(m_manipulatorController3, 3)), new SetupPosition(ElevatorSetPosition::Position::CargoShipCargoDeposit, SetupPosition::TargetType::Cargo));
@@ -177,14 +163,16 @@ std::pair<double, double> OI::getSteeringControls() {
 
   // if (m_driverController->GetTriggerAxis(frc::XboxController::JoystickHand::kRightHand) < 0.5) {
   if (m_driverController->GetBumper(frc::XboxController::JoystickHand::kRightHand) == 1) {
-    return std::make_pair(speed * 0.5, rotation * 0.3);
+    double rotationScaled = std::sqrt(std::abs(rotation) * 2 - std::pow(rotation, 2)) * 0.75;
+
+    if (rotation > 0) {
+      return std::make_pair(speed * 0.6, rotationScaled);
+    }
+    else {
+      return std::make_pair(speed * 0.6, rotationScaled * -1);
+    }
   }
   else {
-    return std::make_pair(speed, rotation * 0.3);
+    return std::make_pair(speed, rotation * 0.75);
   }
-}
-
-void OI::setControllerRumble(double value) {
-  // m_driverController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
-  m_driverController->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
 }

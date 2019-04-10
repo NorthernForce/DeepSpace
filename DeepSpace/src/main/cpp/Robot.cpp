@@ -7,6 +7,11 @@
 
 #include "Robot.h"
 
+#include "subsystems/Elevator.h"
+#include "subsystems/Claw.h"
+#include "subsystems/Climber.h"
+#include "subsystems/IMU.h"
+
 #include "commands/ElevatorSetPosition.h"
 #include "commands/ElevatorCalibrate.h"
 #include "commands/ElevatorSetHomePosition.h"
@@ -20,8 +25,6 @@
 
 #include "commands/VisionTargetNothing.h"
 #include "commands/VisionTargetReflectiveTape.h"
-
-#include "commands/IndicatorLightsExample.h"
 
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -39,7 +42,6 @@ std::shared_ptr<Climber> Robot::m_climber;
 std::shared_ptr<ClimberDrive> Robot::m_climberDrive;
 std::shared_ptr<Vision::Manager> Robot::m_vision;
 std::shared_ptr<RangeFinder> Robot::m_rangeFinder;
-std::shared_ptr<IndicatorLights::Manager> Robot::m_indicatorLights;
 
 void Robot::RobotInit() {
   std::cout << "RobotInit Started" << std::endl;
@@ -51,7 +53,6 @@ void Robot::RobotInit() {
   m_claw.reset(new Claw());
   m_imu.reset(new IMU());
   m_lineTracker.reset(new LineTracker());
-  m_indicatorLights.reset(new IndicatorLights::Manager());
   m_vision.reset(new Vision::Manager());
   m_climber.reset(new Climber());
   m_climberDrive.reset(new ClimberDrive());
@@ -83,8 +84,6 @@ void Robot::RobotInit() {
 
   frc::SmartDashboard::PutData("Camera: Target tape", new VisionTargetReflectiveTape());
   frc::SmartDashboard::PutData("Camera: No target", new VisionTargetNothing());
-
-  frc::SmartDashboard::PutData("Test LEDs from RIO", new IndicatorLightsExample());
 
   // Initialize OI after subsystems
   m_oi.reset(new OI());

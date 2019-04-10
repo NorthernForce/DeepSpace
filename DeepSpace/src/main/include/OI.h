@@ -15,7 +15,6 @@ class OI {
   OI();
 
   std::pair<double, double> getSteeringControls();
-  void setControllerRumble(double value = 0);
 
  private:
   std::shared_ptr<frc::XboxController> m_driverController;
