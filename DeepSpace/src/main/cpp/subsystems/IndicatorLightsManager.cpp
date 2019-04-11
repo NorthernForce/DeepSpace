@@ -11,9 +11,11 @@
 #include "subsystems/IndicatorLights/Morse.h"
 #include "subsystems/IndicatorLights/Wave.h"
 
+#include <iostream>
+
 #include "RobotMap.h"
 
-const int IndicatorLights::Manager::k_maxLEDs = 6;
+const int IndicatorLights::Manager::k_maxLEDs = 5;
 const int IndicatorLights::Manager::k_bytesPerChannel = 4;
 const int IndicatorLights::Manager::k_channelsPerLED = 3;
 const int IndicatorLights::Manager::k_bytesPerLED = k_channelsPerLED * k_bytesPerChannel;
@@ -38,30 +40,30 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
   m_spi->SetMSBFirst();
 
   // Set the default effect
-  // m_defaultEffect = std::make_shared<Wave>(std::make_shared<Turning>());
-  m_defaultEffect = std::make_shared<Turning>();
+  m_defaultEffect = std::make_shared<Wave>(std::make_shared<Turning>(), 1000);
+  // m_defaultEffect = std::make_shared<Turning>();
   setEffect();
 
   m_indicatorLightsThread.reset(new std::thread([&]{
     for (;;) {
       std::chrono::system_clock::time_point startTime = std::chrono::system_clock::now();
 
-      // if (m_newEffect != m_currentEffect) {
-      //   m_currentEffect = m_newEffect;
+      if (m_newEffect != m_currentEffect) {
+        m_currentEffect = m_newEffect;
 
-      //   if (m_currentEffect->isDone()) {
-      //     m_currentEffect->reset();
-      //   }
-      // }
+        if (m_currentEffect->isDone()) {
+          m_currentEffect->reset();
+        }
+      }
 
-      // m_currentEffect->run();
-      // assembleFrame(m_currentEffect->getColors());
-      // sendFrame();
+      m_currentEffect->run();
+      assembleFrame(m_currentEffect->getColors());
+      sendFrame();
 
-      // if (m_currentEffect->isDone()) {
-      //   m_currentEffect = nullptr;
-      //   setEffect();
-      // }
+      if (m_currentEffect->isDone()) {
+        m_currentEffect = nullptr;
+        setEffect();
+      }
 
       std::this_thread::sleep_until(startTime + std::chrono::milliseconds(k_framePeriodMillis));
     }
@@ -72,10 +74,11 @@ void IndicatorLights::Manager::InitDefaultCommand() {}
 
 void IndicatorLights::Manager::setEffect(std::shared_ptr<Effect> effect) {
   if (effect == nullptr) {
-    effect = m_defaultEffect;
+    std::atomic_store(&m_newEffect, m_defaultEffect);
   }
-
-  std::atomic_store(&m_newEffect, effect);
+  else {
+    std::atomic_store(&m_newEffect, effect);
+  }
 }
 
 void IndicatorLights::Manager::assembleFrame(std::vector<std::vector<uint8_t>> colors) {

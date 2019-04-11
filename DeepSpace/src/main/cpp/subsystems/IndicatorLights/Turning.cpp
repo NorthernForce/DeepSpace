@@ -2,7 +2,9 @@
 
 #include "Robot.h"
 
-IndicatorLights::Turning::Turning() {}
+IndicatorLights::Turning::Turning() {
+  reset();
+}
 
 void IndicatorLights::Turning::run() {
   double h = (Robot::m_imu->getRotation() + 180) / 360.0;
@@ -26,8 +28,13 @@ void IndicatorLights::Turning::run() {
     case 4: r = t, g = p, b = v; break;
     case 5: r = v, g = p, b = q; break;
   }
+  
 
-  m_colors[0] = std::vector<uint8_t>{(uint8_t)(b * 255), (uint8_t)(r * 255), (uint8_t)(g * 255)};
+  m_colors[0][0] = b * 255;
+  m_colors[0][1] = r * 255;
+  m_colors[0][2] = g * 255;
+
+  // m_colors[0] = std::vector<uint8_t>{(uint8_t)(b * 255), (uint8_t)(r * 255), (uint8_t)(g * 255)};
 }
 
 void IndicatorLights::Turning::reset() {
