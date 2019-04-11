@@ -9,9 +9,6 @@ class Solid : public Effect {
   Solid(std::vector<uint8_t> color);
   void run() override;
   void reset() override;
-
- private:
-  std::vector<uint8_t> m_color;
 };
 
 }

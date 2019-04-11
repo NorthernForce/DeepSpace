@@ -10,9 +10,7 @@ const double IndicatorLights::Targetting::k_greenThreshold = 0.05;
 const double IndicatorLights::Targetting::k_averageThreshold = (k_redThreshold + k_greenThreshold) / 2;
 const double IndicatorLights::Targetting::k_rangeThreshold = (k_redThreshold - k_greenThreshold) / 2;
 
-IndicatorLights::Targetting::Targetting() {
-  m_colors = std::vector<std::vector<uint8_t>>(IndicatorLights::Manager::k_maxLEDs, std::vector<uint8_t>{0, 0, 0});
-}
+IndicatorLights::Targetting::Targetting() {}
 
 void IndicatorLights::Targetting::run() {
   // if (Robot::m_vision->getTarget(k_cameraName) == "") {
@@ -40,4 +38,6 @@ void IndicatorLights::Targetting::run() {
   }
 }
 
-void IndicatorLights::Targetting::reset() {}
+void IndicatorLights::Targetting::reset() {
+  m_colors = std::vector<std::vector<uint8_t>>{std::vector<uint8_t>{0, 255, 0}};
+}

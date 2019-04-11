@@ -1,4 +1,5 @@
 #include "subsystems/IndicatorLights/Morse.h"
+#include "subsystems/IndicatorLightsManager.h"
 
 #include <algorithm>
 #include <iostream>
@@ -10,7 +11,7 @@ IndicatorLights::Morse::Morse(std::string message, int speedOfDot, std::vector<u
   m_speedOfDot = speedOfDot;
   m_onColor = onColor;
   m_offColor = offColor;
-  m_colors.push_back(m_offColor);
+  m_colors = std::vector<std::vector<uint8_t>>{m_offColor};
 
   reset();
 }
@@ -102,7 +103,7 @@ void IndicatorLights::Morse::run() {
 
 void IndicatorLights::Morse::reset() {
   m_done = false;
-  m_colors[0] = m_offColor;
+  m_colors = std::vector<std::vector<uint8_t>>{m_offColor};
 
   m_counter = 0;
   m_stringIndex = 0;

@@ -9,6 +9,7 @@
 
 #include "subsystems/IndicatorLights/Turning.h"
 #include "subsystems/IndicatorLights/Morse.h"
+#include "subsystems/IndicatorLights/Wave.h"
 
 #include "RobotMap.h"
 
@@ -37,7 +38,7 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
   m_spi->SetMSBFirst();
 
   // Set the default effect
-  m_defaultEffect = std::make_shared<Turning>();
+  m_defaultEffect = std::make_shared<Wave>(std::make_shared<Turning>());
   setEffect();
 
   m_indicatorLightsThread.reset(new std::thread([&]{
