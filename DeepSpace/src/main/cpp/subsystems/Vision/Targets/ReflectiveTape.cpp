@@ -31,7 +31,7 @@ const int Vision::ReflectiveTape::k_maxVal = 255;
 const double Vision::ReflectiveTape::k_minArea = 15;
 
 const double Vision::ReflectiveTape::k_maxAreaDiff = 0.1;
-const double Vision::ReflectiveTape::k_maxCenterOffset = 2;
+const double Vision::ReflectiveTape::k_maxCenterOffset = 4;
 const double Vision::ReflectiveTape::k_areaSoftenerThreshold = 700;
 
 struct ReflectiveTapeBlob {
@@ -116,35 +116,56 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       ReflectiveTapeBlob tape;
       tape.area = testArea;
 
-      // Find the extreme points
-      cv::Point top, right, bot, left;
-      std::tie(top, right, bot, left) = Utilities::FindExtremePoints(contour);
+      // TODO: TRY TO FIX THIS
+      // // Find the extreme points
+      // cv::Point top, right, bot, left;
+      // std::tie(top, right, bot, left) = Utilities::FindExtremePoints(contour);
 
-      // Determine type of tape
+      // Find extreme points
+      cv::Point leftTop = contour[0], leftBot = contour[0], rightTop = contour[0], rightBot = contour[0];
+      for (auto &point : contour) {
+        if (point.x < leftTop.x) {
+          leftTop = point;
+          leftBot = point;
+        }
+        else if (point.x == leftTop.x) {
+          if (point.y < leftTop.y) {
+            leftTop = point;
+          }
+          else if (point.y > leftBot.y) {
+            leftBot = point;
+          }
+        }
+        
+        if (point.x > rightTop.x) {
+          rightTop = point;
+          rightBot = point;
+        }
+        else if (point.x == rightTop.x) {
+          if (point.y < rightTop.y) {
+            rightTop = point;
+          }
+          else if (point.y > rightBot.y) {
+            rightBot = point;
+          }
+        }
+      }
+
+      cv::Point right = Vision::Utilities::CalcAvgPoint(rightTop, rightBot);
+      cv::Point left = Vision::Utilities::CalcAvgPoint(leftTop, leftBot);
+
+      // Check whether the contour goes out of the frame
+      cv::Rect rect = cv::boundingRect(contour);
+
       tape.isOut = true;
-      if (left.x <= 0) {
+      if (rect.x <= 0) {
         tape.isLeft = true;
       }
-      else if (right.x >= (frame.cols - 1)) {
+      else if ((rect.x + rect.width) >= (frame.cols -1)) {
         tape.isLeft = false;
       }
-      // else if (top.y <= 0) {
-      //   if ((bot.x - left.x) > (right.x - bot.x)) {
-      //     tape.isLeft = false;
-      //   }
-      //   else {
-      //     tape.isLeft = true;
-      //   }
-      // }
-      // else if (bot.y >= (frame.rows - 1)) {
-      //   if ((top.x - left.x) > (right.x - top.x)) {
-      //     tape.isLeft = true;
-      //   }
-      //   else {
-      //     tape.isLeft = false;
-      //   }
-      // }
       else {
+        // Compares heights of extreme points to determine whether left or right
         if (left.y < right.y) {
           tape.isLeft = false;
         }
@@ -152,61 +173,10 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
           tape.isLeft = true;
         }
 
-        if (top.y > 0 && bot.y < (frame.rows - 1)) {
+        if (rect.y > 0 && (rect.y + rect.height) < (frame.rows - 1)) {
           tape.isOut = false;
         }
       }
-
-      // // Check whether the contour goes out of the frame
-      // cv::Rect rect = cv::boundingRect(contour);
-      // if (rect.x <= 0 || rect.y <= 0 || (rect.x + rect.width) >= (frame.cols - 1) || (rect.y + rect.height) >= (frame.rows - 1)) {
-      //   tape.isOut = true;
-      // }
-      // else {
-      //   tape.isOut = false;
-      // }
-
-      // // Find extreme points
-      // cv::Point leftTop = contour[0], leftBot = contour[0], rightTop = contour[0], rightBot = contour[0];
-      // for (auto &point : contour) {
-      //   if (point.x < leftTop.x) {
-      //     leftTop = point;
-      //     leftBot = point;
-      //   }
-      //   else if (point.x == leftTop.x) {
-      //     if (point.y < leftTop.y) {
-      //       leftTop = point;
-      //     }
-      //     else if (point.y > leftBot.y) {
-      //       leftBot = point;
-      //     }
-      //   }
-      //   else if (point.x > rightTop.x) {
-      //     rightTop = point;
-      //     rightBot = point;
-      //   }
-      //   else if (point.x == rightTop.x) {
-      //     if (point.y < rightTop.y) {
-      //       rightTop = point;
-      //     }
-      //     else if (point.y > rightBot.y) {
-      //       rightBot = point;
-      //     }
-      //   }
-      // }
-
-      // // cv::Point top = ;
-      // cv::Point right = Vision::Utilities::CalcAvgPoint(rightTop, rightBot);
-      // // cv::Point bot = ;
-      // cv::Point left = Vision::Utilities::CalcAvgPoint(leftTop, leftBot);
-
-      // // Compares heights of extreme points to determine whether left or right
-      // if (left.y < right.y) {
-      //   tape.isLeft = false;
-      // }
-      // else {
-      //   tape.isLeft = true;
-      // }
 
       // Set the key points for targetting
       if (tape.isLeft) {

@@ -4,6 +4,7 @@ cv::Point Vision::Utilities::CalcAvgPoint(cv::Point a, cv::Point b) {
   return cv::Point((a.x + b.x) / 2, (a.y + b.y) / 2);
 }
 
+// TODO: THIS CODE DOESN'T WORK
 std::tuple<cv::Point, cv::Point, cv::Point, cv::Point> Vision::Utilities::FindExtremePoints(std::vector<cv::Point> contour) {
   cv::Rect rect = cv::boundingRect(contour);
   cv::Point startPoint = cv::Point(rect.x, rect.y);
