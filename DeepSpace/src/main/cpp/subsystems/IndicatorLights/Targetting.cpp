@@ -3,6 +3,8 @@
 #include "Robot.h"
 #include "subsystems/IndicatorLightsManager.h"
 
+#include <iostream>
+
 const std::string IndicatorLights::Targetting::k_cameraName = "Targeter";
 
 const double IndicatorLights::Targetting::k_redThreshold = 0.7;
@@ -10,13 +12,13 @@ const double IndicatorLights::Targetting::k_greenThreshold = 0.05;
 const double IndicatorLights::Targetting::k_averageThreshold = (k_redThreshold + k_greenThreshold) / 2;
 const double IndicatorLights::Targetting::k_rangeThreshold = (k_redThreshold - k_greenThreshold) / 2;
 
-IndicatorLights::Targetting::Targetting() {}
+IndicatorLights::Targetting::Targetting() {
+  m_colors.resize(Manager::k_maxLEDs);
+
+  reset();
+}
 
 void IndicatorLights::Targetting::run() {
-  // if (Robot::m_vision->getTarget(k_cameraName) == "") {
-  //   return;
-  // }
-
   double targetOffset = Robot::m_vision->getOffset(Robot::m_vision->getTarget(k_cameraName)).first;
 
   for (int ledI = 0; ledI < m_colors.size(); ledI++) {
@@ -39,5 +41,5 @@ void IndicatorLights::Targetting::run() {
 }
 
 void IndicatorLights::Targetting::reset() {
-  m_colors = std::vector<std::vector<uint8_t>>{std::vector<uint8_t>{0, 255, 0}};
+  m_colors = std::vector<std::vector<uint8_t>>(m_colors.size(), std::vector<uint8_t>{0, 255, 0});
 }
