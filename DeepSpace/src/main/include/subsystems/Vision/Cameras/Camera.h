@@ -46,7 +46,7 @@ class Camera {
 
   std::atomic<bool> m_isTargetting;
 
-  std::string m_currentSettings;
+  std::string m_currentSettings = "";
   const static int k_settingsChangeDelayMillis;
   const static int k_lightringChangeDelayMillis;
 };

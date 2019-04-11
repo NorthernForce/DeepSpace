@@ -90,22 +90,24 @@ void Vision::Camera::updateSettings(std::string newSettings) {
   }
 
   if (newSettings == m_currentSettings) {
-    // Update settings, just in case something happened
-    system((m_baseCommand +newSettings).c_str());
+    // THIS TAKES TIME TO COMPLETE (~250 ms)
+    // // Update settings, just in case something happened
+    // system((m_baseCommand +newSettings).c_str());
   }
   else {
     // Reset old settings, too
     if (newSettings != k_defaultSettings) {
-      newSettings = k_defaultSettings +"," +newSettings;
+      system((m_baseCommand +k_defaultSettings +"," +newSettings).c_str());
     }
-
-    system((m_baseCommand +newSettings).c_str());
+    else {
+      system((m_baseCommand +newSettings).c_str());
+    }
 
     // Pause the camera thread while camera settings update
     std::this_thread::sleep_for(std::chrono::milliseconds(k_settingsChangeDelayMillis));
-  }
 
-  m_currentSettings = newSettings;
+    m_currentSettings = newSettings;
+  }
 }
 
 void Vision::Camera::setLightRing(bool turnOn) {
@@ -123,6 +125,8 @@ void Vision::Camera::setLightRing(bool turnOn) {
 }
 
 void Vision::Camera::setTarget(std::shared_ptr<Vision::Target> target) {
+  target->setup(this);
+
   std::atomic_store(&m_objectToTarget, target);
 }
 
@@ -138,13 +142,13 @@ std::string Vision::Camera::getTarget() {
 void Vision::Camera::enableTargetting(bool enable) {
   m_isTargetting = enable;
 
-  if (!enable) {
-    setLightRing(false);
+  if (enable) {
+    if (m_objectToTarget != nullptr) {
+      m_objectToTarget->setup(this);
+    }
   }
   else {
-    if (m_currentTarget != nullptr) {
-      m_currentTarget->setup(this);
-    }
+    setLightRing(false);
   }
 }
 

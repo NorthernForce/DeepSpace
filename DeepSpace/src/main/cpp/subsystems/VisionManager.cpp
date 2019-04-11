@@ -42,9 +42,8 @@ Vision::Manager::Manager() : Subsystem("VisionManager"),
 void Vision::Manager::setTarget(std::string cameraName, std::string targetName, bool enable) {
   if (targetName != "") {
     m_cameras[cameraName]->setTarget(m_targets[targetName]);
-    if (enable) {
-      enableTargetting(cameraName);
-    }
+
+    enableTargetting(cameraName, enable);
   }
   else {
     m_cameras[cameraName]->setTarget(nullptr);
