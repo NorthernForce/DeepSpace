@@ -14,14 +14,14 @@
 const std::string VisionFollowReflectiveTape::k_cameraName = "Targeter";
 const std::string VisionFollowReflectiveTape::k_targetName = "ReflectiveTape";
 
-const double VisionFollowReflectiveTape::k_p = 1.5;
+const double VisionFollowReflectiveTape::k_p = 1.3;
 const double VisionFollowReflectiveTape::k_i = 0.01;
 const double VisionFollowReflectiveTape::k_d = 0.1;
 
 const double VisionFollowReflectiveTape::k_maxTurnSpeed = 0.35;
 
 // It seems to aim to the right
-const double VisionFollowReflectiveTape::k_targetOffset = -0.05;
+const double VisionFollowReflectiveTape::k_targetOffset = -0.01;
 
 VisionFollowReflectiveTape::VisionFollowReflectiveTape() : Command("VisionFollowReflectiveTape") {
   Requires(Robot::m_vision.get());

@@ -16,7 +16,7 @@ const int Vision::ReflectiveTape::k_minHue = 55;
 const int Vision::ReflectiveTape::k_maxHue = 80;
 const int Vision::ReflectiveTape::k_minSat = 200;
 const int Vision::ReflectiveTape::k_maxSat = 255;
-const int Vision::ReflectiveTape::k_minVal = 75;
+const int Vision::ReflectiveTape::k_minVal = 50;
 const int Vision::ReflectiveTape::k_maxVal = 255;
 #else
 const int Vision::ReflectiveTape::k_invertHue = 1;
@@ -32,9 +32,9 @@ const double Vision::ReflectiveTape::k_minArea = 15;
 const double Vision::ReflectiveTape::k_maxAreaDiff = 1.5;
 
 const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.1;
-const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 2;
+const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 4;
 const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 700;
-const double Vision::ReflectiveTape::k_maxFavoringBoundary = 0.25;
+const double Vision::ReflectiveTape::k_maxFavoringBoundary = 0.3;
 
 struct ReflectiveTapeBlob {
 	cv::Point center;
@@ -290,7 +290,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       int centerY = avgCenter.y;
 
       cv::Rect boundary = cv::Rect(frame.cols * k_maxFavoringBoundary, 0, frame.cols * k_maxFavoringBoundary * 2, frame.rows - 1);
-      if (boundary.contains(avgCenter)) {
+      if (boundary.contains(target.rightTape.center) && boundary.contains(target.leftTape.center)) {
         centerX += (target.rightTape.center.x - target.leftTape.center.x) * severity;
         centerY += (target.rightTape.center.y - target.leftTape.center.y) * severity;
       }
