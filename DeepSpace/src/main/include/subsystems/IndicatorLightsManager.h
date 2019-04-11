@@ -23,7 +23,6 @@ class Manager : public frc::Subsystem {
  public:
   Manager();
   void InitDefaultCommand() override;
-  // void Periodic() override;
   void setEffect(std::shared_ptr<Effect> effect = nullptr);
   
   const static int k_maxLEDs;

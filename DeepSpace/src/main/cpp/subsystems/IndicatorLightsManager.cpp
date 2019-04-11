@@ -38,14 +38,11 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
 
   // Set the default effect
   m_defaultEffect = std::make_shared<Turning>();
+  setEffect();
 
   m_indicatorLightsThread.reset(new std::thread([&]{
     for (;;) {
       std::chrono::system_clock::time_point startTime = std::chrono::system_clock::now();
-
-      if (m_newEffect == nullptr) {
-        setEffect(m_defaultEffect);
-      }
 
       if (m_newEffect != m_currentEffect) {
         m_currentEffect = m_newEffect;
@@ -71,29 +68,10 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
 
 void IndicatorLights::Manager::InitDefaultCommand() {}
 
-// void IndicatorLights::Manager::Periodic() {
-//   if (m_effect != nullptr) {
-//     m_effect->run();
-//     assembleFrame(m_effect->getColors());
-//     sendFrame();
-
-//     if (m_effect->isDone()) {
-//       setEffect();
-//     }
-//   }
-// }
-
 void IndicatorLights::Manager::setEffect(std::shared_ptr<Effect> effect) {
-  // if (effect != nullptr) {
-  //   m_effectToRun = effect;
-  // }
-  // else {
-  //   if (m_defaultEffect->isDone()) {
-  //     m_defaultEffect->reset();
-  //   }
-
-  //   m_effectToRun = m_defaultEffect;
-  // }
+  if (effect == nullptr) {
+    effect = m_defaultEffect;
+  }
 
   std::atomic_store(&m_newEffect, effect);
 }

@@ -94,8 +94,8 @@ OI::OI() {
   WhenPressed(new SimpleButton(m_driverController, 9), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
   WhenPressed(new frc::POVButton(*m_driverController, 0), new IndicatorLightsEffect());
   WhenPressed(new frc::POVButton(*m_driverController, 90), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("SOS")));
-  WhenPressed(new frc::POVButton(*m_driverController, 180), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("we will pillage your village", 20, std::vector<uint8_t>{255, 255, 0})));
-  WhenPressed(new frc::POVButton(*m_driverController, 270), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("go 172", 20, std::vector<uint8_t>{156, 254, 127})));
+  WhenPressed(new frc::POVButton(*m_driverController, 180), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("we will pillage your village", 8, std::vector<uint8_t>{255, 255, 0})));
+  WhenPressed(new frc::POVButton(*m_driverController, 270), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("woop", 8, std::vector<uint8_t>{156, 254, 127})));
 
   // auto test = new SimpleButton(m_manipulatorController1, 1);
   // test->WhileActive(new CargoIntake());
@@ -165,6 +165,10 @@ OI::OI() {
   
   WhileHeld(new SimpleAxis(m_manipulatorController3, 5, -1, -0.5), new ClimberRaise());
   WhileHeld(new SimpleAxis(m_manipulatorController3, 5, 0.5, 1), new ClimberLower());
+  
+  WhenPressed(new SimpleButton(m_manipulatorController3, 1), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{0, 255, 0}, 0.5)));
+  WhenPressed(new SimpleButton(m_manipulatorController3, 2), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{0, 0, 255}, 0.5)));
+  WhenPressed(new SimpleButton(m_manipulatorController3, 4), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{255, 0, 0}, 0.5)));
 
   // SimpleButton(m_manipulatorController2, 6), new ClimbStage1());
 
