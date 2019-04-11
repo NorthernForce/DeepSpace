@@ -12,8 +12,8 @@ const std::string Vision::ReflectiveTape::k_cameraSettings =
 #define LIGHT_RING_COLOR_GREEN
 #ifdef LIGHT_RING_COLOR_GREEN
 const int Vision::ReflectiveTape::k_invertHue = 0;
-const int Vision::ReflectiveTape::k_minHue = 50;
-const int Vision::ReflectiveTape::k_maxHue = 85;
+const int Vision::ReflectiveTape::k_minHue = 55;
+const int Vision::ReflectiveTape::k_maxHue = 80;
 const int Vision::ReflectiveTape::k_minSat = 200;
 const int Vision::ReflectiveTape::k_maxSat = 255;
 const int Vision::ReflectiveTape::k_minVal = 75;
@@ -29,9 +29,10 @@ const int Vision::ReflectiveTape::k_maxVal = 255;
 #endif
 
 const double Vision::ReflectiveTape::k_minArea = 15;
+const double Vision::ReflectiveTape::k_maxAreaDiff = 1.5;
 
-const double Vision::ReflectiveTape::k_maxAreaDiff = 0.1;
-const double Vision::ReflectiveTape::k_maxCenterOffset = 4;
+const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.1;
+const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 4;
 const double Vision::ReflectiveTape::k_areaSoftenerThreshold = 700;
 
 struct ReflectiveTapeBlob {
@@ -208,28 +209,31 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
   for (auto &tape : tapes) {
     if (tape.isLeft) {
       if (targets.empty() || targets.back().rightTape.area > 0) {
-        // Creates a new target if all previous are complete
+      // Creates a new target if all previous are complete
         ReflectiveTargetBlob target;
         target.leftTape = tape;
 
         targets.push_back(target);
       }
       else if (targets.back().leftTape.area < tape.area) {
-        // Overrides previous tape if not complete and area is larger
+      // Overrides previous tape if not complete and area is larger
         targets.back().leftTape = tape;
       }
     }
     else {
       if (targets.empty()) {
-        // If the first tape is right, it's alone
+      // If the first tape is right, it's alone
         ReflectiveTargetBlob target;
         target.rightTape = tape;
 
         targets.push_back(target);
       }
       else if (targets.back().rightTape.area < tape.area) {
-        // Override the previous pair if new right tape is larger
-        targets.back().rightTape = tape;
+      // Override the previous pair if new right tape is larger
+        if (tape.area > targets.back().leftTape.area / k_maxAreaDiff) {
+        // Only use the new tape if it is larger than half the left's area
+          targets.back().rightTape = tape;
+        }
       }
     }
   }
@@ -263,7 +267,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     }
     else {
       // Find offset severity based on tape areas
-      double severity = (target.leftTape.area / target.area - 0.5) / k_maxAreaDiff;
+      double severity = (target.leftTape.area / target.area - 0.5) / k_maxFavoringAreaDiff;
       if (severity < -1) {
         severity = -1;
       }
@@ -278,7 +282,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       }
 
       // Calculate the true severity of the difference of areas
-      severity *= softener * k_maxCenterOffset;
+      severity *= softener * k_maxFavoringCenterOffset;
 
       cv::Point avgCenter = Utilities::CalcAvgPoint(target.leftTape.center, target.rightTape.center);
 

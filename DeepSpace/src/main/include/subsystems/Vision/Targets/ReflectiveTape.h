@@ -20,7 +20,9 @@ class ReflectiveTape : public Target {
 
   const static double k_minArea;
   const static double k_maxAreaDiff;
-  const static double k_maxCenterOffset;
+
+  const static double k_maxFavoringAreaDiff;
+  const static double k_maxFavoringCenterOffset;
   const static double k_areaSoftenerThreshold;
 };
 
