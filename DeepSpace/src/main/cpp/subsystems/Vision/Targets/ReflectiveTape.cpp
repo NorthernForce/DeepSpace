@@ -32,8 +32,9 @@ const double Vision::ReflectiveTape::k_minArea = 15;
 const double Vision::ReflectiveTape::k_maxAreaDiff = 1.5;
 
 const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.1;
-const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 4;
-const double Vision::ReflectiveTape::k_areaSoftenerThreshold = 700;
+const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 2;
+const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 700;
+const double Vision::ReflectiveTape::k_maxFavoringBoundary = 0.25;
 
 struct ReflectiveTapeBlob {
 	cv::Point center;
@@ -276,7 +277,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       }
 
       // Find the offset softener (larger area = less offset)
-      double softener = (k_areaSoftenerThreshold - target.area) / k_areaSoftenerThreshold;
+      double softener = (k_maxSoftenerThreshold - target.area) / k_maxSoftenerThreshold;
       if (softener < 0) {
         softener = 0;
       }
@@ -285,9 +286,14 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       severity *= softener * k_maxFavoringCenterOffset;
 
       cv::Point avgCenter = Utilities::CalcAvgPoint(target.leftTape.center, target.rightTape.center);
+      int centerX = avgCenter.x;
+      int centerY = avgCenter.y;
 
-      int centerX = avgCenter.x + (target.rightTape.center.x - target.leftTape.center.x) * severity;
-      int centerY = avgCenter.y + (target.rightTape.center.y - target.leftTape.center.y) * severity;
+      cv::Rect boundary = cv::Rect(frame.cols * k_maxFavoringBoundary, 0, frame.cols * k_maxFavoringBoundary * 2, frame.rows - 1);
+      if (boundary.contains(avgCenter)) {
+        centerX += (target.rightTape.center.x - target.leftTape.center.x) * severity;
+        centerY += (target.rightTape.center.y - target.leftTape.center.y) * severity;
+      }
 
       target.center = cv::Point(centerX, centerY);
     }
