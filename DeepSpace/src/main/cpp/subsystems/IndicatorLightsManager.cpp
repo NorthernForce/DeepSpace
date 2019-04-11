@@ -38,29 +38,30 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
   m_spi->SetMSBFirst();
 
   // Set the default effect
-  m_defaultEffect = std::make_shared<Wave>(std::make_shared<Turning>());
+  // m_defaultEffect = std::make_shared<Wave>(std::make_shared<Turning>());
+  m_defaultEffect = std::make_shared<Turning>();
   setEffect();
 
   m_indicatorLightsThread.reset(new std::thread([&]{
     for (;;) {
       std::chrono::system_clock::time_point startTime = std::chrono::system_clock::now();
 
-      if (m_newEffect != m_currentEffect) {
-        m_currentEffect = m_newEffect;
+      // if (m_newEffect != m_currentEffect) {
+      //   m_currentEffect = m_newEffect;
 
-        if (m_currentEffect->isDone()) {
-          m_currentEffect->reset();
-        }
-      }
+      //   if (m_currentEffect->isDone()) {
+      //     m_currentEffect->reset();
+      //   }
+      // }
 
-      m_currentEffect->run();
-      assembleFrame(m_currentEffect->getColors());
-      sendFrame();
+      // m_currentEffect->run();
+      // assembleFrame(m_currentEffect->getColors());
+      // sendFrame();
 
-      if (m_currentEffect->isDone()) {
-        m_currentEffect = nullptr;
-        setEffect();
-      }
+      // if (m_currentEffect->isDone()) {
+      //   m_currentEffect = nullptr;
+      //   setEffect();
+      // }
 
       std::this_thread::sleep_until(startTime + std::chrono::milliseconds(k_framePeriodMillis));
     }
