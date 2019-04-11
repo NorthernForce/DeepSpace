@@ -26,6 +26,8 @@ class Manager : public frc::Subsystem {
   void setEffect(std::shared_ptr<Effect> effect = nullptr);
   
   const static int k_maxLEDs;
+  
+  const static int k_framePeriodMillis;
 
  private:
   void assembleFrame(std::vector<std::vector<uint8_t>> colors);
@@ -45,8 +47,7 @@ class Manager : public frc::Subsystem {
   const static int k_bytesPerLED;
   const static int k_bufferSize;
 
-  const static double k_hz;
-  const static std::chrono::milliseconds k_framePeriod;
+  const static double k_spiHZ;
 };
 
 }

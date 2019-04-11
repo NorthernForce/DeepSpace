@@ -23,16 +23,16 @@ const int IndicatorLights::Manager::k_bufferSize = k_maxLEDs * k_bytesPerLED;
  */
 
 // 4 MHz -> Period of 0.25 micro seconds
-const double IndicatorLights::Manager::k_hz = 4000000;
+const double IndicatorLights::Manager::k_spiHZ = 4000000;
 
-const std::chrono::milliseconds IndicatorLights::Manager::k_framePeriod = std::chrono::milliseconds(35);
+const int IndicatorLights::Manager::k_framePeriodMillis = 35;
 
 IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
   m_spi.reset(new frc::SPI(static_cast<frc::SPI::Port>(RobotMap::IndicatorLights::k_chipSelect_id)));
   m_buffer = (uint8_t*)std::malloc(k_bufferSize);
 
   // This way 1 on + 3 off = 0 and 2 on + 2 off = 1
-  m_spi->SetClockRate(k_hz);
+  m_spi->SetClockRate(k_spiHZ);
 
   m_spi->SetMSBFirst();
 
@@ -61,7 +61,7 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
         setEffect();
       }
 
-      std::this_thread::sleep_until(startTime + k_framePeriod);
+      std::this_thread::sleep_until(startTime + std::chrono::milliseconds(k_framePeriodMillis));
     }
   }));
 }
