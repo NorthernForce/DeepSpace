@@ -32,11 +32,11 @@ const double Vision::ReflectiveTape::k_polyAccuracy = 2;
 const double Vision::ReflectiveTape::k_minLength = 4;
 const double Vision::ReflectiveTape::k_maxHeightDiff = 0.15;
 // TBD
-const double Vision::ReflectiveTape::k_minArea = 40;
+const double Vision::ReflectiveTape::k_minArea = 15;
 
 const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.2;
-const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 3;
-const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 500;
+const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 2;
+const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 700;
 const double Vision::ReflectiveTape::k_maxFavoringBoundary = 0.3;
 
 struct ReflectiveTapeEdge {
@@ -204,21 +204,28 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     }
 
     // Calculate better center
-    if (tape.left.length > tape.right.length) {
-      if (tape.isLeft) {
-        tape.center = cv::Point(tape.left.center.x, tape.right.center.y);
-      }
-      else {
-        tape.center = tape.left.center;
-      }
+    // if (tape.left.length > tape.right.length) {
+    //   if (tape.isLeft) {
+    //     tape.center = cv::Point(tape.left.center.x, tape.right.center.y);
+    //   }
+    //   else {
+    //     tape.center = tape.left.center;
+    //   }
+    // }
+    // else {
+    //   if (tape.isLeft) {
+    //     tape.center = tape.right.center;
+    //   }
+    //   else {
+    //     tape.center = cv::Point(tape.right.center.x, tape.left.center.y);
+    //   }
+    // }
+
+    if (tape.isLeft) {
+      tape.center = tape.right.center;
     }
     else {
-      if (tape.isLeft) {
-        tape.center = tape.right.center;
-      }
-      else {
-        tape.center = cv::Point(tape.right.center.x, tape.left.center.y);
-      }
+      tape.center = tape.left.center;
     }
 
     tapes.push_back(tape);
@@ -355,7 +362,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     });
 
   // Debugging
-  cv::drawContours(frame, contours, -1, cv::Scalar(0, 255, 0));
+  // cv::drawContours(frame, contours, -1, cv::Scalar(0, 255, 0));
   for (auto& target : targets) {
     cv::line(frame, target.left.center, target.right.center, cv::Scalar(255, 0, 0));
     cv::circle(frame, target.left.center, 1, cv::Scalar(255, 0, 255));
