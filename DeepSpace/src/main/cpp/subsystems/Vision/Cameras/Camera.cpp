@@ -125,7 +125,9 @@ void Vision::Camera::setLightRing(bool turnOn) {
 }
 
 void Vision::Camera::setTarget(std::shared_ptr<Vision::Target> target) {
-  target->setup(this);
+  if (target != nullptr) {
+    target->setup(this);
+  }
 
   std::atomic_store(&m_objectToTarget, target);
 }

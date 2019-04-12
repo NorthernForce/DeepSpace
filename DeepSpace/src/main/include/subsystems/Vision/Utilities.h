@@ -6,7 +6,8 @@ namespace Vision {
   class Utilities {
    public:
     static cv::Point CalcAvgPoint(cv::Point a, cv::Point b);
-
-    static std::tuple<cv::Point, cv::Point, cv::Point, cv::Point> FindExtremePoints(std::vector<cv::Point> contour);
+    static double CalcLineLength(cv::Point a, cv::Point b);
+    static double CalcLineAngle(cv::Point origin, cv::Point outer);
+    static double CalcLineAngleDeg(cv::Point origin, cv::Point outer);
   };
 }
