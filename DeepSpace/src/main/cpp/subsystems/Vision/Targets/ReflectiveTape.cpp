@@ -29,13 +29,14 @@ const int Vision::ReflectiveTape::k_maxVal = 255;
 #endif
 
 const double Vision::ReflectiveTape::k_polyAccuracy = 2;
-const double Vision::ReflectiveTape::k_minLength = 8;
+const double Vision::ReflectiveTape::k_minLength = 4;
+const double Vision::ReflectiveTape::k_maxHeightDiff = 0.15;
 // TBD
-const double Vision::ReflectiveTape::k_minArea = 15;
+const double Vision::ReflectiveTape::k_minArea = 40;
 
-const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.1;
-const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 4;
-const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 700;
+const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.2;
+const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 3;
+const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 500;
 const double Vision::ReflectiveTape::k_maxFavoringBoundary = 0.3;
 
 struct ReflectiveTapeEdge {
@@ -117,227 +118,251 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
   cv::findContours(filtered, contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
 
   // Analyze the contours
-		std::vector<ReflectiveTapeBlob> tapes;
-		for (auto& contour : contours) {
-			std::vector<cv::Point> poly;
-			cv::approxPolyDP(contour, poly, k_polyAccuracy, true);
-			poly.push_back(poly.front());
+  std::vector<ReflectiveTapeBlob> tapes;
+  for (auto& contour : contours) {
+    std::vector<cv::Point> poly;
+    cv::approxPolyDP(contour, poly, k_polyAccuracy, true);
+    poly.push_back(poly.front());
 
-			std::vector<ReflectiveTapeEdge> edges;
-			for (int pointI = 0; pointI < (poly.size() - 1); pointI++) {
-				double length = Utilities::CalcLineLength(poly[pointI], poly[pointI + 1]);
+    std::vector<ReflectiveTapeEdge> edges;
+    for (int pointI = 0; pointI < (poly.size() - 1); pointI++) {
+      double length = Utilities::CalcLineLength(poly[pointI], poly[pointI + 1]);
 
-				if (length > k_minLength) {
-					ReflectiveTapeEdge edge;
+      if (length > k_minLength) {
+        ReflectiveTapeEdge edge;
 
-					edge.length = length;
-					edge.center = Utilities::CalcAvgPoint(poly[pointI], poly[pointI + 1]);
-					edge.angle = Utilities::CalcLineAngleDeg(poly[pointI], poly[pointI + 1]);
+        edge.length = length;
+        edge.center = Utilities::CalcAvgPoint(poly[pointI], poly[pointI + 1]);
+        edge.angle = Utilities::CalcLineAngleDeg(poly[pointI], poly[pointI + 1]);
 
-					edges.push_back(edge);
+        edges.push_back(edge);
 
-					cv::line(frame, poly[pointI], poly[pointI + 1], cv::Scalar(0, 0, 255));
-				}
-			}
+        cv::line(frame, poly[pointI], poly[pointI + 1], cv::Scalar(0, 0, 255));
+      }
+    }
 
-			// Make sure enough edges are detected
-			if (edges.size() < 2) {
-				continue;
-			}
+    // Make sure enough edges are detected
+    if (edges.size() < 2) {
+      continue;
+    }
 
-			// Sort edges by size
-			std::sort(edges.begin(), edges.end(),
-				[](ReflectiveTapeEdge& a, ReflectiveTapeEdge& b) {
-					return a.length > b.length;
-				});
+    // Sort edges by size
+    std::sort(edges.begin(), edges.end(),
+      [](ReflectiveTapeEdge& a, ReflectiveTapeEdge& b) {
+        return a.length > b.length;
+      });
 
-			ReflectiveTapeBlob tape;
-			for (auto& edge : edges) {
-				switch ((int)((edge.angle + 45) / 90) % 4) {
-				case 0: if (tape.bot.length < edge.length) tape.bot = edge; break;
-				case 1: if (tape.right.length < edge.length) tape.right = edge; break;
-				case 2: if (tape.top.length < edge.length) tape.top = edge; break;
-				case 3: if (tape.left.length < edge.length) tape.left = edge; break;
-				}
-			}
+    // Find each edge
+    ReflectiveTapeBlob tape;
+    for (auto& edge : edges) {
+      switch ((int)((edge.angle + 45) / 90) % 4) {
+      case 0: if (tape.bot.length < edge.length) tape.bot = edge; break;
+      case 1: if (tape.right.length < edge.length) tape.right = edge; break;
+      case 2: if (tape.top.length < edge.length) tape.top = edge; break;
+      case 3: if (tape.left.length < edge.length) tape.left = edge; break;
+      }
+    }
 
-			/*cv::circle(frame, tape.top.center, 1, cv::Scalar(255, 0, 0));
-			cv::circle(frame, tape.left.center, 1, cv::Scalar(255, 255, 0));
-			cv::circle(frame, tape.bot.center, 1, cv::Scalar(0, 255, 0));
-			cv::circle(frame, tape.right.center, 1, cv::Scalar(0, 255, 255));*/
-      
-      // TODO: BETTER AREA OF TAPE
-			//tape.area = (tape.left.length + tape.right.length) / 2;
-			// Calculate tape area (as a trapezoid)
-			// double base = tape.left.length + tape.right.length;
-			// double height = tape.right.center.x - tape.left.center.x;
-			// tape.area = std::abs((base) / 2 * height);
+    cv::circle(frame, tape.top.center, 1, cv::Scalar(100, 100, 0));
+    cv::circle(frame, tape.left.center, 1, cv::Scalar(150, 150, 0));
+    cv::circle(frame, tape.bot.center, 1, cv::Scalar(200, 200, 0));
+    cv::circle(frame, tape.right.center, 1, cv::Scalar(250, 250, 255));
+    
+    // Calculate tape area
+    double height;
+    if (tape.right.length > tape.left.length) {
+      height = tape.right.length * std::sin(tape.right.angle * 0.01745329251994);
+    }
+    else {
+      height = tape.left.length * std::sin(tape.left.angle * 0.01745329251994);
+    }
+    double width = tape.right.center.x - tape.left.center.x;
 
-      // double part1 = tape.top.center.x * tape.right.center.y - tape.top.center.y * tape.right.center.x;
-      // double part2 = tape.right.center.x * tape.bot.center.y - tape.right.center.y * tape.bot.center.x;
-      // double part3 = tape.bot.center.x * tape.left.center.y - tape.bot.center.y * tape.left.center.x;
-      // double part4 = tape.left.center.x * tape.top.center.y - tape.left.center.y * tape.top.center.x;
-			// tape.area = std::abs(part1 + part2 + part3 + part4);
+    tape.area = std::abs(height * width);
 
-      double height;
-      if (tape.right.length > tape.left.length) {
-        height = tape.right.length * std::sin(tape.right.angle * 0.01745329251994);
+    // std::cout << "area: " << tape.area << "\n";
+
+    if (tape.area < k_minArea) {
+      continue;
+    }
+
+    // Calculate tape type
+    //double botAdd = (tape.bot.length > 0) ? -(tape.bot.angle) : 0;
+    double rightAdd = (tape.right.length > 0) ? (tape.right.angle - 90) : 0;
+    //double topAdd = (tape.top.length > 0) ? -(tape.top.angle - 180) : 0;
+    double leftAdd = (tape.left.length > 0) ? (tape.left.angle - 270) : 0;
+
+    //double totalAngle = botAdd + rightAdd + topAdd + leftAdd;
+    double totalAngle = rightAdd + leftAdd;
+    if (totalAngle < 0) {
+      tape.isLeft = true;
+      tape.center = tape.right.center;
+    }
+    else {
+      tape.isLeft = false;
+      tape.center = tape.left.center;
+    }
+
+    // Calculate better center
+    if (tape.left.length > tape.right.length) {
+      if (tape.isLeft) {
+        tape.center = cv::Point(tape.left.center.x, tape.right.center.y);
       }
       else {
-        height = tape.left.length * std::sin(tape.left.angle * 0.01745329251994);
+        tape.center = tape.left.center;
       }
-      double width = tape.right.center.x - tape.left.center.x;
+    }
+    else {
+      if (tape.isLeft) {
+        tape.center = tape.right.center;
+      }
+      else {
+        tape.center = cv::Point(tape.right.center.x, tape.left.center.y);
+      }
+    }
 
-      tape.area = std::abs(height * width);
+    tapes.push_back(tape);
+  }
 
-      // std::cout << "area: " << tape.area << "\n";
+  // Return if no tapes were found
+  if (tapes.empty()) {
+    m_horizontalOffset = 0;
+    m_verticalOffset = 0;
+    return;
+  }
 
-      if (tape.area < k_minArea) {
-        continue;
+  // Find largest tape
+  auto largestTape = *std::max_element(tapes.begin(), tapes.end(),
+    [](ReflectiveTapeBlob & a, ReflectiveTapeBlob & b) {
+      return a.area < b.area;
+    });
+
+  // Sort tapes left to right
+  std::sort(tapes.begin(), tapes.end(),
+    [](ReflectiveTapeBlob & a, ReflectiveTapeBlob & b) {
+      return a.center.x < b.center.x;
+    });
+
+  // Groups tapes into targets
+  cv::Rect heightBound = cv::Rect(0, largestTape.center.y - frame.rows * k_maxHeightDiff, frame.cols, frame.rows * k_maxHeightDiff * 2);
+  std::vector<ReflectiveTargetBlob> targets;
+  for (auto& tape : tapes) {
+    if (!heightBound.contains(tape.center)) {
+      continue;
+    }
+
+    if (tape.isLeft) {
+      if (targets.empty() || targets.back().right.area > 0) {
+        // Creates a new target if all previous are complete
+        ReflectiveTargetBlob target;
+        target.left = tape;
+
+        targets.push_back(target);
+      }
+      else if (targets.back().left.area < tape.area) {
+        // Overrides previous tape if not complete and area is larger
+        targets.back().left = tape;
+      }
+    }
+    else {
+      if (targets.empty()) {
+        // If the first tape is right, it's alone
+        ReflectiveTargetBlob target;
+        target.right = tape;
+
+        targets.push_back(target);
+      }
+      else if (targets.back().right.area < tape.area) {
+        // Override the previous pair if new right tape is larger
+        //if (tape.area > targets.back().left.area / k_maxAreaDiff) {
+          // Only use the new tape if it is larger than half the left's area
+          targets.back().right = tape;
+        //}
+      }
+    }
+  }
+
+  // Define target areas and centers
+  for (auto& target : targets) {
+    // Total area is just addition of both areas
+    target.area = target.left.area + target.right.area;
+
+    if (target.right.area == 0) {
+      // Don't use a single tape unless it doesn't touch a boundary
+      //if (target.left.isOut) {
+      //	target.center = cv::Point(frame.cols / 2, frame.rows / 2);
+      //}
+      //else {
+        target.center = cv::Point(target.left.center);
+      //}
+    }
+    else if (target.left.area == 0) {
+      // Don't use a single tape unless it doesn't touch a boundary
+      //if (target.right.isOut) {
+      //	target.center = cv::Point(frame.cols / 2, frame.rows / 2);
+      //}
+      //else {
+        target.center = cv::Point(target.right.center);
+      //}
+    }
+  //	//else if (target.left.isOut || target.right.isOut) {
+  //	//	// Use the raw center if either tape is out
+  //	//	target.center = Utilities::CalcAvgPoint(target.right.center, target.left.center);;
+  //	//}
+    else {
+      // Find offset severity based on tape areas
+      double severity = (target.left.area / target.area - 0.5) / k_maxFavoringAreaDiff;
+      if (severity < -1) {
+        severity = -1;
+      }
+      else if (severity > 1) {
+        severity = 1;
       }
 
-      // Calculate tape type
-			//double botAdd = (tape.bot.length > 0) ? -(tape.bot.angle) : 0;
-			double rightAdd = (tape.right.length > 0) ? (tape.right.angle - 90) : 0;
-			//double topAdd = (tape.top.length > 0) ? -(tape.top.angle - 180) : 0;
-			double leftAdd = (tape.left.length > 0) ? (tape.left.angle - 270) : 0;
+      // Find the offset softener (larger area = less offset)
+      double softener = (k_maxSoftenerThreshold - target.area) / k_maxSoftenerThreshold;
+      if (softener < 0) {
+        softener = 0;
+      }
 
-			//double totalAngle = botAdd + rightAdd + topAdd + leftAdd;
-			double totalAngle = rightAdd + leftAdd;
-			if (totalAngle < 0) {
-				tape.isLeft = true;
-				cv::circle(frame, tape.right.center, 1, cv::Scalar(0, 255, 0));
-				tape.center = tape.right.center;
-			}
-			else {
-				tape.isLeft = false;
-				cv::circle(frame, tape.left.center, 1, cv::Scalar(255, 0, 0));
-				tape.center = tape.left.center;
-			}
+      // Calculate the true severity of the difference of areas
+      severity *= softener * k_maxFavoringCenterOffset;
 
-			tapes.push_back(tape);
-		}
+      cv::Point avgCenter = Utilities::CalcAvgPoint(target.left.center, target.right.center);
+      int centerX = avgCenter.x;
+      int centerY = avgCenter.y;
 
-		// Return if no tapes were found
-		if (tapes.empty()) {
-			m_horizontalOffset = 0;
-			m_verticalOffset = 0;
-			return;
-		}
+      cv::Rect boundary = cv::Rect(frame.cols * (0.5 - k_maxFavoringBoundary), 0, frame.cols * k_maxFavoringBoundary * 2, frame.rows - 1);
+      if (boundary.contains(target.right.center) && boundary.contains(target.left.center)) {
+        centerX += std::round(std::abs(target.right.center.x - target.left.center.x) * severity);
+        centerY += std::round(std::abs(target.right.center.y - target.left.center.y) * severity);
+      }
 
-		// Sort tapes left to right
-		std::sort(tapes.begin(), tapes.end(),
-			[](ReflectiveTapeBlob & a, ReflectiveTapeBlob & b) {
-				return a.center.x < b.center.x;
-			});
+      target.center = cv::Point(centerX, centerY);
+    }
+  }
 
-		// Groups tapes into targets
-		std::vector<ReflectiveTargetBlob> targets;
-		for (auto& tape : tapes) {
-			if (tape.isLeft) {
-				if (targets.empty() || targets.back().right.area > 0) {
-					// Creates a new target if all previous are complete
-					ReflectiveTargetBlob target;
-					target.left = tape;
+  if (targets.empty()) {
+    m_horizontalOffset = 0;
+    m_verticalOffset = 0;
+    return;
+  }
 
-					targets.push_back(target);
-				}
-				else if (targets.back().left.area < tape.area) {
-					// Overrides previous tape if not complete and area is larger
-					targets.back().left = tape;
-				}
-			}
-			else {
-				if (targets.empty()) {
-					// If the first tape is right, it's alone
-					ReflectiveTargetBlob target;
-					target.right = tape;
+  // Find target with the greatest area
+  auto largestTarget = *std::max_element(targets.begin(), targets.end(),
+    [](ReflectiveTargetBlob& a, ReflectiveTargetBlob& b) {
+      return a.area < b.area;
+    });
 
-					targets.push_back(target);
-				}
-				else if (targets.back().right.area < tape.area) {
-					// Override the previous pair if new right tape is larger
-					//if (tape.area > targets.back().left.area / k_maxAreaDiff) {
-						// Only use the new tape if it is larger than half the left's area
-						targets.back().right = tape;
-					//}
-				}
-			}
-		}
-
-		// Define target areas and centers
-		for (auto& target : targets) {
-			// Total area is just addition of both areas
-			target.area = target.left.area + target.right.area;
-
-			if (target.right.area == 0) {
-				// Don't use a single tape unless it doesn't touch a boundary
-				//if (target.left.isOut) {
-				//	target.center = cv::Point(frame.cols / 2, frame.rows / 2);
-				//}
-				//else {
-					target.center = cv::Point(target.left.center);
-				//}
-			}
-			else if (target.left.area == 0) {
-				// Don't use a single tape unless it doesn't touch a boundary
-				//if (target.right.isOut) {
-				//	target.center = cv::Point(frame.cols / 2, frame.rows / 2);
-				//}
-				//else {
-					target.center = cv::Point(target.right.center);
-				//}
-			}
-		//	//else if (target.left.isOut || target.right.isOut) {
-		//	//	// Use the raw center if either tape is out
-		//	//	target.center = Utilities::CalcAvgPoint(target.right.center, target.left.center);;
-		//	//}
-			else {
-				// Find offset severity based on tape areas
-				double severity = (target.left.area / target.area - 0.5) / k_maxFavoringAreaDiff;
-				if (severity < -1) {
-					severity = -1;
-				}
-				else if (severity > 1) {
-					severity = 1;
-				}
-
-				// Find the offset softener (larger area = less offset)
-				double softener = (k_maxSoftenerThreshold - target.area) / k_maxSoftenerThreshold;
-				if (softener < 0) {
-					softener = 0;
-				}
-
-				// Calculate the true severity of the difference of areas
-				severity *= softener * k_maxFavoringCenterOffset;
-
-				cv::Point avgCenter = Utilities::CalcAvgPoint(target.left.center, target.right.center);
-				int centerX = avgCenter.x;
-				int centerY = avgCenter.y;
-
-				cv::Rect boundary = cv::Rect(frame.cols * (0.5 - k_maxFavoringBoundary), 0, frame.cols * k_maxFavoringBoundary * 2, frame.rows - 1);
-				if (boundary.contains(target.right.center) && boundary.contains(target.left.center)) {
-					centerX += std::round(std::abs(target.right.center.x - target.left.center.x) * severity);
-					centerY += std::round(std::abs(target.right.center.y - target.left.center.y) * severity);
-				}
-
-				target.center = cv::Point(centerX, centerY);
-			}
-		}
-
-		// Find target with the greatest area
-		auto largestTarget = *std::max_element(targets.begin(), targets.end(),
-			[](ReflectiveTargetBlob & a, ReflectiveTargetBlob & b) {
-				return a.area < b.area;
-			});
-
-    // Debugging
-		//cv::drawContours(frame, contours, -1, cv::Scalar(0, 255, 0));
-		for (auto& target : targets) {
-			cv::line(frame, target.left.center, target.right.center, cv::Scalar(255, 0, 0));
-			cv::circle(frame, target.center, 1, cv::Scalar(0, 0, 255), 2);
-		}
-		cv::circle(frame, largestTarget.center, 2, cv::Scalar(0, 255, 255), 2);
+  // Debugging
+  cv::drawContours(frame, contours, -1, cv::Scalar(0, 255, 0));
+  for (auto& target : targets) {
+    cv::line(frame, target.left.center, target.right.center, cv::Scalar(255, 0, 0));
+    cv::circle(frame, target.left.center, 1, cv::Scalar(255, 0, 255));
+    cv::circle(frame, target.right.center, 1, cv::Scalar(255, 255, 0));
+    cv::circle(frame, target.center, 1, cv::Scalar(255, 255, 255));
+  }
+  cv::circle(frame, largestTarget.center, 1, cv::Scalar(0, 255, 255), 2);
 
   // Convert center to -1.0 to 1.0 where quadrant I is positive
   m_horizontalOffset = (largestTarget.center.x - frame.cols / 2.0) / (frame.cols / 2.0);

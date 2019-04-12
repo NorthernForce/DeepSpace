@@ -11,7 +11,8 @@
 			"*.tcc": "cpp",
 			"fstream": "cpp",
 			"cmath": "cpp",
-			"chrono": "cpp"
+			"chrono": "cpp",
+			"vector": "cpp"
 		},
 		"java.configuration.updateBuildConfiguration": "disabled"
 	}

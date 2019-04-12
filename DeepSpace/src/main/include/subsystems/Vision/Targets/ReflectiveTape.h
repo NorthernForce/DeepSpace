@@ -21,6 +21,7 @@ class ReflectiveTape : public Target {
   const static double k_polyAccuracy;
   const static double k_minLength;
   const static double k_minArea;
+  const static double k_maxHeightDiff;
 
   const static double k_maxFavoringAreaDiff;
   const static double k_maxFavoringCenterOffset;
