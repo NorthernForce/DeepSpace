@@ -16,13 +16,13 @@ Vision::Cargo::Cargo() {
   k_name = "Cargo";
 
   // Add smart dashboard stuff...
-  frc::SmartDashboard::PutNumber("Vision: Cargo: HUE INVERT", k_invertHue);
-  frc::SmartDashboard::PutNumber("Vision: Cargo: HUE MIN", k_invertHue);
-  frc::SmartDashboard::PutNumber("Vision: Cargo: HUE MAX", k_maxHue);
-  frc::SmartDashboard::PutNumber("Vision: Cargo: SAT MIN", k_minSat);
-  frc::SmartDashboard::PutNumber("Vision: Cargo: SAT MAX", k_maxSat);
-  frc::SmartDashboard::PutNumber("Vision: Cargo: VAL MIN", k_minVal);
-  frc::SmartDashboard::PutNumber("Vision: Cargo: VAL MAX", k_maxVal);
+  // frc::SmartDashboard::PutNumber("Vision: Cargo: HUE INVERT", k_invertHue);
+  // frc::SmartDashboard::PutNumber("Vision: Cargo: HUE MIN", k_invertHue);
+  // frc::SmartDashboard::PutNumber("Vision: Cargo: HUE MAX", k_maxHue);
+  // frc::SmartDashboard::PutNumber("Vision: Cargo: SAT MIN", k_minSat);
+  // frc::SmartDashboard::PutNumber("Vision: Cargo: SAT MAX", k_maxSat);
+  // frc::SmartDashboard::PutNumber("Vision: Cargo: VAL MIN", k_minVal);
+  // frc::SmartDashboard::PutNumber("Vision: Cargo: VAL MAX", k_maxVal);
 }
 
 void Vision::Cargo::setup(Vision::Camera *camera) {}

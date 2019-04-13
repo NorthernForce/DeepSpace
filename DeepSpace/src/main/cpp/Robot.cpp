@@ -71,20 +71,20 @@ void Robot::RobotInit() {
   frc::SmartDashboard::PutData("Climb Position", new ElevatorSetPosition(ElevatorSetPosition::Position::ClimbPosition));
   */
   frc::SmartDashboard::PutData("**Elevator Calibrate**", new ElevatorCalibrate());
-  frc::SmartDashboard::PutData("**Move elevator forward**", new ElevatorExtend());
-  //frc::SmartDashboard::PutData("SetupRobot", new SetupRobot());
-  frc::SmartDashboard::PutData("Set Home Position", new ElevatorSetHomePosition());
-  frc::SmartDashboard::PutData("Move elevator backward", new ElevatorRetract());
+  // frc::SmartDashboard::PutData("**Move elevator forward**", new ElevatorExtend());
+  // frc::SmartDashboard::PutData("SetupRobot", new SetupRobot());
+  // frc::SmartDashboard::PutData("Set Home Position", new ElevatorSetHomePosition());
+  // frc::SmartDashboard::PutData("Move elevator backward", new ElevatorRetract());
 
-  frc::SmartDashboard::PutData("Climber extend", new ClimberLower());
-  frc::SmartDashboard::PutData("Climber Retract", new ClimberRaise());
-  frc::SmartDashboard::PutData("Climber Drive Forward", new ClimberDriveForward());
-  frc::SmartDashboard::PutData("Climber Drive Backward", new ClimberDriveBackward());
+  // frc::SmartDashboard::PutData("Climber extend", new ClimberLower());
+  // frc::SmartDashboard::PutData("Climber Retract", new ClimberRaise());
+  // frc::SmartDashboard::PutData("Climber Drive Forward", new ClimberDriveForward());
+  // frc::SmartDashboard::PutData("Climber Drive Backward", new ClimberDriveBackward());
 
   frc::SmartDashboard::PutData("Camera: Target tape", new VisionTargetReflectiveTape());
   frc::SmartDashboard::PutData("Camera: No target", new VisionTargetNothing());
 
-  frc::SmartDashboard::PutData("Test LEDs from RIO", new IndicatorLightsExample());
+  // frc::SmartDashboard::PutData("Test LEDs from RIO", new IndicatorLightsExample());
 
   // Initialize OI after subsystems
   m_oi.reset(new OI());
@@ -103,12 +103,12 @@ void Robot::RobotInit() {
  * LiveWindow and SmartDashboard integrated updating.
  */
 void Robot::RobotPeriodic() {
-  frc::SmartDashboard::PutNumber("Robot tilt", m_imu->getAngle());
+  // frc::SmartDashboard::PutNumber("Robot tilt", m_imu->getAngle());
   frc::SmartDashboard::PutNumber("Elevator Sensor Position", m_elevator->getSelectedSensorPosition());
   frc::SmartDashboard::PutNumber("Elevator Closed Loop Error", m_elevator->getClosedLoopError());
-  //frc::SmartDashboard::PutNumber("pGain value", m_elevator->GetPGainValue());
-  //frc::SmartDashboard::GetNumber("pGain value", m_elevator->GetPGainValue());
-  frc::SmartDashboard::PutNumber("Range Finder", m_rangeFinder->getDistance());
+  // frc::SmartDashboard::PutNumber("pGain value", m_elevator->GetPGainValue());
+  // frc::SmartDashboard::GetNumber("pGain value", m_elevator->GetPGainValue());
+  // frc::SmartDashboard::PutNumber("Range Finder", m_rangeFinder->getDistance());
 }
 
 /**
