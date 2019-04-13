@@ -11,7 +11,7 @@ const int Climber::k_continuousCurrent = 25;
 const int Climber::k_peakCurrentDuration = 2000;
 
 const double Climber::k_forwardMotorSpeed = 0.5;
-const double Climber::k_reverseMotorSpeed = 0.5; // abs of
+const double Climber::k_reverseMotorSpeed = 1; // abs of
 
 Climber::Climber() : Subsystem("Climber") {
   m_masterTalonLifter.reset(new WPI_TalonSRX(RobotMap::Climber::k_primary_id));
@@ -22,6 +22,9 @@ Climber::Climber() : Subsystem("Climber") {
 
   m_masterTalonLifter->ConfigForwardLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
   m_masterTalonLifter->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+
+  frc::SmartDashboard::PutNumber("Climber: Raise Speed", k_forwardMotorSpeed);
+  frc::SmartDashboard::PutNumber("Climber: Lower Speed", k_reverseMotorSpeed);
 }
 
 void Climber::InitDefaultCommand() {
@@ -30,16 +33,20 @@ void Climber::InitDefaultCommand() {
 
 void Climber::setSpeed(double speed) {
   if (speed > 1) {
-    m_masterTalonLifter->Set(k_forwardMotorSpeed);
+    // m_masterTalonLifter->Set(k_forwardMotorSpeed);
+    m_masterTalonLifter->Set(frc::SmartDashboard::GetNumber("Climber: Raise Speed", k_forwardMotorSpeed));
   }
   else if (speed > 0) {
-    m_masterTalonLifter->Set(speed * k_forwardMotorSpeed);
+    // m_masterTalonLifter->Set(speed * k_forwardMotorSpeed);
+    m_masterTalonLifter->Set(speed * frc::SmartDashboard::GetNumber("Climber: Raise Speed", k_forwardMotorSpeed));
   }
   else if (speed < -1) {
-    m_masterTalonLifter->Set(-1 * k_reverseMotorSpeed);
+    // m_masterTalonLifter->Set(-1 * k_reverseMotorSpeed);
+    m_masterTalonLifter->Set(-1 * frc::SmartDashboard::GetNumber("Climber: Lower Speed", k_reverseMotorSpeed));
   }
   else if (speed < 0) {
-    m_masterTalonLifter->Set(speed * k_reverseMotorSpeed);
+    // m_masterTalonLifter->Set(speed * k_reverseMotorSpeed);
+    m_masterTalonLifter->Set(speed * frc::SmartDashboard::GetNumber("Climber: Lower Speed", k_reverseMotorSpeed));
   }
   else {
     m_masterTalonLifter->Set(0);
