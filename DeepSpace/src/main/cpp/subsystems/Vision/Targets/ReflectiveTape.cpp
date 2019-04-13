@@ -187,13 +187,13 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     }
 
     // Calculate tape type
-    //double botAdd = (tape.bot.length > 0) ? -(tape.bot.angle) : 0;
+    double botAdd = (tape.bot.length > 0) ? -(tape.bot.angle) : 0;
     double rightAdd = (tape.right.length > 0) ? (tape.right.angle - 90) : 0;
-    //double topAdd = (tape.top.length > 0) ? -(tape.top.angle - 180) : 0;
+    double topAdd = (tape.top.length > 0) ? -(tape.top.angle - 180) : 0;
     double leftAdd = (tape.left.length > 0) ? (tape.left.angle - 270) : 0;
 
-    //double totalAngle = botAdd + rightAdd + topAdd + leftAdd;
-    double totalAngle = rightAdd + leftAdd;
+    double totalAngle = botAdd + rightAdd + topAdd + leftAdd;
+    // double totalAngle = rightAdd + leftAdd;
     if (totalAngle < 0) {
       tape.isLeft = true;
       tape.center = tape.right.center;
@@ -297,19 +297,19 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     if (target.right.area == 0) {
       // Don't use a single tape unless it doesn't touch a boundary
       //if (target.left.isOut) {
-      //	target.center = cv::Point(frame.cols / 2, frame.rows / 2);
+      	target.center = cv::Point(frame.cols / 2, frame.rows / 2);
       //}
       //else {
-        target.center = cv::Point(target.left.center);
+        // target.center = cv::Point(target.left.center);
       //}
     }
     else if (target.left.area == 0) {
       // Don't use a single tape unless it doesn't touch a boundary
       //if (target.right.isOut) {
-      //	target.center = cv::Point(frame.cols / 2, frame.rows / 2);
+      	target.center = cv::Point(frame.cols / 2, frame.rows / 2);
       //}
       //else {
-        target.center = cv::Point(target.right.center);
+        // target.center = cv::Point(target.right.center);
       //}
     }
   //	//else if (target.left.isOut || target.right.isOut) {
@@ -364,12 +364,12 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
   // Debugging
   // cv::drawContours(frame, contours, -1, cv::Scalar(0, 255, 0));
   for (auto& target : targets) {
-    cv::line(frame, target.left.center, target.right.center, cv::Scalar(255, 0, 0));
-    cv::circle(frame, target.left.center, 1, cv::Scalar(255, 0, 255));
-    cv::circle(frame, target.right.center, 1, cv::Scalar(255, 255, 0));
-    cv::circle(frame, target.center, 1, cv::Scalar(255, 255, 255));
+    cv::line(frame, target.left.center, target.right.center, cv::Scalar(255, 0, 0)); //blue line
+    cv::circle(frame, target.left.center, 1, cv::Scalar(255, 0, 255)); // purple 
+    cv::circle(frame, target.right.center, 1, cv::Scalar(255, 255, 0)); // teal circle
+    cv::circle(frame, target.center, 1, cv::Scalar(255, 255, 255)); //white circle
   }
-  cv::circle(frame, largestTarget.center, 1, cv::Scalar(0, 255, 255), 2);
+  cv::circle(frame, largestTarget.center, 1, cv::Scalar(0, 255, 255), 2); //yellow circle
 
   // Convert center to -1.0 to 1.0 where quadrant I is positive
   m_horizontalOffset = (largestTarget.center.x - frame.cols / 2.0) / (frame.cols / 2.0);
