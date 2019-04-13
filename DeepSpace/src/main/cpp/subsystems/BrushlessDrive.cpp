@@ -37,39 +37,38 @@ BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   ConfigureController(*m_rightPrimaryBrushless);
   ConfigureController(*m_rightFollowerBrushless);
   
-  // frc::SmartDashboard::PutNumber("BrushlessDrive: Spark1 Temp: ", -1);
-  // frc::SmartDashboard::PutNumber("BrushlessDrive: Spark3 Temp: ", -1);
-  // frc::SmartDashboard::PutNumber("BrushlessDrive: Spark2 Temp: ", -1);
-  // frc::SmartDashboard::PutNumber("BrushlessDrive: Spark4 Temp: ", -1);
+  frc::SmartDashboard::PutNumber("Drive: Spark1 Current: ", -1);
+  frc::SmartDashboard::PutNumber("Drive: Spark3 Current: ", -1);
+  frc::SmartDashboard::PutNumber("Drive: Spark2 Current: ", -1);
+  frc::SmartDashboard::PutNumber("Drive: Spark4 Current: ", -1);
 }
 
-void BrushlessDrive::InitDefaultCommand() 
-{
+void BrushlessDrive::InitDefaultCommand() {
   // Set the default command for a subsystem here.
   SetDefaultCommand(new DriveWithJoystick());
 }
 
 void BrushlessDrive::Periodic() {
-  // double spark1new = m_leftPrimaryBrushless->GetMotorTemperature();
-  // double spark3new = m_leftFollowerBrushless->GetMotorTemperature();
-  // double spark2new = m_rightPrimaryBrushless->GetMotorTemperature();
-  // double spark4new = m_rightFollowerBrushless->GetMotorTemperature();
+  double spark1NewCurrent = m_leftPrimaryBrushless->GetOutputCurrent();
+  double spark3NewCurrent = m_leftFollowerBrushless->GetOutputCurrent();
+  double spark2NewCurrent = m_rightPrimaryBrushless->GetOutputCurrent();
+  double spark4NewCurrent = m_rightFollowerBrushless->GetOutputCurrent();
 
-  // if (frc::SmartDashboard::GetNumber("BrushlessDrive: Spark1 Temp", -1) < spark1new) {
-  //   frc::SmartDashboard::PutNumber("BrushlessDrive: Spark1 Temp", spark1new);
-  // }
+  if (frc::SmartDashboard::GetNumber("Drive: Spark1 Current", -1) < spark1NewCurrent) {
+    frc::SmartDashboard::PutNumber("Drive: Spark1 Current", spark1NewCurrent);
+  }
 
-  // if (frc::SmartDashboard::GetNumber("BrushlessDrive: Spark2 Temp", -1) < spark2new) {
-  //   frc::SmartDashboard::PutNumber("BrushlessDrive: Spark2 Temp", spark2new);
-  // }
+  if (frc::SmartDashboard::GetNumber("Drive: Spark2 Current", -1) < spark2NewCurrent) {
+    frc::SmartDashboard::PutNumber("Drive: Spark2 Current", spark2NewCurrent);
+  }
 
-  // if (frc::SmartDashboard::GetNumber("BrushlessDrive: Spark3 Temp", -1) < spark3new) {
-  //   frc::SmartDashboard::PutNumber("BrushlessDrive: Spark3 Temp", spark3new);
-  // }
+  if (frc::SmartDashboard::GetNumber("Drive: Spark3 Current", -1) < spark3NewCurrent) {
+    frc::SmartDashboard::PutNumber("Drive: Spark3 Current", spark3NewCurrent);
+  }
 
-  // if (frc::SmartDashboard::GetNumber("BrushlessDrive: Spark4 Temp", -1) < spark1new) {
-  //   frc::SmartDashboard::PutNumber("BrushlessDrive: Spark4 Temp", spark1new);
-  // }
+  if (frc::SmartDashboard::GetNumber("Drive: Spark4 Current", -1) < spark1NewCurrent) {
+    frc::SmartDashboard::PutNumber("Drive: Spark4 Current", spark1NewCurrent);
+  }
 }
 
 void BrushlessDrive::arcDrive(double speed, double rotation)
