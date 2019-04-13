@@ -36,7 +36,7 @@ const double Vision::ReflectiveTape::k_minArea = 15;
 
 const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.2;
 const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 2;
-const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 700;
+const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 800;
 const double Vision::ReflectiveTape::k_maxFavoringBoundary = 0.3;
 
 struct ReflectiveTapeEdge {
