@@ -34,8 +34,8 @@ const int Elevator::defaultPeakAmps = 15;
 const int Elevator::defaultContinuousCurrent = 12;
 const double Elevator::rampTime = 0.5;
 
-const double Elevator::k_elevatorMaxRaiseSpeed = 0.5;
-const double Elevator::k_elevatorMaxLowerSpeed = 0.6; // abs of
+const double Elevator::k_elevatorMaxRaiseSpeed = 1;
+const double Elevator::k_elevatorMaxLowerSpeed = 1; // abs of
 
 const double Elevator::k_deployDelay = 0.8;
 const double Elevator::k_motorStopDelay = 0.1;
