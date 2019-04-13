@@ -14,7 +14,7 @@
 
 const double BrushlessDrive::k_rampRate = 0.2;
 const double BrushlessDrive::k_secondaryCurrentLimit = 80.0;
-const int BrushlessDrive::k_currentLimit = 50;
+const int BrushlessDrive::k_currentLimit = 60;
 
 BrushlessDrive::BrushlessDrive() : Subsystem("BrushlessDrive") {
   // Left Side
@@ -66,8 +66,8 @@ void BrushlessDrive::Periodic() {
     frc::SmartDashboard::PutNumber("Drive: Spark3 Current", spark3NewCurrent);
   }
 
-  if (frc::SmartDashboard::GetNumber("Drive: Spark4 Current", -1) < spark1NewCurrent) {
-    frc::SmartDashboard::PutNumber("Drive: Spark4 Current", spark1NewCurrent);
+  if (frc::SmartDashboard::GetNumber("Drive: Spark4 Current", -1) < spark4NewCurrent) {
+    frc::SmartDashboard::PutNumber("Drive: Spark4 Current", spark4NewCurrent);
   }
 }
 
