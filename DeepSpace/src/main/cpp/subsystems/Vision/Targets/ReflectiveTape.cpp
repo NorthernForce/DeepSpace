@@ -35,8 +35,8 @@ const double Vision::ReflectiveTape::k_maxHeightDiff = 0.15;
 const double Vision::ReflectiveTape::k_minArea = 15;
 
 const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.2;
-const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 0; // 2
-const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 800;
+const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 2;
+const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 600;
 const double Vision::ReflectiveTape::k_maxFavoringBoundary = 0.3;
 
 struct ReflectiveTapeEdge {
@@ -137,7 +137,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
 
         edges.push_back(edge);
 
-        cv::line(frame, poly[pointI], poly[pointI + 1], cv::Scalar(0, 0, 255));
+        cv::line(frame, poly[pointI], poly[pointI + 1], cv::Scalar(150, 150, 150));
       }
     }
 
@@ -164,6 +164,11 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       case 3: if (tape.left.length < edge.length) tape.left = edge; break;
       }
     }
+
+    cv::circle(frame, tape.top.center, 1, cv::Scalar(255, 255, 0)); // cyan circle
+    cv::circle(frame, tape.left.center, 1, cv::Scalar(0, 0, 255)); // red circle
+    cv::circle(frame, tape.bot.center, 1, cv::Scalar(255, 0, 255)); // purple circle
+    cv::circle(frame, tape.right.center, 1, cv::Scalar(0, 255, 0)); // green circle
     
     // Calculate tape area (= largest edge length * approx width)
     double height;
@@ -184,13 +189,13 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     }
 
     // Calculate tape type
-    double botAdd = (tape.bot.length > 0) ? -(tape.bot.angle) : 0;
+    // double botAdd = (tape.bot.length > 0) ? -(tape.bot.angle) : 0;
     double rightAdd = (tape.right.length > 0) ? (tape.right.angle - 90) : 0;
-    double topAdd = (tape.top.length > 0) ? -(tape.top.angle - 180) : 0;
+    // double topAdd = (tape.top.length > 0) ? -(tape.top.angle - 180) : 0;
     double leftAdd = (tape.left.length > 0) ? (tape.left.angle - 270) : 0;
 
-    double totalAngle = botAdd + rightAdd + topAdd + leftAdd;
-    // double totalAngle = rightAdd + leftAdd;
+    // double totalAngle = botAdd + rightAdd + topAdd + leftAdd;
+    double totalAngle = rightAdd + leftAdd;
     if (totalAngle < 0) {
       tape.isLeft = true;
       tape.center = tape.right.center;
@@ -292,12 +297,20 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     target.area = target.left.area + target.right.area;
 
     if (target.right.area == 0) {
-      target.center = cv::Point(frame.cols / 2, frame.rows / 2);
-      // target.center = cv::Point(target.left.center);
+      if (target.area < k_maxSoftenerThreshold / 2) {
+        target.center = cv::Point(target.left.center);
+      }
+      else {
+        target.center = cv::Point(frame.cols / 2, frame.rows / 2);
+      }
     }
     else if (target.left.area == 0) {
-      target.center = cv::Point(frame.cols / 2, frame.rows / 2);
-      // target.center = cv::Point(target.right.center);
+      if (target.area < k_maxSoftenerThreshold / 2) {
+        target.center = cv::Point(frame.cols / 2, frame.rows / 2);
+      }
+      else {
+        target.center = cv::Point(target.right.center);
+      }
     }
     else {
       // Find offset severity based on tape areas
@@ -345,21 +358,11 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     });
 
   // Debugging
-  cv::drawContours(frame, contours, -1, cv::Scalar(200, 200, 200));
+  // cv::drawContours(frame, contours, -1, cv::Scalar(200, 200, 200));
   for (auto& target : targets) {
     cv::line(frame, target.left.center, target.right.center, cv::Scalar(255, 0, 0)); // blue line
 
     cv::circle(frame, target.center, 1, cv::Scalar(0, 255, 255)); // yellow circle
-
-    cv::circle(frame, target.left.top.center, 1, cv::Scalar(255, 255, 0)); // cyan circle
-    cv::circle(frame, target.left.left.center, 1, cv::Scalar(0, 0, 255)); // red circle
-    cv::circle(frame, target.left.bot.center, 1, cv::Scalar(255, 0, 255)); // purple circle
-    cv::circle(frame, target.left.right.center, 1, cv::Scalar(0, 255, 0)); // green circle
-
-    cv::circle(frame, target.right.top.center, 1, cv::Scalar(255, 255, 0)); // cyan circle
-    cv::circle(frame, target.right.left.center, 1, cv::Scalar(0, 0, 255)); // red circle
-    cv::circle(frame, target.right.bot.center, 1, cv::Scalar(255, 0, 255)); // purple circle
-    cv::circle(frame, target.right.right.center, 1, cv::Scalar(0, 255, 0)); // green circle
   }
   cv::circle(frame, largestTarget.center, 1, cv::Scalar(255, 255, 255), 2); // white circle
 

@@ -70,7 +70,7 @@ void Vision::Camera::process() {
     auto status = m_cameraSink->GrabFrame(frame);
 
     if (m_flipOutput) {
-      cv::flip(frame, frame, -1);
+      // cv::flip(frame, frame, -1);
     }
 
     if (status == 0) {
