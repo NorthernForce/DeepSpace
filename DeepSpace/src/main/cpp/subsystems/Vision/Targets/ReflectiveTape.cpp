@@ -31,11 +31,11 @@ const int Vision::ReflectiveTape::k_maxVal = 255;
 const double Vision::ReflectiveTape::k_polyAccuracy = 2;
 const double Vision::ReflectiveTape::k_minLength = 4;
 const double Vision::ReflectiveTape::k_maxHeightDiff = 0.15;
-// TBD
+
 const double Vision::ReflectiveTape::k_minArea = 15;
 
 const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.2;
-const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 2;
+const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 0; // 2
 const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 800;
 const double Vision::ReflectiveTape::k_maxFavoringBoundary = 0.3;
 
@@ -152,8 +152,10 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
         return a.length > b.length;
       });
 
-    // Find each edge
+    // Create the tape
     ReflectiveTapeBlob tape;
+
+    // Find each edge
     for (auto& edge : edges) {
       switch ((int)((edge.angle + 45) / 90) % 4) {
       case 0: if (tape.bot.length < edge.length) tape.bot = edge; break;
@@ -162,13 +164,8 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       case 3: if (tape.left.length < edge.length) tape.left = edge; break;
       }
     }
-
-    cv::circle(frame, tape.top.center, 1, cv::Scalar(100, 100, 0));
-    cv::circle(frame, tape.left.center, 1, cv::Scalar(150, 150, 0));
-    cv::circle(frame, tape.bot.center, 1, cv::Scalar(200, 200, 0));
-    cv::circle(frame, tape.right.center, 1, cv::Scalar(250, 250, 255));
     
-    // Calculate tape area
+    // Calculate tape area (= largest edge length * approx width)
     double height;
     if (tape.right.length > tape.left.length) {
       height = tape.right.length * std::sin(tape.right.angle * 0.01745329251994);
@@ -203,7 +200,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       tape.center = tape.left.center;
     }
 
-    // Calculate better center
+    // Calculate a fancy center
     // if (tape.left.length > tape.right.length) {
     //   if (tape.isLeft) {
     //     tape.center = cv::Point(tape.left.center.x, tape.right.center.y);
@@ -295,27 +292,13 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     target.area = target.left.area + target.right.area;
 
     if (target.right.area == 0) {
-      // Don't use a single tape unless it doesn't touch a boundary
-      //if (target.left.isOut) {
-      	target.center = cv::Point(frame.cols / 2, frame.rows / 2);
-      //}
-      //else {
-        // target.center = cv::Point(target.left.center);
-      //}
+      target.center = cv::Point(frame.cols / 2, frame.rows / 2);
+      // target.center = cv::Point(target.left.center);
     }
     else if (target.left.area == 0) {
-      // Don't use a single tape unless it doesn't touch a boundary
-      //if (target.right.isOut) {
-      	target.center = cv::Point(frame.cols / 2, frame.rows / 2);
-      //}
-      //else {
-        // target.center = cv::Point(target.right.center);
-      //}
+      target.center = cv::Point(frame.cols / 2, frame.rows / 2);
+      // target.center = cv::Point(target.right.center);
     }
-  //	//else if (target.left.isOut || target.right.isOut) {
-  //	//	// Use the raw center if either tape is out
-  //	//	target.center = Utilities::CalcAvgPoint(target.right.center, target.left.center);;
-  //	//}
     else {
       // Find offset severity based on tape areas
       double severity = (target.left.area / target.area - 0.5) / k_maxFavoringAreaDiff;
@@ -362,14 +345,23 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     });
 
   // Debugging
-  // cv::drawContours(frame, contours, -1, cv::Scalar(0, 255, 0));
+  cv::drawContours(frame, contours, -1, cv::Scalar(200, 200, 200));
   for (auto& target : targets) {
-    cv::line(frame, target.left.center, target.right.center, cv::Scalar(255, 0, 0)); //blue line
-    cv::circle(frame, target.left.center, 1, cv::Scalar(255, 0, 255)); // purple 
-    cv::circle(frame, target.right.center, 1, cv::Scalar(255, 255, 0)); // teal circle
-    cv::circle(frame, target.center, 1, cv::Scalar(255, 255, 255)); //white circle
+    cv::line(frame, target.left.center, target.right.center, cv::Scalar(255, 0, 0)); // blue line
+
+    cv::circle(frame, target.center, 1, cv::Scalar(0, 255, 255)); // yellow circle
+
+    cv::circle(frame, target.left.top.center, 1, cv::Scalar(255, 255, 0)); // cyan circle
+    cv::circle(frame, target.left.left.center, 1, cv::Scalar(0, 0, 255)); // red circle
+    cv::circle(frame, target.left.bot.center, 1, cv::Scalar(255, 0, 255)); // purple circle
+    cv::circle(frame, target.left.right.center, 1, cv::Scalar(0, 255, 0)); // green circle
+
+    cv::circle(frame, target.right.top.center, 1, cv::Scalar(255, 255, 0)); // cyan circle
+    cv::circle(frame, target.right.left.center, 1, cv::Scalar(0, 0, 255)); // red circle
+    cv::circle(frame, target.right.bot.center, 1, cv::Scalar(255, 0, 255)); // purple circle
+    cv::circle(frame, target.right.right.center, 1, cv::Scalar(0, 255, 0)); // green circle
   }
-  cv::circle(frame, largestTarget.center, 1, cv::Scalar(0, 255, 255), 2); //yellow circle
+  cv::circle(frame, largestTarget.center, 1, cv::Scalar(255, 255, 255), 2); // white circle
 
   // Convert center to -1.0 to 1.0 where quadrant I is positive
   m_horizontalOffset = (largestTarget.center.x - frame.cols / 2.0) / (frame.cols / 2.0);
