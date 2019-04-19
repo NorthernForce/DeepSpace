@@ -51,6 +51,8 @@
 #include "subsystems/IndicatorLights/Morse.h"
 #include "subsystems/IndicatorLights/Turning.h"
 
+#include "commands/TurnToAngle.h"
+
 // Functions to simplify button mapping.
 static void WhenPressed(frc::Trigger* trigger, frc::Command* command) {
   trigger->WhenActive(command);
@@ -82,6 +84,8 @@ OI::OI() {
   WhileHeld(new SimpleButton(m_driverController, 5), new VisionFollowTarget("Targeter", "ReflectiveTape"));
   WhileHeld(new SimpleButton(m_driverController, 6), new VisionFollowTarget("Driver", "Cargo"));
   // WhileHeld(new SimpleButton(m_driverController, 5), new GotoTarget());
+
+  WhileHeld(new SimpleButton(m_driverController, 4), new TurnToAngle(180));
   
   WhileHeld(new SimpleButton(m_driverController, 1), new ClawToggleRaise());
 
