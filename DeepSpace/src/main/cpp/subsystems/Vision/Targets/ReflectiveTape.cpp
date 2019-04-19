@@ -188,19 +188,13 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       continue;
     }
 
-    // Calculate tape type
-    // // double botAdd = (tape.bot.length > 0) ? -(tape.bot.angle) : 0;
-    // double rightAdd = (tape.right.length > 0) ? (tape.right.angle - 90) : 0;
-    // // double topAdd = (tape.top.length > 0) ? -(tape.top.angle - 180) : 0;
-    // double leftAdd = (tape.left.length > 0) ? (tape.left.angle - 270) : 0;
-    // double totalAngle = rightAdd + leftAdd;
-
     // Calculate tape type using length as a factor
-    double botAdd   = tape.bot.length   * (tape.bot.angle - 0)   * -1;
+    // double botAdd   = tape.bot.length   * (tape.bot.angle - 0)   * -1;
     double rightAdd = tape.right.length * (tape.right.angle - 90);
-    double topAdd   = tape.top.length   * (tape.top.angle - 180) * -1;
+    // double topAdd   = tape.top.length   * (tape.top.angle - 180) * -1;
     double leftAdd  = tape.left.length  * (tape.left.angle - 270);
-    double totalAngle = botAdd + rightAdd + topAdd + leftAdd;
+    // double totalAngle = botAdd + rightAdd + topAdd + leftAdd;
+    double totalAngle = rightAdd + leftAdd;
     
     if (totalAngle < 0) {
       tape.isLeft = true;
