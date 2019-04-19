@@ -12,9 +12,9 @@
 
 #include <string>
 
-class VisionFollowReflectiveTape : public frc::Command {
+class VisionFollowTarget : public frc::Command {
  public:
-  VisionFollowReflectiveTape();
+  VisionFollowTarget(std::string cameraName, std::string targetName);
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
@@ -22,8 +22,8 @@ class VisionFollowReflectiveTape : public frc::Command {
   void Interrupted() override;
 
  private:
-  static const std::string k_cameraName;
-  static const std::string k_targetName;
+  std::string m_cameraName;
+  std::string m_targetName;
 
   const static double k_p;
   const static double k_i;

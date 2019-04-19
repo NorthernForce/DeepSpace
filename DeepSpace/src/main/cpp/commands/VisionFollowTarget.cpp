@@ -5,27 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/VisionFollowReflectiveTape.h"
+#include "commands/VisionFollowTarget.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
 #include "Robot.h"
 
-const std::string VisionFollowReflectiveTape::k_cameraName = "Targeter";
-const std::string VisionFollowReflectiveTape::k_targetName = "ReflectiveTape";
+const double VisionFollowTarget::k_p = 1.3;
+const double VisionFollowTarget::k_i = 0.01;
+const double VisionFollowTarget::k_d = 0.1;
 
-const double VisionFollowReflectiveTape::k_p = 1.3;
-const double VisionFollowReflectiveTape::k_i = 0.01;
-const double VisionFollowReflectiveTape::k_d = 0.1;
-
-const double VisionFollowReflectiveTape::k_maxTurnSpeed = 0.35;
+const double VisionFollowTarget::k_maxTurnSpeed = 0.35;
 
 // It seems to aim to the right
-const double VisionFollowReflectiveTape::k_targetOffset = 0.03;
+const double VisionFollowTarget::k_targetOffset = 0.0; // 0.03
 
-VisionFollowReflectiveTape::VisionFollowReflectiveTape() : Command("VisionFollowReflectiveTape") {
+VisionFollowTarget::VisionFollowTarget(std::string cameraName, std::string targetName) : Command("VisionFollowTarget") {
   Requires(Robot::m_vision.get());
   Requires(Robot::m_driveTrain.get());
+
+  m_cameraName = cameraName;
+  m_targetName = targetName;
 
   // Add smart dashboard stuff
   frc::SmartDashboard::PutNumber("CameraTracking: P", k_p);
@@ -34,18 +34,18 @@ VisionFollowReflectiveTape::VisionFollowReflectiveTape() : Command("VisionFollow
 }
 
 // Called just before this Command runs the first time
-void VisionFollowReflectiveTape::Initialize() {
-  Robot::m_vision->setTarget(k_cameraName, k_targetName);
+void VisionFollowTarget::Initialize() {
+  Robot::m_vision->setTarget(m_cameraName, m_targetName);
 }
 
 // Called repeatedly when this Command is scheduled to run
-void VisionFollowReflectiveTape::Execute() {
+void VisionFollowTarget::Execute() {
   double p = frc::SmartDashboard::GetNumber("CameraTracking: P", k_p);
   double i = frc::SmartDashboard::GetNumber("CameraTracking: I", k_i);
   double d = frc::SmartDashboard::GetNumber("CameraTracking: D", k_d);
 
   // PID Loop math taken from some site on the internet
-  m_error = Robot::m_vision->getOffset(k_targetName).first + k_targetOffset;
+  m_error = Robot::m_vision->getOffset(m_targetName).first + k_targetOffset;
   if (m_error == 0) {
     m_integral = 0;
   }
@@ -71,14 +71,14 @@ void VisionFollowReflectiveTape::Execute() {
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool VisionFollowReflectiveTape::IsFinished() { return false; }
+bool VisionFollowTarget::IsFinished() { return false; }
 
 // Called once after isFinished returns true
-void VisionFollowReflectiveTape::End() {
-  Robot::m_vision->enableTargetting(k_cameraName, false);
+void VisionFollowTarget::End() {
+  Robot::m_vision->enableTargetting(m_cameraName, false);
   Robot::m_driveTrain->arcDrive(0, 0);
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void VisionFollowReflectiveTape::Interrupted() { End(); }
+void VisionFollowTarget::Interrupted() { End(); }

@@ -43,7 +43,7 @@
 
 #include "commands/SetupPosition.h"
 
-#include "commands/VisionFollowReflectiveTape.h"
+#include "commands/VisionFollowTarget.h"
 #include "commands/GotoTarget.h"
 
 #include "commands/IndicatorLightsEffect.h"
@@ -79,7 +79,8 @@ OI::OI() {
   // cargoLayout.Add("ElevatorRaise", new ElevatorRaise());
   // cargoLayout.Add("ElevatorLower", new ElevatorLower());
 
-  WhileHeld(new SimpleButton(m_driverController, 5), new VisionFollowReflectiveTape());
+  WhileHeld(new SimpleButton(m_driverController, 5), new VisionFollowTarget("Targeter", "ReflectiveTape"));
+  WhileHeld(new SimpleButton(m_driverController, 6), new VisionFollowTarget("Driver", "Cargo"));
   // WhileHeld(new SimpleButton(m_driverController, 5), new GotoTarget());
   
   WhileHeld(new SimpleButton(m_driverController, 1), new ClawToggleRaise());
@@ -179,13 +180,12 @@ std::pair<double, double> OI::getSteeringControls() {
   double speed = m_driverController->GetY(frc::XboxController::JoystickHand::kLeftHand) * -1;
   double rotation = m_driverController->GetX(frc::XboxController::JoystickHand::kRightHand);
 
-  // if (m_driverController->GetTriggerAxis(frc::XboxController::JoystickHand::kRightHand) < 0.5) {
-  if (m_driverController->GetBumper(frc::XboxController::JoystickHand::kRightHand) == 1) {
-    return std::make_pair(speed * 0.5, rotation * 0.3);
-  }
-  else {
+  // if (m_driverController->GetBumper(frc::XboxController::JoystickHand::kRightHand) == 1) {
+  //   return std::make_pair(speed * 0.5, rotation * 0.3);
+  // }
+  // else {
     return std::make_pair(speed, rotation * 0.835);
-  }
+  // }
 }
 
 void OI::setControllerRumble(double value) {

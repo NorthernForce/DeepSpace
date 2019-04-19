@@ -10,11 +10,11 @@
 #include "Robot.h"
 
 #include "commands/LineTrackerFollowLine.h"
-#include "commands/VisionFollowReflectiveTape.h"
+#include "commands/VisionFollowTarget.h"
 
 GotoTarget::GotoTarget() : Command("GotoTarget") {
   m_followLine = new LineTrackerFollowLine();
-  m_followReflectiveTape = new VisionFollowReflectiveTape();
+  m_followReflectiveTape = new VisionFollowTarget("Targeter", "ReflectiveTape");
 }
 
 // Called just before this Command runs the first time
