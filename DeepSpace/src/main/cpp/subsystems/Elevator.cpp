@@ -67,7 +67,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
   m_primaryTalonElevator->ConfigNominalOutputForward(0, 10);
   m_primaryTalonElevator->ConfigNominalOutputReverse(0, 10);
   m_primaryTalonElevator->ConfigPeakOutputForward(0.8, 10);
-  m_primaryTalonElevator->ConfigPeakOutputReverse(-0.6, 10);
+  m_primaryTalonElevator->ConfigPeakOutputReverse(-0.75, 10);
 
   /* Set Motion Magic gains in slot0 - see documentation */
   m_primaryTalonElevator->SelectProfileSlot(0, pidIdx);
