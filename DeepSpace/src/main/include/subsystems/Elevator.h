@@ -49,6 +49,7 @@ class Elevator : public frc::Subsystem {
   void disableForwardLimitSwitch();
   void enableReverseLimitSwitch();
   void disableReverseLimitSwitch();
+  void startClimb();
   
   const static int timeoutMs;
 	const static int noTimeoutMs;

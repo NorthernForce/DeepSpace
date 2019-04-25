@@ -10,7 +10,7 @@
 #include "Robot.h"
   
 const double ClimbEvenlyUp::k_maxFrontTilt = -3;
-const double ClimbEvenlyUp::k_maxBackTilt = 1.5;
+const double ClimbEvenlyUp::k_maxBackTilt = 2;
 const double ClimbEvenlyUp::k_targetTilt = (k_maxBackTilt + k_maxFrontTilt) / 2;
 const double ClimbEvenlyUp::k_rangeOfTilt = (k_maxBackTilt - k_maxFrontTilt) / 2;
 
@@ -26,6 +26,8 @@ void ClimbEvenlyUp::Initialize() {
     m_climbingStarted = true;
     Robot::m_imu->resetAngle();
   }
+
+  Robot::m_elevator->startClimb();
 }
 
 // Called repeatedly when this Command is scheduled to run

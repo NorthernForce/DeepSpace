@@ -66,7 +66,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
   /* Set the peak and nominal outputs */
   m_primaryTalonElevator->ConfigNominalOutputForward(0, 10);
   m_primaryTalonElevator->ConfigNominalOutputReverse(0, 10);
-  m_primaryTalonElevator->ConfigPeakOutputForward(1, 10);
+  m_primaryTalonElevator->ConfigPeakOutputForward(0.8, 10);
   m_primaryTalonElevator->ConfigPeakOutputReverse(-0.75, 10);
 
   /* Set Motion Magic gains in slot0 - see documentation */
@@ -81,7 +81,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
 
   /* Set acceleration and vcruise velocity - see documentation */
   m_primaryTalonElevator->ConfigMotionCruiseVelocity(3500, 10);
-  m_primaryTalonElevator->ConfigMotionAcceleration(2250, 10);
+  m_primaryTalonElevator->ConfigMotionAcceleration(3000, 10);
 
   /* Zero the sensor */
   m_primaryTalonElevator->SetSelectedSensorPosition(0, pidIdx, 10);
@@ -153,6 +153,12 @@ void Elevator::setPosition(int setpoint)
 	m_setpoint = setpoint;
   // std::cout << "Elevator set position to " << setpoint << " with magic" << std::endl;
 	m_primaryTalonElevator->Set(ControlMode::Position, m_setpoint);
+}
+
+void Elevator::startClimb() {
+  m_primaryTalonElevator->ConfigPeakOutputForward(1, 10);
+  m_primaryTalonElevator->ConfigMotionAcceleration(2250);
+  m_primaryTalonElevator->ConfigClosedloopRamp(0.5);
 }
 
 bool Elevator::atSetpoint()
