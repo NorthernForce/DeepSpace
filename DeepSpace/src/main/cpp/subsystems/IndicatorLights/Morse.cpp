@@ -11,7 +11,6 @@ IndicatorLights::Morse::Morse(std::string message, int speedOfDot, std::vector<u
   m_speedOfDot = speedOfDot;
   m_onColor = onColor;
   m_offColor = offColor;
-  m_colors = std::vector<std::vector<uint8_t>>{m_offColor};
 
   reset();
 }

@@ -8,7 +8,7 @@ namespace IndicatorLights {
 
 class EffectFade : public Effect {
  public:
-  EffectFade(std::shared_ptr<Effect> oldEffect, std::shared_ptr<Effect> newEffect, int speedMillis = 300);
+  EffectFade(std::shared_ptr<Effect> oldEffect, std::shared_ptr<Effect> newEffect, int speedMillis = 150);
   void run() override;
   void reset() override;
 
@@ -21,7 +21,7 @@ class EffectFade : public Effect {
 
   std::vector<std::vector<uint8_t>> m_newColors;
   std::vector<std::vector<uint8_t>> m_oldColors;
-  std::vector<std::vector<uint8_t>> m_colorsDiff;
+  std::vector<std::vector<int>> m_colorsDiff;
 };
 
 }

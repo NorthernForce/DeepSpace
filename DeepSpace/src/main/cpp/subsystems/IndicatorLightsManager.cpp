@@ -51,12 +51,11 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
       std::chrono::system_clock::time_point startTime = std::chrono::system_clock::now();
 
       if (m_newEffect != m_currentEffect) {
-        if (m_currentEffect == nullptr) {
-          m_currentEffect = m_newEffect;
+        if (m_currentEffect != nullptr) {
+          m_newEffect = std::make_shared<EffectSequence>(std::vector<std::shared_ptr<Effect>>{std::make_shared<EffectFade>(m_currentEffect, m_newEffect), m_newEffect});
         }
-        else {
-          m_currentEffect = std::make_shared<EffectSequence>(std::vector<std::shared_ptr<Effect>>{std::make_shared<EffectFade>(m_currentEffect, m_newEffect), m_newEffect});
-        }
+
+        m_currentEffect = m_newEffect;
         
         if (m_currentEffect->isDone()) {
           m_currentEffect->reset();
@@ -68,8 +67,9 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
       sendFrame();
 
       if (m_currentEffect->isDone()) {
-        m_currentEffect = nullptr;
-        setEffect();
+        // m_currentEffect = nullptr;
+        m_newEffect = std::make_shared<EffectSequence>(std::vector<std::shared_ptr<Effect>>{std::make_shared<EffectFade>(m_currentEffect, m_defaultEffect), m_defaultEffect});
+        // setEffect();
       }
 
       std::this_thread::sleep_until(startTime + std::chrono::milliseconds(k_framePeriodMillis));

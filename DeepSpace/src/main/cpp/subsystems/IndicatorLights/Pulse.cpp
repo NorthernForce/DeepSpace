@@ -10,20 +10,22 @@ IndicatorLights::Pulse::Pulse(std::vector<uint8_t> color, double speed) {
   }
   m_speed = speed;
 
-  m_sum = 0;
-
   reset();
 }
 
 void IndicatorLights::Pulse::run() {
+  // if (m_done) {
+  //   return;
+  // }
+
   std::vector<uint8_t> color;
 
-  if (m_sum > 1) {
+  if (m_sum >= 1) {
     m_speed *= -1;
 
     color = m_color;
   }
-  else if (m_sum < 0) {
+  else if (m_sum <= 0) {
     m_done = true;
 
     color = std::vector<uint8_t>{0, 0, 0};

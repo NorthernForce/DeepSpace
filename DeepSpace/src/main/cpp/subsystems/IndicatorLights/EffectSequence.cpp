@@ -16,17 +16,13 @@ void IndicatorLights::EffectSequence::run() {
   m_effects[m_effectIndex]->run();
   m_colors = m_effects[m_effectIndex]->getColors();
 
-  std::cout << "run" << std::endl;
-
   if (m_effects[m_effectIndex]->isDone()) {
     m_effectIndex++;
-
-    std::cout << "switching" << std::endl;
 
     if (m_effectIndex >= m_effects.size()) {
       m_done = true;
     }
-    else {
+    else if (m_effects[m_effectIndex]->isDone()) {
       m_effects[m_effectIndex]->reset();
     }
   }
@@ -34,8 +30,6 @@ void IndicatorLights::EffectSequence::run() {
 
 void IndicatorLights::EffectSequence::reset() {
   m_effectIndex = 0;
-
-  std::cout << "reset" << std::endl;
 
   m_effects[m_effectIndex]->reset();
 

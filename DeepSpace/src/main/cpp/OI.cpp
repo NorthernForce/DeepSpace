@@ -96,8 +96,7 @@ OI::OI() {
 
   WhileHeld(new SimpleAxis(m_driverController, 2), new CargoEject());
 
-  // WhenPressed(new SimpleButton(m_driverController, 3), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
-  WhenPressed(new SimpleButton(m_driverController, 3), new IndicatorLightsEffect(std::make_shared<IndicatorLights::EffectSequence>(std::vector<std::shared_ptr<IndicatorLights::Effect>>{std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2), std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{255, 255, 255}, 0.2)})));
+  WhenPressed(new SimpleButton(m_driverController, 3), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
   WhenPressed(new SimpleButton(m_driverController, 9), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Pulse>(std::vector<uint8_t>{148, 248, 24}, 0.2)));
   WhenPressed(new frc::POVButton(*m_driverController, 0), new IndicatorLightsEffect());
   WhenPressed(new frc::POVButton(*m_driverController, 90), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("SOS")));
