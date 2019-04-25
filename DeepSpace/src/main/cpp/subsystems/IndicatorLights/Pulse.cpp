@@ -11,6 +11,8 @@ IndicatorLights::Pulse::Pulse(std::vector<uint8_t> color, double speed) {
   m_speed = speed;
 
   m_sum = 0;
+
+  reset();
 }
 
 void IndicatorLights::Pulse::run() {
@@ -38,6 +40,9 @@ void IndicatorLights::Pulse::run() {
 void IndicatorLights::Pulse::reset() {
   m_sum = 0;
   m_speed = std::abs(m_speed);
-  m_colors = std::vector<std::vector<uint8_t>>{std::vector<uint8_t>{0, 0, 0}};
   m_done = false;
+
+  m_colors = std::vector<std::vector<uint8_t>>{std::vector<uint8_t>{0, 0, 0}};
+  
+  run();
 }

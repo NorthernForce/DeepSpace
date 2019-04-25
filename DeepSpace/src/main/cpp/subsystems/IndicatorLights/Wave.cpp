@@ -16,7 +16,8 @@ IndicatorLights::Wave::Wave(std::shared_ptr<Effect> overlayedEffect, int speedMi
 
 void IndicatorLights::Wave::run() {
   if (m_overlayedEffect->isDone()) {
-      m_overlayedEffect->reset();
+    m_done = true;
+    return;
   }
 
   m_overlayedEffect->run();
@@ -58,6 +59,8 @@ void IndicatorLights::Wave::reset() {
   m_colors.assign(m_colors.size(), std::vector<uint8_t>{0, 0, 0});
   m_posPerFrame = std::abs(m_posPerFrame);
   m_currentPos = 0;
+
+  m_overlayedEffect->reset();
 
   m_done = false;
 }

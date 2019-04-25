@@ -10,6 +10,8 @@
 #include "subsystems/IndicatorLights/Turning.h"
 #include "subsystems/IndicatorLights/Morse.h"
 #include "subsystems/IndicatorLights/Wave.h"
+#include "subsystems/IndicatorLights/EffectFade.h"
+#include "subsystems/IndicatorLights/EffectSequence.h"
 
 #include <iostream>
 
@@ -49,8 +51,13 @@ IndicatorLights::Manager::Manager() : Subsystem("IndicatorLights") {
       std::chrono::system_clock::time_point startTime = std::chrono::system_clock::now();
 
       if (m_newEffect != m_currentEffect) {
-        m_currentEffect = m_newEffect;
-
+        if (m_currentEffect == nullptr) {
+          m_currentEffect = m_newEffect;
+        }
+        else {
+          m_currentEffect = std::make_shared<EffectSequence>(std::vector<std::shared_ptr<Effect>>{std::make_shared<EffectFade>(m_currentEffect, m_newEffect), m_newEffect});
+        }
+        
         if (m_currentEffect->isDone()) {
           m_currentEffect->reset();
         }

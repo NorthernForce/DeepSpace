@@ -18,7 +18,7 @@ class Effect {
 
  protected:
   bool m_done = false;
-  std::vector<std::vector<uint8_t>> m_colors;
+  std::vector<std::vector<uint8_t>> m_colors = std::vector<std::vector<uint8_t>>{std::vector<uint8_t>{0, 0, 0}};
 };
 
 }

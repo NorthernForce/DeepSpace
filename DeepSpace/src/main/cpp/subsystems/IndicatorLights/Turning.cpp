@@ -29,7 +29,6 @@ void IndicatorLights::Turning::run() {
     case 5: r = v, g = p, b = q; break;
   }
   
-
   m_colors[0][0] = b * 255;
   m_colors[0][1] = r * 255;
   m_colors[0][2] = g * 255;
@@ -39,5 +38,8 @@ void IndicatorLights::Turning::run() {
 
 void IndicatorLights::Turning::reset() {
   Robot::m_imu->resetRotation();
+
   m_colors = std::vector<std::vector<uint8_t>>{std::vector<uint8_t>{0, 0, 0}};
+  
+  run();
 }
