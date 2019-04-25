@@ -66,7 +66,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
   /* Set the peak and nominal outputs */
   m_primaryTalonElevator->ConfigNominalOutputForward(0, 10);
   m_primaryTalonElevator->ConfigNominalOutputReverse(0, 10);
-  m_primaryTalonElevator->ConfigPeakOutputForward(0.8, 10);
+  m_primaryTalonElevator->ConfigPeakOutputForward(1, 10);
   m_primaryTalonElevator->ConfigPeakOutputReverse(-0.75, 10);
 
   /* Set Motion Magic gains in slot0 - see documentation */
@@ -77,10 +77,10 @@ Elevator::Elevator() : Subsystem("Elevator") {
   m_primaryTalonElevator->Config_kD(pidIdx, 0.0, 10);
   m_primaryTalonElevator->ConfigMaxIntegralAccumulator(pidIdx, iLimit, timeoutMs);
   m_primaryTalonElevator->ConfigOpenloopRamp(0.5);
-  m_primaryTalonElevator->ConfigClosedloopRamp(0.5);
+  m_primaryTalonElevator->ConfigClosedloopRamp(0.3);
 
   /* Set acceleration and vcruise velocity - see documentation */
-  m_primaryTalonElevator->ConfigMotionCruiseVelocity(3000, 10);
+  m_primaryTalonElevator->ConfigMotionCruiseVelocity(3500, 10);
   m_primaryTalonElevator->ConfigMotionAcceleration(2250, 10);
 
   /* Zero the sensor */
