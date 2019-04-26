@@ -30,6 +30,7 @@ class Elevator : public frc::Subsystem {
  public:
   Elevator();
   void InitDefaultCommand() override;
+  void Periodic() override;
   void raise();
   void setSpeed(double speed);
   void lower();

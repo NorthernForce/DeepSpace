@@ -115,6 +115,12 @@ void Elevator::InitDefaultCommand() {
   // SetDefaultCommand(new MySpecialCommand());
 }
 
+void Elevator::Periodic() {
+  if (this->atLowerLimit()) {
+    this->setHomePosition();
+  }
+}
+
 void Elevator::setSpeed(double speed) {
   if (speed > 1) {
     // m_primaryTalonElevator->Set(k_elevatorMaxRaiseSpeed);
