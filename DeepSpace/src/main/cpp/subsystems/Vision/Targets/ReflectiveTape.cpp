@@ -133,7 +133,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
 
         edge.length = length;
         edge.center = Utilities::CalcAvgPoint(poly[pointI], poly[pointI + 1]);
-        edge.angle = Utilities::CalcLineAngleDeg(poly[pointI], poly[pointI + 1]);
+        edge.angle = Utilities::CalcLineAngle(poly[pointI], poly[pointI + 1]);
 
         edges.push_back(edge);
 
@@ -157,7 +157,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
 
     // Find each edge
     for (auto& edge : edges) {
-      switch ((int)((edge.angle + 45) / 90) % 4) {
+      switch ((int)((edge.angle + Utilities::k_QuaterPi) / Utilities::k_HalfPi) % 4) {
       case 0: if (tape.bot.length < edge.length) tape.bot = edge; break;
       case 1: if (tape.right.length < edge.length) tape.right = edge; break;
       case 2: if (tape.top.length < edge.length) tape.top = edge; break;
@@ -170,17 +170,35 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     cv::circle(frame, tape.bot.center, 1, cv::Scalar(255, 0, 255)); // purple circle
     cv::circle(frame, tape.right.center, 1, cv::Scalar(0, 255, 0)); // green circle
     
-    // Calculate tape area (= largest edge length * approx width)
-    double height;
+    // // Calculate tape area (= largest edge length * approx width)
+    // double height;
+    // if (tape.right.length > tape.left.length) {
+    //   height = tape.right.length * std::sin(tape.right.angle);
+    // }
+    // else {
+    //   height = tape.left.length * std::sin(tape.left.angle);
+    // }
+    // double width = tape.right.center.x - tape.left.center.x;
+
+    // tape.area = std::abs(height * width);
+    
+    // Precisely calculate the tape area
+    double xOffset = std::abs(tape.right.center.x - tape.left.center.x);
+    double yOffset = std::abs(tape.right.center.y - tape.left.center.y);
+    double length, theta;
     if (tape.right.length > tape.left.length) {
-      height = tape.right.length * std::sin(tape.right.angle * 0.01745329251994);
+      length = tape.right.length;
+      theta = tape.right.angle;
     }
     else {
-      height = tape.left.length * std::sin(tape.left.angle * 0.01745329251994);
+      length = tape.left.length;
+      theta = tape.left.angle - Utilities::k_Pi;
     }
-    double width = tape.right.center.x - tape.left.center.x;
+    double hypotenuse = std::sqrt(std::pow(xOffset, 2) + std::pow(yOffset, 2));
+    theta = Utilities::k_HalfPi - theta + std::atan2(yOffset, xOffset);
+    double width = hypotenuse * std::sin(theta);
 
-    tape.area = std::abs(height * width);
+    // tape.area = std::abs(height * width);
 
     // std::cout << "area: " << tape.area << "\n";
 
@@ -189,10 +207,10 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     }
 
     // Calculate tape type using length as a factor
-    // double botAdd   = tape.bot.length   * (tape.bot.angle - 0)   * -1;
-    double rightAdd = tape.right.length * (tape.right.angle - 90);
-    // double topAdd   = tape.top.length   * (tape.top.angle - 180) * -1;
-    double leftAdd  = tape.left.length  * (tape.left.angle - 270);
+    // double botAdd = tape.bot.length * (tape.bot.angle) * -1;
+    double rightAdd = tape.right.length * (tape.right.angle - Utilities::k_HalfPi * 1);
+    // double topAdd = tape.top.length * (tape.top.angle - Utilities::k_HalfPi * 2) * -1;
+    double leftAdd  = tape.left.length * (tape.left.angle - Utilities::k_HalfPi * 3);
     // double totalAngle = botAdd + rightAdd + topAdd + leftAdd;
     double totalAngle = rightAdd + leftAdd;
     
