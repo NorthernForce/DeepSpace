@@ -10,7 +10,7 @@
 #include <iostream>
 
 // allows for differetn limit switches between robots - adjust accordingly
-const int ElevatorSetPosition::k_limitSwitchOffset = 0;
+const int ElevatorSetPosition::k_limitSwitchOffset = -350;
 // const double ElevatorSetPosition::k_calibrationSpeed = -0.4;
 
 const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoints = {
@@ -49,7 +49,7 @@ ElevatorSetPosition::ElevatorSetPosition(Position pos) : Command("ElevatorSetPos
   m_setpoint = setpointInMap->second;
 
   // if (m_setpoint == k_limitSwitchOffset) {
-  //   m_calibrate = true;
+  //   m_calibrate = true;  
   // }
 }
 
@@ -97,7 +97,7 @@ bool ElevatorSetPosition::IsFinished() {
 
 // Called once after isFinished returns true
 void ElevatorSetPosition::End() {
-  m_elevator->stop();
+  // m_elevator->stop();
 
   // if (m_calibrate) {
   //   Robot::m_elevator->disableReverseLimitSwitch();
@@ -108,5 +108,5 @@ void ElevatorSetPosition::End() {
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void ElevatorSetPosition::Interrupted() {
-  End();
+  m_elevator->stop();
 }

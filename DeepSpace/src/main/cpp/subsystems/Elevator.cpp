@@ -109,7 +109,7 @@ Elevator::Elevator() : Subsystem("Elevator") {
   setPosition(0);
 
   // Fake position
-  m_primaryTalonElevator->SetSelectedSensorPosition(k_startingSetPoint, pidIdx, timeoutMs);
+  // m_primaryTalonElevator->SetSelectedSensorPosition(k_startingSetPoint, pidIdx, timeoutMs);
 
   frc::SmartDashboard::PutNumber("Elevator: Raise Speed", k_elevatorMaxRaiseSpeed);
   frc::SmartDashboard::PutNumber("Elevator: Lower Speed", k_elevatorMaxLowerSpeed);
@@ -121,9 +121,9 @@ void Elevator::InitDefaultCommand() {
 }
 
 void Elevator::Periodic() {
-  if (atLowerLimit()) {
-    setHomePosition();
-  }
+  // if (atLowerLimit()) {
+  //   setHomePosition();
+  // }
 }
 
 void Elevator::setSpeed(double speed) {

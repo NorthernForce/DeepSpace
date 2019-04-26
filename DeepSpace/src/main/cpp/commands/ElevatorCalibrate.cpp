@@ -36,9 +36,9 @@ void ElevatorCalibrate::End() {
   Robot::m_elevator->stop();
   
   // This is now done in the elevator periodic
-  // if (Robot::m_elevator->atLowerLimit()) {
-  //   Robot::m_elevator->setHomePosition();
-  // }
+  if (Robot::m_elevator->atLowerLimit()) {
+    Robot::m_elevator->setHomePosition();
+  }
   Robot::m_elevator->disableReverseLimitSwitch();
   Robot::m_elevator->disableForwardLimitSwitch();
 
