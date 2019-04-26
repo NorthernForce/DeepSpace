@@ -70,6 +70,8 @@ Vision::ReflectiveTape::ReflectiveTape() {
   frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: SAT MAX", k_maxSat);
   frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: VAL MIN", k_minVal);
   frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: VAL MAX", k_maxVal);
+
+  frc::SmartDashboard::PutNumber("Vision: ReflectiveTape: MAX AREA", k_maxSoftenerThreshold);
 }
 
 void Vision::ReflectiveTape::setup(Vision::Camera *camera) {
@@ -170,33 +172,33 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     cv::circle(frame, tape.bot.center, 1, cv::Scalar(255, 0, 255)); // purple circle
     cv::circle(frame, tape.right.center, 1, cv::Scalar(0, 255, 0)); // green circle
     
-    // // Calculate tape area (= largest edge length * approx width)
-    // double height;
-    // if (tape.right.length > tape.left.length) {
-    //   height = tape.right.length * std::sin(tape.right.angle);
-    // }
-    // else {
-    //   height = tape.left.length * std::sin(tape.left.angle);
-    // }
-    // double width = tape.right.center.x - tape.left.center.x;
-
-    // tape.area = std::abs(height * width);
-    
-    // Precisely calculate the tape area
-    double xOffset = std::abs(tape.right.center.x - tape.left.center.x);
-    double yOffset = std::abs(tape.right.center.y - tape.left.center.y);
-    double length, theta;
+    // Calculate tape area (= largest edge length * approx width)
+    double height;
     if (tape.right.length > tape.left.length) {
-      length = tape.right.length;
-      theta = tape.right.angle;
+      height = tape.right.length * std::sin(tape.right.angle);
     }
     else {
-      length = tape.left.length;
-      theta = tape.left.angle - Utilities::k_Pi;
+      height = tape.left.length * std::sin(tape.left.angle);
     }
-    double hypotenuse = std::sqrt(std::pow(xOffset, 2) + std::pow(yOffset, 2));
-    theta = Utilities::k_HalfPi - theta + std::atan2(yOffset, xOffset);
-    double width = hypotenuse * std::sin(theta);
+    double width = tape.right.center.x - tape.left.center.x;
+
+    tape.area = std::abs(height * width);
+    
+    // // Precisely calculate the tape area
+    // double xOffset = std::abs(tape.right.center.x - tape.left.center.x);
+    // double yOffset = std::abs(tape.right.center.y - tape.left.center.y);
+    // double height, theta;
+    // if (tape.right.length > tape.left.length) {
+    //   height = tape.right.length;
+    //   theta = tape.right.angle;
+    // }
+    // else {
+    //   height = tape.left.length;
+    //   theta = tape.left.angle - Utilities::k_Pi;
+    // }
+    // double hypotenuse = std::sqrt(std::pow(xOffset, 2) + std::pow(yOffset, 2));
+    // theta = std::atan2(yOffset, xOffset) - theta;
+    // double width = hypotenuse * std::sin(theta);
 
     // tape.area = std::abs(height * width);
 
@@ -309,13 +311,15 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     }
   }
 
+  double maxSoftenerThreshold =  frc::SmartDashboard::GetNumber("Vision: ReflectiveTape: MAX AREA", k_maxSoftenerThreshold);
+
   // Define target areas and centers
   for (auto& target : targets) {
     // Total area is just addition of both areas
     target.area = target.left.area + target.right.area;
 
     if (target.right.area == 0) {
-      if (target.area < k_maxSoftenerThreshold / 2) {
+      if (target.area < maxSoftenerThreshold / 2) {
         target.center = cv::Point(target.left.center);
       }
       else {
@@ -323,7 +327,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       }
     }
     else if (target.left.area == 0) {
-      if (target.area < k_maxSoftenerThreshold / 2) {
+      if (target.area < maxSoftenerThreshold / 2) {
         target.center = cv::Point(frame.cols / 2, frame.rows / 2);
       }
       else {
@@ -341,7 +345,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
       }
 
       // Find the offset softener (larger area = less offset)
-      double softener = (k_maxSoftenerThreshold - target.area) / k_maxSoftenerThreshold;
+      double softener = (maxSoftenerThreshold - target.area) / maxSoftenerThreshold;
       if (softener < 0) {
         softener = 0;
       }
