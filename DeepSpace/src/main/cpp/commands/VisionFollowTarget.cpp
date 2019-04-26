@@ -15,7 +15,7 @@ const double VisionFollowTarget::k_p = 1.3;
 const double VisionFollowTarget::k_i = 0.01;
 const double VisionFollowTarget::k_d = 0.1;
 
-const double VisionFollowTarget::k_maxTurnSpeed = 0.35;
+const double VisionFollowTarget::k_maxTurnSpeed = 0.25;
 
 // It seems to aim to the right
 const double VisionFollowTarget::k_targetOffset = 0;
@@ -67,7 +67,7 @@ void VisionFollowTarget::Execute() {
 
   auto steeringControls = Robot::m_oi->getSteeringControls();
 
-  Robot::m_driveTrain->arcDrive(steeringControls.first, rotation + steeringControls.second * 0.5);
+  Robot::m_driveTrain->arcDrive(steeringControls.first, rotation + steeringControls.second * 0.6);
 }
 
 // Make this return true when this Command no longer needs to run execute()
