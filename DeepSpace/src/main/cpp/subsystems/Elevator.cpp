@@ -116,8 +116,8 @@ void Elevator::InitDefaultCommand() {
 }
 
 void Elevator::Periodic() {
-  if (this->atLowerLimit()) {
-    this->setHomePosition();
+  if (atLowerLimit()) {
+    setHomePosition();
   }
 }
 

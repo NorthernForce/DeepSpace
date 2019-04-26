@@ -15,7 +15,7 @@ const double VisionFollowTarget::k_p = 1.3;
 const double VisionFollowTarget::k_i = 0.01;
 const double VisionFollowTarget::k_d = 0.1;
 
-const double VisionFollowTarget::k_maxTurnSpeed = 0.25;
+const double VisionFollowTarget::k_maxTurnSpeed = 0.3;
 
 // It seems to aim to the right
 const double VisionFollowTarget::k_targetOffset = 0;
