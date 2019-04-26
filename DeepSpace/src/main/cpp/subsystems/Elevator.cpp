@@ -40,6 +40,8 @@ const double Elevator::k_elevatorMaxLowerSpeed = 1; // abs of
 const double Elevator::k_deployDelay = 0.8;
 const double Elevator::k_motorStopDelay = 0.1;
 
+const int Elevator::k_startingSetPoint = 0;
+
 Elevator::Elevator() : Subsystem("Elevator") { 
   m_primaryTalonElevator.reset(new WPI_TalonSRX (RobotMap::Elevator::k_primary_id));
   m_followerTalonElevator1.reset(new WPI_TalonSRX (RobotMap::Elevator::k_follower1_id));
@@ -105,6 +107,9 @@ Elevator::Elevator() : Subsystem("Elevator") {
 
   setHomePosition();
   setPosition(0);
+
+  // Fake position
+  m_primaryTalonElevator->SetSelectedSensorPosition(k_startingSetPoint, pidIdx, timeoutMs);
 
   frc::SmartDashboard::PutNumber("Elevator: Raise Speed", k_elevatorMaxRaiseSpeed);
   frc::SmartDashboard::PutNumber("Elevator: Lower Speed", k_elevatorMaxLowerSpeed);

@@ -77,4 +77,6 @@ class Elevator : public frc::Subsystem {
 
   const static double k_deployDelay;
   const static double k_motorStopDelay;
+
+  const static int k_startingSetPoint;
 };
