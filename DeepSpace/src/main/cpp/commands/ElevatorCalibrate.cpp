@@ -29,15 +29,16 @@ void ElevatorCalibrate::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool ElevatorCalibrate::IsFinished() { 
   return Robot::m_elevator->atLowerLimit() && !Robot::m_elevator->isRetracted();
- }
+}
 
 // Called once after isFinished returns true
 void ElevatorCalibrate::End() {
   Robot::m_elevator->stop();
   
-  if (Robot::m_elevator->atLowerLimit()) {
-    Robot::m_elevator->setHomePosition();
-  }
+  // This is now done in the elevator periodic
+  // if (Robot::m_elevator->atLowerLimit()) {
+  //   Robot::m_elevator->setHomePosition();
+  // }
   Robot::m_elevator->disableReverseLimitSwitch();
   Robot::m_elevator->disableForwardLimitSwitch();
 

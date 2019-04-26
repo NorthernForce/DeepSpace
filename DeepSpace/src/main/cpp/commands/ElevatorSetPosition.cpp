@@ -10,87 +10,108 @@
 #include <iostream>
 
 // allows for differetn limit switches between robots - adjust accordingly
-const int limitSwitchOffset = 0;
+const int ElevatorSetPosition::k_limitSwitchOffset = 0;
+const double ElevatorSetPosition::k_calibrationSpeed = -0.4;
 
 const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoints = {
-		{ ElevatorSetPosition::Position::HomePosition, 0 + limitSwitchOffset},
+		{ Position::HomePosition, 0 + k_limitSwitchOffset},
 #ifdef COMPETITION_ROBOT
-// Old homing level (when it pushes into the floor)
-    // { ElevatorSetPosition::Position::CargoIntake, 280 + limitSwitchOffset},
-    // { ElevatorSetPosition::Position::HatchPanelIntake, 1250 + limitSwitchOffset},
-    // { ElevatorSetPosition::Position::CargoDepositLevel1, 4000 + limitSwitchOffset},
-    // { ElevatorSetPosition::Position::CargoDepositLevel2, 8600 + limitSwitchOffset},
-    // { ElevatorSetPosition::Position::CargoDepositLevel3, 12800 + limitSwitchOffset},
-    // { ElevatorSetPosition::Position::CargoShipCargoDeposit, 6585 + limitSwitchOffset},
-    // { ElevatorSetPosition::Position::HatchDepositLevel1, 1250 + limitSwitchOffset},
-    // { ElevatorSetPosition::Position::HatchDepositLevel2, 5830 + limitSwitchOffset},
-    // { ElevatorSetPosition::Position::HatchDepositLevel3, 10380 + limitSwitchOffset},
-// New homing level (when it is 1/4" off the floor)
-    { ElevatorSetPosition::Position::CargoIntake, -320 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchPanelIntake, 650 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoDepositLevel1, 3400 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoDepositLevel2, 8000 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoDepositLevel3, 12426 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoShipCargoDeposit, 5859 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchDepositLevel1, 450 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchDepositLevel2, 5230 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchDepositLevel3, 9791 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::ClimbPosition, 3355 + limitSwitchOffset},
+    { Position::CargoIntake, -320 + k_limitSwitchOffset},
+    { Position::HatchPanelIntake, 450 + k_limitSwitchOffset},
+    { Position::CargoDepositLevel1, 3400 + k_limitSwitchOffset},
+    { Position::CargoDepositLevel2, 8000 + k_limitSwitchOffset},
+    { Position::CargoDepositLevel3, 12426 + k_limitSwitchOffset},
+    { Position::CargoShipCargoDeposit, 5859 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel1, 450 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel2, 5230 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel3, 9791 + k_limitSwitchOffset},
+    { Position::ClimbPosition, 3355 + k_limitSwitchOffset},
 #else
-    { ElevatorSetPosition::Position::CargoIntake, 215 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchPanelIntake, 664 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoDepositLevel1, 3188 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoDepositLevel2, 6837 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoDepositLevel3, 10326 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::CargoShipCargoDeposit, 5201 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchDepositLevel1, 664 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchDepositLevel2, 4505 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::HatchDepositLevel3, 8356 + limitSwitchOffset},
-    { ElevatorSetPosition::Position::ClimbPosition, 3188 + limitSwitchOffset},
+    { Position::CargoIntake, 215 + k_limitSwitchOffset},
+    { Position::HatchPanelIntake, 664 + k_limitSwitchOffset},
+    { Position::CargoDepositLevel1, 3188 + k_limitSwitchOffset},
+    { Position::CargoDepositLevel2, 6837 + k_limitSwitchOffset},
+    { Position::CargoDepositLevel3, 10326 + k_limitSwitchOffset},
+    { Position::CargoShipCargoDeposit, 5201 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel1, 664 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel2, 4505 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel3, 8356 + k_limitSwitchOffset},
+    { Position::ClimbPosition, 3188 + k_limitSwitchOffset},
 #endif
 };
 
 ElevatorSetPosition::ElevatorSetPosition(Position pos) : Command("ElevatorSetPosition"),
   m_elevator(Robot::m_elevator.get())
 {
-  // std::cout << "Created elevator set position with position " << (int)pos << "\n";
-  m_position = pos;
 	Requires(m_elevator.get());
+
+  const auto setpointInMap = m_setpoints.find(pos);
+  m_setpoint = setpointInMap->second;
+
+  if (m_setpoint == k_limitSwitchOffset) {
+    m_calibrate = true;
+  }
 }
 
 // Called just before this Command runs the first time
 void ElevatorSetPosition::Initialize() {
+  m_done = false;
+  m_timeToCalibrate = false;
   
-  // std::cout << "Initalizing set position" << "\n";
-   const auto setpoint = m_setpoints.find(m_position);
-  
-  // std::cout << "found setpoint " << "\n";
-	if (setpoint != m_setpoints.end()) {
-  // std::cout << "setting position to " << setpoint->second  << "\n";
-		m_elevator->setPosition(setpoint->second);
-	}
+  if (m_calibrate) {
+    Robot::m_elevator->enableReverseLimitSwitch();
+    Robot::m_elevator->enableForwardLimitSwitch();
+  }
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorSetPosition::Execute() {
+  if (!m_timeToCalibrate) {
+    m_elevator->setPosition(m_setpoint);
+
+    if (m_elevator->atSetpoint()) {
+      if (m_calibrate) {
+        m_timeToCalibrate = true;
+      }
+      else {
+        m_done = true;
+      }
+    }
+
+    // if (m_calibrate && m_elevator->atLowerLimit()) {
+    //   m_elevator->setHomePosition();
+    //   m_done = true;
+    // }
+  }
   
-   const auto setpoint = m_setpoints.find(m_position);
-  // std::cout << "ElevatorSetPosition executing " << "\n";
-  m_elevator->setPosition(setpoint->second);
+  if (m_timeToCalibrate) {
+    if (m_elevator->atLowerLimit()) {
+    //   m_elevator->setHomePosition();
+      m_done = true;
+    }
+    else {
+      m_elevator->setSpeed(k_calibrationSpeed);
+    }
+  }
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool ElevatorSetPosition::IsFinished() { 
-  
-  return m_elevator->atSetpoint();
-  
+  return m_done;
 }
 
 // Called once after isFinished returns true
-void ElevatorSetPosition::End() {}
+void ElevatorSetPosition::End() {
+  m_elevator->stop();
+
+  if (m_calibrate) {
+    Robot::m_elevator->disableReverseLimitSwitch();
+    Robot::m_elevator->disableForwardLimitSwitch();
+  }
+}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void ElevatorSetPosition::Interrupted() {
-  m_elevator->stop();
+  End();
 }

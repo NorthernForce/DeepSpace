@@ -16,7 +16,7 @@ class ElevatorSetPosition : public frc::Command {
 
   enum class Position {
     HomePosition,
-    CargoIntake,	
+    CargoIntake,
     HatchPanelIntake,		
     CargoDepositLevel1,	
     CargoDepositLevel2,	
@@ -37,8 +37,15 @@ class ElevatorSetPosition : public frc::Command {
 
  private:
   static const std::map<Position, int> m_setpoints;
-
   const std::shared_ptr<Elevator> m_elevator;
 
-  Position m_position;
+  const static int k_limitSwitchOffset;
+  const static double k_calibrationSpeed;
+
+  int m_setpoint;
+  
+  bool m_calibrate = false;
+
+  bool m_timeToCalibrate;
+  bool m_done;
 };
