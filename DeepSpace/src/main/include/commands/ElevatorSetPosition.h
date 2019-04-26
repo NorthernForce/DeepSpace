@@ -40,12 +40,12 @@ class ElevatorSetPosition : public frc::Command {
   const std::shared_ptr<Elevator> m_elevator;
 
   const static int k_limitSwitchOffset;
-  const static double k_calibrationSpeed;
+  // const static double k_calibrationSpeed;
 
   int m_setpoint;
   
-  bool m_calibrate = false;
+  // bool m_calibrate = false;
+  // bool m_timeToCalibrate;
 
-  bool m_timeToCalibrate;
   bool m_done;
 };

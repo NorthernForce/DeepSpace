@@ -11,7 +11,7 @@
 
 // allows for differetn limit switches between robots - adjust accordingly
 const int ElevatorSetPosition::k_limitSwitchOffset = 0;
-const double ElevatorSetPosition::k_calibrationSpeed = -0.4;
+// const double ElevatorSetPosition::k_calibrationSpeed = -0.4;
 
 const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoints = {
 		{ Position::HomePosition, 0 + k_limitSwitchOffset},
@@ -48,51 +48,46 @@ ElevatorSetPosition::ElevatorSetPosition(Position pos) : Command("ElevatorSetPos
   const auto setpointInMap = m_setpoints.find(pos);
   m_setpoint = setpointInMap->second;
 
-  if (m_setpoint == k_limitSwitchOffset) {
-    m_calibrate = true;
-  }
+  // if (m_setpoint == k_limitSwitchOffset) {
+  //   m_calibrate = true;
+  // }
 }
 
 // Called just before this Command runs the first time
 void ElevatorSetPosition::Initialize() {
   m_done = false;
-  m_timeToCalibrate = false;
+  // m_timeToCalibrate = false;
   
-  if (m_calibrate) {
-    Robot::m_elevator->enableReverseLimitSwitch();
-    Robot::m_elevator->enableForwardLimitSwitch();
-  }
+  // if (m_calibrate) {
+  //   Robot::m_elevator->enableReverseLimitSwitch();
+  //   Robot::m_elevator->enableForwardLimitSwitch();
+  // }
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorSetPosition::Execute() {
-  if (!m_timeToCalibrate) {
+  // if (!m_timeToCalibrate) {
     m_elevator->setPosition(m_setpoint);
 
     if (m_elevator->atSetpoint()) {
-      if (m_calibrate) {
-        m_timeToCalibrate = true;
-      }
-      else {
+      // if (m_calibrate) {
+      //   m_timeToCalibrate = true;
+      // }
+      // else {
         m_done = true;
-      }
+      // }
     }
-
-    // if (m_calibrate && m_elevator->atLowerLimit()) {
-    //   m_elevator->setHomePosition();
-    //   m_done = true;
-    // }
-  }
+  // }
   
-  if (m_timeToCalibrate) {
-    if (m_elevator->atLowerLimit()) {
-    //   m_elevator->setHomePosition();
-      m_done = true;
-    }
-    else {
-      m_elevator->setSpeed(k_calibrationSpeed);
-    }
-  }
+  // if (m_timeToCalibrate) {
+  //   if (m_elevator->atLowerLimit()) {
+  //   //   m_elevator->setHomePosition();
+  //     m_done = true;
+  //   }
+  //   else {
+  //     m_elevator->setSpeed(k_calibrationSpeed);
+  //   }
+  // }
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -104,10 +99,10 @@ bool ElevatorSetPosition::IsFinished() {
 void ElevatorSetPosition::End() {
   m_elevator->stop();
 
-  if (m_calibrate) {
-    Robot::m_elevator->disableReverseLimitSwitch();
-    Robot::m_elevator->disableForwardLimitSwitch();
-  }
+  // if (m_calibrate) {
+  //   Robot::m_elevator->disableReverseLimitSwitch();
+  //   Robot::m_elevator->disableForwardLimitSwitch();
+  // }
 }
 
 // Called when another command which requires one or more of the same
