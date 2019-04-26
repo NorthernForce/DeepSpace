@@ -15,10 +15,10 @@ const double VisionFollowTarget::k_p = 1.3;
 const double VisionFollowTarget::k_i = 0.01;
 const double VisionFollowTarget::k_d = 0.1;
 
-const double VisionFollowTarget::k_maxTurnSpeed = 0.3;
+const double VisionFollowTarget::k_maxTurnSpeed = 0.35;
 
 // It seems to aim to the right
-const double VisionFollowTarget::k_targetOffset = 0;
+const double VisionFollowTarget::k_targetOffset = 0.1;
 
 VisionFollowTarget::VisionFollowTarget(std::string cameraName, std::string targetName) : Command("VisionFollowTarget") {
   Requires(Robot::m_vision.get());
@@ -31,6 +31,8 @@ VisionFollowTarget::VisionFollowTarget(std::string cameraName, std::string targe
   frc::SmartDashboard::PutNumber("CameraTracking: P", k_p);
   frc::SmartDashboard::PutNumber("CameraTracking: I", k_i);
   frc::SmartDashboard::PutNumber("CameraTracking: D", k_d);
+  
+  frc::SmartDashboard::PutNumber("CameraTracking: offset", k_targetOffset);
 }
 
 // Called just before this Command runs the first time
@@ -45,7 +47,7 @@ void VisionFollowTarget::Execute() {
   double d = frc::SmartDashboard::GetNumber("CameraTracking: D", k_d);
 
   // PID Loop math taken from some site on the internet
-  m_error = Robot::m_vision->getOffset(m_targetName).first + k_targetOffset;
+  m_error = Robot::m_vision->getOffset(m_targetName).first + frc::SmartDashboard::GetNumber("CameraTracking: offset", k_targetOffset);
   if (m_error == 0) {
     m_integral = 0;
   }

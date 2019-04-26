@@ -36,7 +36,7 @@ const double Vision::ReflectiveTape::k_minArea = 15;
 
 const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.2;
 const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 2;
-const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 600;
+const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 1500;
 const double Vision::ReflectiveTape::k_maxFavoringBoundary = 0.3;
 
 struct ReflectiveTapeEdge {
@@ -317,6 +317,8 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
   for (auto& target : targets) {
     // Total area is just addition of both areas
     target.area = target.left.area + target.right.area;
+
+    std::cout << "totalArea: " << target.area << " leftArea: " << target.left.area << " rightArea: "  << target.right.area << "\n";
 
     if (target.right.area == 0) {
       if (target.area < maxSoftenerThreshold / 2) {
