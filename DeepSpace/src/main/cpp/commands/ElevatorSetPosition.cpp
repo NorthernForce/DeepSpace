@@ -10,13 +10,13 @@
 #include <iostream>
 
 // allows for differetn limit switches between robots - adjust accordingly
-const int ElevatorSetPosition::k_limitSwitchOffset = -350;
+const int ElevatorSetPosition::k_limitSwitchOffset = -450;
 // const double ElevatorSetPosition::k_calibrationSpeed = -0.4;
 
 const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoints = {
-		{ Position::HomePosition, 0 + k_limitSwitchOffset},
+		{ Position::HomePosition, 0},
 #ifdef COMPETITION_ROBOT
-    { Position::CargoIntake, -320 + k_limitSwitchOffset},
+    { Position::CargoIntake, -60 + k_limitSwitchOffset},
     { Position::HatchPanelIntake, 450 + k_limitSwitchOffset},
     { Position::CargoDepositLevel1, 3400 + k_limitSwitchOffset},
     { Position::CargoDepositLevel2, 8000 + k_limitSwitchOffset},
