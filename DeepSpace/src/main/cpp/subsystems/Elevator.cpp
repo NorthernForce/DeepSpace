@@ -60,7 +60,6 @@ Elevator::Elevator() : Subsystem("Elevator") {
   //m_primaryTalonElevator->SetSensorPhase(true);
   m_primaryTalonElevator->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, pidIdx, 10);
 
-
   /* Set relevant frame periods to be at least as fast as periodic rate */
   m_primaryTalonElevator->SetStatusFramePeriod(StatusFrameEnhanced::Status_13_Base_PIDF0, 10, 10);
   m_primaryTalonElevator->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic, 10, 10);
@@ -231,14 +230,18 @@ double Elevator::getPGainValue() {
 }
 
   void Elevator::enableForwardLimitSwitch() {
-      m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+      // m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+      m_primaryTalonElevator->ConfigForwardLimitSwitchSource(RemoteLimitSwitchSource_RemoteTalonSRX , LimitSwitchNormal_NormallyOpen, RobotMap::Elevator::k_follower2_id, 0);
   }
   void Elevator::disableForwardLimitSwitch() {
-      m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, 0);
+      // m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, 0);
+      m_primaryTalonElevator->ConfigForwardLimitSwitchSource(RemoteLimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, RobotMap::Elevator::k_follower2_id, 0);
   }
   void Elevator::enableReverseLimitSwitch() {
-      m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+      // m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
+      m_primaryTalonElevator->ConfigReverseLimitSwitchSource(RemoteLimitSwitchSource_RemoteTalonSRX , LimitSwitchNormal_NormallyOpen, RobotMap::Elevator::k_follower2_id, 0);
   }
   void Elevator::disableReverseLimitSwitch() {
-      m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, 0);
+      // m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, 0);
+      m_primaryTalonElevator->ConfigReverseLimitSwitchSource(RemoteLimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, RobotMap::Elevator::k_follower2_id, 0);
   }
