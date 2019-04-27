@@ -36,7 +36,7 @@ const double Vision::ReflectiveTape::k_minArea = 15;
 
 const double Vision::ReflectiveTape::k_maxFavoringAreaDiff = 0.2;
 const double Vision::ReflectiveTape::k_maxFavoringCenterOffset = 2;
-const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 1500;
+const double Vision::ReflectiveTape::k_maxSoftenerThreshold = 750;
 const double Vision::ReflectiveTape::k_maxFavoringBoundary = 0.3;
 
 struct ReflectiveTapeEdge {
@@ -172,39 +172,40 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     cv::circle(frame, tape.bot.center, 1, cv::Scalar(255, 0, 255)); // purple circle
     cv::circle(frame, tape.right.center, 1, cv::Scalar(0, 255, 0)); // green circle
     
-    // Calculate tape area (= largest edge length * approx width)
-    double height;
-    if (tape.right.length > tape.left.length) {
-      height = tape.right.length * std::sin(tape.right.angle);
-    }
-    else {
-      height = tape.left.length * std::sin(tape.left.angle);
-    }
-    double width = tape.right.center.x - tape.left.center.x;
-
-    double oldArea = std::abs(height * width);
-    
-    // // Precisely calculate the tape area
-    // double xOffset = std::abs(tape.right.center.x - tape.left.center.x);
-    // double yOffset = std::abs(tape.right.center.y - tape.left.center.y);
-    // double length, theta;
+    // // Calculate tape area (= largest edge length * approx width)
+    // double height;
     // if (tape.right.length > tape.left.length) {
-    //   length = tape.right.length;
-    //   theta = tape.right.angle;
+    //   height = tape.right.length * std::sin(tape.right.angle);
     // }
     // else {
-    //   length = tape.left.length;
-    //   theta = tape.left.angle - Utilities::k_Pi;
+    //   height = tape.left.length * std::sin(tape.left.angle);
     // }
-    // double hypotenuse = std::sqrt(std::pow(xOffset, 2) + std::pow(yOffset, 2));
-    // theta = std::atan2(yOffset, xOffset) - theta;
-    // double distance = hypotenuse * std::sin(theta);
+    // double width = tape.right.center.x - tape.left.center.x;
 
-    // double newArea = std::abs(length * distance);
+    // double oldArea = std::abs(height * width);
+    
+    // Precisely calculate the tape area
+    double xOffset = std::abs(tape.right.center.x - tape.left.center.x);
+    double yOffset = std::abs(tape.right.center.y - tape.left.center.y);
+    double length, theta;
+    if (tape.right.length > tape.left.length) {
+      length = tape.right.length;
+      theta = tape.right.angle;
+    }
+    else {
+      length = tape.left.length;
+      theta = tape.left.angle - Utilities::k_Pi;
+    }
+    double hypotenuse = std::sqrt(std::pow(xOffset, 2) + std::pow(yOffset, 2));
+    theta = std::atan2(yOffset, xOffset) - theta;
+    double distance = hypotenuse * std::sin(theta);
+
+    double newArea = std::abs(length * distance);
 
     // std::cout << "oldArea: " << oldArea << " newArea: " << newArea << "\n";
 
-    tape.area = oldArea;
+    // tape.area = oldArea;
+    tape.area = newArea;
 
     if (tape.area < k_minArea) {
       continue;
@@ -320,7 +321,7 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     // Total area is just addition of both areas
     target.area = target.left.area + target.right.area;
 
-    std::cout << "totalArea: " << target.area << " leftArea: " << target.left.area << " rightArea: "  << target.right.area << "\n";
+    // std::cout << "totalArea: " << target.area << " leftArea: " << target.left.area << " rightArea: "  << target.right.area << "\n";
 
     if (target.right.area == 0) {
       if (target.area < maxSoftenerThreshold / 2) {

@@ -18,7 +18,7 @@ const double VisionFollowTarget::k_d = 0.1;
 const double VisionFollowTarget::k_maxTurnSpeed = 0.35;
 
 // It seems to aim to the right
-const double VisionFollowTarget::k_targetOffset = 0.15;
+const double VisionFollowTarget::k_targetOffset = 0.05;
 
 VisionFollowTarget::VisionFollowTarget(std::string cameraName, std::string targetName) : Command("VisionFollowTarget") {
   Requires(Robot::m_vision.get());
