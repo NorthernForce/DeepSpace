@@ -182,27 +182,29 @@ void Vision::ReflectiveTape::run(cv::Mat &frame) {
     }
     double width = tape.right.center.x - tape.left.center.x;
 
-    tape.area = std::abs(height * width);
+    double oldArea = std::abs(height * width);
     
     // // Precisely calculate the tape area
     // double xOffset = std::abs(tape.right.center.x - tape.left.center.x);
     // double yOffset = std::abs(tape.right.center.y - tape.left.center.y);
-    // double height, theta;
+    // double length, theta;
     // if (tape.right.length > tape.left.length) {
-    //   height = tape.right.length;
+    //   length = tape.right.length;
     //   theta = tape.right.angle;
     // }
     // else {
-    //   height = tape.left.length;
+    //   length = tape.left.length;
     //   theta = tape.left.angle - Utilities::k_Pi;
     // }
     // double hypotenuse = std::sqrt(std::pow(xOffset, 2) + std::pow(yOffset, 2));
     // theta = std::atan2(yOffset, xOffset) - theta;
-    // double width = hypotenuse * std::sin(theta);
+    // double distance = hypotenuse * std::sin(theta);
 
-    // tape.area = std::abs(height * width);
+    // double newArea = std::abs(length * distance);
 
-    // std::cout << "area: " << tape.area << "\n";
+    // std::cout << "oldArea: " << oldArea << " newArea: " << newArea << "\n";
+
+    tape.area = oldArea;
 
     if (tape.area < k_minArea) {
       continue;
