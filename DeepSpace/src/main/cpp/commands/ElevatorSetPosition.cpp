@@ -48,7 +48,7 @@ ElevatorSetPosition::ElevatorSetPosition(Position pos) : Command("ElevatorSetPos
   const auto setpointInMap = m_setpoints.find(pos);
   m_setpoint = setpointInMap->second;
 
-  // if (m_setpoint == k_limitSwitchOffset) {
+  // if (m_setpoint == 0) {
   //   m_calibrate = true;  
   // }
 }
