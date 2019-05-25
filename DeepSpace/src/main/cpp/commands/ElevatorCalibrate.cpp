@@ -9,7 +9,7 @@
 
 #include "Robot.h"
 
-const double ElevatorCalibrate::k_lowerSpeed = -0.65;
+const double ElevatorCalibrate::k_lowerSpeed = -0.45;
 
 ElevatorCalibrate::ElevatorCalibrate() : Command("ElevatorCalibrate") {
   Requires(Robot::m_elevator.get());
@@ -36,9 +36,9 @@ void ElevatorCalibrate::End() {
   Robot::m_elevator->stop();
   
   // This is now done in the elevator periodic
-  if (Robot::m_elevator->atLowerLimit()) {
+  // if (Robot::m_elevator->atLowerLimit()) {
     Robot::m_elevator->setHomePosition();
-  }
+  // }
   Robot::m_elevator->disableReverseLimitSwitch();
   Robot::m_elevator->disableForwardLimitSwitch();
 

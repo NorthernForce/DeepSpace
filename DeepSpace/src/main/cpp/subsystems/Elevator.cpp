@@ -193,7 +193,7 @@ void Elevator::setHomePosition()
 }
 
 bool Elevator::atLowerLimit() {
-  return !m_followerTalonElevator2->GetSensorCollection().IsRevLimitSwitchClosed();
+  return m_followerTalonElevator2->GetSensorCollection().IsFwdLimitSwitchClosed();
 }
 
 void Elevator::extend() {
@@ -231,17 +231,17 @@ double Elevator::getPGainValue() {
 
   void Elevator::enableForwardLimitSwitch() {
       // m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
-      m_primaryTalonElevator->ConfigForwardLimitSwitchSource(RemoteLimitSwitchSource_RemoteTalonSRX , LimitSwitchNormal_NormallyClosed, RobotMap::Elevator::k_follower2_id, 0);
+      m_primaryTalonElevator->ConfigForwardLimitSwitchSource(RemoteLimitSwitchSource_RemoteTalonSRX , LimitSwitchNormal_NormallyOpen, RobotMap::Elevator::k_follower2_id, 0);
   }
   void Elevator::disableForwardLimitSwitch() {
       // m_primaryTalonElevator->ConfigForwardLimitSwitchSource(LimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, 0);
-      m_primaryTalonElevator->ConfigForwardLimitSwitchSource(RemoteLimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyClosed, RobotMap::Elevator::k_follower2_id, 0);
+      m_primaryTalonElevator->ConfigForwardLimitSwitchSource(RemoteLimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, RobotMap::Elevator::k_follower2_id, 0);
   }
   void Elevator::enableReverseLimitSwitch() {
       // m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
-      m_primaryTalonElevator->ConfigReverseLimitSwitchSource(RemoteLimitSwitchSource_RemoteTalonSRX , LimitSwitchNormal_NormallyClosed, RobotMap::Elevator::k_follower2_id, 0);
+      m_primaryTalonElevator->ConfigReverseLimitSwitchSource(RemoteLimitSwitchSource_RemoteTalonSRX , LimitSwitchNormal_NormallyOpen, RobotMap::Elevator::k_follower2_id, 0);
   }
   void Elevator::disableReverseLimitSwitch() {
       // m_primaryTalonElevator->ConfigReverseLimitSwitchSource(LimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, 0);
-      m_primaryTalonElevator->ConfigReverseLimitSwitchSource(RemoteLimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyClosed, RobotMap::Elevator::k_follower2_id, 0);
+      m_primaryTalonElevator->ConfigReverseLimitSwitchSource(RemoteLimitSwitchSource_Deactivated, LimitSwitchNormal_NormallyOpen, RobotMap::Elevator::k_follower2_id, 0);
   }
