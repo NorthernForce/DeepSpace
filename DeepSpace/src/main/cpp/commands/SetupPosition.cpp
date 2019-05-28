@@ -11,15 +11,18 @@
 #include "commands/ClawClose.h"
 #include "commands/ClawLower.h"
 #include "commands/ClawRaise.h"
+#include "commands/CargoSetIdle.h"
 
 SetupPosition::SetupPosition(ElevatorSetPosition::Position position, TargetType type) : CommandGroup("SetupPosition") {
   AddParallel(new ElevatorSetPosition(position));
 
   if (type == TargetType::Cargo) {
+    AddSequential(new CargoSetIdle(true));
     AddSequential(new ClawRaise());
     AddSequential(new ClawClose());
   }
   else if (type == TargetType::Hatch) {
+    AddSequential(new CargoSetIdle(false));
     AddSequential(new ClawLower());
     AddSequential(new ClawOpen());
   }

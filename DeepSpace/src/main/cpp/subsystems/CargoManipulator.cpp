@@ -9,6 +9,8 @@
 
 #include "RobotMap.h"
 
+#include "commands/CargoIdle.h"
+
 const double CargoManipulator::k_ejectSpeed = -1.0;
 const double CargoManipulator::k_intakeSpeed = 0.6;
 
@@ -20,6 +22,8 @@ const double CargoManipulator::k_rampRate = 0.2;
 const double CargoManipulator::k_secondaryCurrentLimit = 16.0;
 const int CargoManipulator::k_currentLimit = 10;
 
+const double CargoManipulator::k_idleSpeed = 0.1;
+
 CargoManipulator::CargoManipulator() : Subsystem("CargoManipulator") {
   m_motor.reset(new rev::CANSparkMax(RobotMap::CargoManipulator::k_motor_id, rev::CANSparkMax::MotorType::kBrushed));
 
@@ -29,7 +33,9 @@ CargoManipulator::CargoManipulator() : Subsystem("CargoManipulator") {
   m_motor->SetOpenLoopRampRate(k_rampRate);
 }
 
-void CargoManipulator::InitDefaultCommand() {}
+void CargoManipulator::InitDefaultCommand() {
+  SetDefaultCommand(new CargoIdle());
+}
 
 void CargoManipulator::Periodic() {
   // if (GetCurrentCommandName().empty()) {
@@ -54,5 +60,10 @@ void CargoManipulator::setSpeed(double speed) {
   // }
 }
 
+void CargoManipulator::setIdle(bool idle) {
+  m_idle = idle;
+}
 
-
+bool CargoManipulator::getIdle() {
+  return m_idle;
+}

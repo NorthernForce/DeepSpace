@@ -24,14 +24,20 @@ class CargoManipulator : public frc::Subsystem {
   const static double k_secondaryCurrentLimit;
   const static int k_currentLimit;
 
+  const static double k_idleSpeed;
+
   CargoManipulator();
   void InitDefaultCommand() override;
   void Periodic() override;
   void setSpeed(double speed);
+  void setIdle(bool idle);
+  bool getIdle();
 
  private:
   std::shared_ptr<rev::CANSparkMax> m_motor;
 
   std::shared_ptr<frc::Timer> m_divideSpeedTimer;
   bool m_divideSpeedTimerReset = true;
+
+  bool m_idle = false;
 };
