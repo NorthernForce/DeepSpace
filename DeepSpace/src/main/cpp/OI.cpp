@@ -72,6 +72,8 @@ OI::OI() {
   m_manipulatorController2.reset(new frc::Joystick(RobotMap::OI::k_manipulatorController2_id));
   m_manipulatorController3.reset(new frc::XboxController(RobotMap::OI::k_manipulatorController3_id));
 
+  frc::SmartDashboard::PutNumber("Driver Speed", 1);
+
   // auto &basicCommandsTab = frc::Shuffleboard::GetTab("Basic Commands");
   // basicCommandsTab.Add("Cargo Intake", new CargoIntake());
   // basicCommandsTab.Add(new ElevatorCalibrate());
@@ -184,12 +186,19 @@ OI::OI() {
 std::pair<double, double> OI::getSteeringControls() {
   double speed = m_driverController->GetY(frc::XboxController::JoystickHand::kLeftHand) * -1;
   double rotation = m_driverController->GetX(frc::XboxController::JoystickHand::kRightHand);
+  double speedMultiplier = frc::SmartDashboard::GetNumber("Driver Speed", 1);
+  if (speedMultiplier > 1) {
+    speedMultiplier = 1;
+  }
+  else if (speedMultiplier < 0) {
+    speedMultiplier = 0;
+  }
 
   // if (m_driverController->GetBumper(frc::XboxController::JoystickHand::kRightHand) == 1) {
   //   return std::make_pair(speed * 0.5, rotation * 0.3);
   // }
   // else {
-    return std::make_pair(speed, rotation * 0.835);
+    return std::make_pair(speed * speedMultiplier, rotation * 0.835 * speedMultiplier);
   // }
 }
 
