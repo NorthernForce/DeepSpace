@@ -14,7 +14,7 @@
 // // To test
 // const double IMU::k_maxJerk = 0.5;
 
-const double IMU::k_rumbleMultiplier = 0.25;
+const double IMU::k_rumbleMultiplier = 1;
 
 IMU::IMU() : Subsystem("ExampleSubsystem") {
   try { 
@@ -46,7 +46,9 @@ void IMU::Periodic() {
 
   double rumble = (currJerkX > currJerkY) ? currJerkX : currJerkY;
 
-  Robot::m_oi->setControllerRumble(rumble * k_rumbleMultiplier);
+  // std::cout << "rumble: " << rumble << "\n";
+
+  Robot::m_oi->setControllerRumble(rumble * rumble * k_rumbleMultiplier);
 
   // if (std::abs(currJerkX) > k_maxJerk || std::abs(currJerkY) > k_maxJerk) {
   //   Robot::m_oi->setControllerRumble(1);
