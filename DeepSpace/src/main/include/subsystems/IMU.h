@@ -28,14 +28,16 @@ class IMU : public frc::Subsystem {
   void resetAngle();
   float getRotation();
   void resetRotation();
+  bool hasCollided();
 
-  // std::shared_ptr<frc::Timer> m_rumbleTimer;
-  // const static double k_rumbleTimeout;
-
-  // const static double k_maxJerk;
-
-  const static double k_rumbleMultiplier;
+ private:
 
   double m_lastAccelX = 0.0;
   double m_lastAccelY = 0.0;
+
+  const static double k_rumbleMultiplier;
+  
+  const static double k_maxJerkForCollision;
+  const static double k_collisionPeriod;
+  std::shared_ptr<frc::Timer> m_collisionTimer;
 };

@@ -9,12 +9,10 @@
 
 #include "Robot.h"
 
-// const double IMU::k_rumbleTimeout = 0.35;
-
-// // To test
-// const double IMU::k_maxJerk = 0.5;
-
 const double IMU::k_rumbleMultiplier = 1;
+
+const double IMU::k_maxJerkForCollision = 0.2;
+const double IMU::k_collisionPeriod = 0.25; // Seconds
 
 IMU::IMU() : Subsystem("ExampleSubsystem") {
   try { 
@@ -25,7 +23,7 @@ IMU::IMU() : Subsystem("ExampleSubsystem") {
     printf("Unable to initialize the gyro - you have the wheel");
   }
 
-  // m_rumbleTimer.reset(new frc::Timer());
+  m_collisionTimer.reset(new frc::Timer());
 }
 
 void IMU::InitDefaultCommand() {
@@ -42,22 +40,18 @@ void IMU::Periodic() {
   double currJerkY = std::abs(currAccelY - m_lastAccelY);
   m_lastAccelY = currAccelY;
 
-  // std::cout << "currJerkX: " << currJerkX << " currJerkY: " << currJerkY << "\n";
+  double currJerk = std::sqrt(std::pow(currJerkX, 2) + std::pow(currJerkY, 2));
 
-  double rumble = (currJerkX > currJerkY) ? currJerkX : currJerkY;
+  if (currJerk >= k_maxJerkForCollision) {
+    m_collisionTimer->Reset();
+    m_collisionTimer->Start();
 
-  // std::cout << "rumble: " << rumble << "\n";
+    std::cout << "A collision has been detected --- ";
+  }
 
-  Robot::m_oi->setControllerRumble(rumble * rumble * k_rumbleMultiplier);
+  std::cout << "Jerk: " << currJerk << "\n";
 
-  // if (std::abs(currJerkX) > k_maxJerk || std::abs(currJerkY) > k_maxJerk) {
-  //   Robot::m_oi->setControllerRumble(1);
-  //   m_rumbleTimer->Reset();
-  // }
-
-  // if (m_rumbleTimer->Get() > k_rumbleTimeout) {
-  //   Robot::m_oi->setControllerRumble(0);
-  // }
+  Robot::m_oi->setControllerRumble(currJerk * currJerk * k_rumbleMultiplier);
 }
 
 float IMU::getAngle() {
@@ -74,4 +68,14 @@ float IMU::getRotation() {
 
 void IMU::resetRotation() {
   m_rotationOffset = getRotation();
+}
+
+bool IMU::hasCollided() {
+  if (m_collisionTimer->Get() < k_collisionPeriod) {
+    return true;
+  }
+  else {
+    m_collisionTimer->Stop();
+    return false;
+  }
 }
