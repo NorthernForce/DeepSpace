@@ -16,7 +16,7 @@ const int ElevatorSetPosition::k_limitSwitchOffset = -450;
 const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoints = {
 		{ Position::HomePosition, 0},
 #ifdef COMPETITION_ROBOT
-    { Position::CargoIntake, -60 + k_limitSwitchOffset},
+    { Position::CargoIntake, 30 + k_limitSwitchOffset},
     { Position::HatchPanelIntake, 450 + k_limitSwitchOffset},
     { Position::CargoDepositLevel1, 3400 + k_limitSwitchOffset},
     { Position::CargoDepositLevel2, 8000 + k_limitSwitchOffset},
