@@ -25,6 +25,8 @@
 
 #include <frc/commands/Scheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <networktables/NetworkTable.h>
+#include <networktables/NetworkTableInstance.h>
 
 #include <iostream>
 
@@ -92,6 +94,8 @@ void Robot::RobotInit() {
   //m_chooser.SetDefaultOption("Default Auto", &m_defaultAuto);
  // m_chooser.AddOption("My Auto", &m_myAuto);
   //frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+  
+  nt::NetworkTableInstance::GetDefault().GetTable("limelight")->PutNumber("ledMode", 1);
 }
 
 /**

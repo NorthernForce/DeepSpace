@@ -44,6 +44,7 @@
 #include "commands/SetupPosition.h"
 
 #include "commands/VisionFollowTarget.h"
+#include "commands/VisionFollowLimelight.h"
 #include "commands/GotoTarget.h"
 
 #include "commands/IndicatorLightsEffect.h"
@@ -84,8 +85,9 @@ OI::OI() {
   // cargoLayout.Add("ElevatorRaise", new ElevatorRaise());
   // cargoLayout.Add("ElevatorLower", new ElevatorLower());
 
-  WhileHeld(new SimpleButton(m_driverController, 5), new VisionFollowTarget("Targeter", "ReflectiveTape"));
-  WhileHeld(new SimpleButton(m_driverController, 6), new VisionFollowTarget("Driver", "Cargo"));
+  // WhileHeld(new SimpleButton(m_driverController, 5), new VisionFollowTarget("Targeter", "ReflectiveTape"));
+  WhileHeld(new SimpleButton(m_driverController, 5), new VisionFollowLimelight());
+  // WhileHeld(new SimpleButton(m_driverController, 6), new VisionFollowTarget("Driver", "Cargo"));
   // WhileHeld(new SimpleButton(m_driverController, 5), new GotoTarget());
 
   WhileHeld(new SimpleButton(m_driverController, 4), new TurnToAngle(180));
