@@ -55,7 +55,7 @@ void VisionFollowTarget::Execute() {
   m_integral += m_error * Robot::kDefaultPeriod;
   m_derivative = (m_error - m_error_prior) / Robot::kDefaultPeriod;
 
-  double rotation = k_p*m_error + k_i*m_integral + k_d*m_derivative;
+  double rotation = p*m_error + i*m_integral + d*m_derivative;
 
   m_error_prior = m_error;
 

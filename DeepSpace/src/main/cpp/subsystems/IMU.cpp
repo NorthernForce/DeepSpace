@@ -11,8 +11,8 @@
 
 const double IMU::k_rumbleMultiplier = 1;
 
-const double IMU::k_maxJerkForCollision = 0.2;
-const double IMU::k_collisionPeriod = 0.25; // Seconds
+const double IMU::k_maxJerkForCollision = 0.7;
+const double IMU::k_collisionPeriod = 0.1; // Seconds
 
 IMU::IMU() : Subsystem("ExampleSubsystem") {
   try { 
@@ -24,6 +24,7 @@ IMU::IMU() : Subsystem("ExampleSubsystem") {
   }
 
   m_collisionTimer.reset(new frc::Timer());
+  m_collisionTimer->Start();
 }
 
 void IMU::InitDefaultCommand() {
@@ -46,12 +47,21 @@ void IMU::Periodic() {
     m_collisionTimer->Reset();
     m_collisionTimer->Start();
 
-    std::cout << "A collision has been detected --- ";
+    std::cout << "A collision has been detected. Jerk: " << currJerk << "\n";
   }
 
-  std::cout << "Jerk: " << currJerk << "\n";
+  // std::cout << "Jerk: " << currJerk << "\n";
 
-  Robot::m_oi->setControllerRumble(currJerk * currJerk * k_rumbleMultiplier);
+  // Light, always on rumble.
+  Robot::m_oi->setControllerRumble(currJerk * currJerk * k_rumbleMultiplier, true);
+
+  // Harsh rumble.
+  if (hasCollided()) {
+    Robot::m_oi->setControllerRumble(1, false);
+  }
+  else {
+    Robot::m_oi->setControllerRumble(0, false);
+  }
 }
 
 float IMU::getAngle() {

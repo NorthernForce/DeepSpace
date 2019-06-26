@@ -202,7 +202,11 @@ std::pair<double, double> OI::getSteeringControls() {
   // }
 }
 
-void OI::setControllerRumble(double value) {
-  // m_driverController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
-  m_driverController->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
+void OI::setControllerRumble(double value, bool lightly) {
+  if (lightly) {
+    m_driverController->SetRumble(frc::GenericHID::RumbleType::kRightRumble, value);
+  }
+  else {
+    m_driverController->SetRumble(frc::GenericHID::RumbleType::kLeftRumble, value);
+  }
 }
