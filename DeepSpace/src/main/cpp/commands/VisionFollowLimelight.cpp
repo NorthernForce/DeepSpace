@@ -47,8 +47,6 @@ void VisionFollowLimelight::Execute() {
 
   double tx = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0);
 
-  std::cout << "tx: " << tx << "\n";
-
   // PID Loop math taken from some site on the internet
   m_error = tx / 27 + frc::SmartDashboard::GetNumber("FollowLimelight: offset", k_targetOffset);
   if (m_error == 0) {
