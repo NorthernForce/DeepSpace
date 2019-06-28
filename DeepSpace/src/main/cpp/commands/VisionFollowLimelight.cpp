@@ -17,6 +17,9 @@ const double VisionFollowLimelight::k_p = 1.3;
 const double VisionFollowLimelight::k_i = 0.01;
 const double VisionFollowLimelight::k_d = 0.1;
 
+const double VisionFollowLimelight::k_areaEffecter = 0.3;
+const double VisionFollowLimelight::k_maxArea = 15;
+
 const double VisionFollowLimelight::k_maxTurnSpeed = 0.35;
 
 // It seems to aim to the right
@@ -32,6 +35,9 @@ VisionFollowLimelight::VisionFollowLimelight() : Command("VisionFollowLimelight"
   frc::SmartDashboard::PutNumber("FollowLimelight: D", k_d);
   
   frc::SmartDashboard::PutNumber("FollowLimelight: offset", k_targetOffset);
+
+  frc::SmartDashboard::PutNumber("FollowLimelight: maxArea", k_maxArea);
+  frc::SmartDashboard::PutNumber("FollowLimelight: effector", k_areaEffecter);
 }
 
 // Called just before this Command runs the first time
@@ -46,9 +52,88 @@ void VisionFollowLimelight::Execute() {
   double d = frc::SmartDashboard::GetNumber("FollowLimelight: D", k_d);
 
   double tx = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0);
+  frc::SmartDashboard::PutNumber("FollowLimelight: tx", tx);
+  double ta = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("ta", 0.0);
+  frc::SmartDashboard::PutNumber("FollowLimelight: ta", ta);
+
+  double ta_left, ta_right;
+
+  double ta0 = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("ta0", 0.0);
+  double tx0 = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx0", 0.0);
+  double ta1 = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("ta1", 0.0);
+  double tx1 = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx1", 0.0);
+  double ta2 = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("ta2", 0.0);
+  double tx2 = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx2", 0.0);
+
+  if (tx0 > tx1 && tx0 > tx2) {
+    if (tx1 < tx2) {
+      ta_left = tx1;
+      ta_right = tx2;
+    }
+    else {
+      ta_left = tx2;
+      ta_right = tx1;
+    }
+  }
+  else if (tx1 > tx0 && tx1 > tx2) {
+    if (tx0 < tx2) {
+      ta_left = tx0;
+      ta_right = tx2;
+    }
+    else {
+      ta_left = tx2;
+      ta_right = tx0;
+    }
+  }
+  else /*if (tx2 > tx1 && tx2 > tx0)*/ {
+    if (tx1 < tx0) {
+      ta_left = tx1;
+      ta_right = tx0;
+    }
+    else {
+      ta_left = tx0;
+      ta_right = tx1;
+    }
+  }
+
+  // if (ta0 < ta1 && ta0 < ta2) {
+  //   if (tx1 < tx2) {
+  //     ta_left = tx1;
+  //     ta_right = tx2;
+  //   }
+  //   else {
+  //     ta_left = tx2;
+  //     ta_right = tx1;
+  //   }
+  // }
+  // else if (ta1 < ta0 && ta1 < ta2) {
+  //   if (tx0 < tx2) {
+  //     ta_left = tx0;
+  //     ta_right = tx2;
+  //   }
+  //   else {
+  //     ta_left = tx2;
+  //     ta_right = tx0;
+  //   }
+  // }
+  // else if (ta2 < ta1 && ta2 < ta0) {
+  //   if (tx1 < tx0) {
+  //     ta_left = tx1;
+  //     ta_right = tx0;
+  //   }
+  //   else {
+  //     ta_left = tx0;
+  //     ta_right = tx1;
+  //   }
+  // }
+
+  double areaEffecter = frc::SmartDashboard::GetNumber("FollowLimelight: effector", k_areaEffecter);
+  double maxArea = frc::SmartDashboard::GetNumber("FollowLimelight: maxArea", k_maxArea);
+  double emphasis = (ta_right - ta_left) * areaEffecter * ((maxArea - ta < 0) ? 0 : maxArea - ta);
+  frc::SmartDashboard::PutNumber("FollowLimelight: emphasis", emphasis);
 
   // PID Loop math taken from some site on the internet
-  m_error = tx / 27 + frc::SmartDashboard::GetNumber("FollowLimelight: offset", k_targetOffset);
+  m_error = tx / 27 + frc::SmartDashboard::GetNumber("FollowLimelight: offset", k_targetOffset) + emphasis;
   if (m_error == 0) {
     m_integral = 0;
   }
@@ -70,7 +155,12 @@ void VisionFollowLimelight::Execute() {
 
   auto steeringControls = Robot::m_oi->getSteeringControls();
 
-  Robot::m_driveTrain->arcDrive(steeringControls.first, rotation + steeringControls.second * 0.6);
+  if (nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tv", 0) == 1) {
+    Robot::m_driveTrain->arcDrive(steeringControls.first, rotation + steeringControls.second * 0.6);
+  }
+  else {
+    Robot::m_driveTrain->arcDrive(steeringControls.first, steeringControls.second * 0.6);
+  }
 }
 
 // Make this return true when this Command no longer needs to run execute()

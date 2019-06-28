@@ -30,6 +30,9 @@ class VisionFollowLimelight : public frc::Command {
 
   const static double k_targetOffset;
 
+  const static double k_areaEffecter;
+  const static double k_maxArea;
+
   double m_error = 0;
   double m_error_prior = 0;
   double m_integral = 0;
