@@ -9,7 +9,9 @@
 
 #include "Robot.h"
 
-const double ElevatorCalibrate::k_lowerSpeed = -0.35;
+const double ElevatorCalibrate::k_highSpeed = -0.5;
+const double ElevatorCalibrate::k_lowSpeed = -0.4;
+const double ElevatorCalibrate::k_speedThreshold = 1500;
 
 ElevatorCalibrate::ElevatorCalibrate() : Command("ElevatorCalibrate") {
   Requires(Robot::m_elevator.get());
@@ -23,7 +25,12 @@ void ElevatorCalibrate::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorCalibrate::Execute() {
-  Robot::m_elevator->setSpeed(k_lowerSpeed);
+  if (Robot::m_elevator->getSelectedSensorPosition() > k_speedThreshold) {
+    Robot::m_elevator->setSpeed(k_highSpeed);
+  }
+  else {
+    Robot::m_elevator->setSpeed(k_lowSpeed);
+  }
 }
 
 // Make this return true when this Command no longer needs to run execute()

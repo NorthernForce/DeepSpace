@@ -8,10 +8,13 @@
 #pragma once
 
 #include <frc/commands/Command.h>
+#include <frc/PIDController.h>
 
-class ElevatorCalibrate : public frc::Command {
+#include <string>
+
+class VisionFollowLimelight : public frc::Command {
  public:
-  ElevatorCalibrate();
+  VisionFollowLimelight();
   void Initialize() override;
   void Execute() override;
   bool IsFinished() override;
@@ -19,7 +22,19 @@ class ElevatorCalibrate : public frc::Command {
   void Interrupted() override;
 
  private:
-  const static double k_highSpeed;
-  const static double k_lowSpeed;
-  const static double k_speedThreshold;
+  const static double k_p;
+  const static double k_i;
+  const static double k_d;
+
+  const static double k_maxTurnSpeed;
+
+  const static double k_targetOffset;
+
+  const static double k_areaEffecter;
+  const static double k_maxArea;
+
+  double m_error = 0;
+  double m_error_prior = 0;
+  double m_integral = 0;
+  double m_derivative = 0;
 };
