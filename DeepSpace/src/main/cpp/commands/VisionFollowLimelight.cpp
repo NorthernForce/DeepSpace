@@ -65,67 +65,36 @@ void VisionFollowLimelight::Execute() {
   double ta2 = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("ta2", 0.0);
   double tx2 = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx2", 0.0);
 
-  if (tx0 > tx1 && tx0 > tx2) {
+  if (ta0 > ta1 && ta0 > ta2) {
     if (tx1 < tx2) {
-      ta_left = tx1;
-      ta_right = tx2;
+      ta_left = ta1;
+      ta_right = ta2;
     }
     else {
-      ta_left = tx2;
-      ta_right = tx1;
+      ta_left = ta2;
+      ta_right = ta1;
     }
   }
-  else if (tx1 > tx0 && tx1 > tx2) {
+  else if (ta1 > ta0 && ta1 > ta2) {
     if (tx0 < tx2) {
-      ta_left = tx0;
-      ta_right = tx2;
+      ta_left = ta0;
+      ta_right = ta2;
     }
     else {
-      ta_left = tx2;
-      ta_right = tx0;
+      ta_left = ta2;
+      ta_right = ta0;
     }
   }
-  else /*if (tx2 > tx1 && tx2 > tx0)*/ {
+  else if (ta2 > ta1 && ta2 > ta0) {
     if (tx1 < tx0) {
-      ta_left = tx1;
-      ta_right = tx0;
+      ta_left = ta1;
+      ta_right = ta0;
     }
     else {
-      ta_left = tx0;
-      ta_right = tx1;
+      ta_left = ta0;
+      ta_right = ta1;
     }
   }
-
-  // if (ta0 < ta1 && ta0 < ta2) {
-  //   if (tx1 < tx2) {
-  //     ta_left = tx1;
-  //     ta_right = tx2;
-  //   }
-  //   else {
-  //     ta_left = tx2;
-  //     ta_right = tx1;
-  //   }
-  // }
-  // else if (ta1 < ta0 && ta1 < ta2) {
-  //   if (tx0 < tx2) {
-  //     ta_left = tx0;
-  //     ta_right = tx2;
-  //   }
-  //   else {
-  //     ta_left = tx2;
-  //     ta_right = tx0;
-  //   }
-  // }
-  // else if (ta2 < ta1 && ta2 < ta0) {
-  //   if (tx1 < tx0) {
-  //     ta_left = tx1;
-  //     ta_right = tx0;
-  //   }
-  //   else {
-  //     ta_left = tx0;
-  //     ta_right = tx1;
-  //   }
-  // }
 
   double areaEffecter = frc::SmartDashboard::GetNumber("FollowLimelight: effector", k_areaEffecter);
   double maxArea = frc::SmartDashboard::GetNumber("FollowLimelight: maxArea", k_maxArea);
