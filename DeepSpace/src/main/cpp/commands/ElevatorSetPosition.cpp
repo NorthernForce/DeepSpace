@@ -22,9 +22,9 @@ const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoi
     { Position::CargoDepositLevel2, 8000 + k_limitSwitchOffset},
     { Position::CargoDepositLevel3, 12426 + k_limitSwitchOffset},
     { Position::CargoShipCargoDeposit, 5859 + k_limitSwitchOffset},
-    { Position::HatchDepositLevel1, 450 + k_limitSwitchOffset},
-    { Position::HatchDepositLevel2, 5230 + k_limitSwitchOffset},
-    { Position::HatchDepositLevel3, 9791 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel1, 0 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel2, 4595 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel3, 9142 + k_limitSwitchOffset},
     { Position::ClimbPosition, 3355 + k_limitSwitchOffset},
 #else
     { Position::CargoIntake, 215 + k_limitSwitchOffset},
@@ -33,9 +33,9 @@ const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoi
     { Position::CargoDepositLevel2, 6837 + k_limitSwitchOffset},
     { Position::CargoDepositLevel3, 10326 + k_limitSwitchOffset},
     { Position::CargoShipCargoDeposit, 5201 + k_limitSwitchOffset},
-    { Position::HatchDepositLevel1, 664 + k_limitSwitchOffset},
-    { Position::HatchDepositLevel2, 4505 + k_limitSwitchOffset},
-    { Position::HatchDepositLevel3, 8356 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel1, 0 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel2, 4595 + k_limitSwitchOffset},
+    { Position::HatchDepositLevel3, 9142  + k_limitSwitchOffset},
     { Position::ClimbPosition, 3188 + k_limitSwitchOffset},
 #endif
 };
