@@ -13,7 +13,7 @@
 
 #include "Robot.h"
 
-const double VisionFollowLimelight::k_p = 1.3;
+const double VisionFollowLimelight::k_p = 3.0;
 const double VisionFollowLimelight::k_i = 0.01;
 const double VisionFollowLimelight::k_d = 0.1;
 
