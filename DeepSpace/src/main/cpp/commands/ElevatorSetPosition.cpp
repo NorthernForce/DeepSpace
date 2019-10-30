@@ -10,7 +10,7 @@
 #include <iostream>
 
 // allows for differetn limit switches between robots - adjust accordingly
-const int ElevatorSetPosition::k_limitSwitchOffset = -450;
+const int ElevatorSetPosition::k_limitSwitchOffset = 200;
 // const double ElevatorSetPosition::k_calibrationSpeed = -0.4;
 
 const std::map<ElevatorSetPosition::Position, int> ElevatorSetPosition::m_setpoints = {
