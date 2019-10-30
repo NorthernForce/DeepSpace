@@ -194,10 +194,6 @@ void Elevator::setHomePosition()
 
 bool Elevator::atLowerLimit() {
   return !m_followerTalonElevator2->GetSensorCollection().IsFwdLimitSwitchClosed();
-<<<<<<< HEAD
-=======
-  
->>>>>>> c427c0faf705a9c8517d82965034d1475203dcae
 }
 
 void Elevator::extend() {
