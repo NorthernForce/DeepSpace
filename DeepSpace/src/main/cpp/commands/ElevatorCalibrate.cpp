@@ -12,6 +12,7 @@
 const double ElevatorCalibrate::k_highSpeed = -0.5;
 const double ElevatorCalibrate::k_lowSpeed = -0.4;
 const double ElevatorCalibrate::k_speedThreshold = 1500;
+bool ElevatorCalibrate::k_calibrateDone;
 
 ElevatorCalibrate::ElevatorCalibrate() : Command("ElevatorCalibrate") {
   Requires(Robot::m_elevator.get());
@@ -41,10 +42,15 @@ bool ElevatorCalibrate::IsFinished() {
 // Called once after isFinished returns true
 void ElevatorCalibrate::End() {
   Robot::m_elevator->stop();
+
+  if (ElevatorCalibrate::k_calibrateDone == false) 
+  {
+    Robot::m_elevator->setHomePosition();
+    ElevatorCalibrate::k_calibrateDone = true;
+  }
   
   // This is now done in the elevator periodic
   // if (Robot::m_elevator->atLowerLimit()) {
-    Robot::m_elevator->setHomePosition();
   // }
   Robot::m_elevator->disableReverseLimitSwitch();
   Robot::m_elevator->disableForwardLimitSwitch();

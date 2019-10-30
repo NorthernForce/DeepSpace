@@ -22,4 +22,5 @@ class ElevatorCalibrate : public frc::Command {
   const static double k_highSpeed;
   const static double k_lowSpeed;
   const static double k_speedThreshold;
+  static bool k_calibrateDone;
 };
