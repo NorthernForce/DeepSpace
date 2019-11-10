@@ -38,6 +38,7 @@
 #include "commands/ElevatorCalibrate.h"
 #include "commands/ElevatorToggleDeployment.h"
 #include "commands/ElevatorSetPosition.h"
+#include "commands/setHome.h"
 
 #include "commands/PlatformDrive.h"
 
@@ -106,6 +107,8 @@ OI::OI() {
   WhenPressed(new frc::POVButton(*m_driverController, 90), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("SOS")));
   WhenPressed(new frc::POVButton(*m_driverController, 180), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("we will pillage your village", 8, std::vector<uint8_t>{255, 255, 0})));
   WhenPressed(new frc::POVButton(*m_driverController, 270), new IndicatorLightsEffect(std::make_shared<IndicatorLights::Morse>("woop", 8, std::vector<uint8_t>{156, 254, 127})));
+
+  WhenPressed(new SimpleButton(m_driverController, 8), new setHome());
 
   // auto test = new SimpleButton(m_manipulatorController1, 1);
   // test->WhileActive(new CargoIntake());
