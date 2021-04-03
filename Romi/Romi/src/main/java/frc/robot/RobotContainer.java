@@ -33,6 +33,7 @@ public class RobotContainer {
 
   private ProportionControl m_axisProp0 = new ProportionControl();
   private ProportionControl m_axisProp1 = new ProportionControl();
+  private ProportionControl m_axisProp3 = new ProportionControl();
 
   // Assumes a gamepad plugged into channnel 0
   private final Joystick m_controller = new Joystick(0);
@@ -96,7 +97,7 @@ public class RobotContainer {
    */
   public Command getArcadeDriveCommand() {
     return new ArcadeDrive(
-        m_drivetrain, () -> m_axisProp0.prop(-m_controller.getRawAxis(1)), () -> m_axisProp1.prop(m_controller.getRawAxis(4)));
+        m_drivetrain, () -> m_axisProp0.prop(-m_controller.getRawAxis(1)), () -> m_axisProp1.prop((m_controller.getRawAxis(4) + (m_controller.getRawAxis(0)) / 2)));
         
   }
 

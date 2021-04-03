@@ -3,6 +3,7 @@ package frc.robot;
 public class ProportionControl 
 {
     private double lastVal;
+    private double steps = 5;
 
     public ProportionControl()
     {
@@ -13,11 +14,11 @@ public class ProportionControl
     {
       if (val < lastVal)
       {
-        lastVal = lastVal - ((lastVal - val) / 5);
+        lastVal = lastVal - ((lastVal - val) / steps);
       }
       else if (val > lastVal)
       {
-        lastVal = lastVal + ((val - lastVal) / 5);
+        lastVal = lastVal + ((val - lastVal) / steps);
       }
       else lastVal = val;
     
