@@ -22,8 +22,9 @@ public class Drivetrain extends SubsystemBase {
 
   // The Romi has onboard encoders that are hardcoded
   // to use DIO pins 4/5 and 6/7 for the left and right
-  private final Encoder m_leftEncoder = new Encoder(4, 5);
-  private final Encoder m_rightEncoder = new Encoder(6, 7);
+
+  private final Encoder m_leftEncoder = new Encoder(4, 5, false );
+  private final Encoder m_rightEncoder = new Encoder(6, 7, false );
 
   // Set up the differential drive controller
   private final DifferentialDrive m_diffDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
@@ -39,6 +40,8 @@ public class Drivetrain extends SubsystemBase {
     // Use inches as unit for encoder distances
     m_leftEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     m_rightEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
+    m_leftEncoder.setSamplesToAverage(5);
+    m_rightEncoder.setSamplesToAverage(5);
     resetEncoders();
   }
 
