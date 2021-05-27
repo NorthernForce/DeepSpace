@@ -18,6 +18,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.Gate;
+import frc.robot.commands.LiftGate;
 
 
 /**
@@ -31,9 +34,15 @@ public class RobotContainer {
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final OnBoardIO m_onboardIO = new OnBoardIO(ChannelMode.INPUT, ChannelMode.INPUT);
 
+/////////////////////////////////////////////////////////////////////////
+  private final Gate m_gate = new Gate();
+
+/////////////////////////////////////////////////////////////////////////
+  //Added for Proportional Control of each axis
   private ProportionControl m_axisProp0 = new ProportionControl();
   private ProportionControl m_axisProp1 = new ProportionControl();
-  private ProportionControl m_axisProp3 = new ProportionControl();
+//  private ProportionControl m_axisProp3 = new ProportionControl();
+//////////////////////////////////////////////////////////////////////////
 
   // Assumes a gamepad plugged into channnel 0
   private final Joystick m_controller = new Joystick(0);
@@ -69,11 +78,21 @@ public class RobotContainer {
     // is scheduled over it.
     m_drivetrain.setDefaultCommand(getArcadeDriveCommand());
 
+    
+
     // Example of how to use the onboard IO
     Button onboardButtonA = new Button(m_onboardIO::getButtonAPressed);
     onboardButtonA
         .whenActive(new PrintCommand("Button A Pressed"))
         .whenInactive(new PrintCommand("Button A Released"));
+
+    JoystickButton frontGateUp = new JoystickButton(m_controller, Constants.kFrontUpButton);
+    JoystickButton frontGateDown = new JoystickButton(m_controller, Constants.kFrontDownButton);
+
+    JoystickButton rearGateUp = new JoystickButton(m_controller, Constants.kRearUpButton);
+    JoystickButton rearGateDown = new JoystickButton(m_controller, Constants.kRearDownButton);
+
+    m_gate.setDefaultCommand(new LiftGate(frontGateUp, frontGateDown, rearGateUp, rearGateDown));
 
     // Setup SmartDashboard options
     m_chooser.setDefaultOption("Auto Routine Distance", new AutonomousDistance(m_drivetrain));
@@ -86,7 +105,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public Command getAutonomousCommand() 
+  {
     return m_chooser.getSelected();
   }
 
@@ -95,11 +115,15 @@ public class RobotContainer {
    *
    * @return the command to run in teleop
    */
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Arcade Drive Axiis Below are for PS2 Controller  -- Need to be changed for X-Box Controller
+  //Modiied Arcade Drive with 50% Axis for turn on Forward / Reverse Axis 
   public Command getArcadeDriveCommand() {
     return new ArcadeDrive(
         m_drivetrain, () -> m_axisProp0.prop(-m_controller.getRawAxis(1)), () -> m_axisProp1.prop((m_controller.getRawAxis(4) + (m_controller.getRawAxis(0)) / 2)));
         
   }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
 

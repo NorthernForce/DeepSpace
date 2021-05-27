@@ -12,4 +12,20 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants 
+{
+    static public int kRearGateServoPort = 8;
+    static public int kFrontGateServoPort = 7;
+    static public double kUpAngle = 60.0;
+    static public double kDownAngle = 0.0;
+
+    static public int kFrontUpButton = 5;
+    static public int kFrontDownButton = 4;
+
+    static public int kRearUpButton = 6;
+    static public int kRearDownButton = 7;
+
+
+
+
+}
