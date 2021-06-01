@@ -92,7 +92,7 @@ public class RobotContainer {
     JoystickButton rearGateUp = new JoystickButton(m_controller, Constants.kRearUpButton);
     JoystickButton rearGateDown = new JoystickButton(m_controller, Constants.kRearDownButton);
 
-    m_gate.setDefaultCommand(new LiftGate(frontGateUp, frontGateDown, rearGateUp, rearGateDown));
+    m_gate.setDefaultCommand(new LiftGate(frontGateUp, frontGateDown, rearGateUp, rearGateDown, m_gate));
 
     // Setup SmartDashboard options
     m_chooser.setDefaultOption("Auto Routine Distance", new AutonomousDistance(m_drivetrain));

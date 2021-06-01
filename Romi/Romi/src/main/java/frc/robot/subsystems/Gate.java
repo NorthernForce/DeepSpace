@@ -27,37 +27,37 @@ public class Gate extends SubsystemBase {
 
   public void liftRear()
   {
-    rear.set( Constants.kUpAngle);
+    rear.setAngle( Constants.kUpAngle);
   }
 
   
   public void liftFront()
   {
-    rear.set( Constants.kUpAngle);
+    rear.setAngle( Constants.kUpAngle);
   }
 
 
   public void lowerRear()
   {
-    rear.set( Constants.kDownAngle);
+    rear.setAngle( Constants.kDownAngle);
   }
 
   
   public void lowerFront()
   {
-    rear.set( Constants.kDownAngle);
+    rear.setAngle( Constants.kDownAngle);
   }
 
 
   public void setFront(double pAngle)
   {
-    front.set(pAngle);
+    front.setAngle(pAngle);
   }
 
   
   public void setRear(double pAngle)
   {
-    rear.set(pAngle);
+    rear.setAngle(pAngle);
   }
 
 }

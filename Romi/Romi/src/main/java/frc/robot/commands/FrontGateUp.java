@@ -10,14 +10,15 @@ import frc.robot.subsystems.Gate;
 /** Add your docs here. */
 public class FrontGateUp extends InstantCommand 
 {
-  private final Gate m_Gate = new Gate(); 
+  private Gate m_Gate; 
   /** Add your docs here. */
-  public FrontGateUp() 
+  public FrontGateUp(Gate gate) 
   {
     super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     //requires(m_Gate);
+    m_Gate = gate;
   }
 
   // Called once when the command executes

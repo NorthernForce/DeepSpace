@@ -9,22 +9,25 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Gate;
 
-public class LiftGate extends CommandBase {
+public class LiftGate extends CommandBase 
+{
 
-  private final Gate m_gate = new Gate();
+//  private final Gate m_gate = new Gate();
   private final JoystickButton m_FrontUp;
   private final JoystickButton m_FrontDown;
   private final JoystickButton m_RearUp;
   private final JoystickButton m_RearDown;
+  private Gate m_gate;
   private Button whenPressed;
 
   /** Creates a new LiftGate. */
-  public LiftGate(JoystickButton frontUp, JoystickButton frontDown, JoystickButton rearUp, JoystickButton rearDown) 
+  public LiftGate(JoystickButton frontUp, JoystickButton frontDown, JoystickButton rearUp, JoystickButton rearDown, Gate gate) 
   {
     m_FrontUp   = frontUp;
     m_FrontDown = frontDown;
     m_RearUp    = rearUp;
     m_RearDown  = rearDown;
+    m_gate      = gate;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_gate);
@@ -42,10 +45,10 @@ public class LiftGate extends CommandBase {
   @Override
   public void execute() 
   {
-      whenPressed = m_FrontUp.whenPressed(new FrontGateUp());
-      whenPressed = m_FrontDown.whenPressed(new FrontGateDown());
-      whenPressed = m_RearUp.whenPressed(new RearGateUp());
-      whenPressed = m_FrontDown.whenPressed(new RearGateDown());
+      whenPressed = m_FrontUp.whenPressed(new FrontGateUp(m_gate));
+      whenPressed = m_FrontDown.whenPressed(new FrontGateDown(m_gate));
+      whenPressed = m_RearUp.whenPressed(new RearGateUp(m_gate));
+      whenPressed = m_FrontDown.whenPressed(new RearGateDown(m_gate));
 
   }
 
