@@ -20,7 +20,15 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Gate;
-import frc.robot.commands.LiftGate;
+
+/////////////////////////////////////////////////////////////////////
+//Changes for Direct Calls for Gate Up and Down Commands
+//import frc.robot.commands.LiftGate;
+import frc.robot.commands.FrontGateDown;
+import frc.robot.commands.FrontGateUp;
+import frc.robot.commands.RearGateDown;
+import frc.robot.commands.RearGateUp;
+////////////////////////////////////////////////////////////////////
 
 
 /**
@@ -86,13 +94,27 @@ public class RobotContainer {
         .whenActive(new PrintCommand("Button A Pressed"))
         .whenInactive(new PrintCommand("Button A Released"));
 
+///////////////////////////////////////////////////////////////////////////////////
+// Needed for return value on JoystickButton "whenPressed" Method Calls
+    Button whenPressed;
+///////////////////////////////////////////////////////////////////////////////////
+
     JoystickButton frontGateUp = new JoystickButton(m_controller, Constants.kFrontUpButton);
     JoystickButton frontGateDown = new JoystickButton(m_controller, Constants.kFrontDownButton);
 
     JoystickButton rearGateUp = new JoystickButton(m_controller, Constants.kRearUpButton);
     JoystickButton rearGateDown = new JoystickButton(m_controller, Constants.kRearDownButton);
 
-    m_gate.setDefaultCommand(new LiftGate(frontGateUp, frontGateDown, rearGateUp, rearGateDown, m_gate));
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////// Remove ListGate Command and try direct call to Direct Commands
+    //
+    //m_gate.setDefaultCommand(new LiftGate(frontGateUp, frontGateDown, rearGateUp, rearGateDown, m_gate));
+    whenPressed = frontGateUp.whenPressed(new FrontGateUp(m_gate), true);
+    whenPressed = frontGateDown.whenPressed(new FrontGateDown(m_gate), true);
+
+    whenPressed = rearGateUp.whenPressed(new RearGateUp(m_gate), true);
+    whenPressed = rearGateDown.whenPressed(new RearGateDown(m_gate), true);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Setup SmartDashboard options
     m_chooser.setDefaultOption("Auto Routine Distance", new AutonomousDistance(m_drivetrain));
