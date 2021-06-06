@@ -26,6 +26,6 @@ public class FrontGateDown extends InstantCommand
   @Override
   public void initialize() 
   {
-    m_Gate.liftFront();
+    m_Gate.lowerFront();
   }
 }

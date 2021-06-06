@@ -14,10 +14,14 @@ package frc.robot;
  */
 public final class Constants 
 {
-    static public int kRearGateServoPort = 8;
-    static public int kFrontGateServoPort = 7;
+    static public int kRearGateServoPort = 3;
+    static public int kFrontGateServoPort = 2;
+
     static public double kUpAngle = 60.0;
     static public double kDownAngle = 0.0;
+
+    static public double kServoUp = 1.0;
+    static public double kServoDown = 0.0;
 
     static public int kFrontUpButton = 5;
     static public int kFrontDownButton = 4;

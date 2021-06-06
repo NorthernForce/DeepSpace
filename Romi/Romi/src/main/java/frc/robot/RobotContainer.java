@@ -109,11 +109,13 @@ public class RobotContainer {
 ////// Remove ListGate Command and try direct call to Direct Commands
     //
     //m_gate.setDefaultCommand(new LiftGate(frontGateUp, frontGateDown, rearGateUp, rearGateDown, m_gate));
-    whenPressed = frontGateUp.whenPressed(new FrontGateUp(m_gate), true);
-    whenPressed = frontGateDown.whenPressed(new FrontGateDown(m_gate), true);
+    frontGateUp
+        .whenPressed(new FrontGateUp(m_gate))
+        .whenReleased(new FrontGateDown(m_gate));
 
-    whenPressed = rearGateUp.whenPressed(new RearGateUp(m_gate), true);
-    whenPressed = rearGateDown.whenPressed(new RearGateDown(m_gate), true);
+    rearGateUp
+        .whenPressed(new RearGateUp(m_gate))
+        .whenReleased(new RearGateDown(m_gate));
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Setup SmartDashboard options

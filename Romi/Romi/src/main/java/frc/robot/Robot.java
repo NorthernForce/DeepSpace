@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.LiftGate;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to

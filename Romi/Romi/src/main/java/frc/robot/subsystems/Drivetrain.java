@@ -7,8 +7,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
-//import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import frc.robot.sensors.RomiGyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -33,7 +33,7 @@ public class Drivetrain extends SubsystemBase {
   private final RomiGyro m_gyro = new RomiGyro();
 
    // Set up the differential drive controller
-  private final DiffPIDDrive m_diffDrive = new DiffPIDDrive(m_leftMotor, m_rightMotor, m_gyro);
+  private final DifferentialDrive m_diffDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
 
   // Set up the BuiltInAccelerometer
   private final BuiltInAccelerometer m_accelerometer = new BuiltInAccelerometer();
@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
 
   public void arcadeDrive(double xaxisSpeed, double zaxisRotate) {
 
-    m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate, m_leftEncoder, m_rightEncoder);
+    m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate);
 
   }
 
@@ -97,7 +97,7 @@ public class Drivetrain extends SubsystemBase {
     return m_accelerometer.getX();
   }
 
-  /**
+  /*
    * The acceleration in the Y-axis.
    *
    * @return The acceleration of the Romi along the Y-axis in Gs

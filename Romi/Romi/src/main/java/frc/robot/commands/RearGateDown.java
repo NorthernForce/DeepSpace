@@ -25,6 +25,6 @@ public class RearGateDown extends InstantCommand
   @Override
   public void initialize() 
   {
-    m_Gate.liftRear();
+    m_Gate.lowerRear();
   }
 }
