@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+//import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import frc.robot.sensors.RomiGyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -52,7 +52,7 @@ public class Drivetrain extends SubsystemBase {
   public void arcadeDrive(double xaxisSpeed, double zaxisRotate) {
 
     m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate);
-
+ 
   }
 
 

@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants 
 {
     static public int kRearGateServoPort = 3;
-    static public int kFrontGateServoPort = 2;
+ //   static public int kFrontGateServoPort = 2;
 
     static public double kUpAngle = 60.0;
     static public double kDownAngle = 0.0;
@@ -29,7 +29,7 @@ public final class Constants
     static public int kRearUpButton = 6;
     static public int kRearDownButton = 7;
 
-
-
+    static public double kInSpeed = 1.0;
+    static public double kOutSpeed = -1.0;
 
 }

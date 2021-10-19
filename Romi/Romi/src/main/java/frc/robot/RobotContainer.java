@@ -19,16 +19,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.Gate;
-
+//import frc.robot.subsystems.Gate;
+import frc.robot.subsystems.Intake;
+// import frc.robot.commands.Ingress;
+// import frc.robot.commands.Expell;
+import frc.robot.commands.ForwardIntake;
 /////////////////////////////////////////////////////////////////////
 //Changes for Direct Calls for Gate Up and Down Commands
 //import frc.robot.commands.LiftGate;
-import frc.robot.commands.FrontGateDown;
-import frc.robot.commands.FrontGateUp;
-import frc.robot.commands.RearGateDown;
-import frc.robot.commands.RearGateUp;
+// import frc.robot.commands.FrontGateDown;
+// import frc.robot.commands.FrontGateUp;
+// import frc.robot.commands.RearGateDown;
+// import frc.robot.commands.RearGateUp;
 ////////////////////////////////////////////////////////////////////
+import frc.robot.commands.ReverseIntake;
 
 
 /**
@@ -43,7 +47,9 @@ public class RobotContainer {
   private final OnBoardIO m_onboardIO = new OnBoardIO(ChannelMode.INPUT, ChannelMode.INPUT);
 
 /////////////////////////////////////////////////////////////////////////
-  private final Gate m_gate = new Gate();
+//  private final Gate m_gate = new Gate();
+
+  private final Intake m_intake = new Intake();
 
 /////////////////////////////////////////////////////////////////////////
   //Added for Proportional Control of each axis
@@ -99,23 +105,23 @@ public class RobotContainer {
     Button whenPressed;
 ///////////////////////////////////////////////////////////////////////////////////
 
-    JoystickButton frontGateUp = new JoystickButton(m_controller, Constants.kFrontUpButton);
-    JoystickButton frontGateDown = new JoystickButton(m_controller, Constants.kFrontDownButton);
+    JoystickButton intakeExpell = new JoystickButton(m_controller, Constants.kFrontUpButton);
+//    JoystickButton frontGateDown = new JoystickButton(m_controller, Constants.kFrontDownButton);
 
-    JoystickButton rearGateUp = new JoystickButton(m_controller, Constants.kRearUpButton);
-    JoystickButton rearGateDown = new JoystickButton(m_controller, Constants.kRearDownButton);
+//    JoystickButton rearGateUp = new JoystickButton(m_controller, Constants.kRearUpButton);
+//   JoystickButton rearGateDown = new JoystickButton(m_controller, Constants.kRearDownButton);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////// Remove ListGate Command and try direct call to Direct Commands
     //
     //m_gate.setDefaultCommand(new LiftGate(frontGateUp, frontGateDown, rearGateUp, rearGateDown, m_gate));
-    frontGateUp
-        .whenPressed(new FrontGateUp(m_gate))
-        .whenReleased(new FrontGateDown(m_gate));
+    intakeExpell
+        .whenPressed(new ReverseIntake(m_intake))
+        .whenReleased(new ForwardIntake(m_intake));
 
-    rearGateUp
-        .whenPressed(new RearGateUp(m_gate))
-        .whenReleased(new RearGateDown(m_gate));
+    // rearGateUp
+    //     .whenPressed(new RearGateUp(m_gate))
+    //     .whenReleased(new RearGateDown(m_gate));
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Setup SmartDashboard options

@@ -10,12 +10,12 @@ import frc.robot.Constants;
 
 public class Gate extends SubsystemBase {
   /** Creates a new Gate. */
-  private final Servo front = new Servo(Constants.kFrontGateServoPort);
+ // private final Servo front = new Servo(Constants.kFrontGateServoPort);
   private final Servo rear  = new Servo(Constants.kRearGateServoPort);
 
   public Gate()
   {
-    front.set( Constants.kDownAngle );
+ //   front.set( Constants.kDownAngle );
     rear.set( Constants.kDownAngle );
   }
 
@@ -33,7 +33,7 @@ public class Gate extends SubsystemBase {
   
   public void liftFront()
   {
-     front.setAngle( Constants.kUpAngle);
+ //    front.setAngle( Constants.kUpAngle);
   }
 
 
@@ -45,13 +45,13 @@ public class Gate extends SubsystemBase {
   
   public void lowerFront()
   {
-    front.setAngle( Constants.kDownAngle);
+ //   front.setAngle( Constants.kDownAngle);
   }
 
 
   public void setFront(double pAngle)
   {
-    front.setAngle(pAngle);
+//    front.setAngle(pAngle);
   }
 
   
